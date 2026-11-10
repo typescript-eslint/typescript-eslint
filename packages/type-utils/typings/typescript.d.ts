@@ -29,6 +29,11 @@ declare module 'typescript' {
      * If the type is `any`, and this is set to "error", then TS was unable to resolve the type
      */
     intrinsicName?: string;
+
+    /**
+     * @deprecated don't use this directly as it does not include bigint literals pre-5.0; instead use isTypeLiteralType from `src/predicates.ts`.
+     */
+    isLiteral(): this is LiteralType;
   }
 
   interface Program {

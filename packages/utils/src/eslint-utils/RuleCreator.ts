@@ -122,6 +122,7 @@ function createRule<
       );
       return create(context, optionsWithDefault);
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
     defaultOptions,
     meta,
     name,

@@ -79,6 +79,8 @@ enum Direction {
         },
       ],
     },
+    // Multiple values
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Direction {
@@ -169,6 +171,7 @@ enum Direction {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Direction {

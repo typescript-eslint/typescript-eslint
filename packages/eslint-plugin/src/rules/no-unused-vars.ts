@@ -292,6 +292,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<
@@ -964,7 +965,9 @@ export default createRule<Options, MessageIds>({
 
         // If any used parameters occur after this parameter, do not report.
         return !posteriorParams.some(
-          v => v.references.length > 0 || v.eslintUsed,
+          v =>
+            v.eslintUsed ||
+            v.references.some(ref => !isTypeOnlyReference(v, ref)),
         );
       }
 

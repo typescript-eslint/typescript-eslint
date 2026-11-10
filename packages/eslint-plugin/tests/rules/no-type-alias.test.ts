@@ -2763,6 +2763,8 @@ type Foo<T> = {
       ],
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 type Foo<T> =
@@ -2935,6 +2937,7 @@ type Foo<T> = {
       ],
       options: [{ allowMappedTypes: 'in-unions' }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/270
       code: "export type ButtonProps = JSX.IntrinsicElements['button'];",

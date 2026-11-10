@@ -1,3 +1,65 @@
+## 8.72.2 (2026-11-09)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.1 (2026-10-26)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.0 (2026-10-19)
+
+### 🩹 Fixes
+
+- **type-utils:** discriminateAnyType crashes when calling getAwaitedType on awaited type in TS < 5.0 ([#13054](https://github.com/typescript-eslint/typescript-eslint/pull/13054))
+- **eslint-plugin:** use isTypeLiteralType instead of type.isLiteral() to include bigint literals on TS < 5.0 ([#13053](https://github.com/typescript-eslint/typescript-eslint/pull/13053))
+- **eslint-plugin:** [prefer-readonly-parameter-types] check where allowed type aliases are declared ([#13016](https://github.com/typescript-eslint/typescript-eslint/pull/13016))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Mitch Fultz @fitchmultz
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.2 (2026-10-12)
+
+### 🩹 Fixes
+
+- **type-utils:** match linked packages and packages with missing version in `TypeOrValueSpecifier` ([#12948](https://github.com/typescript-eslint/typescript-eslint/pull/12948))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **type-utils:** match re-exports and global declarations in `TypeOrValueSpecifier` ([#12943](https://github.com/typescript-eslint/typescript-eslint/pull/12943))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.71.0 (2026-09-28)
 
 ### 🚀 Features

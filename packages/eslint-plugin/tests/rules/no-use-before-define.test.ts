@@ -548,6 +548,8 @@ const obj = {
   [key in 'foo' | 'bar']: \`\${key}-value\`;
 };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreTypeReferences: false }],
     },
     {
@@ -583,6 +585,8 @@ const foo = {
 
 const baz = '';
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreTypeReferences: true }],
     },
     `
@@ -682,8 +686,6 @@ var a = [1, 3];
       code: `
 a();
 function a() {
-  alert(b);
-  var b = 10;
   a();
 }
       `,
@@ -696,12 +698,23 @@ function a() {
           line: 2,
           messageId: 'noUseBeforeDefine',
         },
+      ],
+    },
+    {
+      code: `
+function a() {
+  alert(b);
+  var b = 10;
+  a();
+}
+      `,
+      errors: [
         {
           column: 9,
           data: { name: 'b' },
           endColumn: 10,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1279,6 +1292,8 @@ const foo = {
 
 const baz = '';
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 15,

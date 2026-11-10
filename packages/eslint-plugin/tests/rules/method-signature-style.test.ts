@@ -572,11 +572,9 @@ interface Test {
       output: null,
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   semi(arg: string): void;
-  comma(arg: string): void,
-  none(arg: string): void
 }
       `,
       errors: [
@@ -587,35 +585,59 @@ interface Foo {
           line: 3,
           messageId: 'errorMethod',
         },
-        {
-          column: 3,
-          endColumn: 28,
-          endLine: 4,
-          line: 4,
-          messageId: 'errorMethod',
-        },
-        {
-          column: 3,
-          endColumn: 26,
-          endLine: 5,
-          line: 5,
-          messageId: 'errorMethod',
-        },
       ],
       output: `
 interface Foo {
   semi: (arg: string) => void;
-  comma: (arg: string) => void,
-  none: (arg: string) => void
 }
       `,
     },
     {
       code: noFormat`
 interface Foo {
-  semi: (arg: string) => void;
+  comma(arg: string): void,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Foo {
   comma: (arg: string) => void,
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface Foo {
+  none(arg: string): void
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Foo {
   none: (arg: string) => void
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  semi: (arg: string) => void;
 }
       `,
       errors: [
@@ -626,26 +648,54 @@ interface Foo {
           line: 3,
           messageId: 'errorProperty',
         },
+      ],
+      options: ['method'],
+      output: `
+interface Foo {
+  semi(arg: string): void;
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface Foo {
+  comma: (arg: string) => void,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 32,
-          endLine: 4,
-          line: 4,
-          messageId: 'errorProperty',
-        },
-        {
-          column: 3,
-          endColumn: 30,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'errorProperty',
         },
       ],
       options: ['method'],
       output: `
 interface Foo {
-  semi(arg: string): void;
   comma(arg: string): void,
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface Foo {
+  none: (arg: string) => void
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Foo {
   none(arg: string): void
 }
       `,
@@ -660,10 +710,6 @@ interface Foo {
       'one' | 'two' | 'three'
     >,
   ): Baz;
-  y(
-    foo: string,
-    bar: number,
-  ): void;
 }
       `,
       errors: [
@@ -672,13 +718,6 @@ interface Foo {
           endColumn: 10,
           endLine: 8,
           line: 3,
-          messageId: 'errorMethod',
-        },
-        {
-          column: 3,
-          endColumn: 11,
-          endLine: 12,
-          line: 9,
           messageId: 'errorMethod',
         },
       ],
@@ -690,6 +729,29 @@ interface Foo {
       'one' | 'two' | 'three'
     >,
   ) => Baz;
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface Foo {
+  y(
+    foo: string,
+    bar: number,
+  ): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 6,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Foo {
   y: (
     foo: string,
     bar: number,
@@ -697,6 +759,8 @@ interface Foo {
 }
       `,
     },
+    // It is normal that multiple errors are generated
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Foo {
@@ -966,6 +1030,7 @@ declare const Foo: {
 }
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     // https://github.com/typescript-eslint/typescript-eslint/issues/2834
     {
       code: `
@@ -1005,6 +1070,7 @@ interface Test {
       ],
       output: null,
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Test {
@@ -1030,6 +1096,7 @@ interface Test {
       ],
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Test {

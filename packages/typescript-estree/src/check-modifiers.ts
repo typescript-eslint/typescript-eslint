@@ -275,6 +275,18 @@ export function checkModifiers(node: ts.Node): void {
     }
 
     if (
+      modifier.kind === SyntaxKind.ExportKeyword &&
+      modifiers
+        .slice(0, modifiers.indexOf(modifier))
+        .some(m => m.kind === SyntaxKind.AbstractKeyword)
+    ) {
+      throw createError(
+        modifier,
+        "'export' modifier must precede 'abstract' modifier.",
+      );
+    }
+
+    if (
       (modifier.kind === SyntaxKind.StaticKeyword ||
         modifier.kind === SyntaxKind.PublicKeyword ||
         modifier.kind === SyntaxKind.ProtectedKeyword ||

@@ -400,6 +400,25 @@ describe(isTypeReadonly, () => {
             expect(code).not.toBeReadOnly(options);
           },
         );
+
+        it.for([
+          ['lib', { from: 'lib', name: 'MyMutableType' }],
+          [
+            'package',
+            { from: 'package', name: 'MyMutableType', package: 'some-package' },
+          ],
+          [
+            'another file',
+            { from: 'file', name: 'MyMutableType', path: 'other-file.ts' },
+          ],
+        ] as const)(
+          'checks structure when the type alias is not declared in the allowed %s',
+          ([, specifier], { expect }) => {
+            expect(
+              'type MyMutableType = { prop: string }; type Test = MyMutableType;',
+            ).not.toBeReadOnly({ allow: [specifier] });
+          },
+        );
       });
     });
 

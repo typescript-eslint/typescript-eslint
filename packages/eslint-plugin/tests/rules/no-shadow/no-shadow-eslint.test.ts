@@ -364,11 +364,7 @@ function a(x) {
       errors: [
         {
           column: 9,
-          data: {
-            name: 'x',
-            shadowedColumn: 12,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 12, shadowedLine: 2 },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -387,11 +383,7 @@ var a = x => {
       errors: [
         {
           column: 9,
-          data: {
-            name: 'x',
-            shadowedColumn: 9,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 9, shadowedLine: 2 },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -411,11 +403,7 @@ function a(x) {
       errors: [
         {
           column: 9,
-          data: {
-            name: 'x',
-            shadowedColumn: 12,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 12, shadowedLine: 2 },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -433,11 +421,7 @@ function a(x) {
       errors: [
         {
           column: 12,
-          data: {
-            name: 'x',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -455,11 +439,7 @@ function b() {
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -480,11 +460,7 @@ setTimeout(function () {
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -492,6 +468,8 @@ setTimeout(function () {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 var a = 3;
@@ -506,11 +484,7 @@ setTimeout(function () {
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -518,11 +492,7 @@ setTimeout(function () {
         },
         {
           column: 7,
-          data: {
-            name: 'b',
-            shadowedColumn: 10,
-            shadowedLine: 3,
-          },
+          data: { name: 'b', shadowedColumn: 10, shadowedLine: 3 },
           endColumn: 8,
           endLine: 5,
           line: 5,
@@ -530,6 +500,7 @@ setTimeout(function () {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 var x = 1;
@@ -540,11 +511,7 @@ var x = 1;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'x',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -563,11 +530,7 @@ let x = 1;
       errors: [
         {
           column: 9,
-          data: {
-            name: 'x',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'x', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -586,11 +549,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -609,11 +568,7 @@ function a() {}
       errors: [
         {
           column: 9,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -632,11 +587,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -655,11 +606,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -676,11 +623,7 @@ function a() {}
       errors: [
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 3 },
           endColumn: 15,
           endLine: 2,
           line: 2,
@@ -699,11 +642,7 @@ let a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -723,11 +662,7 @@ var a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -747,11 +682,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -771,11 +702,7 @@ const a = 1;
       errors: [
         {
           column: 9,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 5 },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -795,11 +722,7 @@ var a;
       errors: [
         {
           column: 9,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -819,11 +742,7 @@ function a() {}
       errors: [
         {
           column: 9,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -843,11 +762,7 @@ let a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -867,11 +782,7 @@ var a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -891,11 +802,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -915,11 +822,7 @@ let a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -939,11 +842,7 @@ var a;
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -963,11 +862,7 @@ function a() {}
       errors: [
         {
           column: 7,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 5,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 5 },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -985,11 +880,7 @@ let a;
       errors: [
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 3 },
           endColumn: 15,
           endLine: 2,
           line: 2,
@@ -1007,11 +898,7 @@ var a;
       errors: [
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 3 },
           endColumn: 15,
           endLine: 2,
           line: 2,
@@ -1029,11 +916,7 @@ function a() {}
       errors: [
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 10,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 10, shadowedLine: 3 },
           endColumn: 15,
           endLine: 2,
           line: 2,
@@ -1052,11 +935,7 @@ function a() {}
       errors: [
         {
           column: 12,
-          data: {
-            name: 'a',
-            shadowedColumn: 11,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -1073,11 +952,7 @@ function a() {}
       errors: [
         {
           column: 9,
-          data: {
-            name: 'a',
-            shadowedColumn: 11,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -1095,11 +970,7 @@ function a() {}
       errors: [
         {
           column: 13,
-          data: {
-            name: 'a',
-            shadowedColumn: 11,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1116,11 +987,7 @@ function a() {}
       errors: [
         {
           column: 10,
-          data: {
-            name: 'a',
-            shadowedColumn: 11,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -1138,11 +1005,7 @@ function a() {}
       errors: [
         {
           column: 21,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -1161,11 +1024,7 @@ function a() {}
       errors: [
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 15,
           endLine: 4,
           line: 4,
@@ -1184,11 +1043,7 @@ function a() {}
       errors: [
         {
           column: 11,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -1208,11 +1063,7 @@ function a() {}
       errors: [
         {
           column: 15,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -1231,11 +1082,7 @@ function a() {}
       errors: [
         {
           column: 12,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 13,
           endLine: 4,
           line: 4,
@@ -1257,11 +1104,7 @@ function a() {}
       errors: [
         {
           column: 13,
-          data: {
-            name: 'a',
-            shadowedColumn: 7,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 7, shadowedLine: 3 },
           endColumn: 14,
           endLine: 5,
           line: 5,
@@ -1281,11 +1124,7 @@ class A {
       errors: [
         {
           column: 9,
-          data: {
-            name: 'A',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
+          data: { name: 'A', shadowedColumn: 7, shadowedLine: 2 },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -1294,6 +1133,8 @@ class A {
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 (function a() {
@@ -1305,11 +1146,7 @@ class A {
       errors: [
         {
           column: 12,
-          data: {
-            name: 'a',
-            shadowedColumn: 11,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -1317,11 +1154,7 @@ class A {
         },
         {
           column: 14,
-          data: {
-            name: 'a',
-            shadowedColumn: 12,
-            shadowedLine: 3,
-          },
+          data: { name: 'a', shadowedColumn: 12, shadowedLine: 3 },
           endColumn: 15,
           endLine: 4,
           line: 4,
@@ -1329,6 +1162,7 @@ class A {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function foo() {
@@ -1338,9 +1172,7 @@ function foo() {
       errors: [
         {
           column: 7,
-          data: {
-            name: 'Object',
-          },
+          data: { name: 'Object' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -1358,9 +1190,7 @@ function foo() {
       errors: [
         {
           column: 7,
-          data: {
-            name: 'top',
-          },
+          data: { name: 'top' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -1375,9 +1205,7 @@ function foo() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'Object',
-          },
+          data: { name: 'Object' },
           endColumn: 11,
           endLine: 1,
           line: 1,
@@ -1392,9 +1220,7 @@ function foo() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'top',
-          },
+          data: { name: 'top' },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -1411,9 +1237,7 @@ function foo() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'Object',
-          },
+          data: { name: 'Object' },
           endColumn: 11,
           endLine: 1,
           line: 1,
@@ -1430,9 +1254,7 @@ function foo() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'top',
-          },
+          data: { name: 'top' },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -1456,11 +1278,7 @@ function foo(cb) {
       errors: [
         {
           column: 14,
-          data: {
-            name: 'cb',
-            shadowedColumn: 14,
-            shadowedLine: 2,
-          },
+          data: { name: 'cb', shadowedColumn: 14, shadowedLine: 2 },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -1475,11 +1293,7 @@ const FooBarComponent = memo(function FooBarComponent() {});
       errors: [
         {
           column: 39,
-          data: {
-            name: 'FooBarComponent',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
+          data: { name: 'FooBarComponent', shadowedColumn: 7, shadowedLine: 2 },
           endColumn: 54,
           endLine: 2,
           line: 2,
@@ -1494,11 +1308,7 @@ const FooBarComponent = memo(class FooBarComponent {});
       errors: [
         {
           column: 36,
-          data: {
-            name: 'FooBarComponent',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
+          data: { name: 'FooBarComponent', shadowedColumn: 7, shadowedLine: 2 },
           endColumn: 51,
           endLine: 2,
           line: 2,
@@ -1514,11 +1324,7 @@ const FooBarComponent = memo(function FooBarComponent() {});
       errors: [
         {
           column: 39,
-          data: {
-            name: 'FooBarComponent',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
+          data: { name: 'FooBarComponent', shadowedColumn: 7, shadowedLine: 2 },
           endColumn: 54,
           endLine: 2,
           line: 2,
@@ -1534,11 +1340,7 @@ function foo(a = wrap(function a() {})) {}
       errors: [
         {
           column: 32,
-          data: {
-            name: 'a',
-            shadowedColumn: 14,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 14, shadowedLine: 2 },
           endColumn: 33,
           endLine: 2,
           line: 2,
@@ -1555,11 +1357,7 @@ var b = function a() {};
       errors: [
         {
           column: 18,
-          data: {
-            name: 'a',
-            shadowedColumn: 5,
-            shadowedLine: 2,
-          },
+          data: { name: 'a', shadowedColumn: 5, shadowedLine: 2 },
           endColumn: 19,
           endLine: 3,
           line: 3,

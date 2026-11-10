@@ -432,7 +432,6 @@ class Foo {
         this.foo = foo;
       }
     }
-    this.foo = foo;
   }
 }
       `,
@@ -444,11 +443,25 @@ class Foo {
           line: 6,
           messageId: 'unnecessaryAssign',
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    class Bar {
+      constructor(private foo: string) {}
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 19,
-          endLine: 9,
-          line: 9,
+          endLine: 7,
+          line: 7,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -502,9 +515,7 @@ class Foo {
     this.foo = foo;
   }
   init = class Bar {
-    constructor(private foo: string) {
-      this.foo = foo;
-    }
+    constructor(private foo: string) {}
   };
 }
       `,
@@ -516,11 +527,25 @@ class Foo {
           line: 4,
           messageId: 'unnecessaryAssign',
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {}
+  init = class Bar {
+    constructor(private foo: string) {
+      this.foo = foo;
+    }
+  };
+}
+      `,
+      errors: [
         {
           column: 7,
           endColumn: 21,
-          endLine: 8,
-          line: 8,
+          endLine: 6,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
       ],

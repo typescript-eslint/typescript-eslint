@@ -201,9 +201,9 @@ type sum = (a: number, b: number) => number;
       `,
       errors: [
         {
-          column: 12,
+          column: 35,
           data: { count: '2', max: '1', name: 'Function' },
-          endColumn: 12,
+          endColumn: 37,
           endLine: 2,
           line: 2,
           messageId: 'exceed',

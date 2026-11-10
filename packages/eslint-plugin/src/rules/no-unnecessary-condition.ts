@@ -19,6 +19,7 @@ import {
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
+  isTypeLiteralType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -65,7 +66,7 @@ function toStaticValue(
   type: ts.Type,
 ):
   { value: bigint | boolean | number | string | null | undefined } | undefined {
-  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  // isTypeLiteralType() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
     return { value: tsutils.isTrueLiteralType(type) };
   }
@@ -75,7 +76,7 @@ function toStaticValue(
   if (type.flags === ts.TypeFlags.Null) {
     return { value: null };
   }
-  if (type.isLiteral()) {
+  if (isTypeLiteralType(type)) {
     return { value: getValueOfLiteralType(type) };
   }
 
@@ -261,6 +262,7 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowConstantLoopConditions: 'never',
@@ -348,7 +350,10 @@ export default createRule<Options, MessageId>({
           part =>
             isTypeAnyType(part) ||
             isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+            isTypeFlagSet(
+              part,
+              ts.TypeFlags.TypeVariable | ts.TypeFlags.Conditional,
+            ),
         );
     }
 
@@ -509,7 +514,8 @@ export default createRule<Options, MessageId>({
           ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable,
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional,
         )
       ) {
         return;
@@ -604,7 +610,8 @@ export default createRule<Options, MessageId>({
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable;
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional;
 
           // Allow loose comparison to nullish values.
           if (operator === '==' || operator === '!=') {
