@@ -37,6 +37,11 @@ foo.bar == null ? undefined : foo.qux;
 declare const foo: { bar: number } | null;
 foo == null ? undefined : foo.bar + 1;
     `,
+    `
+declare const foo: { bar: number } | null;
+declare const other: { bar: number } | null;
+foo == other ? undefined : foo.bar;
+    `,
   ],
   invalid: [
     {
@@ -239,6 +244,26 @@ foo == null ? undefined : foo.bar?.baz;
       output: `
 declare const foo: { bar?: { baz: number } } | null;
 foo?.bar?.baz;
+      `,
+    },
+    {
+      code: `
+declare const foo: { bar: number } | null;
+foo == null ? undefined : foo?.bar;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+          suggestions: null,
+        },
+      ],
+      output: `
+declare const foo: { bar: number } | null;
+foo?.bar;
       `,
     },
     {
