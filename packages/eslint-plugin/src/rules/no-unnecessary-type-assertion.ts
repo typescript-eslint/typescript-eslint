@@ -770,11 +770,12 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    const EVOLVING_ARRAY_METHODS = new Set(['push', 'unshift']);
+
     /**
      * `const arr = [];` declares an evolving array: its element type is inferred
      * from what is pushed into it. At the call site the checker reports `any[]`,
      * so an assertion on the pushed value is what determines the element type.
-     * @see https://github.com/typescript-eslint/typescript-eslint/issues/12268
      */
     function isArgumentToEvolvingArrayMethod(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -782,8 +783,10 @@ export default createRule<Options, MessageIds>({
       const { parent } = node;
       if (
         parent.type !== AST_NODE_TYPES.CallExpression ||
-        !parent.arguments.includes(node) ||
         parent.callee.type !== AST_NODE_TYPES.MemberExpression ||
+        parent.callee.computed ||
+        parent.callee.property.type !== AST_NODE_TYPES.Identifier ||
+        !EVOLVING_ARRAY_METHODS.has(parent.callee.property.name) ||
         parent.callee.object.type !== AST_NODE_TYPES.Identifier
       ) {
         return false;
@@ -798,9 +801,17 @@ export default createRule<Options, MessageIds>({
       }
       const [elementType] = checker.getTypeArguments(declaredType);
       // evolving arrays use an internal `any` that is not the global one
+      if (
+        !isTypeFlagSet(elementType, ts.TypeFlags.Any) ||
+        elementType === checker.getAnyType()
+      ) {
+        return false;
+      }
+      // the array evolves to the widened type of the pushed value, so the
+      // assertion is only needed when it changes that type
       return (
-        isTypeFlagSet(elementType, ts.TypeFlags.Any) &&
-        elementType !== checker.getAnyType()
+        checker.getBaseTypeOfLiteralType(getUncastType(node)) !==
+        services.getTypeAtLocation(node)
       );
     }
 

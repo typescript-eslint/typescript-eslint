@@ -24,7 +24,13 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12268
+    `
+function foo() {
+  const arr = [];
+  arr.unshift({ x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
     `
 function foo() {
   const arr = [];
@@ -1102,6 +1108,58 @@ const other = value as number;
   ],
 
   invalid: [
+    {
+      code: `
+function foo() {
+  const arr = [];
+  arr.push(1 as number);
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  arr.includes(1 as number);
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  arr.includes(1);
+  return arr;
+}
+      `,
+    },
     {
       code: `
 function foo() {
