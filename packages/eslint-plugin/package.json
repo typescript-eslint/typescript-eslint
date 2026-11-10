@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.72.0",
+  "version": "8.72.2",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -89,7 +89,7 @@
     "title-case": "^4.3.2",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.2.0",
     "vitest": "catalog:"
   },
   "peerDependencies": {
