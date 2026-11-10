@@ -1100,9 +1100,184 @@ enum Color {
 declare const value: Color | 5;
 const other = value as number;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12270
+    `
+type DocUntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type DocUpdate = DocUntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+type DocUpdateAction = {
+  Document?: {
+    action?: 'update';
+  };
+};
+
+declare const orgDoc: DocUpdate;
+declare const diff: DocUpdate;
+const diffWithAction = diff as DocUpdateAction & DocUpdate;
+diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
+    `,
+    `
+type T1 = {
+  Document?: {
+    className: string;
+  };
+};
+type T2 = {
+  Document?: {
+    className: string;
+    action?: 'update';
+  };
+};
+
+declare const t1: T1;
+const t2 = t1 as T2;
+    `,
+    `
+type CompletionEntryData = {
+  name: string;
+};
+
+declare const entry: { data: CompletionEntryData | undefined };
+const data = entry.data as
+  (CompletionEntryData & { extra?: string }) | undefined;
+data!.extra = 'value';
+    `,
+    `
+type Nested = {
+  a?: {
+    b?: {
+      c?: string;
+    };
+  };
+};
+type Other = {
+  a?: {
+    b?: {
+      d?: string;
+    };
+  };
+};
+
+declare const value: Nested;
+const result = value as Other & Nested;
+result.a!.b!.d = 'value';
+    `,
   ],
 
   invalid: [
+    {
+      code: `
+type DocUntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type DocUpdate = DocUntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+
+declare const diff: DocUpdate;
+const same = diff as DocUpdate;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 31,
+          endLine: 15,
+          line: 15,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type DocUntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type DocUpdate = DocUntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+
+declare const diff: DocUpdate;
+const same = diff;
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12270
+      code: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff as SameUpdate;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 32,
+          endLine: 24,
+          line: 24,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff;
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
