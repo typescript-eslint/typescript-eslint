@@ -11,6 +11,11 @@ const vitestConfig = mergeConfig(
     root: import.meta.dirname,
 
     test: {
+      benchmark: {
+        // Vitest warns that benchmarking source files adds overhead.
+        suppressExportGetterWarnings: true,
+      },
+
       dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,

@@ -40,7 +40,8 @@ class C {
   }
 }
     `,
-    `
+    {
+      code: `
 class C {
   private accessor accessorMember = 42;
 
@@ -48,7 +49,10 @@ class C {
     return this.accessorMember;
   }
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class C {
   private static staticMember = 42;
@@ -594,6 +598,8 @@ class C {
   private accessor accessorMember = 42;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 20,

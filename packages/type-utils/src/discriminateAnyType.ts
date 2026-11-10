@@ -2,6 +2,7 @@ import type * as ts from 'typescript';
 
 import * as tsutils from 'ts-api-utils';
 
+import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 import { isTypeAnyType, isTypeAnyArrayType } from './predicates';
 
 export enum AnyType {
@@ -41,6 +42,14 @@ function discriminateAnyTypeWorker(
     return AnyType.AnyArray;
   }
   for (const part of tsutils.typeConstituents(type)) {
+    // A generic `Awaited<T>` is already awaited, and calling `getAwaitedType` on it crashes TS < 5.0
+    if (
+      part.aliasSymbol?.name === 'Awaited' &&
+      isSymbolFromDefaultLibrary(program, part.aliasSymbol)
+    ) {
+      continue;
+    }
+
     if (tsutils.isThenableType(checker, tsNode, part)) {
       const awaitedType = checker.getAwaitedType(part);
       if (awaitedType) {

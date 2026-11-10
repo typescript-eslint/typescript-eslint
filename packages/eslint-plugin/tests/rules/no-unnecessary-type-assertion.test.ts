@@ -37,6 +37,26 @@ declare const value: object;
 value as unknown as typeof recursiveMethod;
     `,
     `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const value: object;
+
+value as unknown as RecursiveMethod & { extra: true };
+    `,
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const recursiveMethod: RecursiveMethod;
+
+recursiveMethod as RecursiveMethod & {};
+    `,
+    `
 function castToSubtype<T extends string>(value: string): T {
   return value as T;
 }
@@ -679,7 +699,8 @@ type Tuple = [string | undefined, number];
 const tuple: Tuple = ['hello', 42];
 const [first, second] = tuple as [string, number];
     `,
-    `
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -688,8 +709,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const obj = { value: narrow as Wide } satisfies Record<string, Wide>;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -698,8 +723,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const value = narrow as Wide satisfies Wide;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -709,7 +738,10 @@ interface Narrow {
 declare const narrow: Narrow;
 declare function identity<T>(x: T): T;
 const result = identity({ value: narrow as Wide }) satisfies { value: Wide };
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 declare const x: string | number;
 const result: { tag: string; value: string | number } | { value: number } = {
@@ -951,6 +983,106 @@ enum E {
   A = 1,
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+values[+valueStr as Color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+const color = +valueStr as Color;
+values[color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const color = <Color>value;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const value = color as number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const color = value as Color;
+    `,
+    `
+enum Direction {
+  Up = 1,
+  Down,
+}
+
+declare const value: number | undefined;
+const direction = value as Direction | undefined;
+    `,
+    `
+enum Computed {
+  Length = 'abc'.length,
+}
+
+declare const value: number;
+const computed = value as Computed;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as Color | number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | 5;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as number;
     `,
   ],
 
@@ -1966,6 +2098,130 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color as Color;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 29,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
       `,
     },
     {

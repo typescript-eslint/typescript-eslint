@@ -41,7 +41,8 @@ function foo<T extends boolean>(a: T) {
       // this test is to ensure the rule doesn't crash with recursive template literal
       // types that cause isTypeAssignableTo to exceed the call stack
       // https://github.com/typescript-eslint/typescript-eslint/issues/11824
-      `
+      {
+        code: `
 type A<T extends string> = T extends \`\${infer F}\${infer R}\`
   ? \`\${F}b\${A<R>}\`
   : '';
@@ -53,7 +54,10 @@ type B<T extends string> = T extends \`\${infer F}\${infer R}\`
 function foo<T extends string>(source: A<T>) {
   source as B<T>;
 }
-      `,
+        `,
+        // TS >= 5.5 crashes on this assignability check, older versions work fine
+        dependencyConstraints: { typescript: '5.5' },
+      },
     ],
     invalid: [
       {
@@ -79,6 +83,8 @@ a as string;
 declare const a: string | number;
 a satisfies string as string;
         `,
+        // `satisfies` requires TS 4.9
+        dependencyConstraints: { typescript: '4.9' },
         errors: [
           {
             column: 1,
@@ -495,10 +501,14 @@ a as { hello: unknown };
 declare const a: { hello: string };
 a as { hello?: string };
       `,
-      `
+      {
+        code: `
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello?: string };
-      `,
+        `,
+        // `satisfies` requires TS 4.9
+        dependencyConstraints: { typescript: '4.9' },
+      },
     ],
     invalid: [
       {
@@ -526,6 +536,8 @@ var foo = {} as {
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello: string; world: string };
         `,
+        // `satisfies` requires TS 4.9
+        dependencyConstraints: { typescript: '4.9' },
         errors: [
           {
             column: 1,

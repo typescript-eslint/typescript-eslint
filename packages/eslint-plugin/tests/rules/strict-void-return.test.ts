@@ -4007,6 +4007,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,
@@ -4037,6 +4039,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,
@@ -4067,6 +4071,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,

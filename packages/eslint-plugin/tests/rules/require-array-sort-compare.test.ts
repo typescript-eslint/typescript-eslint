@@ -185,8 +185,115 @@ async function lockRowsInDeterministicOrder<C extends keyof ExternalIdRow>(
       `,
       options: [{ ignoreStringArrays: true }],
     },
+    {
+      code: `
+function f(a: [string, string]) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f<T extends [string, string]>(a: T) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: readonly [string, ...string[]]) {
+  a.toSorted();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
   ],
   invalid: [
+    {
+      code: `
+function f(a: [number, number]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: [string, string]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+function f<T extends [string, number]>(a: T) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: readonly [string, ...number[]]) {
+  a.toSorted();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: number[] | [string, string]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+    },
     {
       code: `
 function f(a: Array<any>) {

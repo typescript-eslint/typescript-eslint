@@ -3,8 +3,9 @@ import * as path from 'node:path';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { readonlynessOptionsDefaults } from '../../src/util';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
@@ -207,6 +208,81 @@ function foo(arg: Foo) {}
           treatMethodsAsReadonly: true,
         },
       ],
+    },
+    {
+      code: `
+var Factory = {};
+Factory.method = function () {};
+/** @param {typeof Factory} arg */
+function foo(arg) {}
+      `,
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+var Factory = {};
+Factory.method = () => {};
+/** @param {typeof Factory} arg */
+function foo(arg) {}
+      `,
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+var Factory = {};
+Factory.method = Factory.method || function () {};
+/** @param {typeof Factory} arg */
+function foo(arg) {}
+      `,
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+var Factory = {};
+Factory.method = Factory.method ?? function () {};
+/** @param {typeof Factory} arg */
+function foo(arg) {}
+      `,
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+function Factory() {}
+Factory.prototype.method = function () {};
+/** @param {Factory} arg */
+function foo(arg) {}
+      `,
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
     },
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
@@ -765,6 +841,102 @@ function foo(arg: {
           messageId: 'shouldBeReadonly',
         },
       ],
+    },
+    {
+      code: `
+var other;
+var Factory = {};
+Factory.method = other || function () {};
+/** @param {typeof Factory} arg */
+function foo(arg) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+function Factory() {
+  this.method = function () {};
+}
+/** @param {Factory} arg */
+function foo(arg) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+exports.method = function () {};
+/** @param {typeof exports} arg */
+function foo(arg) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
+    },
+    {
+      code: `
+module.exports.method = function () {};
+/** @param {typeof module.exports} arg */
+function foo(arg) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      filename: 'file.js',
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'javascript'),
+        },
+      },
+      options: [{ treatMethodsAsReadonly: true }],
     },
     // object index signatures
     {

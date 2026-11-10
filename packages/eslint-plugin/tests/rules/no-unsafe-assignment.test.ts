@@ -34,11 +34,15 @@ class Foo {
   private a = 1;
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = 1;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
@@ -179,6 +183,8 @@ class Foo {
   accessor a = 1 as any;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

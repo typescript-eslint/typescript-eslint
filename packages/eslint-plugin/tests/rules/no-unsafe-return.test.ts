@@ -182,6 +182,30 @@ class Foo {
   }
 }
     `,
+    {
+      // `Awaited` copied from TypeScript's built-in (lib.es5.d.ts)
+      code: `
+type Awaited<T> = T extends null | undefined
+  ? T
+  : T extends object & { then(onfulfilled: infer F, ...args: infer _): any }
+    ? F extends (value: infer V, ...args: infer _) => any
+      ? Awaited<V>
+      : never
+    : T;
+
+class Foo {
+  public foo(x: Awaited<this>) {
+    return x;
+  }
+
+  protected then(resolve: () => void): void {
+    resolve();
+  }
+}
+
+export {};
+      `,
+    },
   ],
   invalid: [
     {
@@ -589,6 +613,55 @@ async function foo(): Promise<number> {
           endColumn: 16,
           endLine: 4,
           line: 4,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+type Awaited<T> = Promise<T>;
+declare const value: Awaited<any>;
+async function foo(): Promise<number> {
+  return value;
+}
+export {};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: '`Promise<any>`' },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      // `Awaited` copied from TypeScript's built-in (lib.es5.d.ts)
+      code: `
+type Awaited<T> = T extends null | undefined
+  ? T
+  : T extends object & { then(onfulfilled: infer F, ...args: infer _): any }
+    ? F extends (value: infer V, ...args: infer _) => any
+      ? Awaited<V>
+      : never
+    : T;
+
+declare const value: Awaited<Promise<Promise<any>>>;
+async function foo(): Promise<number> {
+  return value;
+}
+
+export {};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: '`any`' },
+          endColumn: 16,
+          endLine: 12,
+          line: 12,
           messageId: 'unsafeReturn',
         },
       ],

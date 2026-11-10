@@ -17,7 +17,11 @@ ruleTester.run('consistent-type-exports', rule, {
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
-    "export { value1 as '🍎' } from './consistent-type-exports';",
+    {
+      code: "export { value1 as '🍎' } from './consistent-type-exports';",
+      // Arbitrary module namespace identifier names require TS 5.6
+      dependencyConstraints: { typescript: '5.6' },
+    },
     "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
@@ -100,6 +104,8 @@ export { A };
     },
     {
       code: "export { Type1 as '🍎' } from './consistent-type-exports';",
+      // Arbitrary module namespace identifier names require TS 5.6
+      dependencyConstraints: { typescript: '5.6' },
       errors: [
         {
           column: 1,
@@ -519,6 +525,8 @@ export type * from './consistent-type-exports/type-only-exports';
       code: `
 export * from './consistent-type-exports/type-only-reexport';
       `,
+      // The re-exported fixture uses `export type *`, which requires TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 1,
@@ -536,6 +544,8 @@ export type * from './consistent-type-exports/type-only-reexport';
       code: `
 export * as foo from './consistent-type-exports/type-only-reexport';
       `,
+      // The re-exported fixture uses `export type *`, which requires TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 1,
