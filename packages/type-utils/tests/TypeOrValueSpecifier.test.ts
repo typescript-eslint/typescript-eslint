@@ -265,6 +265,14 @@ describe('TypeOrValueSpecifier', () => {
           path: `${ROOT_DIR}/tests/fixtures/file.ts`,
         },
       ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'file',
+          name: 'VersionlessType',
+          path: `${ROOT_DIR}/tests/fixtures/node_modules/versionless-package/index.d.ts`,
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching file specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -300,6 +308,12 @@ describe('TypeOrValueSpecifier', () => {
           name: ['Foo', 'Bar'],
           path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
         },
+      ],
+      // A path-less file specifier must not match types declared in
+      // `node_modules` (https://github.com/typescript-eslint/typescript-eslint/issues/6819).
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        { from: 'file', name: 'VersionlessType' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched file specifier: %s\n\t%s",

@@ -10,9 +10,16 @@ export function typeDeclaredInFile(
 ): boolean {
   if (relativePath == null) {
     const cwd = getCanonicalFileName(program.getCurrentDirectory());
-    return declarationFiles.some(declaration =>
-      getCanonicalFileName(declaration.fileName).startsWith(cwd),
-    );
+    return declarationFiles.some(declaration => {
+      const fileName = getCanonicalFileName(declaration.fileName);
+      return (
+        fileName.startsWith(cwd) &&
+        // A path-less specifier refers to files of the project being linted, so
+        // types declared in `node_modules` are never matched by it. An explicit
+        // `path` is still matched exactly, even if it points into `node_modules`.
+        !fileName.split(/[\\/]/).includes('node_modules')
+      );
+    });
   }
   const absolutePath = getCanonicalFileName(
     path.join(program.getCurrentDirectory(), relativePath),
