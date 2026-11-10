@@ -178,11 +178,12 @@ export default createRule<Options, MessageIds>({
               for (const comment of extraComments) {
                 // A line comment runs to the end of the line, so it needs a
                 // line break to keep the type arguments out of it
-                const commentText =
-                  comment.type === AST_TOKEN_TYPES.Line
-                    ? `${context.sourceCode.getText(comment)}\n`
-                    : context.sourceCode.getText(comment);
-                yield fixer.insertTextAfter(rhs.callee, commentText);
+                const suffix =
+                  comment.type === AST_TOKEN_TYPES.Line ? '\n' : '';
+                yield fixer.insertTextAfter(
+                  rhs.callee,
+                  context.sourceCode.getText(comment) + suffix,
+                );
               }
               yield fixer.insertTextAfter(
                 rhs.callee,
