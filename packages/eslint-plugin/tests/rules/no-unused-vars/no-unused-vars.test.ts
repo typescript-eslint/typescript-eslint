@@ -1,4 +1,5 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../../src/rules/no-unused-vars';
 import { collectVariables } from '../../../src/util';
@@ -15,9 +16,8 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  project: './tsconfig-withmeta.json',
-  projectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
+  projectService: true,
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'withmeta'),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars

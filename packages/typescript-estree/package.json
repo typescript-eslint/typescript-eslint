@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.72.1",
+  "version": "8.72.2",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -58,7 +58,7 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "debug": "^4.4.3",
-    "minimatch": "^10.2.2",
+    "minimatch": "^11.0.1",
     "semver": "^7.7.3",
     "tinyglobby": "^0.2.15",
     "ts-api-utils": "^2.5.0"
@@ -74,7 +74,13 @@
     "yaml": "catalog:"
   },
   "peerDependencies": {
+    "@typescript/native": "npm:typescript@>=7.1.0-dev.20261009.1 || >=7.1.0-beta <7.1.0-dev",
     "typescript": ">=4.8.4 <6.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@typescript/native": {
+      "optional": true
+    }
   },
   "funding": {
     "type": "opencollective",

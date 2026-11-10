@@ -623,9 +623,9 @@ const foo: A = B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -715,9 +715,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 9,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -739,9 +739,9 @@ type T = { b: B };
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B"' },
-              endColumn: 28,
+              endColumn: 14,
               endLine: 4,
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
@@ -762,9 +762,9 @@ type T = { c: C; d: D };
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"C" and "D"' },
-              endColumn: 31,
+              endColumn: 14,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -783,9 +783,9 @@ type T = B;
           `,
           errors: [
             {
-              column: 1,
+              column: 27,
               data: { typeImports: '"B"' },
-              endColumn: 42,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -807,17 +807,17 @@ type T = A | D;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 31,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"D"' },
-              endColumn: 32,
+              endColumn: 11,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -839,17 +839,17 @@ type T = B | E;
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B"' },
-              endColumn: 31,
+              endColumn: 14,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"E"' },
-              endColumn: 32,
+              endColumn: 14,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -871,17 +871,17 @@ type T = C | F;
           `,
           errors: [
             {
-              column: 1,
+              column: 16,
               data: { typeImports: '"C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 16,
               data: { typeImports: '"F"' },
-              endColumn: 32,
+              endColumn: 17,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -954,33 +954,33 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
           errors: [
             {
-              column: 1,
+              column: 18,
               data: { typeImports: '"Type1"' },
-              endColumn: 46,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type2"' },
-              endColumn: 48,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 18,
               data: { typeImports: '"Type3"' },
-              endColumn: 49,
+              endColumn: 23,
               endLine: 4,
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 65,
+              endColumn: 22,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -1435,9 +1435,9 @@ const a: Rest.A = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 17,
               data: { typeImports: '"Rest"' },
-              endColumn: 41,
+              endColumn: 26,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1457,9 +1457,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 41,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1503,9 +1503,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 53,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1526,9 +1526,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 66,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1563,6 +1563,39 @@ type T = A;
 const b = B;
           `,
         },
+        // Splitting multiple type-only imports reports the entire declaration.
+        {
+          code: noFormat`
+import {
+  A,
+  B,
+  C,
+} from 'foo';
+type T = A | C;
+B();
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"A" and "C"' },
+              endColumn: 14,
+              endLine: 6,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ prefer: 'type-imports' }],
+          output: `
+import type {
+  A,
+  C} from 'foo';
+import {
+  B
+} from 'foo';
+type T = A | C;
+B();
+          `,
+        },
         {
           code: `
 import { A, B, type C } from 'foo';
@@ -1571,9 +1604,9 @@ const b = B;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 36,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1622,9 +1655,9 @@ B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1648,9 +1681,9 @@ B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1743,9 +1776,9 @@ A();
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B" and "C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1822,9 +1855,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 24,
               data: { typeImports: '"A"' },
-              endColumn: 42,
+              endColumn: 25,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1845,9 +1878,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 27,
               data: { typeImports: '"A"' },
-              endColumn: 42,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1902,9 +1935,9 @@ let baz: D;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 36,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -2205,9 +2238,9 @@ function test(foo: Foo) {}
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"Foo"' },
-              endColumn: 32,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -2228,9 +2261,9 @@ function test(foo: Foo) {}
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"Foo"' },
-              endColumn: 32,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',

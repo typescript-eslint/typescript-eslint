@@ -121,39 +121,43 @@ describe('semanticInfo', async () => {
     );
   });
 
-  it(`should resolve absolute and relative tsconfig paths the same`, async () => {
-    const filename = testFiles[0];
-    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
-      encoding: 'utf-8',
-    });
-    const options = createOptions(filename);
-    const optionsAbsolutePath = {
-      ...options,
-      project: `${__dirname}/../fixtures/semanticInfo/tsconfig.json`,
-    };
-    const optionsRelativePath = {
-      ...options,
-      project: `./tsconfig.json`,
-    };
-    const absolutePathResult = parseAndGenerateServices(
-      code,
-      optionsAbsolutePath,
-    );
-    const relativePathResult = parseAndGenerateServices(
-      code,
-      optionsRelativePath,
-    );
+  // tsgo ignores `project` and has no getResolvedProjectReferences.
+  it.skipIf(process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo')(
+    `should resolve absolute and relative tsconfig paths the same`,
+    async () => {
+      const filename = testFiles[0];
+      const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+        encoding: 'utf-8',
+      });
+      const options = createOptions(filename);
+      const optionsAbsolutePath = {
+        ...options,
+        project: `${__dirname}/../fixtures/semanticInfo/tsconfig.json`,
+      };
+      const optionsRelativePath = {
+        ...options,
+        project: `./tsconfig.json`,
+      };
+      const absolutePathResult = parseAndGenerateServices(
+        code,
+        optionsAbsolutePath,
+      );
+      const relativePathResult = parseAndGenerateServices(
+        code,
+        optionsRelativePath,
+      );
 
-    assert.isNotNull(absolutePathResult.services.program);
+      assert.isNotNull(absolutePathResult.services.program);
 
-    assert.isNotNull(relativePathResult.services.program);
+      assert.isNotNull(relativePathResult.services.program);
 
-    expect(
-      absolutePathResult.services.program.getResolvedProjectReferences(),
-    ).toStrictEqual(
-      relativePathResult.services.program.getResolvedProjectReferences(),
-    );
-  });
+      expect(
+        absolutePathResult.services.program.getResolvedProjectReferences(),
+      ).toStrictEqual(
+        relativePathResult.services.program.getResolvedProjectReferences(),
+      );
+    },
+  );
 
   // case-specific tests
   it.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(

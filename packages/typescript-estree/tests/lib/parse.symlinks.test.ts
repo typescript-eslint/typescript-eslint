@@ -196,17 +196,21 @@ describe('symlinked directories', () => {
     expect(createdNewFile).toBe(true);
   });
 
-  it('returns a program when the project service is enabled and the file is only in the project under a symlinked path', async () => {
-    const tmpDir = await createProjectWithSymlinkedDirectory();
+  // tsgo keeps the file under its symlinked path, so its real path isn't found.
+  it.skipIf(process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo')(
+    'returns a program when the project service is enabled and the file is only in the project under a symlinked path',
+    async () => {
+      const tmpDir = await createProjectWithSymlinkedDirectory();
 
-    const result = parseAndGenerateServices(CODE, {
-      filePath: path.join(tmpDir, 'libs', 'lib', 'src', 'index.ts'),
-      projectService: true,
-      tsconfigRootDir: tmpDir,
-    });
+      const result = parseAndGenerateServices(CODE, {
+        filePath: path.join(tmpDir, 'libs', 'lib', 'src', 'index.ts'),
+        projectService: true,
+        tsconfigRootDir: tmpDir,
+      });
 
-    expect(result.services.program).toBeDefined();
-  });
+      expect(result.services.program).toBeDefined();
+    },
+  );
 
   it('returns a program when project is true and the file is only in the project under a symlinked path', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
