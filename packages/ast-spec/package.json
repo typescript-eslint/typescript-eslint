@@ -47,7 +47,7 @@
     "@babel/core": "^8.1.0",
     "@babel/eslint-parser": "^8.0.1",
     "@babel/parser": "^8.1.0",
-    "@microsoft/api-extractor": "^7.59.0",
+    "@microsoft/api-extractor": "^7.60.1",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
