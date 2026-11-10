@@ -262,6 +262,39 @@ thing?.toString();
 </TabItem>
 </Tabs>
 
+### `ignoreIfStatements`
+
+{/* insert option description */}
+
+When this option is `false`, the rule also reports `if` statements without an `else` whose test and single body expression together form a chain, the same way it reports `foo && foo.bar()`.
+
+Examples of code for this rule with `{ ignoreIfStatements: false }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare const foo: { bar: () => void } | undefined;
+
+if (foo) {
+  foo.bar();
+}
+
+if (foo) foo.bar();
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare const foo: { bar: () => void } | undefined;
+
+foo?.bar();
+```
+
+</TabItem>
+</Tabs>
+
 ### `requireNullish`
 
 {/* insert option description */}

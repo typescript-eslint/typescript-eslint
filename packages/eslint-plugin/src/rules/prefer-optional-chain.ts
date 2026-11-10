@@ -19,6 +19,7 @@ import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import {
   gatherLogicalOperands,
+  NullishComparisonType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 
@@ -82,6 +83,11 @@ export default createRule<
             description:
               'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore `if` statements whose body is a single expression that could be an optional chain.',
+          },
           requireNullish: {
             type: 'boolean',
             description:
@@ -101,6 +107,7 @@ export default createRule<
       checkNumber: true,
       checkString: true,
       checkUnknown: true,
+      ignoreIfStatements: true,
       requireNullish: false,
     },
   ],
@@ -110,6 +117,55 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
+      // specific handling for `if (foo) foo.bar()` / `if (foo) { foo.bar(); }`
+      IfStatement(node): void {
+        if (options.ignoreIfStatements || node.alternate) {
+          return;
+        }
+        const bodyStatement =
+          node.consequent.type === AST_NODE_TYPES.BlockStatement
+            ? node.consequent.body.length === 1
+              ? node.consequent.body[0]
+              : undefined
+            : node.consequent;
+        if (
+          bodyStatement?.type !== AST_NODE_TYPES.ExpressionStatement ||
+          (node.test.type === AST_NODE_TYPES.LogicalExpression &&
+            node.test.operator !== '&&')
+        ) {
+          return;
+        }
+
+        const { newlySeenLogicals, operands } = gatherLogicalOperands(
+          node.test,
+          parserServices,
+          context.sourceCode,
+          options,
+          true,
+        );
+        const chain: ValidOperand[] = [];
+        for (const operand of operands) {
+          if (operand.type !== OperandValidity.Valid) {
+            return;
+          }
+          chain.push(operand);
+        }
+        chain.push({
+          node: bodyStatement.expression,
+          type: OperandValidity.Valid,
+          comparedName: bodyStatement.expression,
+          comparisonType: NullishComparisonType.Boolean,
+          isYoda: false,
+        });
+
+        if (analyzeChain(context, parserServices, options, node, '&&', chain)) {
+          // the test's own chain is part of this report
+          for (const logical of newlySeenLogicals) {
+            seenLogicals.add(logical);
+          }
+        }
+      },
+
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
