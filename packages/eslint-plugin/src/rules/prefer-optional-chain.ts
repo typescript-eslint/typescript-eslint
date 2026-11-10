@@ -14,6 +14,8 @@ import {
   getOperatorPrecedence,
   getParserServices,
   isUndefinedIdentifier,
+  nullThrows,
+  NullThrowsReasons,
   OperatorPrecedence,
 } from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
@@ -63,19 +65,28 @@ function findLinkOnTarget(
 function getLinkStartToken(
   sourceCode: SourceCode,
   link: TSESTree.CallExpression | TSESTree.MemberExpression,
-): TSESTree.Token | null {
+): TSESTree.Token {
   if (link.type === AST_NODE_TYPES.MemberExpression) {
     const punctuator = link.computed ? '[' : '.';
-    return sourceCode.getTokenAfter(link.object, {
-      filter: token => token.value === punctuator,
-    });
+    return nullThrows(
+      sourceCode.getTokenAfter(link.object, {
+        filter: token => token.value === punctuator,
+      }),
+      NullThrowsReasons.MissingToken(punctuator, 'member expression'),
+    );
   }
   if (link.typeArguments) {
-    return sourceCode.getFirstToken(link.typeArguments);
+    return nullThrows(
+      sourceCode.getFirstToken(link.typeArguments),
+      NullThrowsReasons.MissingToken('<', 'type arguments'),
+    );
   }
-  return sourceCode.getTokenAfter(link.callee, {
-    filter: token => token.value === '(',
-  });
+  return nullThrows(
+    sourceCode.getTokenAfter(link.callee, {
+      filter: token => token.value === '(',
+    }),
+    NullThrowsReasons.MissingToken('(', 'call expression'),
+  );
 }
 
 export default createRule<
@@ -221,10 +232,6 @@ export default createRule<
             }
 
             const linkStart = getLinkStartToken(sourceCode, link);
-            if (!linkStart) {
-              return null;
-            }
-
             const start = linkStart.range[0] - chain.range[0];
             const end = linkStart.range[1] - chain.range[0];
             const optionalChainText =
