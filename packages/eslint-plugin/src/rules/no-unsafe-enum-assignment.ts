@@ -440,7 +440,11 @@ export default createRule<[], MessageIds>({
             ?.declarations?.flatMap(declaration =>
               getMappedKeyConstraintTypes(checker, declaration),
             ) ?? [];
-        if (receiverTypes.length === 0) {
+        if (
+          !receiverTypes.some(
+            receiverType => getEnumTypes(checker, receiverType).length > 0,
+          )
+        ) {
           return;
         }
 
