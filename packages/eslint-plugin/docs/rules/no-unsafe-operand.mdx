@@ -1,0 +1,99 @@
+---
+description: 'Disallow arithmetic, bitwise, and relational operations on a value with type `any`.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-operand** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
+
+Despite your best intentions, the `any` type can sometimes leak into your codebase.
+TypeScript allows an `any`-typed value as an operand of arithmetic, bitwise, and relational operators.
+The result is typed as `number`, `bigint`, or `boolean`, so the other `no-unsafe-*` rules do not report it.
+At runtime, the result is likely `NaN` or another unexpected value if the operand is not a number.
+Mixing a `bigint` operand with a `number` in an arithmetic or bitwise operation throws a `TypeError`.
+
+This rule reports operands that are typed as `any` in the following operators:
+
+- Arithmetic: `-`, `*`, `/`, `%`, `**`, unary `-`, `++`, and `--`
+- Bitwise: `&`, `|`, `^`, `<<`, `>>`, `>>>`, and unary `~`
+- Compound assignment: `-=`, `*=`, `/=`, `%=`, `**=`, `&=`, `|=`, `^=`, `<<=`, `>>=`, and `>>>=`
+- Relational: `<`, `<=`, `>`, and `>=`
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare let price: any;
+declare let total: number;
+declare const input: unknown;
+
+price * 2;
+price & 1;
+-price;
+price++;
+total -= price;
+price < 100;
+
+const doubled: number = price * 2;
+
+if (Array.isArray(input)) {
+  // `Array.isArray` narrows `input` to `any[]`
+  input.map(item => item * 2);
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare let price: any;
+declare let total: number;
+declare const input: unknown;
+
+total * 2;
+total & 1;
+-total;
+total++;
+total -= Number(price);
+total < 100;
+
+const doubled: number = typeof price === 'number' ? price * 2 : 0;
+
+if (Array.isArray(input)) {
+  input.map((item: unknown) => (typeof item === 'number' ? item * 2 : 0));
+}
+```
+
+</TabItem>
+</Tabs>
+
+The `+` and `+=` operators also concatenate strings, so this rule does not check them.
+Use [`restrict-plus-operands`](./restrict-plus-operands.mdx) with `allowAny: false` to report `any`-typed operands there.
+
+The unary `+` operator is an explicit conversion to a number, so this rule allows it on an `any`-typed value.
+
+## When Not To Use It
+
+If your codebase uses many `any`-typed values in calculations or comparisons, such as values from parsed JSON, it may be difficult to enable this rule.
+It may be easier to skip the `no-unsafe-*` rules until those values have types.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for specific situations instead of completely disabling this rule.
+
+## Related To
+
+- [Avoiding `any`s with Linting and TypeScript](/blog/avoiding-anys)
+- [`no-explicit-any`](./no-explicit-any.mdx)
+- [`no-unsafe-argument`](./no-unsafe-argument.mdx)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.mdx)
+- [`no-unsafe-call`](./no-unsafe-call.mdx)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.mdx)
+- [`no-unsafe-return`](./no-unsafe-return.mdx)
+- [`no-unsafe-unary-minus`](./no-unsafe-unary-minus.mdx)
+- [`restrict-plus-operands`](./restrict-plus-operands.mdx)
