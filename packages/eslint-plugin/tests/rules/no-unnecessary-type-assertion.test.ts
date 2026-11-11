@@ -45,6 +45,13 @@ function foo() {
   return arr;
 }
     `,
+    `
+function foo() {
+  const arr = [];
+  arr[0] = { x: 1 } as { x: number; y: number };
+  return arr;
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(

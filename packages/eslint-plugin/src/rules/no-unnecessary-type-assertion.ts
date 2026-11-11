@@ -781,17 +781,28 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
       const { parent } = node;
+      let array: TSESTree.Expression | null = null;
       if (
-        parent.type !== AST_NODE_TYPES.CallExpression ||
-        parent.callee.type !== AST_NODE_TYPES.MemberExpression ||
-        parent.callee.computed ||
-        parent.callee.property.type !== AST_NODE_TYPES.Identifier ||
-        !EVOLVING_ARRAY_METHODS.has(parent.callee.property.name) ||
-        parent.callee.object.type !== AST_NODE_TYPES.Identifier
+        parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.callee.type === AST_NODE_TYPES.MemberExpression &&
+        !parent.callee.computed &&
+        parent.callee.property.type === AST_NODE_TYPES.Identifier &&
+        EVOLVING_ARRAY_METHODS.has(parent.callee.property.name)
       ) {
+        array = parent.callee.object;
+      } else if (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.operator === '=' &&
+        parent.right === node &&
+        parent.left.type === AST_NODE_TYPES.MemberExpression &&
+        parent.left.computed
+      ) {
+        array = parent.left.object;
+      }
+      if (array?.type !== AST_NODE_TYPES.Identifier) {
         return false;
       }
-      const symbol = services.getSymbolAtLocation(parent.callee.object);
+      const symbol = services.getSymbolAtLocation(array);
       if (!symbol) {
         return false;
       }
