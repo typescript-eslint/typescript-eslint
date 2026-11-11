@@ -1,40 +1,8 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
-import { ESLint } from 'eslint';
-import useAtYourOwnRisk from 'eslint/use-at-your-own-risk';
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import type { ClassicConfig } from '../Config';
 import type { Linter } from '../Linter';
 import type * as Shared from './ESLintShared';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare class LegacyESLintBase extends Shared.ESLintBase<
-  ClassicConfig.Config,
-  LegacyESLint.ESLintOptions
-> {
-  static readonly configType: 'eslintrc';
-}
-
-function throwMissingLegacyESLintError(): never {
-  throw new Error(
-    'LegacyESLint is not available with the current version of ESLint.',
-  );
-}
-
-/* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
-class MissingLegacyESLint {
-  static readonly configType = 'eslintrc';
-  static readonly version = (ESLint as typeof LegacyESLintBase).version;
-  constructor() {
-    throwMissingLegacyESLintError();
-  }
-  static getErrorResults(): Shared.LintResult {
-    throwMissingLegacyESLintError();
-  }
-  static outputFixes(): Promise<void> {
-    throwMissingLegacyESLintError();
-  }
-}
 
 /**
  * The ESLint class is the primary class to use in Node.js applications.
@@ -42,9 +10,13 @@ class MissingLegacyESLint {
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class LegacyESLint extends ((useAtYourOwnRisk.LegacyESLint ??
-  MissingLegacyESLint) as typeof LegacyESLintBase) {}
-export namespace LegacyESLint {
+declare class LegacyESLint extends Shared.ESLintBase<
+  ClassicConfig.Config,
+  LegacyESLint.ESLintOptions
+> {
+  static readonly configType: 'eslintrc';
+}
+declare namespace LegacyESLint {
   export interface ESLintOptions extends Shared.ESLintOptions<ClassicConfig.Config> {
     /**
      * If you pass directory paths to the eslint.lintFiles() method, ESLint checks the files in those directories that
@@ -100,3 +72,5 @@ export namespace LegacyESLint {
   export type LintTextOptions = Shared.LintTextOptions;
   export type SuppressedLintMessage = Shared.SuppressedLintMessage;
 }
+
+export type { LegacyESLint };
