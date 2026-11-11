@@ -1,8 +1,9 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/strict-void-return';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-void-return', rule, {
@@ -4134,6 +4135,114 @@ async function* cb() {
           messageId: 'nonVoidFunc',
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13078
+    {
+      code: `
+type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+type Group = \`\${'a' | 'b' | 'c' | 'd'}\${Digit}\`;
+type Topic = \`\${Group}.\${'x' | 'y' | 'z'}\`;
+type Payloads = {
+  [T in Topic]: { readonly topic: T } & Readonly<Record<\`p_\${T}\`, string>>;
+};
+type Wildcard = '*' | \`\${Group}.*\`;
+type Selector = Topic | Wildcard | \`!\${Exclude<Topic | Wildcard, '*'>}\`;
+type Matches<S extends string> = S extends '*'
+  ? Topic
+  : S extends \`!\${infer X}\`
+    ? Exclude<Topic, Matches<X>>
+    : S extends \`\${infer G}.*\`
+      ? Extract<Topic, \`\${G}.\${string}\`>
+      : Extract<Topic, S>;
+type UnionToIntersection<U> = (
+  U extends unknown ? (u: U) => void : never
+) extends (i: infer I) => void
+  ? I
+  : never;
+type Next<T extends Topic> = UnionToIntersection<
+  { [K in T]: (payload: Payloads[K]) => Promise<void> }[T]
+>;
+type Handler<S extends Selector, T extends Topic = Matches<S>> = (
+  payload: Payloads[T],
+  next: Next<T>,
+) => void;
+type HandlerFor<S extends Selector> = S extends '*'
+  ? Handler<'*'>
+  : S extends Topic
+    ? Handler<S>
+    : Handler<S>;
+declare function subscribe<S extends Selector>(
+  selector: S,
+  handler: HandlerFor<S>,
+): void;
+
+subscribe('a0.x', async (payload, next) => {
+  await next(payload);
+});
+      `,
+      errors: [
+        {
+          column: 41,
+          endColumn: 43,
+          endLine: 39,
+          line: 39,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+type Group = \`\${'a' | 'b' | 'c' | 'd'}\${Digit}\`;
+type Topic = \`\${Group}.\${'x' | 'y' | 'z'}\`;
+type Payloads = {
+  [T in Topic]: { readonly topic: T } & Readonly<Record<\`p_\${T}\`, string>>;
+};
+type Wildcard = '*' | \`\${Group}.*\`;
+type Selector = Topic | Wildcard | \`!\${Exclude<Topic | Wildcard, '*'>}\`;
+type Matches<S extends string> = S extends '*'
+  ? Topic
+  : S extends \`!\${infer X}\`
+    ? Exclude<Topic, Matches<X>>
+    : S extends \`\${infer G}.*\`
+      ? Extract<Topic, \`\${G}.\${string}\`>
+      : Extract<Topic, S>;
+type UnionToIntersection<U> = (
+  U extends unknown ? (u: U) => void : never
+) extends (i: infer I) => void
+  ? I
+  : never;
+type Next<T extends Topic> = UnionToIntersection<
+  { [K in T]: (payload: Payloads[K]) => Promise<void> }[T]
+>;
+type Handler<S extends Selector, T extends Topic = Matches<S>> = (
+  payload: Payloads[T],
+  next: Next<T>,
+) => void;
+type HandlerFor<S extends Selector> = S extends '*'
+  ? Handler<'*'>
+  : S extends Topic
+    ? Handler<S>
+    : Handler<S>;
+declare function subscribe<S extends Selector>(
+  selector: S,
+  handler: HandlerFor<S>,
+): void;
+
+subscribe('a0.x',  (payload, next) => void (async () => {
+  await next(payload);
+})());
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.unstableTypeOrdering.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
   ],
 });
