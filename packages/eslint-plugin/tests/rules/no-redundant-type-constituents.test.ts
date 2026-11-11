@@ -159,6 +159,15 @@ type T = 'a' | 1 | 'b';
 type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    `
+type B = 'a' | 1;
+type T = B | string;
+    `,
+    `
+type Symbols = string[] | 'nope';
+type Primitives = string | null;
+type Combined = Symbols | Primitives;
+    `,
   ],
 
   invalid: [
@@ -446,6 +455,22 @@ type T = B | string;
         {
           column: 10,
           data: { literal: '"b"', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type B = 'a' | 'b';
+type T = B | string;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { literal: '"a" | "b"', primitive: 'string' },
           endColumn: 11,
           endLine: 3,
           line: 3,
