@@ -574,6 +574,29 @@ let foo: A.Foo;
           `,
         },
         {
+          code: `
+import * as A from 'foo';
+export class Foo<A> implements A.Bar {
+  baz: A;
+}
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 26,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type * as A from 'foo';
+export class Foo<A> implements A.Bar {
+  baz: A;
+}
+          `,
+        },
+        {
           // default and named
           code: `
 import A, { B } from 'foo';

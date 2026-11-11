@@ -12,6 +12,7 @@ import type { Scope } from './Scope';
 import type { TSModuleScope } from './TSModuleScope';
 
 import { assert } from '../assert';
+import { DefinitionType } from '../definition';
 import { createIdGenerator } from '../ID';
 import {
   Reference,
@@ -110,6 +111,18 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   } else {
     scopeManager.nodeToScope.set(scope.block, [scope]);
   }
+}
+
+function isTypeQualifiedNameVariable(variable: Variable): boolean {
+  return (
+    variable.defs.length === 0 ||
+    variable.defs.some(
+      def =>
+        def.type === DefinitionType.ImportBinding ||
+        def.type === DefinitionType.TSEnumName ||
+        def.type === DefinitionType.TSModuleName,
+    )
+  );
 }
 
 const generator = createIdGenerator();
@@ -231,6 +244,13 @@ export abstract class ScopeBase<
       }
 
       if (!this.isValidResolution(ref, variable)) {
+        return false;
+      }
+
+      if (
+        ref.isTypeQualifiedNameReference &&
+        !isTypeQualifiedNameVariable(variable)
+      ) {
         return false;
       }
 
@@ -406,6 +426,21 @@ export abstract class ScopeBase<
       null,
       false,
       ReferenceTypeFlag.Type,
+    );
+
+    this.references.push(ref);
+    this.leftToResolve?.push(ref);
+  }
+
+  public referenceTypeQualifiedName(node: TSESTree.Identifier): void {
+    const ref = new Reference(
+      node,
+      this as Scope,
+      ReferenceFlag.Read,
+      null,
+      null,
+      false,
+      ReferenceTypeFlag.Type | ReferenceTypeFlag.TypeQualifiedName,
     );
 
     this.references.push(ref);

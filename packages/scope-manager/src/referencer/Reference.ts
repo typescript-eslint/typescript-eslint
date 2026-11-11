@@ -22,6 +22,7 @@ const generator = createIdGenerator();
 export enum ReferenceTypeFlag {
   Value = 0x1,
   Type = 0x2,
+  TypeQualifiedName = 0x4,
 }
 
 /**
@@ -96,6 +97,10 @@ export class Reference {
 
     this.maybeImplicitGlobal = maybeImplicitGlobal;
     this.#referenceType = referenceType;
+  }
+
+  public get isTypeQualifiedNameReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.TypeQualifiedName) !== 0;
   }
 
   /**

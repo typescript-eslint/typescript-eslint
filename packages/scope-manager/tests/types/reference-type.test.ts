@@ -298,6 +298,54 @@ describe('referencing a type - positive', () => {
       referencingNode,
     );
   });
+
+  it('records a reference to an outer namespace when shadowed by a generic in a qualified type name', () => {
+    const { ast, scopeManager } = parseAndAnalyze(`
+      namespace T {
+        export type Foo<U = 1> = U;
+        export interface Bar<U = 1> {
+          prop: U;
+        }
+      }
+      type Alias<T> = T.Foo<T>;
+      class Class<T> implements T.Bar<T> {}
+    `);
+
+    const moduleDecls: TSESTree.Node[] = [];
+    const typeParams: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSModuleDeclaration](node) {
+            moduleDecls.push(node);
+          },
+          [AST_NODE_TYPES.TSTypeParameter](node) {
+            typeParams.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const namespaceVar = scopeManager.getDeclaredVariables(moduleDecls[0])[0];
+    expect(namespaceVar.references).toHaveLength(2);
+    expect(namespaceVar.references[0].isTypeQualifiedNameReference).toBe(true);
+    expect(namespaceVar.references[1].isTypeQualifiedNameReference).toBe(true);
+
+    const aliasGenericVar = scopeManager.getDeclaredVariables(typeParams[2])[0];
+    expect(aliasGenericVar.references).toHaveLength(1);
+    expect(aliasGenericVar.references[0].isTypeQualifiedNameReference).toBe(
+      false,
+    );
+
+    const classGenericVar = scopeManager.getDeclaredVariables(typeParams[3])[0];
+    expect(classGenericVar.references).toHaveLength(1);
+    expect(classGenericVar.references[0].isTypeQualifiedNameReference).toBe(
+      false,
+    );
+  });
 });
 
 describe('referencing a type - negative', () => {
