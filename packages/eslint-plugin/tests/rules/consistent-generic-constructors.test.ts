@@ -796,5 +796,94 @@ const a = new Float32Array<ArrayBufferLike>();
 export {};
       `,
     },
+    {
+      code: noFormat`
+const a: // comment
+  Foo<string> = new Foo();
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 26,
+          endLine: 3,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new Foo// comment
+<string>();
+      `,
+    },
+    {
+      code: `
+class Foo {
+  a? = new Foo<string>();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+class Foo {
+  a?: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+declare const c: unique symbol;
+class Foo {
+  [c]? = new Foo<string>();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+declare const c: unique symbol;
+class Foo {
+  [c]?: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor a? = new Foo<string>();
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+class Foo {
+  accessor a?: Foo<string> = new Foo();
+}
+      `,
+    },
   ],
 });
