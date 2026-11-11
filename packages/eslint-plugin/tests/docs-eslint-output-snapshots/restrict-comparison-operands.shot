@@ -1,0 +1,53 @@
+Incorrect
+
+interface Box {
+  value: number;
+}
+
+declare const first: Box;
+declare const second: Box;
+
+if (first < second) {
+    ~~~~~ Invalid operand for a '<' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `Box`.
+            ~~~~~~ Invalid operand for a '<' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `Box`.
+}
+
+if ({ a: 1 } >= { a: 2 }) {
+    ~~~~~~~~ Invalid operand for a '>=' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `{ a: number; }`.
+                ~~~~~~~~ Invalid operand for a '>=' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `{ a: number; }`.
+}
+
+const left = [1, 2];
+const right = [3, 4];
+if (left <= right) {
+    ~~~~ Invalid operand for a '<=' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `number[]`.
+            ~~~~~ Invalid operand for a '<=' operation. Operands must each be a primitive or an object that coerces to a primitive. Got `number[]`.
+}
+
+Correct
+
+interface Box {
+  value: number;
+}
+
+declare const first: Box;
+declare const second: Box;
+
+if (first.value < second.value) {
+}
+
+declare const start: Date;
+declare const end: Date;
+if (start < end) {
+}
+
+class Score {
+  constructor(private readonly points: number) {}
+
+  valueOf(): number {
+    return this.points;
+  }
+}
+
+if (new Score(10) > new Score(5)) {
+}
