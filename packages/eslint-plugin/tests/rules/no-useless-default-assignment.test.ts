@@ -367,6 +367,44 @@ const fn: Fn = (value = 'default') => {
   return value;
 };
     `,
+    `
+const {
+  nested: { a = 'default' },
+} = Math.random() > 0.5 ? { nested: { a: 'Hello' } } : { nested: {} };
+    `,
+    `
+const { nested: { a = 'default' } = {} } =
+  Math.random() > 0.5 ? { nested: { a: 'Hello' } } : {};
+    `,
+    `
+const {
+  nested: { a = 'default' },
+} = {
+  nested: Math.random() > 0.5 ? { a: 'Hello' } : {},
+};
+    `,
+    `
+const [{ b = 'default' }] = Math.random() > 0.5 ? [{ b: 'Hello' }] : [{}];
+    `,
+    `
+declare const otherTuple: [{ b?: string }];
+const [{ b = 'default' }] = otherTuple;
+const [{ b: b2 = 'default' }] =
+  Math.random() > 0.5 ? [{ b: 'Hello' }] : otherTuple;
+    `,
+    `
+const [{ b = 'default' }] = [Math.random() > 0.5 ? { b: 'Hello' } : {}];
+    `,
+    `
+function foo({ c = 'default' } = Math.random() > 0.5 ? { c: 'Hello' } : {}) {
+  return c;
+}
+    `,
+    `
+function foo({ c = 'default' } = Math.random() > 0.5 && { c: 'Hello' }) {
+  return c;
+}
+    `,
   ],
   invalid: [
     {
@@ -1049,6 +1087,94 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
               messageId: 'removeDefaultAssignment',
               output: `
 const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const {
+  nested: { a = 'default' },
+} =
+  Math.random() > 0.5 ? { nested: { a: 'Hello' } } : { nested: { a: 'World' } };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { type: 'property' },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const {
+  nested: { a },
+} =
+  Math.random() > 0.5 ? { nested: { a: 'Hello' } } : { nested: { a: 'World' } };
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const [{ b = 'default' }] =
+  Math.random() > 0.5 ? [{ b: 'Hello' }] : [{ b: 'World' }];
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { type: 'property' },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const [{ b }] =
+  Math.random() > 0.5 ? [{ b: 'Hello' }] : [{ b: 'World' }];
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function foo(
+  { c = 'default' } = Math.random() > 0.5 ? { c: 'Hello' } : { c: 'World' },
+) {
+  return c;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { type: 'property' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo(
+  { c } = Math.random() > 0.5 ? { c: 'Hello' } : { c: 'World' },
+) {
+  return c;
+}
       `,
             },
           ],
