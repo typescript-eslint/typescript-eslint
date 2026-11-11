@@ -235,6 +235,11 @@ declare const b: { label: string } & { valueOf(): number };
 a < b;
     `,
     `
+declare const a: { id: string; valueOf(): unknown } & { valueOf(): number };
+declare const b: { id: string; valueOf(): unknown } & { valueOf(): number };
+a < b;
+    `,
+    `
 declare const a: Date & { readonly tag: string };
 declare const b: Date & { readonly tag: string };
 a < b;
@@ -981,6 +986,30 @@ a < b;
           endColumn: 6,
           endLine: 4,
           line: 4,
+          messageId: 'invalidOperand',
+        },
+      ],
+    },
+    {
+      code: `
+interface UnknownValueOf {
+  id: string;
+  valueOf(): unknown;
+}
+interface ObjectValueOf {
+  valueOf(): object;
+}
+declare const a: UnknownValueOf & ObjectValueOf;
+declare const b: number;
+a < b;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { operator: '<', type: 'UnknownValueOf & ObjectValueOf' },
+          endColumn: 2,
+          endLine: 11,
+          line: 11,
           messageId: 'invalidOperand',
         },
       ],

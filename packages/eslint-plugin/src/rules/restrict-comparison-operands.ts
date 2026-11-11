@@ -130,6 +130,11 @@ export default createRule<Options, MessageIds>({
         if (tsutils.isTypeFlagSet(part, ts.TypeFlags.Any)) {
           return true;
         }
+        if (part.isIntersection()) {
+          return part.types.some(member =>
+            isCallableReturningPrimitive(member, matchSignature),
+          );
+        }
         const signatures = checker.getSignaturesOfType(
           part,
           ts.SignatureKind.Call,
