@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { RuleListener } from '@typescript-eslint/utils/eslint-utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -218,6 +219,21 @@ export default createRule<Options, MessageIds>({
           const [variable] = context.sourceCode.getDeclaredVariables(specifier);
           if (variable.references.length === 0) {
             unusedSpecifiers.push(specifier);
+          } else if (
+            variable.defs.some(
+              def =>
+                def.type === DefinitionType.FunctionName ||
+                def.type === DefinitionType.Variable,
+            )
+          ) {
+            // TypeScript only allows an import to share its name with a
+            // function or variable from the same scope if the import is a type,
+            // so every value usage of the name refers to the local declaration.
+            if (variable.references.some(ref => ref.isTypeReference)) {
+              typeSpecifiers.push(specifier);
+            } else {
+              unusedSpecifiers.push(specifier);
+            }
           } else {
             const onlyHasTypeReferences = variable.references.every(ref => {
               /**
