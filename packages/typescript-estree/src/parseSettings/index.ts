@@ -133,6 +133,11 @@ export interface MutableParseSettings {
   range: boolean;
 
   /**
+   * Whether the tsgo backend may run external code configured in the TSConfig, such as `contentMappers`.
+   */
+  runExternalCode: boolean;
+
+  /**
    * Whether this is part of a single run, rather than a long-running process.
    */
   singleRun: boolean;

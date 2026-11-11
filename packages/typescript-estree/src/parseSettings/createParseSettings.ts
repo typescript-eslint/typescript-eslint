@@ -164,6 +164,11 @@ export function createParseSettings(
             tsconfigRootDir,
           })
         : undefined,
+    runExternalCode:
+      backend === 'tsgo' &&
+      !!tsestreeOptions.projectService &&
+      typeof tsestreeOptions.projectService === 'object' &&
+      tsestreeOptions.projectService.EXPERIMENTAL_runExternalCode === true,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
       (tsestreeOptions.sourceType == null && extension === ts.Extension.Mjs) ||

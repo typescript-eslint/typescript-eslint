@@ -180,6 +180,7 @@ export function parseAndGenerateNativeServices<
 >(parseSettings: ParseSettings): ParseAndGenerateServicesResult<T> {
   const context = getNativeProjectService(
     parseSettings.tsconfigRootDir,
+    parseSettings.runExternalCode,
   ).openFile(parseSettings.filePath, parseSettings.codeFullText);
   currentAdapters = getAdapters(context);
   const { prefetch, prefetchedSourceFiles, program } = currentAdapters;
