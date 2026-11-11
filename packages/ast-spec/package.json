@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.72.1",
+  "version": "8.72.2",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -44,10 +44,10 @@
   },
   "devDependencies": {
     "@babel/code-frame": "^8.0.0",
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.1.0",
     "@babel/eslint-parser": "^8.0.1",
-    "@babel/parser": "^8.0.4",
-    "@microsoft/api-extractor": "^7.59.0",
+    "@babel/parser": "^8.1.0",
+    "@microsoft/api-extractor": "^7.60.1",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",

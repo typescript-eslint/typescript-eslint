@@ -1,22 +1,19 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithOnUncheckedIndexedAccess = {
-  project: './tsconfig.noUncheckedIndexedAccess.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
 };
 
 const optionsWithExactOptionalPropertyTypes = {
-  project: './tsconfig.exactOptionalPropertyTypes.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'exactOptionalPropertyTypes'),
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
@@ -52,6 +49,16 @@ function foo() {
   return arr;
 }
     `,
+    {
+      code: `
+declare const source: { a: number };
+const value = { ...source } as const;
+export const mutable = value as { a: number };
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -1011,6 +1018,15 @@ enum E {
   A = 1,
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
+    `
+interface Obj {
+  id: number;
+}
+type Optional<T> = { [K in keyof T]?: T[K] };
+type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
+declare const obj: ReadonlyOptional<Obj>;
+const obj2 = obj as Optional<Obj>;
     `,
     `
 enum Color {
