@@ -145,20 +145,30 @@ function isValidFalseBooleanCheckType(
   return primitiveAndObjectParts.every(t => isTypeFlagSet(t, allowedFlags));
 }
 
+/**
+ * @param node A logical expression, or any other expression to be treated as
+ * the only operand of an `&&` chain (such as the test of an `if` statement).
+ * @param isFollowedByOperand Whether the chain continues after `node`'s
+ * operands, such as an `if` test followed by its body. The last operand is
+ * then type-checked like the others.
+ */
 export function gatherLogicalOperands(
-  node: TSESTree.LogicalExpression,
+  node: TSESTree.Expression,
   parserServices: ParserServicesWithTypeInformation,
   sourceCode: Readonly<SourceCode>,
   options: PreferOptionalChainOptions,
+  isFollowedByOperand = false,
 ): {
   newlySeenLogicals: Set<TSESTree.LogicalExpression>;
   operands: Operand[];
 } {
   const result: Operand[] = [];
+  const operator =
+    node.type === AST_NODE_TYPES.LogicalExpression ? node.operator : '&&';
   const { newlySeenLogicals, operands } = flattenLogicalOperands(node);
 
   for (const operand of operands) {
-    const areMoreOperands = operand !== operands.at(-1);
+    const areMoreOperands = isFollowedByOperand || operand !== operands.at(-1);
     switch (operand.type) {
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
@@ -213,7 +223,7 @@ export function gatherLogicalOperands(
           continue;
         }
 
-        if (operand.operator.startsWith('!') !== (node.operator === '||')) {
+        if (operand.operator.startsWith('!') !== (operator === '||')) {
           switch (operand.operator) {
             case '!=':
             case '==':
@@ -322,7 +332,7 @@ export function gatherLogicalOperands(
           (!areMoreOperands ||
             isValidFalseBooleanCheckType(
               operand.argument,
-              node.operator === '||',
+              operator === '||',
               parserServices,
               options,
             ))
@@ -349,7 +359,7 @@ export function gatherLogicalOperands(
           !areMoreOperands ||
           isValidFalseBooleanCheckType(
             operand,
-            node.operator === '&&',
+            operator === '&&',
             parserServices,
             options,
           )
@@ -394,10 +404,14 @@ export function gatherLogicalOperands(
   Note that this function purposely does not inspect mixed logical expressions
   like `foo || foo.bar && foo.bar.baz` - separate selector
   */
-  function flattenLogicalOperands(node: TSESTree.LogicalExpression): {
+  function flattenLogicalOperands(node: TSESTree.Expression): {
     newlySeenLogicals: Set<TSESTree.LogicalExpression>;
     operands: TSESTree.Expression[];
   } {
+    if (node.type !== AST_NODE_TYPES.LogicalExpression) {
+      return { newlySeenLogicals: new Set(), operands: [node] };
+    }
+
     const operands: TSESTree.Expression[] = [];
     const newlySeenLogicals = new Set<TSESTree.LogicalExpression>([node]);
 

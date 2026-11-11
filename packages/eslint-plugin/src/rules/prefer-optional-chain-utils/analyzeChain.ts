@@ -6,6 +6,8 @@ import type {
   ReportDescriptor,
   ReportFixFunction,
   RuleContext,
+  RuleFix,
+  RuleFixer,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
 
@@ -24,7 +26,9 @@ import {
   getFixOrSuggest,
   getOperatorPrecedenceForNode,
   isClosingParenToken,
+  isOpeningBracketToken,
   isOpeningParenToken,
+  isSemicolonToken,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -375,6 +379,163 @@ function getReportRange(
   return [leftMost.range[0], rightMost.range[1]];
 }
 
+type LinkFix = (fixer: RuleFixer) => RuleFix[];
+
+/**
+ * Gets, for each link of a chain, the edits that make that link optional, or
+ * `null` when it already is or is the root of the chain. The links are in the
+ * same order as the parts produced by `flattenChainExpression`.
+ */
+function getOptionalLinkFixes(
+  sourceCode: SourceCode,
+  node: TSESTree.Node,
+): (LinkFix | null)[] {
+  switch (node.type) {
+    case AST_NODE_TYPES.ChainExpression:
+    case AST_NODE_TYPES.TSNonNullExpression:
+      return getOptionalLinkFixes(sourceCode, node.expression);
+
+    case AST_NODE_TYPES.CallExpression: {
+      const callee = node.callee;
+      const typeArguments = node.typeArguments;
+      const linkFix: LinkFix | null = node.optional
+        ? null
+        : fixer => {
+            const openingParen = nullThrows(
+              sourceCode.getFirstTokenBetween(
+                typeArguments ?? callee,
+                nullThrows(
+                  sourceCode.getLastToken(node),
+                  NullThrowsReasons.MissingToken(')', node.type),
+                ),
+                isOpeningParenToken,
+              ),
+              NullThrowsReasons.MissingToken('(', node.type),
+            );
+            return [
+              // `foo!()` becomes `foo?.()`, matching the `&&` fix
+              ...getNonNullAssertionRemoval(fixer, callee),
+              fixer.insertTextBefore(typeArguments ?? openingParen, '?.'),
+            ];
+          };
+      return [...getOptionalLinkFixes(sourceCode, callee), linkFix];
+    }
+
+    case AST_NODE_TYPES.MemberExpression: {
+      const object = node.object;
+      const linkFix: LinkFix | null = node.optional
+        ? null
+        : fixer => {
+            const removals = getNonNullAssertionRemoval(fixer, object);
+            if (node.computed) {
+              const openingBracket = nullThrows(
+                sourceCode.getTokenAfter(object, isOpeningBracketToken),
+                NullThrowsReasons.MissingToken('[', node.type),
+              );
+              return [
+                ...removals,
+                fixer.insertTextBefore(openingBracket, '?.'),
+              ];
+            }
+            const dot = nullThrows(
+              sourceCode.getTokenBefore(node.property),
+              NullThrowsReasons.MissingToken('.', node.type),
+            );
+            return [...removals, fixer.replaceText(dot, '?.')];
+          };
+      return [...getOptionalLinkFixes(sourceCode, object), linkFix];
+    }
+
+    default:
+      return [null];
+  }
+
+  function getNonNullAssertionRemoval(
+    fixer: RuleFixer,
+    expression: TSESTree.Expression,
+  ): RuleFix[] {
+    if (expression.type !== AST_NODE_TYPES.TSNonNullExpression) {
+      return [];
+    }
+    const bang = nullThrows(
+      sourceCode.getLastToken(expression),
+      NullThrowsReasons.MissingToken('!', expression.type),
+    );
+    return [fixer.remove(bang)];
+  }
+}
+
+/**
+ * Fixes `if (foo) { foo.bar(); }` into `foo?.bar();` by deleting the `if`, its
+ * test and the braces, and making links of the body optional. Comments are
+ * left in place instead of being moved.
+ */
+function getIfStatementFix(
+  sourceCode: SourceCode,
+  node: TSESTree.IfStatement,
+  body: TSESTree.Node,
+  optionalParts: boolean[],
+): ReportFixFunction {
+  return fixer => {
+    const fixes: RuleFix[] = [];
+    const bodyStatement =
+      node.consequent.type === AST_NODE_TYPES.BlockStatement
+        ? node.consequent.body[0]
+        : node.consequent;
+
+    const ifToken = nullThrows(
+      sourceCode.getFirstToken(node),
+      NullThrowsReasons.MissingToken('if', node.type),
+    );
+    // `if`, `(`, the test, `)` and `{`, each with the whitespace after it
+    for (const token of [
+      ifToken,
+      ...sourceCode.getTokensBetween(ifToken, bodyStatement),
+    ]) {
+      const next = nullThrows(
+        sourceCode.getTokenAfter(token, { includeComments: true }),
+        NullThrowsReasons.MissingToken('any token', node.type),
+      );
+      fixes.push(fixer.removeRange([token.range[0], next.range[0]]));
+    }
+
+    if (node.consequent.type === AST_NODE_TYPES.BlockStatement) {
+      const closingBrace = nullThrows(
+        sourceCode.getLastToken(node.consequent),
+        NullThrowsReasons.MissingToken('}', node.consequent.type),
+      );
+      const previous = nullThrows(
+        sourceCode.getTokenBefore(closingBrace, { includeComments: true }),
+        NullThrowsReasons.MissingToken('any token', node.consequent.type),
+      );
+      // The `}` ended the statement; without it, a following line could
+      // continue the body's expression through automatic semicolon insertion.
+      const needsSemicolon = !isSemicolonToken(
+        nullThrows(
+          sourceCode.getLastToken(bodyStatement),
+          NullThrowsReasons.MissingToken('any token', bodyStatement.type),
+        ),
+      );
+      fixes.push(
+        fixer.replaceTextRange(
+          [previous.range[1], closingBrace.range[1]],
+          needsSemicolon ? ';' : '',
+        ),
+      );
+    }
+
+    const linkFixes = getOptionalLinkFixes(sourceCode, body);
+    optionalParts.forEach((optional, index) => {
+      const linkFix = linkFixes[index];
+      if (optional && linkFix) {
+        fixes.push(...linkFix(fixer));
+      }
+    });
+
+    return fixes;
+  };
+}
+
 function getReportDescriptor(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
@@ -480,6 +641,25 @@ function getReportDescriptor(
       }
       parts.push(...diff);
     }
+  }
+
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    return {
+      messageId: 'preferOptionalChain',
+      node,
+      ...getFixOrSuggest({
+        fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
+        suggestion: {
+          fix: getIfStatementFix(
+            sourceCode,
+            node,
+            lastOperand.node,
+            parts.map(part => part.optional),
+          ),
+          messageId: 'optionalChainSuggest',
+        },
+      }),
+    };
   }
 
   let newCode = parts
@@ -710,14 +890,14 @@ export function analyzeChain(
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
   lastChainOperand?: LastChainOperand,
-): void {
+): boolean {
   // need at least 2 operands in a chain for it to be a chain
   if (
     chain.length + (lastChainOperand ? 1 : 0) <= 1 ||
     /* istanbul ignore next -- previous checks make this unreachable, but keep it for exhaustiveness check */
     operator === '??'
   ) {
-    return;
+    return false;
   }
 
   const analyzeOperand = (() => {
@@ -735,30 +915,39 @@ export function analyzeChain(
   let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
   let lastChain: LastChainOperandForReport | ValidOperand | undefined =
     undefined;
+  let reported = false;
 
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
-    if (subChain.length + (lastChain ? 1 : 0) > 1) {
-      const subChainFlat = subChain.flat();
+    const subChainFlat = subChain.flat();
+    // An `if` statement can only become a chain when its whole test and its
+    // body do, e.g. not `if (unrelated && foo) foo.bar()`.
+    const coversIfStatement =
+      node.type !== AST_NODE_TYPES.IfStatement ||
+      (!lastChain &&
+        subChainFlat[0] === chain[0] &&
+        subChainFlat.at(-1) === chain.at(-1));
+    if (subChain.length + (lastChain ? 1 : 0) > 1 && coversIfStatement) {
       const maybeNullishNodes = lastChain
         ? subChainFlat.map(({ node }) => node)
         : subChainFlat.slice(0, -1).map(({ node }) => node);
-      checkNullishAndReport(
-        context,
-        parserServices,
-        options,
-        maybeNullishNodes,
-        getReportDescriptor(
-          context.sourceCode,
+      reported =
+        checkNullishAndReport(
+          context,
           parserServices,
-          node,
-          operator,
           options,
-          subChainFlat,
-          lastChain,
-        ),
-      );
+          maybeNullishNodes,
+          getReportDescriptor(
+            context.sourceCode,
+            parserServices,
+            node,
+            operator,
+            options,
+            subChainFlat,
+            lastChain,
+          ),
+        ) || reported;
     }
 
     // we've reached the end of a chain of logical expressions
@@ -894,4 +1083,6 @@ export function analyzeChain(
   }
   // check the leftovers
   maybeReportThenReset();
+
+  return reported;
 }
