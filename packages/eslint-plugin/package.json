@@ -79,7 +79,7 @@
     "ajv": "catalog:",
     "eslint": "catalog:",
     "json-schema": "catalog:",
-    "markdown-table": "^3.0.4",
+    "markdown-table": "^3.1.0",
     "marked": "^15.0.12",
     "mdast-util-from-markdown": "catalog:",
     "mdast-util-mdx": "catalog:",
