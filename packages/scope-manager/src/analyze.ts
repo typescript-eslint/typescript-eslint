@@ -22,7 +22,7 @@ export interface AnalyzeOptions {
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
    */
-  globalReturn?: boolean;
+  globalReturn?: boolean | undefined;
 
   /**
    * Implied strict mode.
@@ -35,7 +35,7 @@ export interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string | null;
+  jsxPragma?: string | null | undefined;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -43,7 +43,7 @@ export interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
    * Defaults to `null`.
    */
-  jsxFragmentName?: string | null;
+  jsxFragmentName?: string | null | undefined;
 
   /**
    * The lib used by the project.
@@ -52,7 +52,7 @@ export interface AnalyzeOptions {
    *
    * https://www.typescriptlang.org/tsconfig#lib
    */
-  lib?: Lib[];
+  lib?: Lib[] | undefined;
 
   /**
    * The source type of the script.
@@ -66,9 +66,16 @@ export interface AnalyzeOptions {
   emitDecoratorMetadata?: boolean;
 }
 
-const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
+/**
+ * {@link AnalyzeOptions} with every option resolved to a value.
+ */
+type ResolvedAnalyzeOptions = {
+  [Key in keyof AnalyzeOptions]-?: Exclude<AnalyzeOptions[Key], undefined>;
+};
+
+const DEFAULT_OPTIONS: ResolvedAnalyzeOptions = {
   childVisitorKeys: visitorKeys,
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- `Required<AnalyzeOptions>` makes this mandatory until it is removed in v10
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- `ResolvedAnalyzeOptions` makes this mandatory until it is removed in v10
   emitDecoratorMetadata: false,
   globalReturn: false,
   impliedStrict: false,
@@ -85,10 +92,10 @@ export function analyze(
   tree: TSESTree.Program,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
-  const options: Required<AnalyzeOptions> = {
+  const options: ResolvedAnalyzeOptions = {
     childVisitorKeys:
       providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
-    // eslint-disable-next-line @typescript-eslint/no-deprecated -- `Required<AnalyzeOptions>` makes this mandatory until it is removed in v10
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- `ResolvedAnalyzeOptions` makes this mandatory until it is removed in v10
     emitDecoratorMetadata: false,
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:

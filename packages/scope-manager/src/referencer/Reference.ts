@@ -54,9 +54,10 @@ export class Reference {
    * `true` if this writing reference is a variable initializer or a default value.
    * @public
    */
-  public readonly init?: boolean;
+  public readonly init?: boolean | undefined;
 
-  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
+  public readonly maybeImplicitGlobal?:
+    ReferenceImplicitGlobal | null | undefined;
 
   /**
    * The {@link Variable} object that this reference refers to. If such variable was not defined, this is `null`.
@@ -68,7 +69,7 @@ export class Reference {
    * If reference is writeable, this is the node being written to it.
    * @public
    */
-  public readonly writeExpr?: TSESTree.Node | null;
+  public readonly writeExpr?: TSESTree.Node | null | undefined;
 
   /**
    * In some cases, a reference may be a type, value or both a type and value reference.

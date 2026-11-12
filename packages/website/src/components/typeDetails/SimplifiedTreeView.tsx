@@ -11,7 +11,7 @@ import { tsEnumToString } from '../ast/tsUtils';
 import { getRange } from '../ast/utils';
 
 export interface SimplifiedTreeViewProps {
-  readonly onHoverNode?: OnHoverNodeFn;
+  readonly onHoverNode?: OnHoverNodeFn | undefined;
   readonly onSelect: (value: ts.Node) => void;
   readonly selectedNode: ts.Node | undefined;
   readonly value: ts.Node;

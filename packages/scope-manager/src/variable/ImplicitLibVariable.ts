@@ -5,8 +5,8 @@ import { ESLintScopeVariable } from './ESLintScopeVariable';
 
 export interface ImplicitLibVariableOptions {
   readonly eslintImplicitGlobalSetting?: ESLintScopeVariable['eslintImplicitGlobalSetting'];
-  readonly isTypeVariable?: boolean;
-  readonly isValueVariable?: boolean;
+  readonly isTypeVariable?: boolean | undefined;
+  readonly isValueVariable?: boolean | undefined;
   readonly writeable?: boolean;
 }
 
