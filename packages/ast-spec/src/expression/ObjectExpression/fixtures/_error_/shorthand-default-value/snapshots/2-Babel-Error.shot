@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > shorthand-default-value > Babel - Error`]
+BabelError
+> 1 | x = { a = 1 };
+    |         ^ Invalid shorthand property initializer. (1:8)
+  2 |
+  

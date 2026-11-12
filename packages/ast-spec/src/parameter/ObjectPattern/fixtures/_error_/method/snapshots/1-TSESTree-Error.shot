@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > method > TSESTree - Error`]
+TSError
+> 1 | ({ a() {} } = x);
+    |    ^ Property assignment expected.
+  2 |

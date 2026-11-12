@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ArrayPattern > _error_ > element-not-assignment-target > Babel - Error`]
+BabelError
+> 1 | [f()] = x;
+    |  ^ Invalid left-hand side in array destructuring pattern. (1:1)
+  2 |
+  

@@ -138,11 +138,35 @@ declare module './generated/ast-spec' {
     parent: TSESTree.ClassBody;
   }
 
-  interface PropertyComputedName {
-    parent: TSESTree.ObjectExpression | TSESTree.ObjectPattern;
+  interface ObjectExpressionAccessorComputedName {
+    parent: TSESTree.ObjectExpression;
   }
-  interface PropertyNonComputedName {
-    parent: TSESTree.ObjectExpression | TSESTree.ObjectPattern;
+  interface ObjectExpressionAccessorNonComputedName {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectExpressionMethodComputedName {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectExpressionMethodNonComputedName {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectExpressionPropertyComputedName {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectExpressionPropertyNonComputedName {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectExpressionPropertyShorthand {
+    parent: TSESTree.ObjectExpression;
+  }
+  interface ObjectPatternPropertyComputedName {
+    parent: TSESTree.ObjectPattern;
+  }
+  interface ObjectPatternPropertyNonComputedName {
+    parent: TSESTree.ObjectPattern;
+  }
+  interface ObjectPatternPropertyShorthand {
+    parent: TSESTree.ObjectPattern;
   }
 
   interface PropertyDefinitionComputedName {
