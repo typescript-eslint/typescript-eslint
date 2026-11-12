@@ -1,6 +1,7 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type {
   MethodDefinitionComputedNameBase,
+  MethodDefinitionConstructorBase,
   MethodDefinitionNonComputedNameBase,
 } from '../../base/MethodDefinitionBase';
 
@@ -14,6 +15,11 @@ export interface TSAbstractMethodDefinitionNonComputedName
   type: AST_NODE_TYPES.TSAbstractMethodDefinition;
 }
 
+export interface TSAbstractMethodDefinitionConstructor extends MethodDefinitionConstructorBase {
+  type: AST_NODE_TYPES.TSAbstractMethodDefinition;
+}
+
 export type TSAbstractMethodDefinition =
   | TSAbstractMethodDefinitionComputedName
+  | TSAbstractMethodDefinitionConstructor
   | TSAbstractMethodDefinitionNonComputedName;
