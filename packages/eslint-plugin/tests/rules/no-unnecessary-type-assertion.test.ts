@@ -842,6 +842,100 @@ const a = mapDefined(() =>
 [a].concat(arrayA);
     `,
     `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare function fn<T>(x: T): T;
+declare const b: B;
+mapDefined(() => fn(b as A));
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  return b as A;
+});
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  return b as unknown as A;
+});
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare const condition: boolean;
+mapDefined(() => {
+  return condition ? (b as A) : null;
+});
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => () => b as A);
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  return () => {
+    return b as A;
+  };
+});
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  const f = () => {
+    return b as A;
+  };
+  return f();
+});
+    `,
+    `
 interface Params {
   a?: string;
   b?: string;
@@ -1103,6 +1197,306 @@ const other = value as number;
   ],
 
   invalid: [
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare function fn(x: A): A;
+declare const b: B;
+mapDefined(() => fn(b as A));
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 27,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare function fn(x: A): A;
+declare const b: B;
+mapDefined(() => fn(b));
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare function fn<T>(x: T): T;
+declare const b: B;
+mapDefined(() => fn<A>(b as A));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare function fn<T>(x: T): T;
+declare const b: B;
+mapDefined(() => fn<A>(b));
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A): void;
+declare const b: B;
+run(() => {
+  return b as A;
+});
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A): void;
+declare const b: B;
+run(() => {
+  return b;
+});
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A): void;
+declare const b: B;
+run(() => {
+  return b as unknown as A;
+});
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 27,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A): void;
+declare const b: B;
+run(() => {
+  return b;
+});
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A | null): void;
+declare const b: B;
+declare const condition: boolean;
+run(() => {
+  return condition ? (b as A) : null;
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 12,
+          line: 12,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => A | null): void;
+declare const b: B;
+declare const condition: boolean;
+run(() => {
+  return condition ? (b) : null;
+});
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => () => A): void;
+declare const b: B;
+run(() => () => b as A);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => () => A): void;
+declare const b: B;
+run(() => () => b);
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => () => A): void;
+declare const b: B;
+run(() => {
+  return () => {
+    return b as A;
+  };
+});
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 12,
+          line: 12,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function run(fn: () => () => A): void;
+declare const b: B;
+run(() => {
+  return () => {
+    return b;
+  };
+});
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  const f = (): A => {
+    return b as A;
+  };
+  return f();
+});
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 12,
+          line: 12,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  const f = (): A => {
+    return b;
+  };
+  return f();
+});
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
