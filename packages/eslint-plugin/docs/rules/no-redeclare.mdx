@@ -23,11 +23,13 @@ This rule adds the following options:
 ```ts
 interface Options extends BaseNoRedeclareOptions {
   ignoreDeclarationMerge?: boolean;
+  ignoreVariableMerge?: boolean;
 }
 
 const defaultOptions: Options = {
   ...baseNoRedeclareDefaultOptions,
   ignoreDeclarationMerge: true,
+  ignoreVariableMerge: false,
 };
 ```
 
@@ -70,6 +72,7 @@ namespace Baz {}
 ```
 
 **Note:** Even with this option set to true, this rule will report if you name a type and a variable the same name. **_This is intentional_**.
+To allow that, see [`ignoreVariableMerge`](#ignorevariablemerge).
 Declaring a variable and a type the same is usually an accident, and it can lead to hard-to-understand code.
 If you have a rare case where you're intentionally naming a type the same name as a variable, use a disable comment. For example:
 
@@ -77,4 +80,21 @@ If you have a rare case where you're intentionally naming a type the same name a
 type something = string;
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
 const something = 2;
+```
+
+### `ignoreVariableMerge`
+
+{/* insert option description */}
+
+Some libraries encourage naming a variable and a type the same, such as a [Zod](https://zod.dev) schema and the type inferred from it, or a `const` object used as an enum.
+When this option is enabled, a single variable declaration and a single `type` alias or `interface` with the same name will not be reported.
+
+Examples of **correct** code with `{ ignoreVariableMerge: true }`:
+
+```ts option='{ "ignoreVariableMerge": true }' showPlaygroundButton
+const User = z.object({ name: z.string() });
+type User = z.infer<typeof User>;
+
+const Fruit = { Apple: 'Apple', Banana: 'Banana' } as const;
+type Fruit = (typeof Fruit)[keyof typeof Fruit];
 ```

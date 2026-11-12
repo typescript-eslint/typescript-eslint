@@ -140,6 +140,27 @@ namespace A {}
       `,
       options: [{ ignoreDeclarationMerge: true }],
     },
+    {
+      code: `
+const User = z.object({ name: z.string() });
+type User = z.infer<typeof User>;
+      `,
+      options: [{ ignoreVariableMerge: true }],
+    },
+    {
+      code: `
+type Fruit = (typeof Fruit)[keyof typeof Fruit];
+const Fruit = { Apple: 'Apple', Banana: 'Banana' } as const;
+      `,
+      options: [{ ignoreVariableMerge: true }],
+    },
+    {
+      code: `
+let A = 1;
+interface A {}
+      `,
+      options: [{ ignoreVariableMerge: true }],
+    },
   ],
   invalid: [
     {
@@ -734,6 +755,92 @@ const something = 2;
           messageId: 'redeclared',
         },
       ],
+    },
+    {
+      code: `
+type something = string;
+const something = 2;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            id: 'something',
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreVariableMerge: false }],
+    },
+    {
+      code: `
+type A = number;
+var A, A;
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            id: 'A',
+          },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'redeclared',
+        },
+        {
+          column: 8,
+          data: {
+            id: 'A',
+          },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreVariableMerge: true }],
+    },
+    {
+      code: `
+function A() {}
+type A = number;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            id: 'A',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreVariableMerge: true }],
+    },
+    {
+      code: `
+var Object = 0;
+type Object = number;
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            id: 'Object',
+          },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      options: [{ builtinGlobals: true, ignoreVariableMerge: true }],
     },
   ],
 });
