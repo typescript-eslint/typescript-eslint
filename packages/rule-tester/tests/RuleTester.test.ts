@@ -288,6 +288,67 @@ describe(RuleTester, () => {
       `);
     });
 
+    it('resolves relative tsconfigRootDir paths from the current working directory', () => {
+      const ruleTester = new RuleTester({
+        languageOptions: {
+          parser,
+          parserOptions: {
+            project: 'tsconfig.json',
+            tsconfigRootDir: './fixture',
+          },
+        },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: [
+          'uses the default filename',
+          {
+            code: 'uses the JSX filename',
+            languageOptions: {
+              parserOptions: {
+                ecmaFeatures: { jsx: true },
+              },
+            },
+          },
+          {
+            code: 'keeps an explicit filename under tsconfigRootDir',
+            filename: 'nested/custom.ts',
+          },
+        ],
+      });
+
+      expect(getTestConfigFromCall()).toMatchObject([
+        { filename: windowsToPosixPath(path.resolve('./fixture/file.ts')) },
+        { filename: windowsToPosixPath(path.resolve('./fixture/react.tsx')) },
+        {
+          filename: windowsToPosixPath(
+            path.resolve('./fixture/nested/custom.ts'),
+          ),
+        },
+      ]);
+    });
+
+    it('resolves filenames from the current working directory when tsconfigRootDir is omitted', () => {
+      const ruleTester = new RuleTester({
+        languageOptions: {
+          parser,
+          parserOptions: {
+            project: 'tsconfig.json',
+          },
+        },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: ['uses the default filename'],
+      });
+
+      expect(getTestConfigFromCall()).toMatchObject([
+        { filename: windowsToPosixPath(path.resolve('file.ts')) },
+      ]);
+    });
+
     it('allows the automated filenames to be overridden in the constructor', () => {
       const ruleTester = new RuleTester({
         defaultFilenames: {

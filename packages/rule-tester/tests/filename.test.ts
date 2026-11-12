@@ -1,6 +1,7 @@
 /* eslint-disable perfectionist/sort-objects */
 import type { TSESLint } from '@typescript-eslint/utils';
 
+import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import path from 'node:path';
 
@@ -39,6 +40,36 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
       });
     },
   }),
+});
+
+const typeAwareRule = ESLintUtils.RuleCreator.withoutDocs({
+  meta: {
+    docs: {
+      description: 'reports the inferred type of a variable',
+    },
+    messages: {
+      type: 'Type is {{type}}',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  create(context) {
+    const services = ESLintUtils.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+
+    return {
+      VariableDeclarator(node): void {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node.id);
+        context.report({
+          data: {
+            type: checker.typeToString(checker.getTypeAtLocation(tsNode)),
+          },
+          messageId: 'type',
+          node: node.id,
+        });
+      },
+    };
+  },
 });
 
 describe('rule tester filename', () => {
@@ -151,6 +182,114 @@ describe('rule tester filename', () => {
         code: '_',
         errors: [{ messageId: 'foo' }],
         filename: 'a/////////////../../../b',
+      },
+    ],
+    valid: [],
+  });
+});
+
+describe('rule tester type-aware filename', () => {
+  const relativeTsconfigRootDir = path.relative(
+    process.cwd(),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
+  );
+
+  new RuleTester({
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: relativeTsconfigRootDir,
+      },
+    },
+  }).run('relative tsconfigRootDir', typeAwareRule, {
+    invalid: [
+      {
+        code: 'const fixture: string = "fixture";',
+        errors: [{ data: { type: 'string' }, messageId: 'type' }],
+      },
+      {
+        code: `
+namespace JSX {
+  export interface Element {
+    type: string;
+  }
+  export interface IntrinsicElements {
+    div: {};
+  }
+}
+const fixture = <div />;
+        `,
+        errors: [{ data: { type: 'Element' }, messageId: 'type' }],
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: { jsx: true },
+          },
+        },
+      },
+    ],
+    valid: [],
+  });
+});
+
+describe('rule tester per-test relative tsconfigRootDir', () => {
+  const constructorTsconfigRootDir = path.relative(
+    process.cwd(),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
+  );
+  const testTsconfigRootDir = path.relative(
+    process.cwd(),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root/fixture'),
+  );
+
+  new RuleTester({
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: constructorTsconfigRootDir,
+      },
+    },
+  }).run('per-test relative tsconfigRootDir', typeAwareRule, {
+    invalid: [
+      {
+        code: 'const fixture: string = "fixture";',
+        errors: [{ data: { type: 'string' }, messageId: 'type' }],
+        filename: 'test-root-override.ts',
+        languageOptions: {
+          parserOptions: {
+            tsconfigRootDir: testTsconfigRootDir,
+          },
+        },
+      },
+    ],
+    valid: [],
+  });
+});
+
+describe('rule tester nested type-aware filenames', () => {
+  const relativeTsconfigRootDir = path.relative(
+    process.cwd(),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
+  );
+
+  new RuleTester({
+    defaultFilenames: {
+      ts: 'fixture/file.ts',
+      tsx: 'react.tsx',
+    },
+    languageOptions: {
+      parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: relativeTsconfigRootDir,
+      },
+    },
+  }).run('nested relative tsconfigRootDir', typeAwareRule, {
+    invalid: [
+      {
+        code: 'const fixture: string = "fixture";',
+        errors: [{ data: { type: 'string' }, messageId: 'type' }],
       },
     ],
     valid: [],
