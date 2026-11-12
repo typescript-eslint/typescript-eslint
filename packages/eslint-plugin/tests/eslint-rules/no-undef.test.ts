@@ -273,6 +273,26 @@ class Foo {
   [x: string]: any;
 }
     `,
+    {
+      code: 'const map = new Map();',
+      languageOptions: {
+        parserOptions: {
+          lib: ['es2015'],
+        },
+      },
+    },
+    {
+      code: `
+function createMap() {
+  return new Map();
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          lib: ['es2015'],
+        },
+      },
+    },
   ],
   invalid: [
     {
