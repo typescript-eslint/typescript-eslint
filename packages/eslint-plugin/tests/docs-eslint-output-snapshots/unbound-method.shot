@@ -72,3 +72,16 @@ class OtherClass {
 const { log } = OtherClass;
 
 log();
+
+Options: { "ignoreStatic": true }
+
+interface ParserConstructor {
+  new (): object;
+  parse(text: string): object;
+}
+
+declare const Parser: ParserConstructor;
+
+const { parse } = Parser;
+
+parse('text');
