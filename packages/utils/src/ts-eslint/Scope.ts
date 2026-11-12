@@ -7,11 +7,13 @@ export namespace Scope {
   export type Reference = scopeManager.Reference;
   export type Variable = scopeManager.ScopeVariable;
   export type Scope = scopeManager.Scope;
-  export const ScopeType = scopeManager.ScopeType;
+  export const ScopeType: typeof scopeManager.ScopeType =
+    scopeManager.ScopeType;
   // TODO - in the next major, clean this up with a breaking change
   export type DefinitionType = scopeManager.Definition;
   export type Definition = scopeManager.Definition;
-  export const DefinitionType = scopeManager.DefinitionType;
+  export const DefinitionType: typeof scopeManager.DefinitionType =
+    scopeManager.DefinitionType;
 
   export namespace Definitions {
     export type CatchClauseDefinition = scopeManager.CatchClauseDefinition;
