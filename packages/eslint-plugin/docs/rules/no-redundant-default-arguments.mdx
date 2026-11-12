@@ -1,0 +1,92 @@
+---
+description: 'Disallow explicitly passing arguments that match their default values.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-default-arguments** for documentation.
+
+A function's default parameter value is used when its argument is omitted.
+Explicitly passing the same value adds repetition and prevents a future change to that default from reaching the call site.
+The same applies to defaulted properties in destructured options and JSX component props.
+
+This rule reports literal values that match a function's defaults and automatically removes them when it can preserve surrounding comments and argument positions.
+Type information lets it find implementations imported from other files.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```tsx
+function connect(retries = 3) {
+  return retries;
+}
+
+connect(3);
+
+function search({ limit = 20 }: { limit?: number }) {
+  return limit;
+}
+
+search({ limit: 20 });
+
+function Button({ disabled = false }: { disabled?: boolean }) {
+  return null;
+}
+
+<Button disabled={false} />;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```tsx
+function connect(retries = 3) {
+  return retries;
+}
+
+connect();
+connect(5);
+
+function search({ limit = 20 }: { limit?: number }) {
+  return limit;
+}
+
+search({});
+search({ limit: 50 });
+
+function Button({ disabled = false }: { disabled?: boolean }) {
+  return null;
+}
+
+<Button />;
+<Button disabled />;
+```
+
+</TabItem>
+</Tabs>
+
+## Limitations
+
+The rule compares literal strings, numbers, bigints, booleans, and `null`, including negative numbers, template literals without substitutions, and type assertions around those values.
+It does not evaluate function calls, getters, mutable values, or object and array defaults.
+Positive and negative zero are treated as different values.
+
+Only a trailing sequence of matching positional arguments can be removed.
+For example, `configure(3, 'custom')` is left alone if removing `3` would shift `'custom'` into the wrong position.
+An optional property in a destructured options object can be removed without removing the containing object. Required properties are kept.
+
+The rule skips spreads, duplicate or computed property names, overloaded functions, mutable function bindings, member calls, and functions whose implementations are unavailable.
+Generic calls without explicit type arguments are skipped because removing a value can change type inference.
+It also skips functions that refer to `arguments` or `eval`, since those can observe whether an argument was supplied.
+JSX `key` and `ref` attributes and components with `defaultProps` are left alone.
+Comments inside a proposed removal are reported without an automatic fix.
+
+## When Not To Use It
+
+Explicit values can make a call easier to understand or intentionally keep its behavior independent of future changes to a default.
+Disable this rule if your project prefers to state those values at call sites.
