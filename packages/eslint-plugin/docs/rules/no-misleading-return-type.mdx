@@ -12,11 +12,17 @@ import TabItem from '@theme/TabItem';
 Explicit return type annotations can retain union constituents after the implementation no longer requires them.
 Callers must then handle types that TypeScript does not infer for any returned expression.
 
-This rule compares explicitly written union return types with the types of a function's return expressions.
-It reports a union constituent when no returned type is assignable to it and no returned type is a supertype of it.
+This rule reports a union constituent written in a return type when the function would still type-check without it:
+no returned expression is assignable to that constituent, and every returned expression is assignable to another one.
 Literal types satisfy their corresponding primitive types, so returning `'ready'` satisfies a `string` constituent.
-The rule treats enum members with the same string or number value as the same returned value.
-It also checks unions written as array element types and as the type argument of the built-in `Array`, `ReadonlyArray`, `ArrayLike`, `Promise`, and `PromiseLike` types.
+A function body that can end without returning a value requires `undefined` or `void`.
+
+The rule checks unions written directly as the return type, and unions written inside it as:
+
+- the type argument of the `Promise` that an async function returns
+- an array or tuple element type
+- a property type of an object type
+- a type argument of a class or an interface, such as `Promise`, `Set`, or `Map`
 
 ## Examples
 
@@ -31,6 +37,14 @@ function getStatus(): string | null {
 async function getAsyncStatus(): Promise<string | null> {
   return 'ready';
 }
+
+function getStatuses(): (string | null)[] {
+  return ['ready'];
+}
+
+function getUser(): { name: string | null } {
+  return { name: 'user' };
+}
 ```
 
 </TabItem>
@@ -44,6 +58,14 @@ function getStatus(): string {
 async function getAsyncStatus(): Promise<string> {
   return 'ready';
 }
+
+function getStatuses(): string[] {
+  return ['ready'];
+}
+
+function getUser(): { name: string } {
+  return { name: 'user' };
+}
 ```
 
 </TabItem>
@@ -51,25 +73,30 @@ async function getAsyncStatus(): Promise<string> {
 
 ## Limitations
 
-This rule does not expand a type alias used as the complete return type, including generic aliases.
-It does not inspect unions inside custom containers or object properties.
-Checking only a custom container's array elements or awaited value could miss other properties that require the same type argument.
-For `Array`, `ReadonlyArray`, and non-async promise returns, the rule requires a compatible built-in container type or base type.
-It skips returned objects whose indexed or awaited type does not account for the rest of the container's contract.
-It skips comparisons involving `any` or `unknown`.
-For unresolved conditional and string mapping constituents, and template literal constituents that depend on type parameters, it reports only when a stable constraint proves that the returned types are disjoint from the constituent.
+This rule only inspects unions written in the return type annotation.
+It does not expand type aliases, and it does not inspect the type arguments of a type alias.
+It also does not inspect function types, optional properties, or optional and rest tuple elements.
+
+A type argument of a class or an interface is compared with the returned values that are instances of that class or interface, or of one that extends it.
+For `Array`, `ReadonlyArray`, and `ArrayLike`, returned arrays and tuples are compared as well, and for `PromiseLike`, returned promises.
+Other returned values, such as an object literal returned for a generic interface, are not compared.
+
+The rule does not report when a returned expression is `any` or `unknown`.
+It also does not report when TypeScript infers the type of a returned expression from the return type, as it does for `[]` or `new Set()`.
 
 To avoid reporting on return types that may describe an external contract, the rule skips overload implementations, contextually typed functions and object methods, inherited or implemented class methods and function-valued fields, decorated members, and members in decorated classes.
-It also skips generators and does not report `undefined` or `void` constituents because a function body may complete without an explicit return expression.
+It also skips generators.
 
 The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
-Compiler options such as `noUncheckedIndexedAccess` therefore affect its results.
-When that option is disabled, an indexed access can exclude `undefined` from its inferred type even though it may produce `undefined` at runtime.
+Compiler options therefore affect its results.
+When `noUncheckedIndexedAccess` is disabled, an indexed access can exclude `undefined` from its inferred type even though it may produce `undefined` at runtime.
+When `strictNullChecks` is disabled, `null` and `undefined` constituents are not reported.
 
 ## When Not To Use It
 
 An API may intentionally declare values that its current implementation does not return, such as for forward compatibility.
-If that convention is common in your project, you might not want to use this rule.
+A function may also return a new array or object that its callers later fill with other values.
+If those conventions are common in your project, you might not want to use this rule.
 
 ## Related To
 

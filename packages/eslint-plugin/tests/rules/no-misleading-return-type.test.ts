@@ -1,6 +1,9 @@
-import rule from '../../src/rules/no-misleading-return-type';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import * as path from 'node:path';
 
+import rule from '../../src/rules/no-misleading-return-type';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
+
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misleading-return-type', rule, {
@@ -29,13 +32,6 @@ function getValue<T extends string | null>(value: T): string | null {
 }
     `,
     `
-function getValue<T extends string | number>(
-  value: T,
-): T | (T extends string ? string : number) {
-  return value;
-}
-    `,
-    `
 function getValue<T>(
   flag: boolean,
 ): (T extends unknown ? undefined : never) | string {
@@ -46,46 +42,12 @@ function getValue<T>(
 }
     `,
     `
-function getValue<T extends string>(value: T): T | \`\${T}\` {
-  return value;
-}
-    `,
-    `
-function getValue<T>(value: T & string): \`\${T & string}\` | (T & string) {
-  return value;
-}
-    `,
-    `
 function getValue(flag: boolean): \`value-\${string}\` | 'fallback' {
   return flag ? 'value-ready' : 'fallback';
 }
     `,
     `
-function getValue<T extends 'A' | 'B'>(value: T): T | Uppercase<T> {
-  return value;
-}
-    `,
-    `
 function getValue<T extends { key?: string }>(value: T): T | Required<T> {
-  return value;
-}
-    `,
-    `
-function getValue<T>(value: {
-  right: true;
-}): (T extends string ? { left: true } : { other: true }) | { right: true } {
-  return value;
-}
-    `,
-    `
-function getValue<T extends { right: true }, U>(
-  value: T,
-): T | (U extends string ? { left: true } : { other: true }) {
-  return value;
-}
-    `,
-    `
-function getValue<T, U>(value: T): T | (U extends string ? string : number) {
   return value;
 }
     `,
@@ -108,30 +70,6 @@ function getValue(flag: boolean): 'ready' | 'idle' | string | null {
     `
 function getValue(flag: boolean): true | boolean | null {
   return flag ? false : null;
-}
-    `,
-    `
-enum AllowedType {
-  Number,
-  String,
-  Unknown,
-}
-enum TypeFlags {
-  Unknown = 2,
-}
-declare function getAllowedType(): AllowedType;
-function getValue(): AllowedType | TypeFlags.Unknown | undefined {
-  return getAllowedType();
-}
-
-enum FirstText {
-  Value = 'value',
-}
-enum SecondText {
-  Value = 'value',
-}
-function getText(): FirstText.Value | SecondText.Value {
-  return FirstText.Value;
 }
     `,
     `
@@ -219,11 +157,6 @@ function getValues(): ArrayLike<string | null> {
 }
     `,
     `
-function getValues(): Set<string | null> {
-  return new Set(['value']);
-}
-    `,
-    `
 interface Values<T> {
   readonly [index: number]: T;
   current: T;
@@ -240,12 +173,6 @@ interface Result<T> extends PromiseLike<T> {
 declare const result: Promise<string> & { current: null };
 function getValue(): Result<string | null> {
   return result;
-}
-    `,
-    `
-declare const values: string[];
-function getValues(): Array<string | undefined> {
-  return values;
 }
     `,
     `
@@ -404,11 +331,6 @@ function getValue(flag: boolean): string | undefined {
 }
     `,
     `
-function getValue<T extends undefined>(): string | T {
-  return 'value';
-}
-    `,
-    `
 class Values {
   getValue(): string;
   getValue(): string | null {
@@ -501,7 +423,7 @@ function createValues() {
   return getValues;
 }
     `,
-    // Type-invalid implementations must not make array projection throw.
+    // Type-invalid code must not be reported.
     `
 function getValues(): Array<string | null> {
   return 1;
@@ -517,11 +439,36 @@ function getValue(): Promise<string | null> {
 }
     `,
     `
+function createProvider() {
+  type Promise<T> = { value: T };
+  async function getValue(): Promise<string | null> {
+    return 'value';
+  }
+  return getValue;
+}
+    `,
+    `
+async function getValue(): Promise<string> | null {
+  return 'value';
+}
+    `,
+    `
 interface InvalidThenable {
   then(onfulfilled: string): unknown;
 }
-function getValue(): Promise<string | InvalidThenable> {
-  return Promise.resolve('value');
+declare const thenable: InvalidThenable;
+async function getValue(): Promise<string | null> {
+  return thenable;
+}
+    `,
+    `
+function createValue(): { name: string | null } {
+  return 1;
+}
+    `,
+    `
+function getValue(): Missing<string | null> {
+  return 'value';
 }
     `,
     `
@@ -565,6 +512,127 @@ function getValue(flag: boolean): string | void {
   return;
 }
     `,
+    `
+function getValue(flag: boolean): string | undefined {
+  if (flag) {
+    return;
+  }
+  return 'value';
+}
+    `,
+    `
+type TextValue = string;
+function getValue(): string | TextValue {
+  return 'value';
+}
+    `,
+    `
+function isTextValue(value: unknown): value is string | number {
+  return typeof value === 'string';
+}
+    `,
+    `
+function getValues(): (string | null)[] {
+  return [];
+}
+    `,
+    `
+function getResult(flag: boolean): [string | null, Error | null] {
+  return flag ? ['value', null] : [null, new Error('message')];
+}
+    `,
+    `
+function getValues(): [first: string, second?: string | undefined] {
+  return ['first', 'second'];
+}
+    `,
+    `
+function getValues(): [string, (string | null)?] {
+  return ['first', 'second'];
+}
+    `,
+    `
+function getValues(): [string | null, ...number[]] {
+  return ['value', 1, 2];
+}
+    `,
+    `
+function createValue(flag: boolean): { name: string | null } {
+  return flag ? { name: 'value' } : { name: null };
+}
+    `,
+    `
+declare const key: unique symbol;
+function createValue(): {
+  [key]: string | null;
+  getName(): string | null;
+  name?: string | null;
+  untyped;
+} {
+  return { [key]: 'value', getName: () => 'value', name: 'value', untyped: 1 };
+}
+    `,
+    `
+function getGetter(): () => string | null {
+  return () => 'value';
+}
+    `,
+    `
+function getValues(): Set<string | null> {
+  return new Set();
+}
+    `,
+    `
+interface Sink<T> {
+  write(value: T): void;
+}
+declare const sink: Sink<string>;
+function getSink(): Sink<string | null> {
+  return sink;
+}
+    `,
+    `
+interface Box<T> {
+  value: T;
+}
+function createBox(): Box<string | null> {
+  return { value: 'value' };
+}
+    `,
+    `
+type Maybe<T> = T | null;
+function getValue(): Maybe<string | undefined> {
+  return 'value';
+}
+    `,
+    `
+interface Thenable {
+  then: PromiseLike<string>['then'];
+}
+declare const thenable: Thenable;
+function getValue(): PromiseLike<string | null> {
+  return thenable;
+}
+    `,
+    `
+type Async<T> = Promise<T>;
+async function getValue(): Async<string | null> {
+  return 'value';
+}
+    `,
+    // Without strictNullChecks, every type already includes null and undefined.
+    {
+      code: `
+function getValue(): string | null | undefined {
+  return 'value';
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -1515,6 +1583,636 @@ function getValue(): string | null {
           projectService: false,
         },
       },
+    },
+    {
+      code: `
+function getValue<T extends string | number>(
+  value: T,
+): T | (T extends string ? string : number) {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 43,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T extends string>(value: T): T | \`\${T}\` {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 52,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T>(value: T & string): \`\${T & string}\` | (T & string) {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T extends 'A' | 'B'>(value: T): T | Uppercase<T> {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 55,
+          endColumn: 67,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T>(value: {
+  right: true;
+}): (T extends string ? { left: true } : { other: true }) | { right: true } {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 57,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T extends { right: true }, U>(
+  value: T,
+): T | (U extends string ? { left: true } : { other: true }) {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 60,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T, U>(value: T): T | (U extends string ? string : number) {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          endColumn: 75,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+enum AllowedType {
+  Number,
+  String,
+  Unknown,
+}
+enum TypeFlags {
+  Unknown = 2,
+}
+declare function getAllowedType(): AllowedType;
+function getValue(): AllowedType | TypeFlags.Unknown | undefined {
+  return getAllowedType();
+}
+
+enum FirstText {
+  Value = 'value',
+}
+enum SecondText {
+  Value = 'value',
+}
+function getText(): FirstText.Value | SecondText.Value {
+  return FirstText.Value;
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 53,
+          endLine: 11,
+          line: 11,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 56,
+          endColumn: 65,
+          endLine: 11,
+          line: 11,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 39,
+          endColumn: 55,
+          endLine: 21,
+          line: 21,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): Set<string | null> {
+  return new Set(['value']);
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[];
+function getValues(): Array<string | undefined> {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 38,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T extends undefined>(): string | T {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 52,
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface InvalidThenable {
+  then(onfulfilled: string): unknown;
+}
+function getValue(): Promise<string | InvalidThenable> {
+  return Promise.resolve('value');
+}
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 54,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue(): string | undefined {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue(flag: boolean): string | undefined {
+  if (flag) {
+    return 'value';
+  }
+  throw new Error('message');
+}
+      `,
+      errors: [
+        {
+          column: 44,
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue(): string | void {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValue(): Promise<string | undefined> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+type TextValue = string;
+function getValue(): string | TextValue | null {
+  return null;
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Config {
+  name: string;
+}
+function getKey(): keyof Config | null {
+  return 'name';
+}
+      `,
+      errors: [
+        {
+          column: 35,
+          endColumn: 39,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface InvalidThenable {
+  then(onfulfilled: string): unknown;
+}
+async function getValue(): Promise<string | InvalidThenable> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 60,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): Promise<Array<string | null>> {
+  return Promise.resolve(['value']);
+}
+      `,
+      errors: [
+        {
+          column: 46,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValues(): Promise<Array<string | null>> {
+  return ['value'];
+}
+      `,
+      errors: [
+        {
+          column: 52,
+          endColumn: 56,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): ArrayLike<string | null> {
+  return ['value'];
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[];
+function getValues(): ReadonlyArray<string | null> {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 46,
+          endColumn: 50,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): [string | null, number] {
+  return ['value', 1];
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getResult(): [value: string | null, error: Error | null] {
+  return ['value', null];
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 53,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: [string, number] & { extra: boolean };
+function getValues(): readonly [string | null, number] {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { a: string | number } {
+  return { a: 'no numbers here' };
+}
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { 'quoted-name': { name: string | null } } {
+  return { 'quoted-name': { name: 'value' } };
+}
+      `,
+      errors: [
+        {
+          column: 59,
+          endColumn: 63,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue():
+  { kind: 'ready'; value: string | null } | { kind: 'idle' } {
+  return { kind: 'ready', value: 'value' };
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 45,
+          endColumn: 61,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): Map<string | number, string | null> {
+  return new Map([['key', 'value']]);
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 53,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+class Box<T> {
+  constructor(readonly value: T) {}
+}
+function createBox(): Box<string | null> {
+  return new Box('value');
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Shapes {
+  export class Box<T> {
+    constructor(readonly value: T) {}
+  }
+}
+import Box = Shapes.Box;
+function createBox(): Box<string | null> {
+  return new Box('value');
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createFactory<T>(first: T) {
+  class Pair<U> {
+    constructor(
+      readonly first: T,
+      readonly second: U,
+    ) {}
+  }
+  function createPair(): Pair<string | null> {
+    return new Pair(first, 'value');
+  }
+  return createPair;
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 44,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryType',
+        },
+      ],
     },
   ],
 });
