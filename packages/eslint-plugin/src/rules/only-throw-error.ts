@@ -14,6 +14,7 @@ import {
   isErrorLike,
   isTypeAnyType,
   isTypeUnknownType,
+  memberExpressionMatchesSomeSpecifier,
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
   nullThrows,
@@ -151,7 +152,10 @@ export default createRule<Options, MessageIds>({
 
       const type = services.getTypeAtLocation(node);
 
-      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(type, allow, services.program) ||
+        memberExpressionMatchesSomeSpecifier(node, allow, context, services)
+      ) {
         return;
       }
 

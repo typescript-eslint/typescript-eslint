@@ -12,6 +12,7 @@ import {
   getParserServices,
   isBuiltinSymbolLike,
   isParenthesized,
+  memberExpressionMatchesSomeSpecifier,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -259,11 +260,24 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const type = services.getTypeAtLocation(node.callee);
+      const callee = skipChainExpression(node.callee);
+
+      if (
+        memberExpressionMatchesSomeSpecifier(
+          callee,
+          allowForKnownSafeCalls,
+          context,
+          services,
+        )
+      ) {
+        return true;
+      }
+
+      const type = services.getTypeAtLocation(callee);
 
       if (
         valueMatchesSomeSpecifier(
-          node.callee,
+          callee,
           allowForKnownSafeCalls,
           services.program,
           type,
@@ -354,7 +368,7 @@ export default createRule<Options, MessageId>({
         return { isUnhandled: false };
       }
 
-      if (!isPromiseLike(tsNode)) {
+      if (!isPromiseLike(tsNode, undefined, node)) {
         return { isUnhandled: false };
       }
 
@@ -435,7 +449,11 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
+    function isPromiseLike(
+      node: ts.Node,
+      type?: ts.Type,
+      esNode?: TSESTree.Node,
+    ): boolean {
       type ??= checker.getTypeAtLocation(node);
 
       // The highest priority is to allow anything allowlisted
@@ -444,7 +462,14 @@ export default createRule<Options, MessageId>({
           type,
           allowForKnownSafePromises,
           services.program,
-        )
+        ) ||
+        (esNode != null &&
+          memberExpressionMatchesSomeSpecifier(
+            esNode,
+            allowForKnownSafePromises,
+            context,
+            services,
+          ))
       ) {
         return false;
       }

@@ -464,6 +464,31 @@ declare const obj: Custom;
       `,
       options: [{ allow: [{ from: 'file', name: 'Custom' }] }],
     },
+    {
+      code: `
+interface Box {
+  meta: { id: number };
+}
+declare const box: Box;
+\`\${box.meta}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Box', properties: 'meta' }] }],
+    },
+    {
+      code: `
+interface Base {
+  meta: { id: number };
+}
+interface Derived extends Base {
+  extra: string;
+}
+declare const obj: Derived;
+\`\${obj.meta}\`;
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Base', properties: 'meta' }] },
+      ],
+    },
   ],
 
   invalid: [
@@ -932,6 +957,30 @@ declare const obj: Derived;
         },
       ],
       options: [{ allow: [] }],
+    },
+    {
+      code: `
+interface Meta {
+  id: number;
+}
+interface Box {
+  meta: Meta;
+  other: Meta;
+}
+declare const box: Box;
+\`\${box.other}\`;
+      `,
+      errors: [
+        {
+          column: 4,
+          data: { type: 'Meta' },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [{ from: 'file', name: 'Box', properties: 'meta' }] }],
     },
   ],
 });

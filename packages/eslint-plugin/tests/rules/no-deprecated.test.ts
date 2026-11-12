@@ -807,6 +807,90 @@ class Foo implements Foo {
 }
 new Foo().value;
     `,
+    {
+      code: `
+declare const re: RegExpConstructor | undefined;
+re?.$1;
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExpConstructor', properties: '$1' }],
+        },
+      ],
+    },
+    {
+      code: `
+namespace Ns {
+  /** @deprecated */
+  export function Comp() {
+    return <div />;
+  }
+}
+const el = <Ns.Comp />;
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Ns', properties: ['Comp'] }] },
+      ],
+    },
+    {
+      code: `
+RegExp['$1'];
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExpConstructor', properties: '$1' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated */
+  legacy: string;
+}
+const options: Options = { legacy: 'ok' };
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Options', properties: 'legacy' }] },
+      ],
+    },
+    {
+      code: `
+const { $1 } = RegExp;
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExpConstructor', properties: '$1' }],
+        },
+      ],
+    },
+    {
+      code: `
+function fn({ $1 }: RegExpConstructor) {
+  return $1;
+}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExpConstructor', properties: '$1' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface Props {
+  /** @deprecated */
+  oldProp?: string;
+}
+function Comp(props: Props) {
+  return <div />;
+}
+const el = <Comp oldProp="x" />;
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Props', properties: 'oldProp' }] },
+      ],
+    },
   ],
   invalid: [
     {
@@ -4690,6 +4774,99 @@ override.value;
           endLine: 10,
           line: 10,
           messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+RegExp.$2;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            name: '$2',
+            reason: 'A legacy feature for browser compatibility',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExpConstructor', properties: '$1' }],
+        },
+      ],
+    },
+    {
+      code: `
+import type { T } from './deprecated';
+declare const value: T;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { name: 'T', reason: 'Reason' },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      options: [{ allow: [{ from: 'file', name: 'T', properties: 'a' }] }],
+    },
+    {
+      code: `
+import { ClassWithDeprecatedConstructor } from './deprecated';
+class Sub extends ClassWithDeprecatedConstructor {
+  constructor() {
+    super('a');
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'super' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+      options: [
+        {
+          allow: [
+            {
+              from: 'file',
+              name: 'ClassWithDeprecatedConstructor',
+              properties: 'other',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { normalVariable } from './deprecated';
+declare const tuple: [string, string];
+const { [normalVariable]: item } = tuple;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'normalVariable' },
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecated',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Array', properties: 'normalVariable' }],
         },
       ],
     },

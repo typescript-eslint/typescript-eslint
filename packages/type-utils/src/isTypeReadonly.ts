@@ -11,6 +11,7 @@ import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
+import { specifierPropertyMatches } from './typeOrValueSpecifiers/specifierPropertyMatches';
 import { specifierSourceMatches } from './typeOrValueSpecifiers/specifierSourceMatches';
 
 const enum Readonlyness {
@@ -247,8 +248,18 @@ function isTypeReadonlyObject(
 
   const properties = type.getProperties();
   if (properties.length) {
+    const propertiesToCheck = options.allow?.some(
+      specifier =>
+        typeof specifier !== 'string' && specifier.properties != null,
+    )
+      ? properties.filter(
+          property =>
+            !isAllowedType(type, options.allow, program, property.getName()),
+        )
+      : properties;
+
     // ensure the properties are marked as readonly
-    for (const property of properties) {
+    for (const property of propertiesToCheck) {
       if (options.treatMethodsAsReadonly) {
         if (
           property.valueDeclaration != null &&
@@ -285,7 +296,7 @@ function isTypeReadonlyObject(
     // do this after checking property readonly-ness as a perf optimization,
     // as we might be able to bail out early due to a mutable property before
     // doing this deep, potentially expensive check.
-    for (const property of properties) {
+    for (const property of propertiesToCheck) {
       const propertyType = ESLintUtils.nullThrows(
         getTypeOfPropertyOfType(checker, type, property),
         ESLintUtils.NullThrowsReasons.MissingToken(
@@ -322,20 +333,19 @@ function isTypeReadonlyObject(
   return Readonlyness.Readonly;
 }
 
-// a helper function to ensure the seenTypes map is always passed down, except by the external caller
-function isTypeReadonlyRecurser(
-  program: ts.Program,
+function isAllowedType(
   type: ts.Type,
-  options: ReadonlynessOptions,
-  seenTypes: Set<ts.Type>,
-): Readonlyness.Mutable | Readonlyness.Readonly {
-  const checker = program.getTypeChecker();
-  seenTypes.add(type);
-
+  allow: TypeOrValueSpecifier[] | undefined,
+  program: ts.Program,
+  propertyName?: string,
+): boolean {
   // If the type has an alias symbol, check it against the allow list first
-  if (type.aliasSymbol && options.allow) {
+  if (type.aliasSymbol && allow) {
     const aliasSymbol = type.aliasSymbol;
-    const aliasMatches = options.allow.some(specifier => {
+    const aliasMatches = allow.some(specifier => {
+      if (!specifierPropertyMatches(specifier, propertyName)) {
+        return false;
+      }
       if (typeof specifier === 'string') {
         return specifier === aliasSymbol.getName();
       }
@@ -349,11 +359,24 @@ function isTypeReadonlyRecurser(
     });
 
     if (aliasMatches) {
-      return Readonlyness.Readonly;
+      return true;
     }
   }
 
-  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
+  return typeMatchesSomeSpecifier(type, allow, program, propertyName);
+}
+
+// a helper function to ensure the seenTypes map is always passed down, except by the external caller
+function isTypeReadonlyRecurser(
+  program: ts.Program,
+  type: ts.Type,
+  options: ReadonlynessOptions,
+  seenTypes: Set<ts.Type>,
+): Readonlyness.Mutable | Readonlyness.Readonly {
+  const checker = program.getTypeChecker();
+  seenTypes.add(type);
+
+  if (isAllowedType(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 

@@ -903,6 +903,108 @@ function wrapNode<T>(getNode: () => CustomNode<T>) {
   });
 })().catch(() => {});
     `,
+    {
+      code: `
+import { it } from 'node:test';
+it.only('works', async () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'package',
+              name: 'it',
+              package: 'node:test',
+              properties: ['only', 'skip'],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { it } from 'node:test';
+it['skip']('works', async () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'package',
+              name: 'it',
+              package: 'node:test',
+              properties: ['only', 'skip'],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { it } from 'node:test';
+(it?.only)('works', async () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'package',
+              name: 'it',
+              package: 'node:test',
+              properties: ['only', 'skip'],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Runner {
+  run(): Promise<void>;
+}
+declare const runner: Runner;
+declare const method: 'run';
+runner[method]();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'file', name: 'Runner', properties: 'run' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type Handlers = [() => Promise<void>];
+declare const handlers: Handlers;
+declare const index: 0;
+handlers[index]();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'file', name: 'Handlers', properties: '0' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Task {
+  done: Promise<void>;
+}
+declare const task: Task;
+task.done;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [
+            { from: 'file', name: 'Task', properties: 'done' },
+          ],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -6123,6 +6225,152 @@ document.addEventListener('click', () => {
         },
       ],
       options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+import { it } from 'node:test';
+it('works', async () => {});
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+import { it } from 'node:test';
+void it('works', async () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+import { it } from 'node:test';
+await it('works', async () => {});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'package',
+              name: 'it',
+              package: 'node:test',
+              properties: ['only', 'skip'],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Runner {
+  [key: string]: () => Promise<void>;
+  run(): Promise<void>;
+}
+declare const runner: Runner;
+declare const method: string;
+runner[method]();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface Runner {
+  [key: string]: () => Promise<void>;
+  run(): Promise<void>;
+}
+declare const runner: Runner;
+declare const method: string;
+void runner[method]();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+interface Runner {
+  [key: string]: () => Promise<void>;
+  run(): Promise<void>;
+}
+declare const runner: Runner;
+declare const method: string;
+await runner[method]();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'file', name: 'Runner', properties: 'run' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Task {
+  done: Promise<void>;
+  other: Promise<void>;
+}
+declare const task: Task;
+task.other;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface Task {
+  done: Promise<void>;
+  other: Promise<void>;
+}
+declare const task: Task;
+void task.other;
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+interface Task {
+  done: Promise<void>;
+  other: Promise<void>;
+}
+declare const task: Task;
+await task.other;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafePromises: [
+            { from: 'file', name: 'Task', properties: 'done' },
+          ],
+        },
+      ],
     },
   ],
 });

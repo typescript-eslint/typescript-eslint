@@ -54,6 +54,8 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'file', name: ['MyType', 'myValue'] }],
       [{ from: 'file', name: 'MyType', path: './filename.js' }],
       [{ from: 'file', name: ['MyType', 'myValue'], path: './filename.js' }],
+      [{ from: 'file', name: 'MyType', properties: 'myProp' }],
+      [{ from: 'file', name: 'MyType', properties: ['myProp', 'otherProp'] }],
     ] as const)(
       'matches a file specifier: %s',
       ([typeOrValueSpecifier], { expect }) => {
@@ -83,6 +85,10 @@ describe('TypeOrValueSpecifier', () => {
           path: [`${ROOT_DIR}/filename.js`, `${ROOT_DIR}/another-file.js`],
         },
       ],
+      [{ from: 'file', name: 'MyType', properties: 42 }],
+      [{ from: 'file', name: 'MyType', properties: [] }],
+      [{ from: 'file', name: 'MyType', properties: ['myProp', 'myProp'] }],
+      [{ from: 'file', name: 'MyType', properties: ['myProp', 42] }],
       [{ from: 'file', name: 'MyType', unrelatedProperty: '' }],
     ] as const)(
       "doesn't match a malformed file specifier: %s",
@@ -94,6 +100,8 @@ describe('TypeOrValueSpecifier', () => {
     it.for([
       [{ from: 'lib', name: 'MyType' }],
       [{ from: 'lib', name: ['MyType', 'myValue'] }],
+      [{ from: 'lib', name: 'MyType', properties: 'myProp' }],
+      [{ from: 'lib', name: 'MyType', properties: ['myProp', 'otherProp'] }],
     ] as const)(
       'matches a lib specifier: %s',
       ([typeOrValueSpecifier], { expect }) => {
@@ -107,6 +115,10 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'lib', name: ['MyType', 'MyType'] }],
       [{ from: 'lib', name: [] }],
       [{ from: 'lib' }],
+      [{ from: 'lib', name: 'MyType', properties: 42 }],
+      [{ from: 'lib', name: 'MyType', properties: [] }],
+      [{ from: 'lib', name: 'MyType', properties: ['myProp', 'myProp'] }],
+      [{ from: 'lib', name: 'MyType', properties: ['myProp', 42] }],
       [{ from: 'lib', name: 'MyType', unrelatedProperty: '' }],
     ] as const)(
       "doesn't match a malformed lib specifier: %s",
@@ -122,6 +134,22 @@ describe('TypeOrValueSpecifier', () => {
           from: 'package',
           name: ['MyType', 'myValue'],
           package: 'jquery',
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: 'myProp',
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: ['myProp', 'otherProp'],
         },
       ],
     ] as const)(
@@ -154,6 +182,38 @@ describe('TypeOrValueSpecifier', () => {
           from: 'package',
           name: ['MyType', 'myValue'],
           package: ['jquery', `${ROOT_DIR}/another-file.js`],
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: 42,
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: [],
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: ['myProp', 'myProp'],
+        },
+      ],
+      [
+        {
+          from: 'package',
+          name: 'MyType',
+          package: 'jquery',
+          properties: ['myProp', 42],
         },
       ],
       [
@@ -818,6 +878,73 @@ describe('TypeOrValueSpecifier', () => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
     );
+
+    it.for([
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', properties: 'prop' },
+        'prop',
+      ],
+      [
+        'interface Foo {prop: string; other: number}; type Test = Foo;',
+        { from: 'file', name: 'Foo', properties: ['prop', 'other'] },
+        'other',
+      ],
+      [
+        'interface Foo {prop: string}; interface Bar {prop: string}; type Test = Foo | Bar;',
+        { from: 'file', name: ['Foo', 'Bar'], properties: 'prop' },
+        'prop',
+      ],
+      [
+        'type SafePromise = Promise<number> & { __safeBrand: string }; type ResultType = { prop: string }; type Test = SafePromise & ResultType;',
+        { from: 'file', name: 'ResultType', properties: 'prop' },
+        'prop',
+      ],
+      [
+        'type Test = RegExp;',
+        { from: 'lib', name: 'RegExp', properties: 'source' },
+        'source',
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        {
+          from: 'package',
+          name: 'Node',
+          package: 'typescript',
+          properties: ['kind', 'parent'],
+        },
+        'kind',
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier, string][])(
+      'matches a matching property specifier: %s\n\t%s (%s)',
+      ([code, typeOrValueSpecifier, propertyName], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier, propertyName);
+      },
+    );
+
+    it.for([
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', properties: 'prop' },
+        undefined,
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', properties: ['prop', 'other'] },
+        'unlisted',
+      ],
+      ['interface Foo {prop: string}; type Test = Foo;', 'Foo', 'prop'],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+        'prop',
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier, string | undefined][])(
+      "doesn't match a mismatched property specifier: %s\n\t%s (%s)",
+      ([code, typeOrValueSpecifier, propertyName], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier, propertyName);
+      },
+    );
   });
 
   describe(valueMatchesSpecifier, () => {
@@ -959,6 +1086,92 @@ describe('TypeOrValueSpecifier', () => {
           { from: 'package', name: 'mock', package: 'node:test' },
         ],
       ])("doesn't match a mismatched package specifier: %s", runTestNegative);
+
+      it.each<[string, TypeOrValueSpecifier, string]>([
+        [
+          'const value = { only: () => {} }; const hoge = value;',
+          { from: 'file', name: 'value', properties: 'only' },
+          'only',
+        ],
+        [
+          'const value = console;',
+          { from: 'lib', name: 'console', properties: ['log', 'warn'] },
+          'warn',
+        ],
+        [
+          'import { it } from "node:test"; const hoge = it;',
+          {
+            from: 'package',
+            name: 'it',
+            package: 'node:test',
+            properties: ['only', 'skip'],
+          },
+          'only',
+        ],
+      ])(
+        'matches a matching property specifier: %s',
+        (code, specifier, propertyName) => {
+          const { ast, services } = parseCode(code);
+          const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+          const { id, init } = declaration.declarations[0];
+          const type = services.getTypeAtLocation(id);
+          expect(
+            valueMatchesSpecifier(
+              init!,
+              specifier,
+              services.program,
+              type,
+              propertyName,
+            ),
+          ).toBe(true);
+        },
+      );
+
+      it.each<[string, TypeOrValueSpecifier, string | undefined]>([
+        [
+          'import { it } from "node:test"; const hoge = it;',
+          {
+            from: 'package',
+            name: 'it',
+            package: 'node:test',
+            properties: ['only', 'skip'],
+          },
+          undefined,
+        ],
+        [
+          'import { it } from "node:test"; const hoge = it;',
+          {
+            from: 'package',
+            name: 'it',
+            package: 'node:test',
+            properties: ['only', 'skip'],
+          },
+          'todo',
+        ],
+        [
+          'import { it } from "node:test"; const hoge = it;',
+          { from: 'package', name: 'it', package: 'node:test' },
+          'only',
+        ],
+        ['const value = { only: 1 }; const hoge = value;', 'value', 'only'],
+      ])(
+        "doesn't match a mismatched property specifier: %s",
+        (code, specifier, propertyName) => {
+          const { ast, services } = parseCode(code);
+          const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+          const { id, init } = declaration.declarations[0];
+          const type = services.getTypeAtLocation(id);
+          expect(
+            valueMatchesSpecifier(
+              init!,
+              specifier,
+              services.program,
+              type,
+              propertyName,
+            ),
+          ).toBe(false);
+        },
+      );
     });
 
     describe(AST_NODE_TYPES.ClassDeclaration, () => {
@@ -1075,6 +1288,33 @@ describe('TypeOrValueSpecifier', () => {
       "doesn't match a mismatched universal string specifiers",
       runTestNegative,
     );
+
+    it('matches property specifiers only when propertyName matches', () => {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast, services } = parseForESLint(
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          disallowAutomaticSingleRunInference: true,
+          filePath: path.join(rootDir, 'file.ts'),
+          project: './tsconfig.json',
+          tsconfigRootDir: rootDir,
+        },
+      );
+      const type = services
+        .program!.getTypeChecker()
+        .getTypeAtLocation(
+          services.esTreeNodeToTSNodeMap.get(
+            (ast.body[ast.body.length - 1] as TSESTree.TSTypeAliasDeclaration)
+              .id,
+          ),
+        );
+      const specifiers: TypeOrValueSpecifier[] = [
+        { from: 'file', name: 'Foo', properties: 'prop' },
+      ];
+      expect(
+        typeMatchesSomeSpecifier(type, specifiers, services.program!, 'prop'),
+      ).toBe(true);
+    });
   });
 
   describe(valueMatchesSomeSpecifier, () => {
@@ -1127,5 +1367,39 @@ describe('TypeOrValueSpecifier', () => {
       "doesn't match a mismatched universal string specifiers: %s",
       runTestNegative,
     );
+
+    it('matches property specifiers when propertyName matches', () => {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast, services } = parseForESLint(
+        'import { it } from "node:test"; const hoge = it;',
+        {
+          disallowAutomaticSingleRunInference: true,
+          filePath: path.join(rootDir, 'file.ts'),
+          project: './tsconfig.json',
+          tsconfigRootDir: rootDir,
+        },
+      );
+      assert.isNotNull(services.program);
+      const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+      const { id, init } = declaration.declarations[0];
+      const type = services.getTypeAtLocation(id);
+      const specifiers: TypeOrValueSpecifier[] = [
+        {
+          from: 'package',
+          name: 'it',
+          package: 'node:test',
+          properties: ['only', 'skip'],
+        },
+      ];
+      expect(
+        valueMatchesSomeSpecifier(
+          init!,
+          specifiers,
+          services.program,
+          type,
+          'skip',
+        ),
+      ).toBe(true);
+    });
   });
 });
