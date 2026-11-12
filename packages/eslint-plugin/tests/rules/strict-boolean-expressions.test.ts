@@ -372,6 +372,56 @@ const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNullableEnum: true }],
     },
+
+    // enum in boolean context
+    {
+      code: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+declare const theEnum: ExampleEnum;
+if (theEnum) {
+}
+      `,
+      options: [{ allowEnum: true }],
+    },
+    {
+      code: `
+enum ExampleEnum {
+  This = '',
+  That = 'a',
+}
+declare const theEnum: ExampleEnum;
+if (theEnum) {
+}
+      `,
+      options: [{ allowEnum: true }],
+    },
+    {
+      code: `
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+declare const theEnum: ExampleEnum;
+if (!theEnum) {
+}
+      `,
+      options: [{ allowEnum: true }],
+    },
+    {
+      code: `
+enum ExampleEnum {
+  This = 0,
+  That = 'a',
+}
+declare const theEnum: ExampleEnum;
+if (theEnum) {
+}
+      `,
+      options: [{ allowEnum: true, allowNumber: false, allowString: false }],
+    },
     {
       code: `
 declare const x: string[] | null;
@@ -2260,6 +2310,28 @@ if (x) {
         },
       ],
       options: [{ allowNumber: true, allowString: true }],
+    },
+
+    // enum in boolean context
+    {
+      code: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+declare const theEnum: ExampleEnum;
+if (theEnum) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorOther',
+        },
+      ],
     },
     {
       code: '(x: bigint | string) => !x;',
