@@ -9,8 +9,10 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  hasPropertySpecifiers,
   isTypeLiteralType,
   nullThrows,
+  objectMatchesSomePropertySpecifier,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
   valueMatchesSomeSpecifier,
@@ -380,6 +382,72 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function identifierPropertyMatchesSomeSpecifier(
+      node: IdentifierLike,
+    ): boolean {
+      if (!hasPropertySpecifiers(allow) || node.type === AST_NODE_TYPES.Super) {
+        return false;
+      }
+
+      const { parent } = node;
+
+      if (
+        (parent.type === AST_NODE_TYPES.MemberExpression ||
+          parent.type === AST_NODE_TYPES.JSXMemberExpression) &&
+        parent.property === node
+      ) {
+        return objectMatchesSomePropertySpecifier(
+          parent.object,
+          node.name,
+          allow,
+          services,
+        );
+      }
+
+      if (
+        parent.type === AST_NODE_TYPES.Property &&
+        !parent.computed &&
+        parent.parent.type === AST_NODE_TYPES.ObjectPattern
+      ) {
+        const patternType = services.getTypeAtLocation(parent.parent);
+        if (
+          parent.parent.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+          parent.parent.parent.init != null
+        ) {
+          return objectMatchesSomePropertySpecifier(
+            parent.parent.parent.init,
+            node.name,
+            allow,
+            services,
+            patternType,
+          );
+        }
+        return typeMatchesSomeSpecifier(
+          patternType,
+          allow,
+          services.program,
+          node.name,
+        );
+      }
+
+      if (parent.type === AST_NODE_TYPES.JSXAttribute) {
+        const contextualType = nullThrows(
+          services.getContextualType(
+            parent.parent.name as unknown as TSESTree.Expression,
+          ),
+          'Expected JSX opening element name to have contextualType',
+        );
+        return typeMatchesSomeSpecifier(
+          contextualType,
+          allow,
+          services.program,
+          node.name,
+        );
+      }
+
+      return false;
+    }
+
     function checkIdentifier(node: IdentifierLike): void {
       if (isDeclaration(node) || isInsideImport(node)) {
         return;
@@ -394,7 +462,8 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
       if (
         typeMatchesSomeSpecifier(type, allow, services.program) ||
-        valueMatchesSomeSpecifier(node, allow, services.program, type)
+        valueMatchesSomeSpecifier(node, allow, services.program, type) ||
+        identifierPropertyMatchesSomeSpecifier(node)
       ) {
         return;
       }
@@ -462,7 +531,15 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (typeMatchesSomeSpecifier(contextualType, allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(contextualType, allow, services.program) ||
+        typeMatchesSomeSpecifier(
+          contextualType,
+          allow,
+          services.program,
+          propertyName,
+        )
+      ) {
         return;
       }
 
@@ -502,7 +579,16 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+        if (
+          typeMatchesSomeSpecifier(objectType, allow, services.program) ||
+          objectMatchesSomePropertySpecifier(
+            node.object,
+            propertyName,
+            allow,
+            services,
+            objectType,
+          )
+        ) {
           return;
         }
 

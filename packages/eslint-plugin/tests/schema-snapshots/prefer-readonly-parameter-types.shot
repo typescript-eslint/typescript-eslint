@@ -36,6 +36,21 @@
                 },
                 "path": {
                   "type": "string"
+                },
+                "properties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
                 }
               },
               "required": ["from", "name"],
@@ -49,6 +64,21 @@
                   "type": "string"
                 },
                 "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "properties": {
                   "oneOf": [
                     {
                       "type": "string"
@@ -91,6 +121,21 @@
                 },
                 "package": {
                   "type": "string"
+                },
+                "properties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
                 }
               },
               "required": ["from", "name", "package"],
@@ -128,15 +173,18 @@ type Options = [
           from: 'file';
           name: string | string[];
           path?: string;
+          properties?: string | string[];
         }
       | {
           from: 'lib';
           name: string | string[];
+          properties?: string | string[];
         }
       | {
           from: 'package';
           name: string | string[];
           package: string;
+          properties?: string | string[];
         }
       | string
     )[];

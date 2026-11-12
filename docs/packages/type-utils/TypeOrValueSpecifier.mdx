@@ -32,6 +32,29 @@ Each object format requires at least:
 - `from`: which specifier to use, as `'file' | 'lib' | 'package'`
 - `name`: a `string` or `string[]` for type or value name(s) to match on
 
+Each object format also accepts an optional `properties` field (`string` or `string[]`) to match specific property names on the matched type or value.
+Specifying `properties` switches the specifier to match only those properties rather than the parent type or value itself.
+To match both a parent type or value and specific properties on it, provide separate specifier entries:
+
+```json
+{
+  "@typescript-eslint/no-floating-promises": [
+    "error",
+    {
+      "allowForKnownSafeCalls": [
+        { "from": "package", "name": "it", "package": "node:test" },
+        {
+          "from": "package",
+          "name": "it",
+          "package": "node:test",
+          "properties": ["only", "skip"]
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## FileSpecifier
 
 ```ts
@@ -39,6 +62,7 @@ interface FileSpecifier {
   from: 'file';
   name: string[] | string;
   path?: string;
+  properties?: string[] | string;
 }
 ```
 
@@ -61,12 +85,24 @@ Matching all types and values named `Props` in `file.tsx`:
 { "from": "file", "name": "Props", "path": "file.tsx" }
 ```
 
+Matching the `legacyId` property on types and values named `Props` in `file.tsx`:
+
+```json
+{
+  "from": "file",
+  "name": "Props",
+  "path": "file.tsx",
+  "properties": "legacyId"
+}
+```
+
 ## LibSpecifier
 
 ```ts
 interface LibSpecifier {
   from: 'lib';
   name: string[] | string;
+  properties?: string[] | string;
 }
 ```
 
@@ -94,6 +130,12 @@ Matching all `Promise` and `PromiseLike`-typed values:
 { "from": "lib", "name": ["Promise", "PromiseLike"] }
 ```
 
+Matching the `keyCode` property on `KeyboardEvent`:
+
+```json
+{ "from": "lib", "name": "KeyboardEvent", "properties": "keyCode" }
+```
+
 ## PackageSpecifier
 
 ```ts
@@ -101,6 +143,7 @@ interface PackageSpecifier {
   from: 'package';
   name: string[] | string;
   package: string;
+  properties?: string[] | string;
 }
 ```
 
@@ -122,6 +165,17 @@ Matching the `describe`, `it`, and `test` values from `vitest`:
 { "from": "package", "name": ["describe", "it", "test"], "package": "vitest" }
 ```
 
+Matching the `only` and `skip` properties on `it` from `node:test`:
+
+```json
+{
+  "from": "package",
+  "name": "it",
+  "package": "node:test",
+  "properties": ["only", "skip"]
+}
+```
+
 ## Universal String Specifiers
 
 `TypeOrValueSpecifier` also allows providing a plain string specifier to match all names regardless of declaration source.
@@ -136,7 +190,11 @@ Universal string specifiers will be removed in a future major version of typescr
 
 ## Rule Options Using This Format
 
+- [`@typescript-eslint/no-deprecated` > `allow`](/rules/no-deprecated#allow)
 - [`@typescript-eslint/no-floating-promises` > `allowForKnownSafeCalls`](/rules/no-floating-promises#allowforknownsafecalls)
 - [`@typescript-eslint/no-floating-promises` > `allowForKnownSafePromises`](/rules/no-floating-promises#allowforknownsafepromises)
-- [`@typescript-eslint/only-throw-error` > `allow`](/rules/only-throw-error/#allow)
-- [`@typescript-eslint/prefer-readonly-parameter-types` > `allow`](/rules/prefer-readonly-parameter-types/#allow)
+- [`@typescript-eslint/no-misused-spread` > `allow`](/rules/no-misused-spread#allow)
+- [`@typescript-eslint/only-throw-error` > `allow`](/rules/only-throw-error#allow)
+- [`@typescript-eslint/prefer-promise-reject-errors` > `allow`](/rules/prefer-promise-reject-errors#allow)
+- [`@typescript-eslint/prefer-readonly-parameter-types` > `allow`](/rules/prefer-readonly-parameter-types#allow)
+- [`@typescript-eslint/restrict-template-expressions` > `allow`](/rules/restrict-template-expressions#allow)

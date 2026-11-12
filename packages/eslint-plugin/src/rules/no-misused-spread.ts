@@ -14,6 +14,7 @@ import {
   isBuiltinSymbolLike,
   isPromiseLike,
   isTypeFlagSet,
+  memberExpressionMatchesSomeSpecifier,
   readonlynessOptionsSchema,
   typeMatchesSomeSpecifier,
   isHigherPrecedenceThanAwait,
@@ -105,6 +106,12 @@ export default createRule<Options, MessageIds>({
 
       if (
         !typeMatchesSomeSpecifier(type, options.allow, services.program) &&
+        !memberExpressionMatchesSomeSpecifier(
+          node.argument,
+          options.allow,
+          context,
+          services,
+        ) &&
         isString(type)
       ) {
         context.report({
@@ -178,7 +185,15 @@ export default createRule<Options, MessageIds>({
     ): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(type, options.allow, services.program) ||
+        memberExpressionMatchesSomeSpecifier(
+          node.argument,
+          options.allow,
+          context,
+          services,
+        )
+      ) {
         return;
       }
 

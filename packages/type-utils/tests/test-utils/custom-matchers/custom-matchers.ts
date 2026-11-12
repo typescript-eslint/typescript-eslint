@@ -324,6 +324,7 @@ expect.extend({
   toMatchSpecifier(
     code: string,
     expectedTypeOrValueSpecifier: TypeOrValueSpecifier,
+    propertyName?: string,
   ) {
     const { isNot, utils } = this;
 
@@ -343,6 +344,7 @@ expect.extend({
       type,
       expectedTypeOrValueSpecifier,
       services.program,
+      propertyName,
     );
 
     return {
