@@ -55,7 +55,6 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
-    "@actions/github": "^9.1.1",
     "@arethetypeswrong/cli": "0.18.3",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.0",
     "@eslint/compat": "^2.0.2",
@@ -97,7 +96,7 @@
     "get-github-auth-token": "^0.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.43.0",
+    "knip": "6.44.1",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.50.0",
     "nx": "23.3.0",
@@ -110,7 +109,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61",
+  "packageManager": "pnpm@12.17.0+sha512.b8d223ebec04b580a89ed206daa71d1bccb6a1ee1d52efa95cc3b0db75271561df8f0d8e2c43add39c5ec08018af7a8a95108e7090f95a29f88727b7a40fd53d",
   "nx": {
     "name": "repo",
     "includedScripts": [

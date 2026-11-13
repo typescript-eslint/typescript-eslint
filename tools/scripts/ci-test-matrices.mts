@@ -5,9 +5,16 @@ interface UnitTestsGroup {
   projects: string[];
 }
 
+interface ProjectServiceGroup {
+  backend: 'classic' | 'tsgo';
+  os: 'ubuntu-latest' | 'windows-latest';
+  plugin: boolean;
+  projects: string[];
+}
+
 interface TestMatrices {
   isPluginAffected: boolean;
-  projectServicePackages: string[];
+  projectServiceMatrix: ProjectServiceGroup[];
   snapshotPackages: string[];
   unitTestsMatrix: UnitTestsGroup[];
 }
@@ -17,6 +24,9 @@ const PROJECT_SERVICE_PACKAGES = [
   'eslint-plugin-internal',
   'typescript-estree',
 ];
+
+// Packages that should also be tested with the experimental tsgo backend, alongside `eslint-plugin`.
+const TSGO_PACKAGES = [...PROJECT_SERVICE_PACKAGES, 'type-utils'];
 
 // Packages whose fixture snapshots are regenerated from scratch to check that they're clean.
 const SNAPSHOT_CHECK_PACKAGES = ['ast-spec', 'scope-manager'];
@@ -82,6 +92,34 @@ const toMatrix = (
       projects,
     }));
 
+function toProjectServiceMatrix(affected: string[]): ProjectServiceGroup[] {
+  const tsgoPackages = TSGO_PACKAGES.filter(pkg => affected.includes(pkg));
+  const groups: ProjectServiceGroup[] = [
+    {
+      backend: 'classic',
+      os: 'ubuntu-latest',
+      plugin: false,
+      projects: PROJECT_SERVICE_PACKAGES.filter(pkg => affected.includes(pkg)),
+    },
+    // `eslint-plugin` is slow, so its tsgo coverage only runs on Linux.
+    {
+      backend: 'tsgo',
+      os: 'ubuntu-latest',
+      plugin: affected.includes('eslint-plugin'),
+      projects: tsgoPackages,
+    },
+    {
+      backend: 'tsgo',
+      os: 'windows-latest',
+      plugin: false,
+      projects: tsgoPackages.filter(
+        pkg => !WINDOWS_EXCLUDED_PACKAGES.includes(pkg),
+      ),
+    },
+  ];
+  return groups.filter(group => group.plugin || group.projects.length > 0);
+}
+
 export function getTestMatrices(affected: string[]): TestMatrices {
   const unitTests = affected.filter(pkg => !EXCLUDED_PACKAGES.includes(pkg));
 
@@ -108,9 +146,7 @@ export function getTestMatrices(affected: string[]): TestMatrices {
   return {
     isPluginAffected: affected.includes('eslint-plugin'),
 
-    projectServicePackages: PROJECT_SERVICE_PACKAGES.filter(pkg =>
-      affected.includes(pkg),
-    ),
+    projectServiceMatrix: toProjectServiceMatrix(affected),
 
     snapshotPackages: SNAPSHOT_CHECK_PACKAGES.filter(pkg =>
       affected.includes(pkg),

@@ -15,6 +15,7 @@ import type { MutableParseSettings } from './index';
 import { ensureAbsolutePath } from '../create-program/shared';
 import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import { isSourceFile } from '../source-files';
+import { typescriptVersionIsAtLeast } from '../version-check';
 import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
@@ -31,6 +32,7 @@ const log = debug(
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ProjectServiceAndMetadata | null = null;
+let warnedAboutBackendFallback = false;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
@@ -50,6 +52,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
+  const { backend, fallbackReason } = resolveBackend(tsestreeOptions);
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -118,6 +121,7 @@ export function createParseSettings(
     loc: tsestreeOptions.loc === true,
     range: tsestreeOptions.range === true,
     allowInvalidAST: tsestreeOptions.allowInvalidAST === true,
+    backend,
     code,
     codeFullText,
     comment: tsestreeOptions.comment === true,
@@ -150,10 +154,11 @@ export function createParseSettings(
       : null,
     projects: new Map(),
     projectService:
-      tsestreeOptions.projectService ||
-      (tsestreeOptions.project &&
-        tsestreeOptions.projectService !== false &&
-        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
+      backend === 'classic' &&
+      (tsestreeOptions.projectService ||
+        (tsestreeOptions.project &&
+          tsestreeOptions.projectService !== false &&
+          process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'))
         ? populateProjectService(tsestreeOptions.projectService, {
             jsDocParsingMode,
             tsconfigRootDir,
@@ -222,28 +227,31 @@ export function createParseSettings(
     );
   }
 
-  // Providing a program or project service overrides project resolution
-  if (!parseSettings.programs && !parseSettings.projectService) {
-    parseSettings.projects = resolveProjectList({
-      cacheLifetime: tsestreeOptions.cacheLifetime,
-      project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
-      projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
-      singleRun: parseSettings.singleRun,
-      tsconfigRootDir,
-    });
+  if (backend === 'classic') {
+    // Providing a program or project service overrides project resolution
+    if (!parseSettings.programs && !parseSettings.projectService) {
+      parseSettings.projects = resolveProjectList({
+        cacheLifetime: tsestreeOptions.cacheLifetime,
+        project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
+        projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
+        singleRun: parseSettings.singleRun,
+        tsconfigRootDir,
+      });
+    }
+
+    // No type-aware linting which means that cross-file (or even same-file) JSDoc is useless
+    // So in this specific case we default to 'none' if no value was provided
+    if (
+      tsestreeOptions.jsDocParsingMode == null &&
+      parseSettings.projects.size === 0 &&
+      parseSettings.programs == null &&
+      parseSettings.projectService == null
+    ) {
+      parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
+    }
   }
 
-  // No type-aware linting which means that cross-file (or even same-file) JSDoc is useless
-  // So in this specific case we default to 'none' if no value was provided
-  if (
-    tsestreeOptions.jsDocParsingMode == null &&
-    parseSettings.projects.size === 0 &&
-    parseSettings.programs == null &&
-    parseSettings.projectService == null
-  ) {
-    parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
-  }
-
+  warnAboutBackendFallback(parseSettings, fallbackReason, passedLoggerFn);
   handleUnsupportedTSVersion(
     parseSettings,
     tsestreeOptions.onUnsupportedTypeScriptVersion ?? 'warn',
@@ -253,12 +261,108 @@ export function createParseSettings(
   return parseSettings;
 }
 
+function findUnsupportedNativeOption(
+  tsestreeOptions: Partial<TSESTreeOptions>,
+  projectServiceOptions: ProjectServiceOptions,
+  ignoreProject: boolean,
+) {
+  const unsupported: readonly (readonly [string, unknown])[] = [
+    [
+      'parserOptions.project',
+      !ignoreProject &&
+        tsestreeOptions.project != null &&
+        tsestreeOptions.project !== false,
+    ],
+    ['parserOptions.programs', tsestreeOptions.programs != null],
+    ['extraFileExtensions', tsestreeOptions.extraFileExtensions?.length],
+    ['allowDefaultProject', projectServiceOptions.allowDefaultProject?.length],
+    ['defaultProject', projectServiceOptions.defaultProject != null],
+    [
+      'loadTypeScriptPlugins',
+      projectServiceOptions.loadTypeScriptPlugins === true,
+    ],
+    [
+      'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING',
+      projectServiceOptions.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING !=
+        null,
+    ],
+  ];
+  return unsupported.find(([, value]) => value)?.[0];
+}
+
+function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
+  const { projectService } = tsestreeOptions;
+  const projectServiceOptions =
+    projectService && typeof projectService === 'object' ? projectService : {};
+  const requested = projectServiceOptions.EXPERIMENTAL_backend === 'tsgo';
+
+  const viaEnvironment =
+    !requested &&
+    process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo' &&
+    projectService !== false &&
+    (projectService != null || !!tsestreeOptions.project);
+
+  if (!requested && !viaEnvironment) {
+    return { backend: 'classic' } as const;
+  }
+
+  const unsupportedOption = findUnsupportedNativeOption(
+    tsestreeOptions,
+    projectServiceOptions,
+    viaEnvironment,
+  );
+  const unsupportedReason = !process.features.require_module
+    ? 'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.'
+    : !typescriptVersionIsAtLeast['6.0'] || typescriptVersionIsAtLeast['6.1']
+      ? `The experimental tsgo backend requires classic TypeScript 6.0, but found ${ts.version}.`
+      : unsupportedOption &&
+        `${unsupportedOption} is not supported by the experimental tsgo backend.`;
+
+  if (!unsupportedReason) {
+    return { backend: 'tsgo' } as const;
+  }
+
+  if (viaEnvironment) {
+    log('Falling back to the classic backend: %s', unsupportedReason);
+    return { backend: 'classic', fallbackReason: unsupportedReason } as const;
+  }
+
+  throw new Error(unsupportedReason);
+}
+
+function warnAboutBackendFallback(
+  parseSettings: MutableParseSettings,
+  fallbackReason: string | undefined,
+  passedLoggerFn: boolean,
+) {
+  if (!fallbackReason || warnedAboutBackendFallback) {
+    return;
+  }
+
+  if (
+    passedLoggerFn ||
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/7896
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    (typeof process === 'undefined' ? false : process.stdout?.isTTY)
+  ) {
+    parseSettings.log(
+      `WARNING: TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND=tsgo is set, but some files are being linted with the classic backend. ${fallbackReason}`,
+    );
+  }
+
+  warnedAboutBackendFallback = true;
+}
+
 export function clearTSConfigMatchCache(): void {
   TSCONFIG_MATCH_CACHE?.clear();
 }
 
 export function clearTSServerProjectService(): void {
   TSSERVER_PROJECT_SERVICE = null;
+}
+
+export function clearBackendFallbackWarning(): void {
+  warnedAboutBackendFallback = false;
 }
 
 /**
