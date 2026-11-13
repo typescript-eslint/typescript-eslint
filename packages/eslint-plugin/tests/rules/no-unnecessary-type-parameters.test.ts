@@ -386,6 +386,19 @@ function inferredMappedReturnType<T extends string>(x: T) {
   return [{ value: () => mappedReturnType(x) }];
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13188
+    `
+type Tree<T> = { value: T; children: Tree<T>[] };
+declare function build<R>(make: () => R): R;
+
+const mapTree =
+  <T, U>(fn: (value: T) => U) =>
+  (tree: Tree<T>) =>
+    build<Tree<U>>(() => ({
+      value: fn(tree.value),
+      children: tree.children.map(mapTree(fn)),
+    }));
+    `,
     `
 declare function fill<T, Value>(
   shape: T,
