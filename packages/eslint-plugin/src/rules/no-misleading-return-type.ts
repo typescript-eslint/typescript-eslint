@@ -51,6 +51,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
@@ -253,8 +254,12 @@ export default createRule({
             return [
               {
                 read: (type): ts.Type | undefined => {
+                  // In older TypeScript versions, a tuple type that is read
+                  // through a constraint has an extra `this` type argument.
                   const types = tsutils.isTupleTypeReference(type)
-                    ? checker.getTypeArguments(type)
+                    ? checker
+                        .getTypeArguments(type)
+                        .slice(0, type.target.typeParameters?.length)
                     : [];
 
                   return types.length === elementTypes.length
@@ -456,6 +461,11 @@ export default createRule({
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition,
     ) {
+      // A private name belongs to the class that declares it.
+      if (memberNode.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return false;
+      }
+
       const memberTsNode = services.esTreeNodeToTSNodeMap.get(
         memberNode,
       ) as ClassMemberDeclaration;
@@ -471,88 +481,40 @@ export default createRule({
       if (memberSymbol == null) {
         return false;
       }
-      const memberSymbolName = memberSymbol.name;
+      const isNumericName = tsutils.isNumericPropertyName(memberSymbol.name);
 
-      let memberNameType: ts.Type | null = null;
-      let memberNameTypeResolved = false;
-      function getMemberNameType() {
-        if (memberNameTypeResolved) {
-          return memberNameType;
-        }
-        memberNameTypeResolved = true;
+      /** Whether an index signature of a base type applies to the member. */
+      function hasApplicableIndexSignature(baseType: ts.Type): boolean {
+        return checker.getIndexInfosOfType(baseType).some(({ keyType }) => {
+          // A numeric name is a key of a string and of a number index
+          // signature, whether it is written as a number or as a string.
+          if (
+            isNumericName &&
+            tsutils.isTypeFlagSet(
+              keyType,
+              ts.TypeFlags.String | ts.TypeFlags.Number,
+            )
+          ) {
+            return true;
+          }
 
-        if (
-          ts.isIdentifier(memberNameNode) ||
-          ts.isStringLiteralLike(memberNameNode)
-        ) {
-          memberNameType =
-            typeof checker.getStringLiteralType === 'function'
-              ? checker.getStringLiteralType(memberNameNode.text)
-              : null;
-          return memberNameType;
-        }
+          // Only a computed name is an expression, whose type can be compared
+          // with the key type.
+          if (ts.isComputedPropertyName(memberNameNode)) {
+            return checker.isTypeAssignableTo(
+              checker.getTypeAtLocation(memberNameNode.expression),
+              keyType,
+            );
+          }
 
-        if (ts.isNumericLiteral(memberNameNode)) {
-          memberNameType =
-            typeof checker.getNumberLiteralType === 'function'
-              ? checker.getNumberLiteralType(Number(memberNameNode.text))
-              : null;
-          return memberNameType;
-        }
-
-        if (ts.isComputedPropertyName(memberNameNode)) {
-          memberNameType = checker.getTypeAtLocation(memberNameNode.expression);
-          return memberNameType;
-        }
-
-        return memberNameType;
-      }
-
-      function hasMatchingIndexSignature(
-        baseType: ts.Type,
-        nameType: ts.Type | null,
-      ) {
-        const indexInfos = checker.getIndexInfosOfType(baseType);
-        if (
-          nameType != null &&
-          indexInfos.some(indexInfo =>
-            checker.isTypeAssignableTo(nameType, indexInfo.keyType),
-          )
-        ) {
-          return true;
-        }
-
-        const isNumericName = tsutils.isNumericPropertyName(memberSymbolName);
-        if (
-          isNumericName &&
-          (checker.getIndexInfoOfType(baseType, ts.IndexKind.Number) != null ||
-            checker.getIndexInfoOfType(baseType, ts.IndexKind.String) != null)
-        ) {
-          return true;
-        }
-
-        if (
-          nameType != null ||
-          (!ts.isIdentifier(memberNameNode) &&
-            !ts.isStringLiteralLike(memberNameNode) &&
-            !ts.isNumericLiteral(memberNameNode))
-        ) {
-          return false;
-        }
-
-        // Literal-type factories are unavailable in older supported TypeScript
-        // versions. In that case, conservatively match string-like index keys.
-        return indexInfos.some(indexInfo =>
-          tsutils
-            .unionConstituents(indexInfo.keyType)
-            .some(
-              keyType =>
-                tsutils.isTypeFlagSet(keyType, ts.TypeFlags.String) ||
-                tsutils.isTemplateLiteralType(keyType) ||
-                (isNumericName &&
-                  tsutils.isTypeFlagSet(keyType, ts.TypeFlags.Number)),
-            ),
-        );
+          // Any other name has no type to compare. A number or a symbol key
+          // does not accept it, and a key such as a template literal type is
+          // assumed to.
+          return !tsutils.isTypeFlagSet(
+            keyType,
+            ts.TypeFlags.Number | ts.TypeFlags.ESSymbol,
+          );
+        });
       }
 
       const isStaticMember = memberNode.static;
@@ -575,10 +537,7 @@ export default createRule({
             return true;
           }
 
-          if (
-            !isStaticMember &&
-            hasMatchingIndexSignature(baseType, getMemberNameType())
-          ) {
+          if (!isStaticMember && hasApplicableIndexSignature(baseType)) {
             return true;
           }
         }

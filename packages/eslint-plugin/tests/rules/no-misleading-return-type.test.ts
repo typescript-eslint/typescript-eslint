@@ -94,8 +94,7 @@ function getValue(): string | null {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -189,14 +188,18 @@ class Provider {
   getValue: () => string | null = (): string | null => 'value';
 }
     `,
-    `
+    {
+      code: `
 interface Provider {
   getValue(): string | null;
 }
 class ProviderImpl implements Provider {
   accessor getValue = (): string | null => 'value';
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 interface Provider {
   getValue(): string | null;
@@ -207,7 +210,8 @@ const provider = {
   },
 } as Provider;
     `,
-    `
+    {
+      code: `
 interface Provider {
   getValue(): string | null;
 }
@@ -216,7 +220,10 @@ const provider = {
     return 'value';
   },
 } satisfies Provider;
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 interface Provider {
   getValue(): string | null;
@@ -281,6 +288,17 @@ interface Provider {
 class ProviderImpl implements Provider {
   [key: \`get\${string}\`]: () => string | null;
   getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: \`get\${string}\`]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: \`get\${string}\`]: () => string | null;
+  other(): string | null {
     return 'value';
   }
 }
@@ -641,6 +659,8 @@ class Provider {
   accessor getValue = (): string | null => 'value';
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 36,
@@ -814,19 +834,86 @@ class Derived extends Base {
     {
       code: `
 interface Provider {
-  [key: \`get\${string}\`]: () => string | null;
+  [key: number]: () => string | null;
 }
 class ProviderImpl implements Provider {
-  [key: \`get\${string}\`]: () => string | null;
-  other(): string | null {
+  [key: number]: () => string | null;
+  getValue(): string | null {
     return 'value';
   }
 }
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 24,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: symbol]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: symbol]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: string]: () => string | null;
+}
+declare const method: unique symbol;
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  [method](): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  #getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 29,
           endLine: 7,
           line: 7,
           messageId: 'unnecessaryType',
@@ -1579,8 +1666,7 @@ function getValue(): string | null {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -1716,16 +1802,6 @@ declare function getAllowedType(): AllowedType;
 function getValue(): AllowedType | TypeFlags.Unknown | undefined {
   return getAllowedType();
 }
-
-enum FirstText {
-  Value = 'value',
-}
-enum SecondText {
-  Value = 'value',
-}
-function getText(): FirstText.Value | SecondText.Value {
-  return FirstText.Value;
-}
       `,
       errors: [
         {
@@ -1742,11 +1818,26 @@ function getText(): FirstText.Value | SecondText.Value {
           line: 11,
           messageId: 'unnecessaryType',
         },
+      ],
+    },
+    {
+      code: `
+enum FirstText {
+  Value = 'value',
+}
+enum SecondText {
+  Value = 'value',
+}
+function getText(): FirstText.Value | SecondText.Value {
+  return FirstText.Value;
+}
+      `,
+      errors: [
         {
           column: 39,
           endColumn: 55,
-          endLine: 21,
-          line: 21,
+          endLine: 8,
+          line: 8,
           messageId: 'unnecessaryType',
         },
       ],
