@@ -71,7 +71,7 @@ export default createRule<Options, MessageIds>({
       isDoubleOperator: boolean, // !!
     ) {
       const outerNode = isDoubleOperator ? node.parent : node;
-      const type = services.getTypeAtLocation(node.argument);
+      const type = getConstrainedTypeAtLocation(services, node.argument);
       if (doesUnderlyingTypeMatchFlag(type, typeFlag)) {
         const wrappingFixerParams = {
           node: outerNode,
@@ -164,7 +164,7 @@ export default createRule<Options, MessageIds>({
           node.right.type === AST_NODE_TYPES.Literal &&
           node.right.value === '' &&
           doesUnderlyingTypeMatchFlag(
-            services.getTypeAtLocation(node.left),
+            getConstrainedTypeAtLocation(services, node.left),
             ts.TypeFlags.StringLike,
           )
         ) {
@@ -203,7 +203,7 @@ export default createRule<Options, MessageIds>({
           node.left.type === AST_NODE_TYPES.Literal &&
           node.left.value === '' &&
           doesUnderlyingTypeMatchFlag(
-            services.getTypeAtLocation(node.right),
+            getConstrainedTypeAtLocation(services, node.right),
             ts.TypeFlags.StringLike,
           )
         ) {
@@ -368,7 +368,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.UnaryExpression,
       ): void {
         const outerNode = node.parent;
-        const type = services.getTypeAtLocation(node.argument);
+        const type = getConstrainedTypeAtLocation(services, node.argument);
 
         if (
           tsutils.unionConstituents(type).every(t => {
