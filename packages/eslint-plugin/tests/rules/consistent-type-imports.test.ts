@@ -2510,9 +2510,9 @@ declare const useEffectTwo: typeof useEffect;
           `,
           errors: [
             {
-              column: 1,
+              column: 30,
               data: { typeImports: '"useEffect"' },
-              endColumn: 55,
+              endColumn: 39,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
