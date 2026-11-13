@@ -1,6 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-imports';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
 const PARSER_OPTION_COMBOS = [
   {
@@ -2460,5 +2461,92 @@ export type T = Foo;
         `,
       },
     ],
+  });
+});
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/8324
+describe('jsxPragma detected from the program', () => {
+  describe('jsx: react-jsx', () => {
+    const ruleTester = createRuleTesterWithTypes({
+      project: './tsconfig.jsx-react-jsx.json',
+    });
+
+    ruleTester.run('consistent-type-imports', rule, {
+      assertionOptions: {
+        requireData: true,
+      },
+      valid: [],
+      invalid: [
+        {
+          code: `
+import React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 27,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          filename: 'react.tsx',
+          output: `
+import type React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+        },
+        {
+          code: `
+import React, { useCallback, useEffect } from 'react';
+
+useCallback(() => {}, []);
+declare const useEffectTwo: typeof useEffect;
+          `,
+          errors: [
+            {
+              column: 30,
+              data: { typeImports: '"useEffect"' },
+              endColumn: 39,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          filename: 'react.tsx',
+          output: `
+import type { useEffect } from 'react';
+import React, { useCallback } from 'react';
+
+useCallback(() => {}, []);
+declare const useEffectTwo: typeof useEffect;
+          `,
+        },
+      ],
+    });
+  });
+
+  describe('jsx: preserve', () => {
+    const ruleTester = createRuleTesterWithTypes();
+
+    ruleTester.run('consistent-type-imports', rule, {
+      valid: [
+        {
+          code: `
+import React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+          filename: 'react.tsx',
+        },
+      ],
+      invalid: [],
+    });
   });
 });
