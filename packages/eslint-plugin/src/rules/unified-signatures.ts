@@ -236,10 +236,8 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       // Must return the same type.
 
-      const aTypeParams =
-        a.typeParameters != null ? a.typeParameters.params : undefined;
-      const bTypeParams =
-        b.typeParameters != null ? b.typeParameters.params : undefined;
+      const aTypeParams = a.typeParameters?.params;
+      const bTypeParams = b.typeParameters?.params;
 
       if (ignoreDifferentlyNamedParameters) {
         const commonParamsLength = Math.min(a.params.length, b.params.length);
