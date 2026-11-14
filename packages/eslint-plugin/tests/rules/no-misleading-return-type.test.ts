@@ -99,6 +99,140 @@ function getValue(): string | null {
       },
     },
     `
+declare const values: string[];
+function getValue(): string | undefined {
+  return values[0];
+}
+    `,
+    `
+declare const values: Record<string, string>;
+function getValue(key: string): string | undefined {
+  return values[key];
+}
+    `,
+    `
+declare const values: Record<string, string>;
+function getValue(): string | undefined {
+  return values.key;
+}
+    `,
+    `
+declare const values: Record<string, string>;
+function getValue(): string | undefined {
+  return values['some-key'];
+}
+    `,
+    `
+interface Values {
+  [key: string]: string;
+  id: string;
+}
+declare const values: Values;
+function getValue(key: string): string | undefined {
+  return values[key];
+}
+    `,
+    `
+declare const value: string;
+function getCharacter(): string | undefined {
+  return value[0];
+}
+    `,
+    `
+declare const values: [string, string];
+function getValue(index: number): string | undefined {
+  return values[index];
+}
+    `,
+    `
+declare const values: [string, ...string[]];
+function getValue(): string | undefined {
+  return values[1];
+}
+    `,
+    `
+function getFirst<T>(values: T[]): T | undefined {
+  return values[0];
+}
+    `,
+    `
+declare const values: string[];
+const getValue = (): string | undefined => values[0];
+    `,
+    `
+declare const values: string[];
+async function getValue(): Promise<string | undefined> {
+  return values[0];
+}
+    `,
+    `
+declare const values: string[];
+function getValue(flag: boolean): string | undefined {
+  return flag ? values[0] : values[1];
+}
+    `,
+    `
+declare const values: string[];
+function getValue(): string | null {
+  return values[0] ?? null;
+}
+    `,
+    `
+declare const values: string[];
+function getValue(): string | null {
+  return values[0] ?? values[1] ?? null;
+}
+    `,
+    `
+declare const values: string[];
+declare const fallback: number;
+function getValue(): string | number | null {
+  return values[0] ?? fallback ?? null;
+}
+    `,
+    `
+declare const handlers: Record<string, () => string>;
+function getHandler(name: string): (() => string) | null {
+  return handlers[name] || null;
+}
+    `,
+    `
+declare const values: string[];
+function getLength(): number | undefined {
+  return values[0]?.length;
+}
+    `,
+    `
+declare const handlers: Record<string, () => string>;
+function getValue(name: string): string | undefined {
+  return handlers[name]?.();
+}
+    `,
+    `
+declare const values: { name: string }[];
+function getLength(): number | undefined {
+  return values[0]?.name.length;
+}
+    `,
+    `
+declare const values: string[];
+function getLength(): number | undefined {
+  return (values[0] ?? values[1])?.length;
+}
+    `,
+    `
+declare const values: { name: string }[];
+function getName(): string | undefined {
+  return values[0] && values[0].name;
+}
+    `,
+    `
+declare const value: { name: string } | undefined;
+function getName(): string | undefined {
+  return value?.name;
+}
+    `,
+    `
 type Result = string | null;
 function getValue(): Result {
   return 'value';
@@ -1635,23 +1769,6 @@ function getValue(): string | null {
       code: `
 declare const values: string[];
 function getValue(): string | null {
-  return values[0] ?? null;
-}
-      `,
-      errors: [
-        {
-          column: 31,
-          endColumn: 35,
-          endLine: 3,
-          line: 3,
-          messageId: 'unnecessaryType',
-        },
-      ],
-    },
-    {
-      code: `
-declare const values: string[];
-function getValue(): string | null {
   return values[0] ?? 'fallback';
 }
       `,
@@ -1669,6 +1786,180 @@ function getValue(): string | null {
           tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
+    },
+    {
+      code: `
+declare const values: string[];
+function getValue(): string | null | undefined {
+  return values[0] ?? null;
+}
+      `,
+      errors: [
+        {
+          column: 38,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[];
+function getValue(): string | undefined {
+  return values[0] ?? 'fallback';
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string;
+function getValue(): string | null {
+  return value ?? null;
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[];
+function getValue(): string | undefined {
+  return values[0]!;
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[];
+function getValue(): string | undefined {
+  return values[0] + values[1];
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: { name: string }[];
+function getName(): string | undefined {
+  return values[0].name;
+}
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: [string, string];
+function getValue(): string | undefined {
+  return values[0];
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Values {
+  [key: string]: string;
+  id: string;
+}
+declare const values: Values;
+function getValue(): string | undefined {
+  return values.id;
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 40,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: { first: string; second: string };
+function getValue(key: 'first' | 'second'): string | undefined {
+  return values[key];
+}
+      `,
+      errors: [
+        {
+          column: 54,
+          endColumn: 63,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: string[][];
+function getValues(): (string | null)[] | undefined {
+  return values[0];
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
     },
     {
       code: `

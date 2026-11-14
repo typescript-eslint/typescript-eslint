@@ -9,6 +9,7 @@ import {
   forEachReturnStatement,
   getParserServices,
   hasOverloadSignatures,
+  isNullableType,
   isPromiseLike,
   isSymbolFromDefaultLibrary,
   isTypeAnyType,
@@ -56,6 +57,10 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      services.program.getCompilerOptions(),
+      'noUncheckedIndexedAccess',
+    );
 
     // Default library interfaces that are also satisfied by types that do not
     // instantiate them: an array is an `ArrayLike`.
@@ -106,12 +111,107 @@ export default createRule({
       );
     }
 
-    function getReturnedTypes(node: FunctionNode): ts.Type[] | null {
+    /**
+     * Whether a member is read through an index signature, as an array element
+     * is. TypeScript only adds `undefined` to the type of such a member when
+     * `noUncheckedIndexedAccess` is enabled.
+     */
+    function isUncheckedIndexedAccess(
+      node: ts.ElementAccessExpression | ts.PropertyAccessExpression,
+    ): boolean {
+      const objectType = checker.getTypeAtLocation(node.expression);
+      const name = ts.isPropertyAccessExpression(node)
+        ? node.name.text
+        : ts.isStringLiteralLike(node.argumentExpression) ||
+            ts.isNumericLiteral(node.argumentExpression)
+          ? node.argumentExpression.text
+          : undefined;
+
+      return tsutils
+        .unionConstituents(
+          checker.getBaseConstraintOfType(objectType) ?? objectType,
+        )
+        .some(
+          type =>
+            checker.getIndexInfosOfType(type).length > 0 &&
+            // Only a literal key is known to name a declared member.
+            (name == null || checker.getPropertyOfType(type, name) == null),
+        );
+    }
+
+    /**
+     * The types of the values that an expression can produce although its type
+     * does not include them: a member that is read through an index signature
+     * can be `undefined`.
+     */
+    function getUncheckedTypes(expression: ts.Expression): ts.Type[] {
+      if (ts.isParenthesizedExpression(expression)) {
+        return getUncheckedTypes(expression.expression);
+      }
+
+      if (ts.isConditionalExpression(expression)) {
+        return [
+          ...getUncheckedTypes(expression.whenTrue),
+          ...getUncheckedTypes(expression.whenFalse),
+        ];
+      }
+
+      if (ts.isBinaryExpression(expression)) {
+        const { left, operatorToken, right } = expression;
+        switch (operatorToken.kind) {
+          // A falsy left operand is the result.
+          case ts.SyntaxKind.AmpersandAmpersandToken:
+            return [...getUncheckedTypes(left), ...getUncheckedTypes(right)];
+
+          // The right operand replaces a missing left operand. TypeScript
+          // leaves its type out when the type of the left operand shows no
+          // value to replace.
+          case ts.SyntaxKind.BarBarToken:
+          case ts.SyntaxKind.QuestionQuestionToken: {
+            const leftTypes = getUncheckedTypes(left);
+
+            return [
+              ...leftTypes.filter(type => !isNullableType(type)),
+              ...(leftTypes.length > 0
+                ? tsutils.unionConstituents(checker.getTypeAtLocation(right))
+                : []),
+              ...getUncheckedTypes(right),
+            ];
+          }
+
+          default:
+            return [];
+        }
+      }
+
+      if (
+        ts.isCallExpression(expression) ||
+        ts.isElementAccessExpression(expression) ||
+        ts.isPropertyAccessExpression(expression)
+      ) {
+        const canBeMissing =
+          (!ts.isCallExpression(expression) &&
+            isUncheckedIndexedAccess(expression)) ||
+          // An optional chain is `undefined` when the value before it is
+          // missing.
+          (ts.isOptionalChain(expression) &&
+            getUncheckedTypes(expression.expression).some(isNullableType));
+
+        return canBeMissing ? [checker.getUndefinedType()] : [];
+      }
+
+      return [];
+    }
+
+    function getReturnedTypes(
+      node: FunctionNode,
+      typeNode: TSESTree.TypeNode,
+    ): ts.Type[] | null {
       const body = services.esTreeNodeToTSNodeMap.get(
         node.body,
       ) as ts.ConciseBody;
 
-      const returnedTypes: ts.Type[] = [];
+      const expressions: ts.Expression[] = [];
       let canCompleteWithoutValue = false;
       if (ts.isBlock(body)) {
         // TypeScript sets this flag when the end of the body is reachable. The
@@ -124,26 +224,44 @@ export default createRule({
           if (statement.expression == null) {
             canCompleteWithoutValue = true;
           } else {
-            returnedTypes.push(checker.getTypeAtLocation(statement.expression));
+            expressions.push(statement.expression);
           }
         });
       } else {
-        returnedTypes.push(checker.getTypeAtLocation(body));
+        expressions.push(body);
       }
 
       // A function that never returns a value shows nothing about its type.
-      if (returnedTypes.length === 0) {
+      if (expressions.length === 0) {
         return null;
       }
+
+      // An async function awaits a promise before resolving with it.
+      const getResolvedType = (type: ts.Type): ts.Type =>
+        node.async ? (checker.getAwaitedType(type) ?? type) : type;
+
+      const returnedTypes = expressions.map(expression =>
+        checker.getTypeAtLocation(expression),
+      );
       if (canCompleteWithoutValue) {
         returnedTypes.push(checker.getUndefinedType());
       }
+      if (!isNoUncheckedIndexedAccess) {
+        // The function type-checks without these values, so they only count
+        // where the return type accepts them.
+        const declaredType = getResolvedType(
+          services.getTypeAtLocation(typeNode),
+        );
+        returnedTypes.push(
+          ...expressions
+            .flatMap(getUncheckedTypes)
+            .filter(type =>
+              checker.isTypeAssignableTo(getResolvedType(type), declaredType),
+            ),
+        );
+      }
 
-      return getConstituents(
-        node.async
-          ? returnedTypes.map(type => checker.getAwaitedType(type) ?? type)
-          : returnedTypes,
-      );
+      return getConstituents(returnedTypes.map(getResolvedType));
     }
 
     function getArrayElementType(type: ts.Type): ts.Type | undefined {
@@ -603,7 +721,7 @@ export default createRule({
         return;
       }
 
-      const returnedTypes = getReturnedTypes(node);
+      const returnedTypes = getReturnedTypes(node, typeNode);
       if (returnedTypes != null) {
         checkTypeNode(typeNode, returnedTypes, node.async);
       }

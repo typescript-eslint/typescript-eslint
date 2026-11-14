@@ -89,8 +89,11 @@ It also skips generators.
 
 The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
 Compiler options therefore affect its results.
-When `noUncheckedIndexedAccess` is disabled, an indexed access can exclude `undefined` from its inferred type even though it may produce `undefined` at runtime.
 When `strictNullChecks` is disabled, `null` and `undefined` constituents are not reported.
+
+When `noUncheckedIndexedAccess` is disabled, TypeScript gives a value that is read through an index signature, such as an array element, a type without `undefined`.
+The rule treats a returned indexed access as possibly `undefined`, including when it is an operand of `??`, `||`, or `&&`, a branch of a conditional expression, or the start of an optional chain.
+It does not follow such a value through a variable, a destructuring pattern, or an object or array literal.
 
 ## When Not To Use It
 
