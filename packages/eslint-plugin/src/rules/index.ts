@@ -66,6 +66,7 @@ const rules = lazyRules({
   'no-magic-numbers': () => require('./no-magic-numbers'),
   'no-meaningless-void-operator': () =>
     require('./no-meaningless-void-operator'),
+  'no-misleading-return-type': () => require('./no-misleading-return-type'),
   'no-misused-new': () => require('./no-misused-new'),
   'no-misused-promises': () => require('./no-misused-promises'),
   'no-misused-spread': () => require('./no-misused-spread'),
