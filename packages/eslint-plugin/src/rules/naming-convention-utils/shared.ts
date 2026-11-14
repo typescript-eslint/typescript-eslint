@@ -15,8 +15,14 @@ export function selectorTypeToMessageString(
 }
 
 export function isMetaSelector(
+  selector: IndividualAndMetaSelectorsString,
+): selector is MetaSelectorsString;
+export function isMetaSelector(
+  selector: MetaSelectors | Selectors,
+): selector is MetaSelectors;
+export function isMetaSelector(
   selector: IndividualAndMetaSelectorsString | MetaSelectors | Selectors,
-): selector is MetaSelectorsString {
+): boolean {
   return selector in MetaSelectors;
 }
 

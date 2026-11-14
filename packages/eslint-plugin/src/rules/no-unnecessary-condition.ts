@@ -156,6 +156,141 @@ function isOnlyUsedForTruthiness(node: TSESTree.Expression): boolean {
   }
 }
 
+const unknowableFlags = (ts.TypeFlags.Any |
+  ts.TypeFlags.Conditional |
+  ts.TypeFlags.Never |
+  ts.TypeFlags.TypeVariable |
+  ts.TypeFlags.Unknown) as ts.TypeFlags;
+
+const disjointDomainFlags = (ts.TypeFlags.BigIntLike |
+  ts.TypeFlags.BooleanLike |
+  ts.TypeFlags.ESSymbolLike |
+  ts.TypeFlags.EnumLike |
+  ts.TypeFlags.NonPrimitive |
+  ts.TypeFlags.Null |
+  ts.TypeFlags.NumberLike |
+  ts.TypeFlags.StringLike |
+  ts.TypeFlags.Undefined |
+  ts.TypeFlags.Void) as ts.TypeFlags;
+
+const patternStringFlags = (ts.TypeFlags.StringMapping |
+  ts.TypeFlags.TemplateLiteral) as ts.TypeFlags;
+
+function isDiscriminantType(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(part =>
+      isTypeFlagSet(
+        part,
+        (ts.TypeFlags.Unit | patternStringFlags) as ts.TypeFlags,
+      ),
+    );
+}
+
+function areAtomicTypesDisjoint(
+  checker: ts.TypeChecker,
+  a: ts.Type,
+  b: ts.Type,
+  tsNode: ts.Node,
+  checkDiscriminants: boolean,
+): boolean {
+  if (isTypeFlagSet(a, unknowableFlags) || isTypeFlagSet(b, unknowableFlags)) {
+    return false;
+  }
+
+  if (checker.isTypeAssignableTo(a, b) || checker.isTypeAssignableTo(b, a)) {
+    return false;
+  }
+
+  if (
+    (isNullishType(a) &&
+      isTypeFlagSet(b, ts.TypeFlags.NonPrimitive | ts.TypeFlags.Object)) ||
+    (isNullishType(b) &&
+      isTypeFlagSet(a, ts.TypeFlags.NonPrimitive | ts.TypeFlags.Object))
+  ) {
+    return true;
+  }
+
+  if (
+    isTypeFlagSet(a, patternStringFlags) &&
+    isTypeFlagSet(b, patternStringFlags)
+  ) {
+    return false;
+  }
+
+  if (
+    isTypeFlagSet(a, disjointDomainFlags) &&
+    isTypeFlagSet(b, disjointDomainFlags)
+  ) {
+    return true;
+  }
+
+  if (
+    checkDiscriminants &&
+    isTypeFlagSet(a, ts.TypeFlags.Object) &&
+    isTypeFlagSet(b, ts.TypeFlags.Object)
+  ) {
+    for (const propA of a.getProperties()) {
+      const propB = tsutils.getPropertyOfType(b, propA.escapedName);
+      if (propB == null) {
+        continue;
+      }
+
+      if (
+        tsutils.isSymbolFlagSet(propA, ts.SymbolFlags.Optional) &&
+        tsutils.isSymbolFlagSet(propB, ts.SymbolFlags.Optional)
+      ) {
+        continue;
+      }
+
+      const typeA = checker.getTypeOfSymbolAtLocation(propA, tsNode);
+      const typeB = checker.getTypeOfSymbolAtLocation(propB, tsNode);
+
+      if (
+        (isDiscriminantType(typeA) || isDiscriminantType(typeB)) &&
+        areTypesDisjoint(checker, typeA, typeB, tsNode, false)
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function areTypesDisjoint(
+  checker: ts.TypeChecker,
+  argumentType: ts.Type,
+  predicateType: ts.Type,
+  tsNode: ts.Node,
+  checkDiscriminants = true,
+): boolean {
+  if (
+    isTypeFlagSet(argumentType, unknowableFlags) ||
+    isTypeFlagSet(predicateType, unknowableFlags)
+  ) {
+    return false;
+  }
+
+  return tsutils.unionConstituents(argumentType).every(argUnionPart =>
+    tsutils.unionConstituents(predicateType).every(predUnionPart => {
+      const argInterParts = tsutils.intersectionConstituents(argUnionPart);
+      const predInterParts = tsutils.intersectionConstituents(predUnionPart);
+      return argInterParts.some(argInterPart =>
+        predInterParts.some(predInterPart =>
+          areAtomicTypesDisjoint(
+            checker,
+            argInterPart,
+            predInterPart,
+            tsNode,
+            checkDiscriminants,
+          ),
+        ),
+      );
+    }),
+  );
+}
+
 // #endregion
 
 type LegacyAllowConstantLoopConditions = boolean;
@@ -191,7 +326,8 @@ export type MessageId =
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
   | 'suggestRemoveOptionalChain'
-  | 'typeGuardAlreadyIsType';
+  | 'typeGuardAlreadyIsType'
+  | 'typeGuardNeverIsType';
 
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
@@ -226,6 +362,8 @@ export default createRule<Options, MessageId>({
       suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
+      typeGuardNeverIsType:
+        'Unnecessary conditional, expression can never have the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
     schema: [
       {
@@ -729,6 +867,25 @@ export default createRule<Options, MessageId>({
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
+                  ? 'assertion function'
+                  : 'type guard',
+              },
+            });
+          } else if (
+            areTypesDisjoint(
+              checker,
+              typeOfArgument,
+              typeGuardAssertedArgument.type,
+              services.esTreeNodeToTSNodeMap.get(
+                typeGuardAssertedArgument.argument,
+              ),
+            )
+          ) {
+            context.report({
+              node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardNeverIsType',
               data: {
                 typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
                   ? 'assertion function'

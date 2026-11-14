@@ -129,10 +129,16 @@ function isString(value: unknown): value is string {
 }
 
 declare const s: string;
+declare const n: number;
 
 // Unnecessary; s is always a string.
 if (isString(s)) {
              ~ Unnecessary conditional, expression already has the type being checked by the type guard.
+}
+
+// Unnecessary; n can never be a string.
+if (isString(n)) {
+             ~ Unnecessary conditional, expression can never have the type being checked by the type guard.
 }
 
 function assertIsString(value: unknown): asserts value is string {
@@ -143,6 +149,8 @@ function assertIsString(value: unknown): asserts value is string {
 
 assertIsString(s); // Unnecessary; s is always a string.
                ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
+assertIsString(n); // Unnecessary; n can never be a string.
+               ~ Unnecessary conditional, expression can never have the type being checked by the assertion function.
 
 
 
