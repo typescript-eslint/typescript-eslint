@@ -475,8 +475,13 @@ const f = <T,>(
 type Tree<T> = { value: T; children: Tree<T>[] };
 declare function build<R>(make: () => R): R;
 
-const mapTree = <T, U>(fn: (value: T) => U) => (tree: Tree<T>) =>
-  build<Tree<U>>(() => ({ value: fn(tree.value), children: tree.children.map(mapTree(fn)) }));
+const mapTree =
+  <T, U>(fn: (value: T) => U) =>
+  (tree: Tree<T>) =>
+    build<Tree<U>>(() => ({
+      value: fn(tree.value),
+      children: tree.children.map(mapTree(fn)),
+    }));
     `,
 
     "<T extends string>(t: T) => t as { [K in 'a' as T]: 0 };",
