@@ -21,6 +21,34 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    `
+function foo() {
+  const arr = [];
+  arr.unshift({ x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr.push({ x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr.push(1, { x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr[0] = { x: 1 } as { x: number; y: number };
+  return arr;
+}
+    `,
     {
       code: `
 declare const source: { a: number };
@@ -1103,6 +1131,104 @@ const other = value as number;
   ],
 
   invalid: [
+    {
+      code: `
+function foo() {
+  const arr = [];
+  arr.push(1 as number);
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  arr.includes(1 as number);
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo() {
+  const arr = [];
+  arr.push(1);
+  arr.includes(1);
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 } as { x: number; y: number });
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 54,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 });
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+declare const collection: { add(item: number): void };
+declare const n: 1 | 2;
+collection.add(n as number);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const collection: { add(item: number): void };
+declare const n: 1 | 2;
+collection.add(n);
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
@@ -3722,6 +3848,46 @@ const results = db.list()! as Promise<Map<string, Uint8Array>>;
         },
       ],
       output: null,
+    },
+    {
+      code: `
+declare const stack: { push(item: number): void };
+declare const n: number;
+stack.push(n as number);
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const stack: { push(item: number): void };
+declare const n: number;
+stack.push(n);
+      `,
+    },
+    {
+      code: `
+declare const n: number;
+missing.push(n as number);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const n: number;
+missing.push(n);
+      `,
     },
     {
       code: `

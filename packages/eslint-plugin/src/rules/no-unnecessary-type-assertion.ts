@@ -773,6 +773,62 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    const EVOLVING_ARRAY_METHODS = new Set(['push', 'unshift']);
+
+    /**
+     * `const arr = [];` declares an evolving array: its element type is inferred
+     * from what is pushed into it. At the call site the checker reports `any[]`,
+     * so an assertion on the pushed value is what determines the element type.
+     */
+    function isArgumentToEvolvingArrayMethod(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      let array: TSESTree.Expression | null = null;
+      if (
+        parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.callee.type === AST_NODE_TYPES.MemberExpression &&
+        !parent.callee.computed &&
+        parent.callee.property.type === AST_NODE_TYPES.Identifier &&
+        EVOLVING_ARRAY_METHODS.has(parent.callee.property.name)
+      ) {
+        array = parent.callee.object;
+      } else if (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.operator === '=' &&
+        parent.right === node &&
+        parent.left.type === AST_NODE_TYPES.MemberExpression &&
+        parent.left.computed
+      ) {
+        array = parent.left.object;
+      }
+      if (array?.type !== AST_NODE_TYPES.Identifier) {
+        return false;
+      }
+      const symbol = services.getSymbolAtLocation(array);
+      if (!symbol) {
+        return false;
+      }
+      const declaredType = checker.getTypeOfSymbol(symbol);
+      if (!checker.isArrayType(declaredType)) {
+        return false;
+      }
+      const [elementType] = checker.getTypeArguments(declaredType);
+      // evolving arrays use an internal `any` that is not the global one
+      if (
+        !isTypeFlagSet(elementType, ts.TypeFlags.Any) ||
+        elementType === checker.getAnyType()
+      ) {
+        return false;
+      }
+      // the array evolves to the widened type of the pushed value, so the
+      // assertion is only needed when it changes that type
+      return (
+        checker.getBaseTypeOfLiteralType(getUncastType(node)) !==
+        services.getTypeAtLocation(node)
+      );
+    }
+
     const SKIP_PARENT_TYPES = new Set([
       AST_NODE_TYPES.TSAsExpression,
       AST_NODE_TYPES.TSTypeAssertion,
@@ -807,7 +863,8 @@ export default createRule<Options, MessageIds>({
         isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
         isRightHandSideOfLogicalAssignment(node) ||
-        isArgumentToOverloadedFunction(node)
+        isArgumentToOverloadedFunction(node) ||
+        isArgumentToEvolvingArrayMethod(node)
       ) {
         return true;
       }
