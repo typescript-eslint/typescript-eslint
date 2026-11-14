@@ -38,6 +38,7 @@ function hasAbstractModifier(node: ts.Node): boolean {
 function getThisParameter(
   signature: ts.SignatureDeclaration,
 ): ts.ParameterDeclaration | null {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
     const thisParameter = signature.parameters[0];
     if (parameterIsThisKeyword(thisParameter)) {
@@ -412,6 +413,7 @@ export function checkModifiers(node: ts.Node): void {
     // @ts-expect-error intentional to access deprecated `node.modifiers`
     for (const modifier of (node.modifiers as ts.Modifier[] | undefined) ??
       []) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ts.isDecorator(modifier) || modifiers.includes(modifier)) {
         continue;
       }

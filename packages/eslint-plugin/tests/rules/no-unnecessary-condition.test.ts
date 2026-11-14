@@ -1380,6 +1380,237 @@ if (isNarrower(w)) {
     },
     {
       code: `
+declare function isNumber(x: unknown): x is number;
+declare const s: string;
+if (isNumber(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function assertNumber(x: unknown): asserts x is number;
+declare const s: string;
+assertNumber(s);
+      `,
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const v: string | number;
+if (isNumber(v)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B {
+  b: number;
+}
+declare function isB(x: unknown): x is B;
+declare const a: A;
+if (isB(a)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface NodeA {
+  next: NodeA;
+  a: string;
+}
+interface NodeB {
+  next: NodeB;
+  b: number;
+}
+declare function isNodeB(x: unknown): x is NodeB;
+declare const nodeA: NodeA;
+if (isNodeB(nodeA)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isRecord(x: unknown): x is { a: number };
+declare const s: string;
+if (isRecord(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type BrandedString = string & { __brand: 'id' };
+declare function isBranded(x: unknown): x is BrandedString;
+declare const s: string;
+if (isBranded(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isSuffixBar(x: unknown): x is \`\${string}-bar\`;
+declare const s: \`foo-\${string}\`;
+if (isSuffixBar(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface OptCat {
+  kind?: 'cat';
+}
+interface OptDog {
+  kind?: 'dog';
+}
+declare function isOptDog(x: unknown): x is OptDog;
+declare const cat: OptCat;
+if (isOptDog(cat)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface CatA {
+  kind: 'cat';
+  a: string;
+}
+interface CatB {
+  kind: 'cat';
+  b: number;
+}
+declare function isCatB(x: unknown): x is CatB;
+declare const catA: CatA;
+if (isCatB(catA)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface PropStr {
+  a: string;
+}
+interface PropNum {
+  a: number;
+}
+declare function isPropNum(x: unknown): x is PropNum;
+declare const propStr: PropStr;
+if (isPropNum(propStr)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+class PrivateCat {
+  #x = 'cat' as const;
+}
+interface PublicDog {
+  '#x': 'dog';
+}
+declare function isPublicDog(x: unknown): x is PublicDog;
+declare const cat: PrivateCat;
+if (isPublicDog(cat)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isObj(x: unknown): x is { a: number };
+declare const v: void;
+if (isObj(v)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const a: any;
+declare const u: unknown;
+if (isNumber(a)) {
+}
+if (isNumber(u)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isUnknown(x: unknown): x is unknown;
+declare const s: string;
+if (isUnknown(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+function fn<U>(isU: (x: unknown) => x is U, s: string) {
+  if (isU(s)) {
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+function fn<T>(x: T, y: T | string, n: never) {
+  if (isNumber(x)) {
+  }
+  if (isNumber(y)) {
+  }
+  if (isNumber(n)) {
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isPlainB(x: unknown): x is { b: number };
+function fn<T, U>(
+  x: (T & { a: string }) | { c: string },
+  y: { a: string },
+  isIntersected: (val: unknown) => val is U & { b: number },
+) {
+  if (isPlainB(x)) {
+  }
+  if (isIntersected(y)) {
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface OptStr {
+  a?: string;
+}
+interface ReqNum {
+  a: number;
+}
+declare function isReqNum(x: unknown): x is ReqNum;
+declare const optStr: OptStr;
+if (isReqNum(optStr)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
 a.a?.a?.a;
@@ -5245,6 +5476,512 @@ if (isNarrower(w)) {
           endLine: 11,
           line: 11,
           messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const s: string;
+if (isNumber(s)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertNumber(x: unknown): asserts x is number;
+declare const s: string;
+assertNumber(s);
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'assertion function' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isBar(x: unknown): x is 'bar';
+declare const foo: 'foo';
+if (isBar(foo)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isTwo(x: unknown): x is 2;
+declare const one: 1;
+if (isTwo(one)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isFalse(x: unknown): x is false;
+declare const tru: true;
+if (isFalse(tru)) {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const v: boolean | bigint;
+if (isStringOrNumber(v)) {
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isFooTemplate(x: unknown): x is \`foo-\${string}\`;
+declare const s: 'hello';
+if (isFooTemplate(s)) {
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+enum EnumA {
+  A = 'a',
+}
+enum EnumB {
+  B = 'b',
+}
+declare function isEnumB(x: unknown): x is EnumB;
+declare const a: EnumA;
+if (isEnumB(a)) {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isObj(x: unknown): x is { a: number };
+declare const n: null;
+if (isObj(n)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isObject(x: unknown): x is object;
+declare const u: undefined;
+if (isObject(u)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNull(x: unknown): x is null;
+declare const o: { a: number };
+if (isNull(o)) {
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isObject(x: unknown): x is object;
+declare const s: string;
+if (isObject(s)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const v: void;
+if (isNumber(v)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+function fn<T extends string>(x: T) {
+  if (isNumber(x)) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type BrandA = string & { __brand: 'a' };
+declare function isNumber(x: unknown): x is number;
+declare const a: BrandA;
+if (isNumber(a)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type BrandA = string & { __brand: 'a' };
+type BrandB = string & { __brand: 'b' };
+declare function isBrandB(x: unknown): x is BrandB;
+declare const a: BrandA;
+if (isBrandB(a)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 15,
+          endLine: 6,
+          line: 6,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface Cat {
+  kind: 'cat';
+}
+interface Dog {
+  kind: 'dog';
+}
+declare function isDog(x: unknown): x is Dog;
+declare const cat: Cat;
+if (isDog(cat)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface Dog {
+  kind: 'dog';
+}
+declare function isDog(x: unknown): x is Dog;
+declare const numKind: { kind: number };
+if (isDog(numKind)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface Box<T> {
+  kind: T;
+}
+declare function isBoxDog(x: unknown): x is Box<'dog'>;
+declare const boxCat: Box<'cat'>;
+if (isBoxDog(boxCat)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const sym: unique symbol;
+interface SymCat {
+  [sym]: 'cat';
+}
+interface SymDog {
+  [sym]: 'dog';
+}
+declare function isSymDog(x: unknown): x is SymDog;
+declare const symCat: SymCat;
+if (isSymDog(symCat)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 20,
+          endLine: 11,
+          line: 11,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface OptCat {
+  kind?: 'cat';
+}
+interface Dog {
+  kind: 'dog';
+}
+declare function isDog(x: unknown): x is Dog;
+declare const optCat: OptCat;
+if (isDog(optCat)) {
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 17,
+          endLine: 10,
+          line: 10,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface OnlyA {
+  a: string;
+  b?: never;
+}
+interface OnlyB {
+  a?: never;
+  b: number;
+}
+declare function isOnlyB(x: unknown): x is OnlyB;
+declare const onlyA: OnlyA;
+if (isOnlyB(onlyA)) {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 12,
+          line: 12,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface OnlyA {
+  a: string;
+  b?: never;
+}
+interface OnlyB {
+  a?: never;
+  b: number;
+}
+declare function isOnlyA(x: unknown): x is OnlyA;
+declare const onlyB: OnlyB;
+if (isOnlyA(onlyB)) {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 12,
+          line: 12,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isPair(x: unknown): x is [number, number];
+declare const single: [string];
+if (isPair(single)) {
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
         },
       ],
       options: [{ checkTypePredicates: true }],
