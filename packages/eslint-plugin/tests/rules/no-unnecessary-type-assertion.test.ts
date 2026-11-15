@@ -1128,6 +1128,9 @@ enum Color {
 declare const value: Color | 5;
 const other = value as number;
     `,
+    `
+missing.push(1 as number);
+    `,
   ],
 
   invalid: [
@@ -3852,41 +3855,20 @@ const results = db.list()! as Promise<Map<string, Uint8Array>>;
     {
       code: `
 declare const stack: { push(item: number): void };
-declare const n: number;
-stack.push(n as number);
+stack.push(1 as number);
       `,
       errors: [
         {
           column: 12,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
-          messageId: 'unnecessaryAssertion',
-        },
-      ],
-      output: `
-declare const stack: { push(item: number): void };
-declare const n: number;
-stack.push(n);
-      `,
-    },
-    {
-      code: `
-declare const n: number;
-missing.push(n as number);
-      `,
-      errors: [
-        {
-          column: 14,
-          endColumn: 25,
           endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
       output: `
-declare const n: number;
-missing.push(n);
+declare const stack: { push(item: number): void };
+stack.push(1);
       `,
     },
     {
