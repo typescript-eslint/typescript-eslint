@@ -100,6 +100,43 @@ x
     });
   });
 
+  // https://github.com/typescript-eslint/typescript-eslint/issues/9773
+  it('converts a long chain of binary expressions without overflowing the stack', () => {
+    const code = Array.from({ length: 2000 }, () => '"a"').join(' +\n');
+    const { ast } = parser.parseAndGenerateServices(code, {});
+
+    const statement = ast.body[0] as parser.TSESTree.ExpressionStatement;
+    let depth = 0;
+    let current = statement.expression;
+    while (current.type === parser.AST_NODE_TYPES.BinaryExpression) {
+      expect(current.right).toMatchObject({ value: 'a' });
+      current = current.left as parser.TSESTree.Expression;
+      depth++;
+    }
+
+    expect(depth).toBe(1999);
+    expect(current).toMatchObject({ value: 'a' });
+  });
+
+  it('maps every node in a chain of binary expressions to its TS node', () => {
+    const code = 'a + b * c - d && e || f';
+    const { ast, services } = parser.parseAndGenerateServices(code, {
+      range: true,
+    });
+
+    const statement = ast.body[0] as parser.TSESTree.ExpressionStatement;
+    let current: parser.TSESTree.Node = statement.expression;
+    while (
+      current.type === parser.AST_NODE_TYPES.BinaryExpression ||
+      current.type === parser.AST_NODE_TYPES.LogicalExpression
+    ) {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(current);
+      expect(tsNode.getText()).toBe(code.slice(...current.range));
+      expect(services.tsNodeToESTreeNodeMap.get(tsNode)).toBe(current);
+      current = current.left;
+    }
+  });
+
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
