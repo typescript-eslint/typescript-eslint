@@ -1100,6 +1100,188 @@ enum Color {
 declare const value: Color | 5;
 const other = value as number;
     `,
+    `
+const obj: {} = {};
+const values = Object.values(obj) as string[];
+    `,
+    `
+const obj: {} = {};
+const values = <string[]>Object.values(obj);
+    `,
+    `
+const values = Object.values({}) as string[];
+    `,
+    `
+const obj: {} = {};
+const values: string[] | number[] = Object.values(obj) as string[];
+    `,
+    `
+declare function values<T>(obj: { [key: string]: T }): T[];
+declare function values(obj: number): number[];
+declare const anyVal: any;
+declare const neverVal: never;
+declare const unionWeak: {} | never;
+const fromAny = values(anyVal) as string[];
+const fromNever = values(neverVal) as string[];
+const fromUnionWeak = values(unionWeak) as string[];
+    `,
+    `
+declare const emptyObj: {};
+declare function wrapValues<T>(input: { [key: string]: T }): { value: T }[];
+declare function wrapValues(input: number): { value: number }[];
+const wrapped = wrapValues(emptyObj) as { value: string }[];
+    `,
+    `
+declare const emptyObj: {};
+declare function wrapOne<T>(input: { [key: string]: T }): { value: T };
+declare function wrapOne(input: number): { value: number };
+const wrapped = wrapOne(emptyObj) as { value: string };
+    `,
+    `
+declare const emptyObj: {};
+declare function createCtor<T>(input: { [key: string]: T }): { new (): T };
+declare function createCtor(input: number): { new (): number };
+const ctor = createCtor(emptyObj) as { new (): string };
+    `,
+    `
+declare class Box<T = unknown> {
+  value: T;
+  constructor(input: { [key: string]: T });
+  constructor(input: number);
+}
+declare const emptyObj: {};
+const box = new Box(emptyObj) as Box<string>;
+    `,
+    `
+interface Api {
+  values<T>(obj: { [key: string]: T }): T[];
+  values(obj: number): number[];
+}
+declare const api: Api;
+declare const emptyObj: {};
+const result = api.values(emptyObj) as string[];
+    `,
+    `
+declare const maybeValues: typeof Object.values | undefined;
+const obj: {} = {};
+const values = maybeValues?.(obj) as string[];
+    `,
+    `
+interface AsyncApi {
+  values<T>(obj: { [key: string]: T }): Promise<T[]> | undefined;
+  values(obj: number): Promise<number[]> | undefined;
+}
+declare const api: AsyncApi | undefined;
+declare const emptyObj: {};
+const asyncResult = (await api?.values(emptyObj)!) as string[];
+const seqResult = (0, Object.values(emptyObj)) as string[];
+    `,
+    `
+declare const emptyObj: {};
+declare function sameRest<T>(
+  arg: { [key: string]: T },
+  ...rest: { [key: string]: T }[]
+): T[];
+declare function sameRest(arg: number): number[];
+const result = sameRest(emptyObj, emptyObj) as string[];
+    `,
+    `
+declare const emptyObj: {};
+declare function anyRest<T>(arg: { [key: string]: T }, ...rest: any[]): T[];
+declare function anyRest(arg: number): number[];
+const result = anyRest(emptyObj, 'extra', 123) as string[];
+    `,
+    `
+declare function firstAnyRestGeneric<T>(arg: any, ...rest: T[]): T[];
+declare function firstAnyRestGeneric(arg: number): number[];
+const result = firstAnyRestGeneric('onlyFirst') as string[];
+    `,
+    `
+declare const emptyObj: {};
+declare function firstAnyRestBoxed<T>(
+  arg: any,
+  ...rest: { [key: string]: T }[]
+): T[];
+declare function firstAnyRestBoxed(arg: number): number[];
+const result = firstAnyRestBoxed('first', emptyObj) as string[];
+    `,
+    `
+declare const emptyObj: {};
+declare function tupleRest<T>(...args: [{ [key: string]: T }, number]): T[];
+declare function tupleRest(arg: symbol): symbol[];
+const result = tupleRest(emptyObj, 1) as string[];
+    `,
+    `
+declare const emptyTuple: [{}];
+const values = Object.values(...emptyTuple) as string[];
+    `,
+    `
+declare const mixedTuple: [{ key: string }, {}];
+declare function secondBoxed<T>(first: {}, second: { [key: string]: T }): T[];
+declare function secondBoxed(first: number): number[];
+const values = secondBoxed(...mixedTuple) as string[];
+    `,
+    `
+declare const emptyArray: {}[];
+declare function restValues<T>(...rest: { [key: string]: T }[]): T[];
+declare function restValues(value: number): number[];
+const values = restValues(...emptyArray) as string[];
+    `,
+    `
+declare const emptySet: Set<{}>;
+declare function restValues<T>(...rest: { [key: string]: T }[]): T[];
+declare function restValues(value: number): number[];
+const values = restValues(...emptySet) as string[];
+    `,
+    `
+declare const anySpread: any;
+const values = Object.values(...anySpread) as string[];
+    `,
+    `
+declare const variadicTuple: [{}, ...{}[]];
+declare function restVariadic<T>(
+  a?: {},
+  b?: {},
+  c?: {},
+  ...rest: { [key: string]: T }[]
+): T[];
+declare function restVariadic(value: number): number[];
+const values = restVariadic(...variadicTuple, { key: 'value' }) as string[];
+    `,
+    `
+declare function parse<T>(raw: string): T;
+declare function parse(raw: number): number;
+const result = parse('data') as string[];
+    `,
+    `
+declare class Container<T = unknown> {
+  value: T;
+  constructor();
+  constructor(value: number);
+}
+const container = new Container() as Container<string>;
+    `,
+    `
+declare function pair<K, V>(
+  a: { [key: string]: K },
+  b: { [key: string]: V },
+): [K, V];
+declare function pair(a: number): [number, number];
+declare const emptyObj: {};
+const result = pair({ a: 'x' }, emptyObj) as [string, number];
+    `,
+    `
+declare function oneArg<T>(value: { [key: string]: T }): T[];
+declare function oneArg(value: number): number[];
+declare const emptyObj: {};
+const result = oneArg(emptyObj, { key: 'value' }) as string[];
+    `,
+    `
+declare function mapped<T>(a: { [P in 'x']?: T }): { [P in 'x']: T };
+declare function mapped(a: string): { x: string };
+declare const emptyObj: {};
+const res = mapped(emptyObj) as { x: string };
+    `,
   ],
 
   invalid: [
@@ -3741,6 +3923,322 @@ const value = get<string>() as string;
 declare function get<T>(): T;
 const value = get<string>();
       `,
+    },
+    {
+      code: `
+const obj: {} = {};
+const values = Object.values<string>(obj) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj: {} = {};
+const values = Object.values<string>(obj);
+      `,
+    },
+    {
+      code: `
+const values = Object.values({ key: 'value' }) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 59,
+          endLine: 2,
+          line: 2,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const unionObj: {} | { key: string };
+const values = Object.values(unionObj) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const emptyObj: {};
+declare function naked<T>(arg: T, ...rest: T[]): T[];
+declare function naked(arg: symbol): symbol[];
+const result = naked(emptyObj) as {}[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 39,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const emptyObj: {};
+declare function nakedUnion<T>(arg: T | number): T[];
+declare function nakedUnion(arg: symbol): symbol[];
+const result = nakedUnion(emptyObj) as {}[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 44,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function firstAnyRestGeneric<T>(arg: any, ...rest: T[]): T[];
+declare function firstAnyRestGeneric(arg: number): number[];
+const result = firstAnyRestGeneric('first', 'second') as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 66,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const emptyObj: {};
+declare function restSame<T>(
+  arg: { [key: string]: T },
+  ...rest: { [key: string]: T }[]
+): T[];
+declare function restSame(arg: number): number[];
+const result = restSame(emptyObj, { key: 'value' }) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 64,
+          endLine: 8,
+          line: 8,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const concreteTuple: [{ key: string }];
+const values = Object.values(...concreteTuple) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 59,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const concreteArray: { key: string }[];
+declare function restValues<T>(...rest: { [key: string]: T }[]): T[];
+declare function restValues(value: number): number[];
+const values = restValues(...concreteArray) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 56,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const concreteSet: Set<{ key: string }>;
+declare function restValues<T>(...rest: { [key: string]: T }[]): T[];
+declare function restValues(value: number): number[];
+const values = restValues(...concreteSet) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 54,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function consume<T>(value: { [key: string]: T }): string;
+declare function consume(value: number): number;
+declare const emptyObj: {};
+const result = consume(emptyObj) as string;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function fn<T>(a: { [key: string]: T }, b: string): T[];
+declare function fn(a: {}): string[];
+declare const emptyObj: {};
+const result = fn(emptyObj) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function single<T>(obj: { [key: string]: T }): T[];
+const obj: {} = {};
+const values = single(obj) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 39,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare class Box<T = unknown> {
+  value: T;
+  constructor(input: { [key: string]: T });
+  constructor(input: number);
+}
+const box = new Box({ key: 'value' }) as Box<string>;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 53,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare class Box<T = unknown> {
+  value: T;
+  constructor(input: { [key: string]: T });
+  constructor(input: number);
+}
+const box = new Box({ key: 'value' });
+      `,
+    },
+    {
+      code: `
+declare const CallableCtor: {
+  new (value: string): { value: string };
+  <T>(): T;
+};
+const instance = new CallableCtor('a') as { value: string };
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 60,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const CallableCtor: {
+  new (value: string): { value: string };
+  <T>(): T;
+};
+const instance = new CallableCtor('a');
+      `,
+    },
+    {
+      code: `
+declare function mapped<T>(a: { [P in 'x']?: T }): { [P in 'x']: T };
+declare function mapped(a: string): { x: string };
+const res = mapped({ x: 'a' }) as { x: string };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 48,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const mixedTuple: [{}, { key: string }];
+declare function secondBoxed<T>(first: {}, second: { [key: string]: T }): T[];
+declare function secondBoxed(first: number): number[];
+const values = secondBoxed(...mixedTuple) as string[];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 54,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
     },
   ],
 });
