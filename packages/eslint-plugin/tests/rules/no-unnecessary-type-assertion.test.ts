@@ -1128,9 +1128,6 @@ enum Color {
 declare const value: Color | 5;
 const other = value as number;
     `,
-    `
-missing.push(1 as number);
-    `,
   ],
 
   invalid: [
@@ -3863,12 +3860,29 @@ stack.push(1 as number);
           endColumn: 23,
           endLine: 3,
           line: 3,
-          messageId: 'unnecessaryAssertion',
+          messageId: 'contextuallyUnnecessary',
         },
       ],
       output: `
 declare const stack: { push(item: number): void };
 stack.push(1);
+      `,
+    },
+    {
+      code: `
+missing.push(1 as number);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+missing.push(1);
       `,
     },
     {
