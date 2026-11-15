@@ -4135,5 +4135,145 @@ async function* cb() {
         },
       ],
     },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function save(): Promise<void>;
+
+onClick(async () => await save());
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function save(): Promise<void>;
+
+onClick( () => void (async () => await save())());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick(async () => console.log(await loadCount()));
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick( () => void (async () => console.log(await loadCount()))());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function use(cb: () => void): void;
+declare function inner(cb: () => Promise<void>): Promise<void>;
+declare function save(): Promise<void>;
+
+use(async () => inner(async () => await save()));
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function use(cb: () => void): void;
+declare function inner(cb: () => Promise<void>): Promise<void>;
+declare function save(): Promise<void>;
+
+use( () => void inner(async () => await save()));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function save(): Promise<void>;
+declare function trace(
+  fn: () => Promise<void>,
+): (target: () => Promise<void>, context: ClassMethodDecoratorContext) => void;
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @trace(async () => {
+    await save();
+  })
+  async handle() {
+    await save();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function save(): Promise<void>;
+declare function trace(
+  fn: () => Promise<void>,
+): (target: () => Promise<void>, context: ClassMethodDecoratorContext) => void;
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @trace(async () => {
+    await save();
+  })
+   handle() { (async () => {
+    await save();
+  })(); }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

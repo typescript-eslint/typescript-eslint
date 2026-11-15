@@ -407,16 +407,26 @@ export default util.createRule<Options, MessageId>({
             suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
               ? // This function has side effects, e.g. `async () => doSomething()`.
                 // Suggest removing the async keyword and adding a void operator.
-                [
-                  {
-                    messageId: 'suggestAddVoidOp',
-                    fix: fixer =>
-                      addVoidToArrowFix(
-                        fixer,
-                        funcNode as TSESTree.ArrowFunctionExpression,
-                      ),
-                  },
-                ]
+                // However, if the body contains an `await`, removing the async
+                // keyword would leave the `await` inside a sync function, so
+                // wrap the body in an async IIFE instead.
+                containsAwait(funcNode.body)
+                ? [
+                    {
+                      messageId: 'suggestWrapInAsyncIIFE',
+                      fix: fixer => wrapInAsyncIIFEFix(fixer, funcNode),
+                    },
+                  ]
+                : [
+                    {
+                      messageId: 'suggestAddVoidOp',
+                      fix: fixer =>
+                        addVoidToArrowFix(
+                          fixer,
+                          funcNode as TSESTree.ArrowFunctionExpression,
+                        ),
+                    },
+                  ]
               : [],
           });
         }
@@ -510,6 +520,42 @@ export default util.createRule<Options, MessageId>({
     }
 
     /**
+     * Checks whether the node contains an `await` expression that belongs to
+     * the enclosing function, i.e. one that is not inside a nested function.
+     */
+    function containsAwait(node: TSESTree.Node | null | undefined): boolean {
+      if (node == null) {
+        return false;
+      }
+
+      if (node.type === AST_NODE_TYPES.AwaitExpression) {
+        return true;
+      }
+
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        node.type === AST_NODE_TYPES.FunctionExpression
+      ) {
+        // `await`s inside nested functions belong to those functions.
+        return false;
+      }
+
+      for (const key of sourceCode.visitorKeys[node.type] ?? []) {
+        const child: unknown = node[key as keyof TSESTree.Node];
+
+        if (Array.isArray(child)) {
+          if (child.some(containsAwait)) {
+            return true;
+          }
+        } else if (containsAwait(child as TSESTree.Node)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
      * Removes the async keyword and replaces the return type with void.
      */
     function* makeSyncFuncFix(
@@ -523,9 +569,23 @@ export default util.createRule<Options, MessageId>({
           funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
             ? funcNode.parent
             : funcNode;
+        // Decorators are included in the parent node's range, so the first
+        // `async` token may belong to a decorator's arguments, e.g. for
+        // `@trace(async () => {}) async handle() {}`. Skip tokens inside
+        // decorators so that only the function's own `async` is removed.
+        const decorators =
+          funcHeadNode.type === AST_NODE_TYPES.MethodDefinition
+            ? funcHeadNode.decorators
+            : [];
         const asyncToken = util.nullThrows(
           sourceCode.getFirstToken(funcHeadNode, {
-            filter: token => token.value === 'async',
+            filter: token =>
+              token.value === 'async' &&
+              !decorators.some(
+                decorator =>
+                  token.range[0] >= decorator.range[0] &&
+                  token.range[1] <= decorator.range[1],
+              ),
           }),
           util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
         );
