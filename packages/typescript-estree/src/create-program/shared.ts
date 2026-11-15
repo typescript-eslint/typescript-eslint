@@ -62,12 +62,15 @@ const useCaseSensitiveFileNames =
 // "\u0130" lowercases to "i" followed by a combining dot above.
 const FILE_NAME_LOWER_CASE_REGEXP = /[^\u0130\u0131\u00DFa-z0-9\\/:\-_. ]+/g;
 
+export function toFileNameLowerCase(fileName: string): string {
+  return fileName.replaceAll(FILE_NAME_LOWER_CASE_REGEXP, match =>
+    match.toLowerCase(),
+  );
+}
+
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath
-  : (filePath: string): string =>
-      filePath.replaceAll(FILE_NAME_LOWER_CASE_REGEXP, match =>
-        match.toLowerCase(),
-      );
+  : toFileNameLowerCase;
 
 export function getCanonicalFileName(filePath: string): CanonicalPath {
   let normalized = path.normalize(filePath);
