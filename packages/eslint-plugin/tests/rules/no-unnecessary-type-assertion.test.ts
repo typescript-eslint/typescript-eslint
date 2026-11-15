@@ -1170,6 +1170,44 @@ declare const value: Nested;
 const result = value as Other & Nested;
 result.a!.b!.d = 'value';
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12270
+    `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type Entries = {
+  [key: string]: Inner;
+};
+type EntriesWithAction = {
+  [key: string]: InnerWithAction;
+};
+
+declare const entries: Entries;
+const result = entries as EntriesWithAction;
+    `,
+    `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type NumberKeyed = {
+  [key: number]: Inner;
+};
+type MixedKeys = {
+  [key: string]: InnerWithAction;
+  [key: number]: InnerWithAction;
+};
+
+declare const value: NumberKeyed;
+const result = value as MixedKeys;
+    `,
   ],
 
   invalid: [
@@ -1276,6 +1314,222 @@ type SameUpdate = {
 
 declare const diff: Update;
 const same = diff;
+      `,
+    },
+    {
+      // unions are skipped, so a multi-constituent union still reports
+      code: `
+type Flat = {
+  a: string;
+};
+type WithExtra = {
+  a: string;
+  b?: string;
+};
+
+declare const value: string | Flat;
+const result = value as string | WithExtra;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 43,
+          endLine: 11,
+          line: 11,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Flat = {
+  a: string;
+};
+type WithExtra = {
+  a: string;
+  b?: string;
+};
+
+declare const value: string | Flat;
+const result = value;
+      `,
+    },
+    {
+      code: `
+type Flat = {
+  a: string;
+};
+type WithExtra = {
+  a: string;
+  b?: string;
+};
+type WithOtherExtra = {
+  a: string;
+  c?: string;
+};
+
+declare const value: Flat;
+const result = value as WithExtra | WithOtherExtra;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 51,
+          endLine: 15,
+          line: 15,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Flat = {
+  a: string;
+};
+type WithExtra = {
+  a: string;
+  b?: string;
+};
+type WithOtherExtra = {
+  a: string;
+  c?: string;
+};
+
+declare const value: Flat;
+const result = value;
+      `,
+    },
+    {
+      // call signatures are skipped, so the assertion still reports
+      code: `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type Handler = {
+  (): void;
+  inner?: Inner;
+};
+type HandlerWithAction = {
+  (): void;
+  inner?: InnerWithAction;
+};
+
+declare const handler: Handler;
+const result = handler as HandlerWithAction;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 44,
+          endLine: 19,
+          line: 19,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type Handler = {
+  (): void;
+  inner?: Inner;
+};
+type HandlerWithAction = {
+  (): void;
+  inner?: InnerWithAction;
+};
+
+declare const handler: Handler;
+const result = handler;
+      `,
+    },
+    {
+      code: `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type Creator = {
+  new (): void;
+  inner?: Inner;
+};
+type CreatorWithAction = {
+  new (): void;
+  inner?: InnerWithAction;
+};
+
+declare const creator: Creator;
+const result = creator as CreatorWithAction;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 44,
+          endLine: 19,
+          line: 19,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Inner = {
+  unid: string;
+};
+type InnerWithAction = {
+  unid: string;
+  action?: string;
+};
+type Creator = {
+  new (): void;
+  inner?: Inner;
+};
+type CreatorWithAction = {
+  new (): void;
+  inner?: InnerWithAction;
+};
+
+declare const creator: Creator;
+const result = creator;
+      `,
+    },
+    {
+      // structurally equivalent recursive index signature types still report
+      code: `
+type Node = {
+  [key: string]: Node;
+};
+type SameNode = {
+  [key: string]: SameNode;
+};
+
+declare const value: Node;
+const result = value as SameNode;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 33,
+          endLine: 10,
+          line: 10,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Node = {
+  [key: string]: Node;
+};
+type SameNode = {
+  [key: string]: SameNode;
+};
+
+declare const value: Node;
+const result = value;
       `,
     },
     {
