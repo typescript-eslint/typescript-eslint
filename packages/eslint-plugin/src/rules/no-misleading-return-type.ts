@@ -6,7 +6,9 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  findFirstResult,
   getParserServices,
+  getTypeOfPropertyOfName,
   isSymbolFromDefaultLibrary,
   isTypeAnyType,
   isTypeNeverType,
@@ -18,6 +20,13 @@ type FunctionNode =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
+
+/** A type written inside a return type, such as the element type of `T[]`. */
+interface TypeComponent {
+  /** Reads the same position of a returned type, if the type has one. */
+  read: (type: ts.Type) => ts.Type | undefined;
+  typeNode: TSESTree.TypeNode;
+}
 
 export default createRule({
   name: 'no-misleading-return-type',
@@ -108,6 +117,12 @@ export default createRule({
       );
     }
 
+    function getArrayElementType(type: ts.Type): ts.Type | undefined {
+      return checker.isArrayType(type) || checker.isTupleType(type)
+        ? type.getNumberIndexType()
+        : undefined;
+    }
+
     // The return type of an async function is the global `Promise`.
     function getPromisedTypeNode(
       typeNode: TSESTree.TypeNode,
@@ -122,6 +137,126 @@ export default createRule({
         isSymbolFromDefaultLibrary(services.program, symbol)
         ? typeNode.typeArguments?.params[0]
         : undefined;
+    }
+
+    function getComponents(
+      typeNode: TSESTree.TypeNode | undefined,
+    ): TypeComponent[] {
+      switch (typeNode?.type) {
+        case AST_NODE_TYPES.TSArrayType:
+          return [
+            { read: getArrayElementType, typeNode: typeNode.elementType },
+          ];
+
+        case AST_NODE_TYPES.TSTupleType: {
+          const { elementTypes } = typeNode;
+
+          return elementTypes.flatMap((element, index) => {
+            const isNamed = element.type === AST_NODE_TYPES.TSNamedTupleMember;
+            // `undefined` is always allowed for an optional element.
+            if (isNamed && element.optional) {
+              return [];
+            }
+
+            return [
+              {
+                read: (type): ts.Type | undefined => {
+                  // In older TypeScript versions, a tuple type that is read
+                  // through a constraint has an extra `this` type argument.
+                  const types = tsutils.isTupleTypeReference(type)
+                    ? checker
+                        .getTypeArguments(type)
+                        .slice(0, type.target.typeParameters?.length)
+                    : [];
+
+                  return types.length === elementTypes.length
+                    ? types[index]
+                    : undefined;
+                },
+                typeNode: isNamed ? element.elementType : element,
+              },
+            ];
+          });
+        }
+
+        case AST_NODE_TYPES.TSTypeLiteral:
+          return typeNode.members.flatMap(member => {
+            // `undefined` is always allowed for an optional property.
+            if (
+              member.type !== AST_NODE_TYPES.TSPropertySignature ||
+              member.computed ||
+              member.optional ||
+              member.typeAnnotation == null
+            ) {
+              return [];
+            }
+
+            const name =
+              member.key.type === AST_NODE_TYPES.Identifier
+                ? member.key.name
+                : String(member.key.value);
+
+            return [
+              {
+                read: (type): ts.Type | undefined =>
+                  getTypeOfPropertyOfName(checker, type, name),
+                typeNode: member.typeAnnotation.typeAnnotation,
+              },
+            ];
+          });
+
+        case AST_NODE_TYPES.TSTypeOperator:
+          return typeNode.operator === 'readonly'
+            ? getComponents(typeNode.typeAnnotation)
+            : [];
+
+        default:
+          return [];
+      }
+    }
+
+    function readComponent(
+      type: ts.Type,
+      read: TypeComponent['read'],
+    ): ts.Type | undefined {
+      const componentType = read(type);
+      if (componentType != null) {
+        return componentType;
+      }
+
+      const sourceTypes = type.isIntersection()
+        ? type.types
+        : type.isClassOrInterface()
+          ? checker.getBaseTypes(type)
+          : [];
+
+      return findFirstResult(sourceTypes, sourceType =>
+        readComponent(sourceType, read),
+      );
+    }
+
+    /**
+     * Reads one position of every returned type. Returns `null` when a returned
+     * type does not have that position or shows nothing about it.
+     */
+    function getComponentTypes(
+      returnedTypes: readonly ts.Type[],
+      read: TypeComponent['read'],
+    ): ts.Type[] | null {
+      const componentTypes: ts.Type[] = [];
+      for (const returnedType of returnedTypes) {
+        const constraint =
+          checker.getBaseConstraintOfType(returnedType) ?? returnedType;
+        for (const type of tsutils.unionConstituents(constraint)) {
+          const componentType = readComponent(type, read);
+          if (componentType == null) {
+            return null;
+          }
+          componentTypes.push(componentType);
+        }
+      }
+
+      return getConstituents(componentTypes);
     }
 
     function checkUnion(
@@ -169,6 +304,41 @@ export default createRule({
             node: member.typeNode,
             messageId: 'unnecessaryType',
           });
+        } else if (widerMembers.length === 0) {
+          // Narrowing one of two equivalent members would not narrow the union
+          // either.
+          checkTypeNode(member.typeNode, acceptedTypes);
+        }
+      }
+    }
+
+    function containsUnion(typeNode: TSESTree.TypeNode): boolean {
+      return (
+        typeNode.type === AST_NODE_TYPES.TSUnionType ||
+        getComponents(typeNode).some(component =>
+          containsUnion(component.typeNode),
+        )
+      );
+    }
+
+    /**
+     * Reports the union members written in a type that could be removed with
+     * every returned type still assignable to it.
+     */
+    function checkTypeNode(
+      typeNode: TSESTree.TypeNode,
+      returnedTypes: readonly ts.Type[],
+      isAwaited = false,
+    ): void {
+      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+        checkUnion(typeNode, returnedTypes, isAwaited);
+        return;
+      }
+
+      for (const component of getComponents(typeNode)) {
+        const componentTypes = getComponentTypes(returnedTypes, component.read);
+        if (componentTypes != null) {
+          checkTypeNode(component.typeNode, componentTypes);
         }
       }
     }
@@ -183,13 +353,13 @@ export default createRule({
         ? getPromisedTypeNode(returnType)
         : returnType;
       // Only a union member can be reported.
-      if (typeNode?.type !== AST_NODE_TYPES.TSUnionType) {
+      if (typeNode == null || !containsUnion(typeNode)) {
         return;
       }
 
       const returnedTypes = getReturnedTypes(node);
       if (returnedTypes != null) {
-        checkUnion(typeNode, returnedTypes, node.async);
+        checkTypeNode(typeNode, returnedTypes, node.async);
       }
     }
 

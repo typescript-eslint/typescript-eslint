@@ -19,6 +19,8 @@ A function that can reach the end of its body without returning a value needs `u
 Besides the return type itself, the rule checks unions in these positions inside it:
 
 - the type argument of the `Promise` that an async function returns
+- an array or tuple element type
+- a property type of an object type
 
 ## Examples
 
@@ -33,6 +35,14 @@ function getStatus(): string | null {
 async function getAsyncStatus(): Promise<string | null> {
   return 'ready';
 }
+
+function getStatuses(): (string | null)[] {
+  return ['ready'];
+}
+
+function getUser(): { name: string | null } {
+  return { name: 'user' };
+}
 ```
 
 </TabItem>
@@ -46,6 +56,14 @@ function getStatus(): string {
 async function getAsyncStatus(): Promise<string> {
   return 'ready';
 }
+
+function getStatuses(): string[] {
+  return ['ready'];
+}
+
+function getUser(): { name: string } {
+  return { name: 'user' };
+}
 ```
 
 </TabItem>
@@ -55,8 +73,10 @@ async function getAsyncStatus(): Promise<string> {
 
 This rule only checks unions that are written in the return type annotation.
 It does not look inside type aliases or at their type arguments.
+It also skips function types, optional properties, and optional and rest tuple elements.
 
 The rule does not report when a returned expression is `any` or `unknown`.
+It also does not report when TypeScript infers the type of a returned expression from the return type, as it does for `[]`.
 
 The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
 Compiler options therefore affect its results.
@@ -67,7 +87,8 @@ The rule treats the end of a function body as reachable after an exhaustive `swi
 ## When Not To Use It
 
 An API may intentionally declare values that its current implementation does not return, such as for forward compatibility.
-If that convention is common in your project, you might not want to use this rule.
+A function may also return a new array or object that its callers later fill with other values.
+If those conventions are common in your project, you might not want to use this rule.
 
 ## Related To
 

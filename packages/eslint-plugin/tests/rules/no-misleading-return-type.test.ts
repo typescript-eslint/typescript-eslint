@@ -32,6 +32,12 @@ function getValue<T extends string | null>(value: T): string | null {
 }
     `,
     `
+function getValues<T extends string | null>(value: T): (string | null)[] {
+  const values = [value];
+  return values;
+}
+    `,
+    `
 function getValue<T>(
   flag: boolean,
 ): (T extends unknown ? undefined : never) | string {
@@ -91,6 +97,17 @@ function getValue(): Result {
 }
     `,
     `
+class Values extends Array<string | null> {
+  [index: number]: string;
+  override pop() {
+    return null;
+  }
+}
+function getValues(): (string | null)[] {
+  return new Values();
+}
+    `,
+    `
 function getValue(): string | null {
   throw new Error('unreachable');
 }
@@ -136,6 +153,11 @@ interface InvalidThenable {
 declare const thenable: InvalidThenable;
 async function getValue(): Promise<string | null> {
   return thenable;
+}
+    `,
+    `
+function createValue(): { name: string | null } {
+  return 1;
 }
     `,
     `
@@ -190,6 +212,52 @@ function getValue(): string | TextValue {
     `
 function isTextValue(value: unknown): value is string | number {
   return typeof value === 'string';
+}
+    `,
+    `
+function getValues(): (string | null)[] {
+  return [];
+}
+    `,
+    `
+function getResult(flag: boolean): [string | null, Error | null] {
+  return flag ? ['value', null] : [null, new Error('message')];
+}
+    `,
+    `
+function getValues(): [first: string, second?: string | undefined] {
+  return ['first', 'second'];
+}
+    `,
+    `
+function getValues(): [string, (string | null)?] {
+  return ['first', 'second'];
+}
+    `,
+    `
+function getValues(): [string | null, ...number[]] {
+  return ['value', 1, 2];
+}
+    `,
+    `
+function createValue(flag: boolean): { name: string | null } {
+  return flag ? { name: 'value' } : { name: null };
+}
+    `,
+    `
+declare const key: unique symbol;
+function createValue(): {
+  [key]: string | null;
+  getName(): string | null;
+  name?: string | null;
+  untyped;
+} {
+  return { [key]: 'value', getName: () => 'value', name: 'value', untyped: 1 };
+}
+    `,
+    `
+function getGetter(): () => string | null {
+  return () => 'value';
 }
     `,
     `
@@ -428,6 +496,55 @@ async function getValue(): Promise<Promise<string> | null> {
           endColumn: 58,
           endLine: 2,
           line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): (string | null)[] {
+  return ['value'];
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): readonly (string | null)[] {
+  return ['value'];
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: readonly [string, number];
+function getValues(): readonly (string | number | null)[] {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 51,
+          endColumn: 55,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryType',
         },
       ],
@@ -1081,6 +1198,118 @@ async function getValue(): Promise<string | InvalidThenable> {
           endColumn: 60,
           endLine: 5,
           line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValues(): [string | null, number] {
+  return ['value', 1];
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getResult(): [value: string | null, error: Error | null] {
+  return ['value', null];
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 53,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: [string, number] & { extra: boolean };
+function getValues(): readonly [string | null, number] {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { a: string | number } {
+  return { a: 'no numbers here' };
+}
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { 'quoted-name': { name: string | null } } {
+  return { 'quoted-name': { name: 'value' } };
+}
+      `,
+      errors: [
+        {
+          column: 59,
+          endColumn: 63,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue():
+  { kind: 'ready'; value: string | null } | { kind: 'idle' } {
+  return { kind: 'ready', value: 'value' };
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+        {
+          column: 45,
+          endColumn: 61,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryType',
         },
       ],

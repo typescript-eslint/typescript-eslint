@@ -10,6 +10,16 @@ async function getAsyncStatus(): Promise<string | null> {
   return 'ready';
 }
 
+function getStatuses(): (string | null)[] {
+                                  ~~~~ No returned expression requires this type.
+  return ['ready'];
+}
+
+function getUser(): { name: string | null } {
+                                     ~~~~ No returned expression requires this type.
+  return { name: 'user' };
+}
+
 Correct
 
 function getStatus(): string {
@@ -18,4 +28,12 @@ function getStatus(): string {
 
 async function getAsyncStatus(): Promise<string> {
   return 'ready';
+}
+
+function getStatuses(): string[] {
+  return ['ready'];
+}
+
+function getUser(): { name: string } {
+  return { name: 'user' };
 }
