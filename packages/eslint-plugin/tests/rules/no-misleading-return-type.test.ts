@@ -108,6 +108,37 @@ function getValue(flag: boolean): string | undefined {
 }
     `,
     `
+async function getValue(flag: boolean): Promise<string | null> {
+  if (flag) {
+    return 'value';
+  }
+  return null;
+}
+    `,
+    `
+function createProvider() {
+  type Promise<T> = { value: T };
+  async function getValue(): Promise<string | null> {
+    return 'value';
+  }
+  return getValue;
+}
+    `,
+    `
+async function getValue(): Promise<string> | null {
+  return 'value';
+}
+    `,
+    `
+interface InvalidThenable {
+  then(onfulfilled: string): unknown;
+}
+declare const thenable: InvalidThenable;
+async function getValue(): Promise<string | null> {
+  return thenable;
+}
+    `,
+    `
 declare const value: unknown;
 function getValue(): unknown | string {
   return value;
@@ -120,6 +151,11 @@ function getValue(): string | never {
     `,
     `
 function getValue(): string | any {
+  return 1;
+}
+    `,
+    `
+async function getValue(): Promise<string | unknown> {
   return 1;
 }
     `,
@@ -154,6 +190,12 @@ function getValue(): string | TextValue {
     `
 function isTextValue(value: unknown): value is string | number {
   return typeof value === 'string';
+}
+    `,
+    `
+type Async<T> = Promise<T>;
+async function getValue(): Async<string | null> {
+  return 'value';
 }
     `,
     // Without strictNullChecks, every type already includes null and undefined.
@@ -302,6 +344,88 @@ const getValue = function (): string | null {
         {
           column: 40,
           endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValue(): Promise<string | null> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValue(): globalThis.Promise<string | null> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 56,
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const result: Pick<Promise<string>, 'then'> &
+  Omit<Promise<string | null>, 'then'>;
+async function getValue(): Promise<string | null> {
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 49,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValue<T>(value: T): Promise<T | null> {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 51,
+          endColumn: 55,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+async function getValue(): Promise<Promise<string> | null> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 54,
+          endColumn: 58,
           endLine: 2,
           line: 2,
           messageId: 'unnecessaryType',
@@ -885,6 +1009,22 @@ function getValue(): string | void {
     },
     {
       code: `
+async function getValue(): Promise<string | undefined> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
 type TextValue = string;
 function getValue(): string | TextValue | null {
   return null;
@@ -920,6 +1060,25 @@ function getKey(): keyof Config | null {
         {
           column: 35,
           endColumn: 39,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface InvalidThenable {
+  then(onfulfilled: string): unknown;
+}
+async function getValue(): Promise<string | InvalidThenable> {
+  return 'value';
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 60,
           endLine: 5,
           line: 5,
           messageId: 'unnecessaryType',

@@ -16,6 +16,10 @@ This rule reports a union constituent in a return type when the function would s
 Literal types satisfy their corresponding primitive types, so returning `'ready'` satisfies a `string` constituent.
 A function that can reach the end of its body without returning a value needs `undefined` or `void`.
 
+Besides the return type itself, the rule checks unions in these positions inside it:
+
+- the type argument of the `Promise` that an async function returns
+
 ## Examples
 
 <Tabs>
@@ -25,6 +29,10 @@ A function that can reach the end of its body without returning a value needs `u
 function getStatus(): string | null {
   return 'ready';
 }
+
+async function getAsyncStatus(): Promise<string | null> {
+  return 'ready';
+}
 ```
 
 </TabItem>
@@ -32,6 +40,10 @@ function getStatus(): string | null {
 
 ```ts
 function getStatus(): string {
+  return 'ready';
+}
+
+async function getAsyncStatus(): Promise<string> {
   return 'ready';
 }
 ```

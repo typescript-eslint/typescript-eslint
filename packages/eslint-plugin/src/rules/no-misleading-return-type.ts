@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isSymbolFromDefaultLibrary,
   isTypeAnyType,
   isTypeNeverType,
   isTypeUnknownType,
@@ -60,6 +61,11 @@ export default createRule({
         : constituents;
     }
 
+    // An async function awaits a returned promise before resolving with it.
+    function getResolvedType(type: ts.Type, isAsync: boolean): ts.Type {
+      return isAsync ? (checker.getAwaitedType(type) ?? type) : type;
+    }
+
     function getReturnedTypes(node: FunctionNode): ts.Type[] | null {
       const expressions: TSESTree.Expression[] = [];
       let canCompleteWithoutValue = false;
@@ -97,15 +103,34 @@ export default createRule({
         returnedTypes.push(checker.getUndefinedType());
       }
 
-      return getConstituents(returnedTypes);
+      return getConstituents(
+        returnedTypes.map(type => getResolvedType(type, node.async)),
+      );
+    }
+
+    // The return type of an async function is the global `Promise`.
+    function getPromisedTypeNode(
+      typeNode: TSESTree.TypeNode,
+    ): TSESTree.TypeNode | undefined {
+      if (typeNode.type !== AST_NODE_TYPES.TSTypeReference) {
+        return undefined;
+      }
+
+      const symbol = services.getSymbolAtLocation(typeNode.typeName);
+
+      return symbol?.name === 'Promise' &&
+        isSymbolFromDefaultLibrary(services.program, symbol)
+        ? typeNode.typeArguments?.params[0]
+        : undefined;
     }
 
     function checkUnion(
       unionNode: TSESTree.TSUnionType,
       returnedTypes: readonly ts.Type[],
+      isAwaited: boolean,
     ): void {
       const members = getUnionMembers(unionNode).map(typeNode => ({
-        type: services.getTypeAtLocation(typeNode),
+        type: getResolvedType(services.getTypeAtLocation(typeNode), isAwaited),
         typeNode,
       }));
       // No member can be removed when one of them is `any` or `unknown`, or
@@ -149,7 +174,14 @@ export default createRule({
     }
 
     function checkFunction(node: FunctionNode): void {
-      const typeNode = node.returnType?.typeAnnotation;
+      const returnType = node.returnType?.typeAnnotation;
+      if (returnType == null) {
+        return;
+      }
+
+      const typeNode = node.async
+        ? getPromisedTypeNode(returnType)
+        : returnType;
       // Only a union member can be reported.
       if (typeNode?.type !== AST_NODE_TYPES.TSUnionType) {
         return;
@@ -157,7 +189,7 @@ export default createRule({
 
       const returnedTypes = getReturnedTypes(node);
       if (returnedTypes != null) {
-        checkUnion(typeNode, returnedTypes);
+        checkUnion(typeNode, returnedTypes, node.async);
       }
     }
 
