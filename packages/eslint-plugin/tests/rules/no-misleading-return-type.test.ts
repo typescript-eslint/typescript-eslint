@@ -188,6 +188,163 @@ function getValue(): Result<string | null> {
 }
     `,
     `
+function getValue(): string;
+function getValue(): string | null {
+  return 'value';
+}
+    `,
+    `
+const getValue: () => string | null = (): string | null => 'value';
+    `,
+    `
+class Provider {
+  getValue: () => string | null = (): string | null => 'value';
+}
+    `,
+    {
+      code: `
+interface Provider {
+  getValue(): string | null;
+}
+class ProviderImpl implements Provider {
+  accessor getValue = (): string | null => 'value';
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+interface Provider {
+  getValue(): string | null;
+}
+const provider = {
+  getValue(): string | null {
+    return 'value';
+  },
+} as Provider;
+    `,
+    {
+      code: `
+interface Provider {
+  getValue(): string | null;
+}
+const provider = {
+  getValue(): string | null {
+    return 'value';
+  },
+} satisfies Provider;
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+interface Provider {
+  getValue(): string | null;
+}
+class ProviderImpl implements Provider {
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface NumericProvider {
+  [key: number]: () => string | null;
+}
+interface NamedProvider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements NumericProvider, NamedProvider {
+  [key: string]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: number]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: number]: () => string | null;
+  '0'(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  0(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: \`get\${string}\`]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: \`get\${string}\`]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: \`get\${string}\`]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: \`get\${string}\`]: () => string | null;
+  other(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: symbol]: () => string | null;
+}
+declare const method: unique symbol;
+class ProviderImpl implements Provider {
+  [key: symbol]: () => string | null;
+  [method](): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  getValue: () => string | null;
+}
+class ProviderImpl implements Provider {
+  getValue = (): string | null => 'value';
+}
+    `,
+    `
+class Base {
+  getValue = (): string | null => (Math.random() > 0.5 ? 'value' : null);
+}
+class Derived extends Base {
+  override getValue = (): string | null => 'value';
+}
+    `,
+    `
 function getValue(): string | null {
   throw new Error('unreachable');
 }
@@ -200,6 +357,82 @@ function getValue(): string | null {
     `
 function getValue(flag: boolean): string | undefined {
   if (flag) {
+    return 'value';
+  }
+}
+    `,
+    `
+class Values {
+  getValue(): string;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+class Base {
+  static getValue(): string | null {
+    return Math.random() > 0.5 ? 'value' : null;
+  }
+}
+class Derived extends Base {
+  static getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+declare const scope: object;
+with (scope) {
+  class Base {
+    getValue(): string | null {
+      return Math.random() > 0.5 ? 'value' : null;
+    }
+  }
+  class Derived extends Base {
+    getValue(): string | null {
+      return 'value';
+    }
+  }
+}
+    `,
+    `
+declare const method: unique symbol;
+class Base {
+  [method](): string | null {
+    return Math.random() > 0.5 ? 'value' : null;
+  }
+}
+class Derived extends Base {
+  [method](): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+function preserveClass<T extends Function>(value: T): T {
+  return value;
+}
+
+@preserveClass
+class Values {
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+function replaceMethod(
+  _target: object,
+  _propertyKey: string | symbol,
+  descriptor: TypedPropertyDescriptor<() => string | null>,
+): void {
+  descriptor.value = () => null;
+}
+
+class Values {
+  @replaceMethod
+  getValue(): string | null {
     return 'value';
   }
 }
@@ -282,6 +515,12 @@ function createValue(): { name: string | null } {
     `
 function getValue(): Missing<string | null> {
   return 'value';
+}
+    `,
+    `
+function* getValues():
+  Generator<string, void, unknown> | Generator<'value', void, unknown> {
+  yield 'value';
 }
     `,
     `
@@ -547,6 +786,164 @@ class Values {
           endColumn: 28,
           endLine: 3,
           line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+class Base {
+  #getValue(): string | null {
+    return Math.random() > 0.5 ? 'value' : null;
+  }
+}
+class Derived extends Base {
+  #getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 29,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  getValue(): string | null;
+}
+class ProviderImpl implements Provider {
+  static getValue(): string | null {
+    return 'value';
+  }
+
+  getValue(): string | null {
+    return Math.random() > 0.5 ? 'value' : null;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 35,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+class Base {
+  static [key: string]: () => number;
+}
+class Derived extends Base {
+  static getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 35,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: number]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: number]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: symbol]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: symbol]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: string]: () => string | null;
+}
+declare const method: unique symbol;
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  [method](): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: string]: () => string | null;
+  #getValue(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
           messageId: 'unnecessaryType',
         },
       ],

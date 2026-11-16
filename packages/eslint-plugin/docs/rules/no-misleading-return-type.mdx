@@ -83,6 +83,9 @@ As exceptions, `Array`, `ReadonlyArray`, and `ArrayLike` are also compared with 
 The rule does not report when a returned expression is `any` or `unknown`.
 It also does not report when TypeScript infers the type of a returned expression from the return type, as it does for `[]` or `new Set()`.
 
+To avoid reporting on return types that may describe an external contract, the rule skips overload implementations, contextually typed functions and object methods, inherited or implemented class methods and function-valued fields, decorated members, and members in decorated classes.
+It also skips generators.
+
 The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
 Compiler options therefore affect its results.
 When `strictNullChecks` is disabled, `null` and `undefined` constituents are not reported.

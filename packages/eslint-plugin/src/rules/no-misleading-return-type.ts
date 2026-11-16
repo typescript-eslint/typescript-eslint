@@ -9,6 +9,7 @@ import {
   findFirstResult,
   getParserServices,
   getTypeOfPropertyOfName,
+  hasOverloadSignatures,
   isPromiseLike,
   isSymbolFromDefaultLibrary,
   isTypeAnyType,
@@ -21,6 +22,12 @@ type FunctionNode =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
+
+type ClassMemberDeclaration =
+  | ts.GetAccessorDeclaration
+  | ts.MethodDeclaration
+  | ts.PropertyDeclaration
+  | ts.SetAccessorDeclaration;
 
 /** A type written inside a return type, such as the element type of `T[]`. */
 interface TypeComponent {
@@ -465,6 +472,132 @@ export default createRule({
       }
     }
 
+    function hasBaseClassMember(
+      memberNode:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition,
+    ): boolean {
+      // A private name belongs to the class that declares it.
+      if (memberNode.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return false;
+      }
+
+      const memberTsNode = services.esTreeNodeToTSNodeMap.get(
+        memberNode,
+      ) as ClassMemberDeclaration;
+      const memberNameNode = memberTsNode.name;
+
+      const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
+      const heritageClauses = classNode.heritageClauses ?? [];
+      if (heritageClauses.length === 0) {
+        return false;
+      }
+
+      const memberSymbol = checker.getSymbolAtLocation(memberNameNode);
+      if (memberSymbol == null) {
+        return false;
+      }
+      const isNumericName = tsutils.isNumericPropertyName(memberSymbol.name);
+
+      function hasApplicableIndexSignature(baseType: ts.Type): boolean {
+        return checker.getIndexInfosOfType(baseType).some(({ keyType }) => {
+          // `0` and `'0'` are keys of a string and of a number index signature.
+          if (
+            isNumericName &&
+            tsutils.isTypeFlagSet(
+              keyType,
+              ts.TypeFlags.String | ts.TypeFlags.Number,
+            )
+          ) {
+            return true;
+          }
+
+          if (ts.isComputedPropertyName(memberNameNode)) {
+            return checker.isTypeAssignableTo(
+              checker.getTypeAtLocation(memberNameNode.expression),
+              keyType,
+            );
+          }
+
+          // A name that is not computed has no type to compare. It cannot
+          // match a number or a symbol key, and it is assumed to match any
+          // other key, such as a template literal type.
+          return !tsutils.isTypeFlagSet(
+            keyType,
+            ts.TypeFlags.Number | ts.TypeFlags.ESSymbol,
+          );
+        });
+      }
+
+      const isStaticMember = memberNode.static;
+      for (const heritageClause of heritageClauses) {
+        if (
+          isStaticMember &&
+          heritageClause.token === ts.SyntaxKind.ImplementsKeyword
+        ) {
+          continue;
+        }
+
+        for (const baseTypeNode of heritageClause.types) {
+          const baseType = checker.getTypeAtLocation(
+            isStaticMember ? baseTypeNode.expression : baseTypeNode,
+          );
+          if (
+            tsutils.getPropertyOfType(baseType, memberSymbol.escapedName) !=
+            null
+          ) {
+            return true;
+          }
+
+          if (!isStaticMember && hasApplicableIndexSignature(baseType)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    function shouldSkipFunction(node: FunctionNode): boolean {
+      if (node.generator) {
+        return true;
+      }
+
+      if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
+        return hasOverloadSignatures(node, context);
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.AccessorProperty ||
+        node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+        node.parent.type === AST_NODE_TYPES.PropertyDefinition
+      ) {
+        if (
+          node.parent.decorators.length > 0 ||
+          node.parent.parent.parent.decorators.length > 0 ||
+          node.parent.override ||
+          (node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+            hasOverloadSignatures(node.parent, context))
+        ) {
+          return true;
+        }
+
+        if (hasBaseClassMember(node.parent)) {
+          return true;
+        }
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.Property &&
+        services.getContextualType(node.parent.parent) != null
+      ) {
+        return true;
+      }
+
+      return services.getContextualType(node) != null;
+    }
+
     function checkFunction(node: FunctionNode): void {
       const returnType = node.returnType?.typeAnnotation;
       if (returnType == null) {
@@ -475,7 +608,11 @@ export default createRule({
         ? getPromisedTypeNode(returnType)
         : returnType;
       // Only a union member can be reported.
-      if (typeNode == null || !containsUnion(typeNode)) {
+      if (
+        typeNode == null ||
+        !containsUnion(typeNode) ||
+        shouldSkipFunction(node)
+      ) {
         return;
       }
 
