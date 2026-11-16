@@ -9,6 +9,7 @@ import {
   findFirstResult,
   getParserServices,
   getTypeOfPropertyOfName,
+  isPromiseLike,
   isSymbolFromDefaultLibrary,
   isTypeAnyType,
   isTypeNeverType,
@@ -47,6 +48,15 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+
+    // Interfaces that a type can satisfy without being an instance of them:
+    // an array is also an `ArrayLike`.
+    const structuralReaders = new Map([
+      ['Array', getArrayElementType],
+      ['ArrayLike', getArrayElementType],
+      ['PromiseLike', getPromisedType],
+      ['ReadonlyArray', getArrayElementType],
+    ]);
 
     function getUnionMembers(type: TSESTree.TypeNode): TSESTree.TypeNode[] {
       return type.type === AST_NODE_TYPES.TSUnionType
@@ -123,6 +133,12 @@ export default createRule({
         : undefined;
     }
 
+    function getPromisedType(type: ts.Type): ts.Type | undefined {
+      return isPromiseLike(services.program, type)
+        ? checker.getAwaitedType(type)
+        : undefined;
+    }
+
     // The return type of an async function is the global `Promise`.
     function getPromisedTypeNode(
       typeNode: TSESTree.TypeNode,
@@ -137,6 +153,58 @@ export default createRule({
         isSymbolFromDefaultLibrary(services.program, symbol)
         ? typeNode.typeArguments?.params[0]
         : undefined;
+    }
+
+    function getTypeArgumentComponents(
+      typeNode: TSESTree.TSTypeReference,
+    ): TypeComponent[] {
+      if (typeNode.typeArguments == null) {
+        return [];
+      }
+
+      const symbol = services.getSymbolAtLocation(typeNode.typeName);
+      const declaredType = services.getTypeAtLocation(typeNode);
+      // The type arguments of a type alias have no fixed position in the type
+      // that the alias produces, so only classes and interfaces are read.
+      if (
+        symbol == null ||
+        !tsutils.isTypeReference(declaredType) ||
+        checker.getDeclaredTypeOfSymbol(symbol) !== declaredType.target
+      ) {
+        return [];
+      }
+
+      const { target } = declaredType;
+      // A class declared inside a generic function also takes the type
+      // parameters of that function.
+      const firstIndex = target.outerTypeParameters?.length ?? 0;
+      const readStructurally = isSymbolFromDefaultLibrary(
+        services.program,
+        symbol,
+      )
+        ? structuralReaders.get(symbol.name)
+        : undefined;
+
+      return typeNode.typeArguments.params.map((typeArgument, index) => ({
+        read: (type): ts.Type | undefined => {
+          // A type argument that is only used as a method parameter type is
+          // compared in both directions, so the two types are assignable to
+          // each other. Removing a member would not narrow the declared type.
+          if (checker.isTypeAssignableTo(declaredType, type)) {
+            return undefined;
+          }
+
+          const typeArguments =
+            tsutils.isTypeReference(type) && type.target === target
+              ? checker.getTypeArguments(type)
+              : undefined;
+
+          return (
+            typeArguments?.[firstIndex + index] ?? readStructurally?.(type)
+          );
+        },
+        typeNode: typeArgument,
+      }));
     }
 
     function getComponents(
@@ -209,6 +277,9 @@ export default createRule({
           return typeNode.operator === 'readonly'
             ? getComponents(typeNode.typeAnnotation)
             : [];
+
+        case AST_NODE_TYPES.TSTypeReference:
+          return getTypeArgumentComponents(typeNode);
 
         default:
           return [];
