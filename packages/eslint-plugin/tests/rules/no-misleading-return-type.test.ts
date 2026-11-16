@@ -63,6 +63,27 @@ function createValue(): { left: string } | { right: number } {
 }
     `,
     `
+function createValue(): { key: string } | { key: number; size: number } {
+  return { key: 'value', size: 1 };
+}
+    `,
+    `
+function createValues(): ({ key: string } | { key: number; size: number })[] {
+  return [{ key: 'value', size: 1 }];
+}
+    `,
+    `
+function createValue(): { key: string } | Record<string, number> {
+  return { key: 'value', size: 1 };
+}
+    `,
+    `
+type Sized = { key: number; size: number } | { other: string };
+function createValue(): { key: string } | Sized {
+  return { key: 'value', size: 1 };
+}
+    `,
+    `
 declare const value: string;
 function getValue(): string | 'value' {
   return value;
@@ -898,6 +919,71 @@ function createValue(): { kind: 'ready' } | { kind: 'idle' } {
           endColumn: 61,
           endLine: 2,
           line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { left: string } | { right: number } | null {
+  return { left: 'value', right: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 64,
+          endColumn: 68,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createPoint(): { x: number } | { y: number } | { z: number } {
+  return { x: 1, y: 2 };
+}
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 70,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function createValue(): { key: string } | { key: string; size: number } | null {
+  return { key: 'value', size: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 75,
+          endColumn: 79,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: { kind: 'ready' | 'idle' };
+function getValue(): { kind: 'ready' } | { kind: 'idle' } | null {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 61,
+          endColumn: 65,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryType',
         },
       ],

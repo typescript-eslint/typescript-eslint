@@ -80,6 +80,39 @@ export default createRule({
         : constituents;
     }
 
+    function isReturnedTypeAssignableTo(
+      returnedType: ts.Type,
+      type: ts.Type,
+    ): boolean {
+      // TypeScript rejects an object literal with excess properties, but the
+      // object is still a value of the type.
+      return checker.isTypeAssignableTo(
+        tsutils.isObjectType(returnedType) &&
+          tsutils.isObjectFlagSet(returnedType, ts.ObjectFlags.ObjectLiteral)
+          ? checker.getWidenedType(returnedType)
+          : returnedType,
+        type,
+      );
+    }
+
+    /**
+     * Whether a type declares a property of an object type, or any property
+     * through an index signature.
+     */
+    function declaresPropertyOf(type: ts.Type, objectType: ts.Type): boolean {
+      const names = objectType
+        .getProperties()
+        .map(property => property.escapedName);
+
+      return tsutils
+        .unionConstituents(type)
+        .some(
+          part =>
+            checker.getIndexInfosOfType(part).length > 0 ||
+            names.some(name => tsutils.getPropertyOfType(part, name) != null),
+        );
+    }
+
     // An async function awaits a returned promise before resolving with it.
     function getResolvedType(type: ts.Type, isAsync: boolean): ts.Type {
       return isAsync ? (checker.getAwaitedType(type) ?? type) : type;
@@ -339,14 +372,27 @@ export default createRule({
         type: getResolvedType(services.getTypeAtLocation(typeNode), isAwaited),
         typeNode,
       }));
-      // No member can be removed when one of them is `any` or `unknown`, or
-      // when a returned type needs several of them.
-      if (
-        members.some(member => isAnyOrUnknown(member.type)) ||
-        !returnedTypes.every(returnedType =>
-          members.some(member =>
+      // TypeScript can accept an object through several members together: each
+      // property of an object literal has to be declared by one of them, and
+      // `{ kind: 'a' | 'b' }` is assignable to `{ kind: 'a' } | { kind: 'b' }`.
+      const sharedTypes = returnedTypes.filter(
+        returnedType =>
+          !members.some(member =>
             checker.isTypeAssignableTo(returnedType, member.type),
           ),
+      );
+      const unionType = getResolvedType(
+        services.getTypeAtLocation(unionNode),
+        isAwaited,
+      );
+      // No member can be removed when one of them is `any` or `unknown`, or
+      // when a returned type needs several of them for another reason.
+      if (
+        members.some(member => isAnyOrUnknown(member.type)) ||
+        !sharedTypes.every(
+          type =>
+            tsutils.isObjectType(type) &&
+            checker.isTypeAssignableTo(type, unionType),
         )
       ) {
         return;
@@ -367,8 +413,13 @@ export default createRule({
           continue;
         }
 
-        const acceptedTypes = returnedTypes.filter(returnedType =>
-          checker.isTypeAssignableTo(returnedType, member.type),
+        const acceptedTypes = returnedTypes.filter(
+          returnedType =>
+            isReturnedTypeAssignableTo(returnedType, member.type) ||
+            // An object that TypeScript accepts through several members needs
+            // each member that declares one of its properties.
+            (sharedTypes.includes(returnedType) &&
+              declaresPropertyOf(member.type, returnedType)),
         );
         if (acceptedTypes.length === 0) {
           context.report({
