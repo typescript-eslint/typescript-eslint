@@ -1030,8 +1030,6 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
   (): Promise<void>;
   (arg: string): Promise<void>;
   new (): Promise<void>;
-  [key: string]: () => Promise<void>;
-  [key: number]: () => Promise<void>;
 }
       `,
       options: [{ checksVoidReturn: { inheritedMethods: true } }],
@@ -1338,6 +1336,38 @@ return console.log('foo');
     `,
     `
 return Promise.resolve();
+    `,
+    `
+interface Base {
+  [key: string]: () => void;
+}
+interface Derived extends Base {
+  [key: string]: () => void;
+}
+    `,
+    `
+interface Base {
+  [key: string]: () => Promise<void> | void;
+}
+interface Derived extends Base {
+  [key: string]: () => Promise<void>;
+}
+    `,
+    `
+interface Base {
+  [key: number]: () => void;
+}
+interface Derived extends Base {
+  [key: \`async\${string}\`]: () => Promise<void>;
+}
+    `,
+    `
+class Base {
+  static [key: string]: () => void;
+}
+class Derived extends Base {
+  static [key: string]: () => Promise<void>;
+}
     `,
   ],
 
@@ -2985,8 +3015,8 @@ interface MyAsyncInterface extends MySyncInterface {
   (): Promise<void>;
   (arg: string): Promise<void>;
   new (): Promise<void>;
-  [key: string]: () => Promise<void>;
-  [key: number]: () => Promise<void>;
+  [key: string]: () => void;
+  [key: number]: () => void;
   myMethod(): Promise<void>;
 }
       `,
@@ -3027,7 +3057,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   (arg: string): Promise<void>;
   new (): void;
   new (arg: string): void;
-  [key: string]: () => Promise<void>;
+  [key: string]: () => void;
   [key: number]: () => void;
   doSyncThing(): Promise<void>;
   doAsyncThing(): Promise<void>;
@@ -3070,7 +3100,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   (arg: string): Promise<void>;
   new (): void;
   new (arg: string): void;
-  [key: string]: () => Promise<void>;
+  [key: string]: () => void;
   [key: number]: () => void;
   doAsyncThing(): Promise<void>;
   syncMethodProperty: () => Promise<void>;
@@ -3745,6 +3775,95 @@ if (f()) {
           checksConditionals: {
             flagUnions: 'all',
           },
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  [key: string]: () => void;
+}
+interface Derived extends Base {
+  [key: string]: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { heritageTypeName: 'Base' },
+          endColumn: 38,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  [key: string]: () => void;
+}
+interface Derived extends Base {
+  [key: \`fetch\${string}\`]: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { heritageTypeName: 'Base' },
+          endColumn: 48,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+type Handlers = Record<string, () => void>;
+class AsyncHandlers implements Handlers {
+  [key: string]: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { heritageTypeName: 'Handlers' },
+          endColumn: 38,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface StringHandlers {
+  [key: string]: () => void;
+}
+interface NumberHandlers {
+  [key: number]: () => void;
+}
+interface Derived extends StringHandlers, NumberHandlers {
+  [key: number]: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { heritageTypeName: 'StringHandlers' },
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          column: 3,
+          data: { heritageTypeName: 'NumberHandlers' },
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
