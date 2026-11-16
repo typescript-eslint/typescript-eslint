@@ -1,0 +1,63 @@
+---
+description: 'Disallow return type annotations containing types not required by returned expressions.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misleading-return-type** for documentation.
+
+Explicit return type annotations can retain union constituents after the implementation no longer requires them.
+Callers must then handle types that TypeScript does not infer for any returned expression.
+
+This rule reports a union constituent in a return type when the function would still type-check without it.
+Literal types satisfy their corresponding primitive types, so returning `'ready'` satisfies a `string` constituent.
+A function that can reach the end of its body without returning a value needs `undefined` or `void`.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function getStatus(): string | null {
+  return 'ready';
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function getStatus(): string {
+  return 'ready';
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Limitations
+
+This rule only checks unions that are written in the return type annotation.
+It does not look inside type aliases or at their type arguments.
+
+The rule does not report when a returned expression is `any` or `unknown`.
+
+The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
+Compiler options therefore affect its results.
+When `strictNullChecks` is disabled, `null` and `undefined` constituents are not reported.
+
+The rule treats the end of a function body as reachable after an exhaustive `switch` statement or a call to a function that returns `never`, so it does not report `undefined` or `void` there.
+
+## When Not To Use It
+
+An API may intentionally declare values that its current implementation does not return, such as for forward compatibility.
+If that convention is common in your project, you might not want to use this rule.
+
+## Related To
+
+- [explicit-function-return-type](./explicit-function-return-type.mdx)
+- [no-redundant-type-constituents](./no-redundant-type-constituents.mdx)
