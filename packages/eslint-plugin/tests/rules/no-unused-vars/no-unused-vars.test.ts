@@ -2502,6 +2502,26 @@ export const x: _Foo = 1;
     },
     {
       code: `
+import _foo from 'foo';
+export const x = _foo;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_foo',
+          },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
 enum _Foo {
   A = 1,
 }
