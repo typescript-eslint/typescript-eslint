@@ -92,6 +92,18 @@ When `strictNullChecks` is disabled, `null` and `undefined` constituents are not
 
 The rule treats the end of a function body as reachable after an exhaustive `switch` statement or a call to a function that returns `never`, so it does not report `undefined` or `void` there.
 
+When `noUncheckedIndexedAccess` is disabled, TypeScript gives an indexed access such as `values[0]` a type without `undefined`, although the value can be missing.
+The rule treats a returned indexed access as possibly `undefined`, so it does not report `undefined` here:
+
+```ts
+function getFirst(values: string[]): string | undefined {
+  return values[0];
+}
+```
+
+This also applies when the indexed access is the operand of `await`, an operand of `??`, `||`, or `&&`, a branch of a conditional expression, or the start of an optional chain.
+It does not apply when the value first goes through a variable, a destructuring pattern, or an object or array literal.
+
 ## When Not To Use It
 
 An API may intentionally declare values that its current implementation does not return, such as for forward compatibility.

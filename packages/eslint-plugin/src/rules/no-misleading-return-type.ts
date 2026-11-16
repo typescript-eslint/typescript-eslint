@@ -7,9 +7,12 @@ import * as ts from 'typescript';
 import {
   createRule,
   findFirstResult,
+  getConstrainedTypeAtLocation,
   getParserServices,
+  getStaticMemberAccessValue,
   getTypeOfPropertyOfName,
   hasOverloadSignatures,
+  isNullableType,
   isPromiseLike,
   isSymbolFromDefaultLibrary,
   isTypeAnyType,
@@ -55,6 +58,10 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      services.program.getCompilerOptions(),
+      'noUncheckedIndexedAccess',
+    );
 
     // Interfaces that a type can satisfy without being an instance of them:
     // an array is also an `ArrayLike`.
@@ -125,7 +132,102 @@ export default createRule({
       return isAsync ? (checker.getAwaitedType(type) ?? type) : type;
     }
 
-    function getReturnedTypes(node: FunctionNode): ts.Type[] | null {
+    /**
+     * Whether a member is read through an index signature, like `values[0]`.
+     * Its type only includes `undefined` under `noUncheckedIndexedAccess`.
+     */
+    function isUncheckedIndexedAccess(
+      node: TSESTree.MemberExpression,
+    ): boolean {
+      const name = getStaticMemberAccessValue(node, context);
+
+      return tsutils
+        .unionConstituents(getConstrainedTypeAtLocation(services, node.object))
+        .some(
+          type =>
+            checker.getIndexInfosOfType(type).length > 0 &&
+            // A known name can belong to a declared member instead.
+            (typeof name !== 'string' ||
+              checker.getPropertyOfType(type, name) == null),
+        );
+    }
+
+    // `values[0]?.name.length` ends at `?.` when `values[0]` is missing.
+    function canShortCircuit(
+      node: TSESTree.CallExpression | TSESTree.MemberExpression,
+    ): boolean {
+      const previous =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
+
+      if (node.optional) {
+        return getUncheckedTypes(previous).some(isNullableType);
+      }
+
+      return (
+        (previous.type === AST_NODE_TYPES.CallExpression ||
+          previous.type === AST_NODE_TYPES.MemberExpression) &&
+        canShortCircuit(previous)
+      );
+    }
+
+    /**
+     * The types of the values that an expression can produce although its type
+     * does not include them: `values[0]` can be `undefined`.
+     */
+    function getUncheckedTypes(node: TSESTree.Expression): ts.Type[] {
+      switch (node.type) {
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.MemberExpression: {
+          const canBeMissing =
+            (node.type === AST_NODE_TYPES.MemberExpression &&
+              isUncheckedIndexedAccess(node)) ||
+            canShortCircuit(node);
+
+          return canBeMissing ? [checker.getUndefinedType()] : [];
+        }
+
+        case AST_NODE_TYPES.AwaitExpression:
+          return getUncheckedTypes(node.argument);
+
+        case AST_NODE_TYPES.ChainExpression:
+          return getUncheckedTypes(node.expression);
+
+        case AST_NODE_TYPES.ConditionalExpression:
+          return [
+            ...getUncheckedTypes(node.consequent),
+            ...getUncheckedTypes(node.alternate),
+          ];
+
+        case AST_NODE_TYPES.LogicalExpression: {
+          const leftTypes = getUncheckedTypes(node.left);
+          const rightTypes = getUncheckedTypes(node.right);
+          // A missing left operand of `&&` is the result.
+          if (node.operator === '&&') {
+            return [...leftTypes, ...rightTypes];
+          }
+
+          // `??` and `||` use the right operand when the left one is missing.
+          // TypeScript ignores its type if the left type is never missing.
+          return [
+            ...leftTypes.filter(type => !isNullableType(type)),
+            ...(leftTypes.length > 0
+              ? tsutils.unionConstituents(
+                  services.getTypeAtLocation(node.right),
+                )
+              : []),
+            ...rightTypes,
+          ];
+        }
+
+        default:
+          return [];
+      }
+    }
+
+    function getReturnedTypes(
+      node: FunctionNode,
+      typeNode: TSESTree.TypeNode,
+    ): ts.Type[] | null {
       const expressions: TSESTree.Expression[] = [];
       let canCompleteWithoutValue = false;
       if (node.body.type === AST_NODE_TYPES.BlockStatement) {
@@ -160,6 +262,24 @@ export default createRule({
       );
       if (canCompleteWithoutValue) {
         returnedTypes.push(checker.getUndefinedType());
+      }
+      if (!isNoUncheckedIndexedAccess) {
+        // The function type-checks without these values, so they only count
+        // where the return type accepts them.
+        const declaredType = getResolvedType(
+          services.getTypeAtLocation(typeNode),
+          node.async,
+        );
+        returnedTypes.push(
+          ...expressions
+            .flatMap(getUncheckedTypes)
+            .filter(type =>
+              checker.isTypeAssignableTo(
+                getResolvedType(type, node.async),
+                declaredType,
+              ),
+            ),
+        );
       }
 
       return getConstituents(
@@ -616,7 +736,7 @@ export default createRule({
         return;
       }
 
-      const returnedTypes = getReturnedTypes(node);
+      const returnedTypes = getReturnedTypes(node, typeNode);
       if (returnedTypes != null) {
         checkTypeNode(typeNode, returnedTypes, node.async);
       }
