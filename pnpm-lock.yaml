@@ -7,153 +7,162 @@ importers:
     configDependencies: {}
     packageManagerDependencies:
       pnpm:
-        specifier: 12.17.0
-        version: 12.17.0
+        specifier: 12.19.0
+        version: 12.19.0
 
 packages:
 
-  '@pnpm/exe.android-arm64@12.17.0':
-    resolution: {integrity: sha512-gwu/F5YyoJp1bIbrIBl7B8JO3rkjkGlKikwQg9s0aVa5xWaBYIqPX+ZJqQ7I4D1YfbdI/Omfze0+6vnYiWHG6A==}
+  '@pnpm/exe.android-arm64@12.19.0':
+    resolution: {integrity: sha512-NpPhCmjTAQUmG6PK5CYQBWrPE8D/IQCOcmVQQ1MMfVjcBIWh8KAxk1jBsKjy9Dpz7JH9k3QAQdwCekpi/9Q3LQ==}
     cpu: [arm64]
     os: [android]
 
-  '@pnpm/exe.android-x64@12.17.0':
-    resolution: {integrity: sha512-qUNhCvWyeBrUByNWkqqQ3Koy1gIAQ8UV5HDHXxoo5NUWVTde0Ld2BxweNwWJw8CNKpqEGceCUdjZ506JYpTjJg==}
+  '@pnpm/exe.android-x64@12.19.0':
+    resolution: {integrity: sha512-Ko6d6NHauv1fV9WjuEoFTM/V4Q6wVuv+A59atp37YB4UMYs9h6OHcpN7W4Q6l//do8LJhN2fjt4F7K4+/SRWSw==}
     cpu: [x64]
     os: [android]
 
-  '@pnpm/exe.darwin-arm64@12.17.0':
-    resolution: {integrity: sha512-0nkEqRLIbrm7dWl+p2EPpmyNKyM0bbdPEovdtMhHYbhkO+Vls38S+6emkx8kSTAr75BNXYXkCl4RtGinGG4Erg==}
+  '@pnpm/exe.darwin-arm64@12.19.0':
+    resolution: {integrity: sha512-2u5ifdaBi/3pA0MMmEZ9ZvXBY2DJvk0NrvxgZ3L87B3MlbZdTb9oq6tTYMJAsMLhEg0NiGovtq1cTHVc75OnKw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@pnpm/exe.darwin-x64@12.17.0':
-    resolution: {integrity: sha512-w89cboNi4KCzmt/dSKrE4ijVNKICKiZsE9TcIWf77Tz+VpoDfuhPSmWPZK+iCHBvlI/9dIN+M3HiPPVsFnAx4Q==}
+  '@pnpm/exe.darwin-x64@12.19.0':
+    resolution: {integrity: sha512-VZOyG983At+Y9iqOtxSfRSMDci4dLqmfYL7xFDKeLvsw8u101T1vellHFYdWnxM59gNi4jufuhBcyx5WwjeF+A==}
     cpu: [x64]
     os: [darwin]
 
-  '@pnpm/exe.freebsd-x64@12.17.0':
-    resolution: {integrity: sha512-DJ0FOaUDXc71icSgiuBFEvqReqoSiS/rmnC6kltoiC3MzPyw3awcGbT/7FnnYzi/ziuoTC7v6vfBh0Vzv7VKOQ==}
+  '@pnpm/exe.freebsd-x64@12.19.0':
+    resolution: {integrity: sha512-VctpMq4CSn8fh20XX0dsQz1cmakaRxSMq5AT7u66dQxkpMhf/ugm6bbwyj0rJpb04SYHtUBJKb7BB433KWHy8A==}
     cpu: [x64]
     os: [freebsd]
 
-  '@pnpm/exe.linux-arm64-musl@12.17.0':
-    resolution: {integrity: sha512-w5ZwZ4j8S804DGhMYlLLpc+G3Kkc+5GlDO++LLvO/nDIXBTHRhdxPfQBQU08q31k0JYfp3wXCQk0Y7DnsuVF6w==}
+  '@pnpm/exe.linux-arm64-musl@12.19.0':
+    resolution: {integrity: sha512-qWBJJrY084dmXordzdjL8C4drTHEU6dhbJ4ZupTChg9DKbWSKhVxJwTZXzUwFNmbo/TTAIQ8pFic8YCr0fIczg==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-arm64@12.17.0':
-    resolution: {integrity: sha512-Cj2nIzWTVm6ZuhQHqL9SiJ11scBnEGxJyNg7tYQPzh9fVF5UVRkv+LbyfwdftnAtJerK/7HDpK/55WeQqp8OkA==}
+  '@pnpm/exe.linux-arm64@12.19.0':
+    resolution: {integrity: sha512-Rcivut7V1fcWSz4c11GYcZwRrUO1+wXWLUUBV13uRGuQ0QcixOoVn9+2ypfSmp6arDXl2Y+vKhs9522V8kCZHw==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-ppc64@12.17.0':
-    resolution: {integrity: sha512-Gb//Wm15fXl+qWcxjNQmwlYDjGiJOnLU/A9uRZYmtkyZie2Yx8AHI6XkUIJioQz99TwVDKQ87ywD5Jtk8zcgyg==}
+  '@pnpm/exe.linux-ppc64@12.19.0':
+    resolution: {integrity: sha512-KhBS0NJK+wY0PbwdjFQ7gR00Pv+1be83nXqPrRcK+h0xmUmRSAEiLGyPajSNa7xUFoCXVVwJGeoCYMepz2VNmg==}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-riscv64@12.17.0':
-    resolution: {integrity: sha512-+kItEcFjdVZEDzODsc7icb8cB+3AouCrEzOCezzxLITRhw86m9t3J/qyPdcFELBjeMnS+IXV8sJaSCQcpSqfgA==}
+  '@pnpm/exe.linux-riscv64@12.19.0':
+    resolution: {integrity: sha512-fbwKjV+2AsrFTToCseD9IccE+VQXbzeKMiho6U1he4N904gQ9p06/MwtxqKBGSD+PaEVAn8IolzSQRpBq84XZg==}
     cpu: [riscv64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-s390x@12.17.0':
-    resolution: {integrity: sha512-jf5ghD2uDeknWQgK/EsCFNwlyL7BYLWfXe687g5UMVFclPLt524CREZ8Yl5hf4u7p3evCIPBN/m5I1QXUmJpHw==}
+  '@pnpm/exe.linux-s390x@12.19.0':
+    resolution: {integrity: sha512-Bntrz3smF+pHpH3z82JFY3ldFthmrpGXB6xT32qhDB0qwo096OUSQvzO3xZ6+Mt1bnStM72q7w0Ht1jyEMdS3A==}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-x64-musl@12.17.0':
-    resolution: {integrity: sha512-JGxrGSxkDkqRAUD49T9dOnKyJkQ3bWBeHnYH4o4mvj09R9eUzhWFi8oa6WPNyCO0/7/Max2gsSfgXOHj3QW7ug==}
+  '@pnpm/exe.linux-x64-musl@12.19.0':
+    resolution: {integrity: sha512-2IJD+LBqnrwAInPSlhm5Z4l8qXUEG3L/zPmAy1amx8Mw/d+SYOoeI4X61eML1m4UD9mjrePF76M6Z+DEbLv/mg==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-x64@12.17.0':
-    resolution: {integrity: sha512-vQAusDzMofc/Ee4KOUYjE6FWeHOlMGQyvhR7W39QSamVeJWS16co/n+bhjdjwjI3UFh8IWOpamvTS+b4lvQUog==}
+  '@pnpm/exe.linux-x64@12.19.0':
+    resolution: {integrity: sha512-oTji4PzIwSG+AbcHnouo/hW1Oz+1yDP30KJqBmmQnxiOSqTAi8HylytTrONUT08DIjuZ9t8gGZWjv/tqnQdb2w==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.win32-arm64@12.17.0':
-    resolution: {integrity: sha512-qDQh8rmyK5sxlaCSCADcmPrvytJabMCbxtJ0nCitzRo2j3/8BhzLjlOcWF3C6iPGhR5CbIb+btNy+VCVhd06mQ==}
+  '@pnpm/exe.netbsd-x64@12.19.0':
+    resolution: {integrity: sha512-0Sh1mIsOEvuQQsI6wAK3iRYBTqIaa3uAP81Gd+P27/yIpwfLnrHRdtWw+ojfhz0KeQmOH3SJYIY6504wYYuDNA==}
+    cpu: [x64]
+    os: [netbsd]
+
+  '@pnpm/exe.win32-arm64@12.19.0':
+    resolution: {integrity: sha512-vHJKl9Z4KDm48dAMlf2RXJroQiFTrxcN0DWc7m6fi+czyTHwtR8kVn2W0CQA0wbWAsdFg2kZ1A8KCuzbAo5Vsg==}
     cpu: [arm64]
     os: [win32]
 
-  '@pnpm/exe.win32-x64@12.17.0':
-    resolution: {integrity: sha512-qCo1OQlE3WrFZIAUK0O5EoupLaQ1fST7zNX8Qd+Tc4ojWgCvYA/ze0uP9hox8mSFC/JPAGRSG5o8gUBSq2rRxw==}
+  '@pnpm/exe.win32-x64@12.19.0':
+    resolution: {integrity: sha512-Jr3tdhL7PG20T2mz3XWVa/CIod5dIC3vv+IUWNictKTky8vNwQQ00OCK8fd9rNihVhCC61oMjBROm8ABZEDLWQ==}
     cpu: [x64]
     os: [win32]
 
-  pnpm@12.17.0:
-    resolution: {integrity: sha512-uNIj6+wEtYContIG2qcdG8y2oe4dUu+pXMOw23UnFWHfjw2OLEOt05xewIAYr3qKlRCOcJD5Win4hye3pA/VPQ==}
+  pnpm@12.19.0:
+    resolution: {integrity: sha512-hzJ7ZhmFMgWDTkvlm6OiMeMD2fXkNZEu3jMSt1Obea+JCUL2UTsFpGkHRWZoiARcCbM/xCDCzS072VwBuiHb6w==}
     engines: {node: '>=18'}
     hasBin: true
 
 snapshots:
 
-  '@pnpm/exe.android-arm64@12.17.0':
+  '@pnpm/exe.android-arm64@12.19.0':
     optional: true
 
-  '@pnpm/exe.android-x64@12.17.0':
+  '@pnpm/exe.android-x64@12.19.0':
     optional: true
 
-  '@pnpm/exe.darwin-arm64@12.17.0':
+  '@pnpm/exe.darwin-arm64@12.19.0':
     optional: true
 
-  '@pnpm/exe.darwin-x64@12.17.0':
+  '@pnpm/exe.darwin-x64@12.19.0':
     optional: true
 
-  '@pnpm/exe.freebsd-x64@12.17.0':
+  '@pnpm/exe.freebsd-x64@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64-musl@12.17.0':
+  '@pnpm/exe.linux-arm64-musl@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64@12.17.0':
+  '@pnpm/exe.linux-arm64@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-ppc64@12.17.0':
+  '@pnpm/exe.linux-ppc64@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-riscv64@12.17.0':
+  '@pnpm/exe.linux-riscv64@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-s390x@12.17.0':
+  '@pnpm/exe.linux-s390x@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-x64-musl@12.17.0':
+  '@pnpm/exe.linux-x64-musl@12.19.0':
     optional: true
 
-  '@pnpm/exe.linux-x64@12.17.0':
+  '@pnpm/exe.linux-x64@12.19.0':
     optional: true
 
-  '@pnpm/exe.win32-arm64@12.17.0':
+  '@pnpm/exe.netbsd-x64@12.19.0':
     optional: true
 
-  '@pnpm/exe.win32-x64@12.17.0':
+  '@pnpm/exe.win32-arm64@12.19.0':
     optional: true
 
-  pnpm@12.17.0:
+  '@pnpm/exe.win32-x64@12.19.0':
+    optional: true
+
+  pnpm@12.19.0:
     optionalDependencies:
-      '@pnpm/exe.android-arm64': 12.17.0
-      '@pnpm/exe.android-x64': 12.17.0
-      '@pnpm/exe.darwin-arm64': 12.17.0
-      '@pnpm/exe.darwin-x64': 12.17.0
-      '@pnpm/exe.freebsd-x64': 12.17.0
-      '@pnpm/exe.linux-arm64': 12.17.0
-      '@pnpm/exe.linux-arm64-musl': 12.17.0
-      '@pnpm/exe.linux-ppc64': 12.17.0
-      '@pnpm/exe.linux-riscv64': 12.17.0
-      '@pnpm/exe.linux-s390x': 12.17.0
-      '@pnpm/exe.linux-x64': 12.17.0
-      '@pnpm/exe.linux-x64-musl': 12.17.0
-      '@pnpm/exe.win32-arm64': 12.17.0
-      '@pnpm/exe.win32-x64': 12.17.0
+      '@pnpm/exe.android-arm64': 12.19.0
+      '@pnpm/exe.android-x64': 12.19.0
+      '@pnpm/exe.darwin-arm64': 12.19.0
+      '@pnpm/exe.darwin-x64': 12.19.0
+      '@pnpm/exe.freebsd-x64': 12.19.0
+      '@pnpm/exe.linux-arm64': 12.19.0
+      '@pnpm/exe.linux-arm64-musl': 12.19.0
+      '@pnpm/exe.linux-ppc64': 12.19.0
+      '@pnpm/exe.linux-riscv64': 12.19.0
+      '@pnpm/exe.linux-s390x': 12.19.0
+      '@pnpm/exe.linux-x64': 12.19.0
+      '@pnpm/exe.linux-x64-musl': 12.19.0
+      '@pnpm/exe.netbsd-x64': 12.19.0
+      '@pnpm/exe.win32-arm64': 12.19.0
+      '@pnpm/exe.win32-x64': 12.19.0
 
 ---
 lockfileVersion: '9.0'
@@ -312,10 +321,10 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       '@vitest/eslint-plugin':
         specifier: 1.6.16
-        version: 1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vitest@5.1.0)
+        version: 1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       console-fail-test:
         specifier: ^0.10.0
         version: 0.10.0
@@ -429,7 +438,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       '@vitest/pretty-format':
         specifier: 'catalog:'
         version: 5.1.0
@@ -505,7 +514,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       ajv:
         specifier: 'catalog:'
         version: 6.15.0
@@ -578,7 +587,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -596,7 +605,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -630,7 +639,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -664,7 +673,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -692,7 +701,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -741,7 +750,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -772,7 +781,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       '@vitest/pretty-format':
         specifier: 'catalog:'
         version: 5.1.0
@@ -799,7 +808,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -841,7 +850,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       ajv:
         specifier: 'catalog:'
         version: 6.15.0
@@ -865,7 +874,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -902,7 +911,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -954,7 +963,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -994,7 +1003,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -1022,7 +1031,7 @@ importers:
         version: typescript@7.1.0-dev.20261009.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.1.0(vitest@5.1.0)
+        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -14643,7 +14652,7 @@ snapshots:
 
   '@ungap/structured-clone@1.3.3': {}
 
-  '@vitest/coverage-v8@5.1.0(vitest@5.1.0)':
+  '@vitest/coverage-v8@5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/istanbul-lib-coverage': 2.1.0
@@ -14654,8 +14663,24 @@ snapshots:
       std-env: 4.3.0
       tinyrainbow: 3.2.0
       vitest: 5.1.0(@types/node@24.19.0)(@vitest/coverage-v8@5.1.0)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))
+    transitivePeerDependencies:
+      - vite
 
-  '@vitest/eslint-plugin@1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vitest@5.1.0)':
+  '@vitest/coverage-v8@5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)':
+    dependencies:
+      '@bcoe/v8-coverage': 1.0.2
+      '@vitest/istanbul-lib-coverage': 2.1.0
+      '@vitest/istanbul-lib-report': 2.1.0
+      ast-v8-to-istanbul: 1.0.7
+      magicast: 0.5.5
+      obug: 3.0.0
+      std-env: 4.3.0
+      tinyrainbow: 3.2.0
+      vitest: 5.1.0(@types/node@24.19.0)(@vitest/coverage-v8@5.1.0)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))
+    transitivePeerDependencies:
+      - vite
+
+  '@vitest/eslint-plugin@1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.72.0
       '@typescript-eslint/utils': 8.72.0(@typescript/typescript6@6.0.2)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)
@@ -14666,6 +14691,7 @@ snapshots:
       vitest: 5.1.0(@types/node@24.19.0)(@vitest/coverage-v8@5.1.0)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
+      - vite
 
   '@vitest/istanbul-lib-coverage@2.1.0': {}
 
@@ -21086,7 +21112,7 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 24.19.0
-      '@vitest/coverage-v8': 5.1.0(vitest@5.1.0)
+      '@vitest/coverage-v8': 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
     transitivePeerDependencies:
       - msw
 
@@ -21108,7 +21134,7 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 24.19.0
-      '@vitest/coverage-v8': 5.1.0(vitest@5.1.0)
+      '@vitest/coverage-v8': 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)
     transitivePeerDependencies:
       - msw
 
