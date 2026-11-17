@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": false
+  },
+  "include": ["file.ts", "../included/file.ts"]
+}

@@ -13,14 +13,21 @@ const vitestConfig = mergeConfig(
     test: {
       dir: path.join(import.meta.dirname, 'tests', 'lib'),
 
-      exclude: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-        ? [...defaultExclude, 'parse.project-true.test.ts']
-        : [...defaultExclude],
+      exclude: [
+        ...defaultExclude,
+        ...(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+          ? ['parse.project-true.test.ts']
+          : []),
+        ...(process.features.require_module ? [] : ['native-*.test.ts']),
+      ],
 
       isolate: true,
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
-      setupFiles: ['./tests/test-utils/custom-matchers/custom-matchers.ts'],
+      setupFiles: [
+        './tests/test-utils/custom-matchers/custom-matchers.ts',
+        './tests/test-utils/tsgo-backend.mts',
+      ],
       testTimeout: 15_000,
       unstubEnvs: true,
       unstubGlobals: true,

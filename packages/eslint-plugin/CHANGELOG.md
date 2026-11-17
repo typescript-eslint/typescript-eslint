@@ -1,3 +1,22 @@
+## 8.73.0 (2026-11-16)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-class-instance-assignment] add rule ([#12907](https://github.com/typescript-eslint/typescript-eslint/pull/12907))
+- **typescript-estree:** add projectService.EXPERIMENTAL_backend for TypeScript 7.1 native parser support over IPC ([#12803](https://github.com/typescript-eslint/typescript-eslint/pull/12803))
+- **eslint-plugin:** [consistent-type-imports] narrow report location ([#12924](https://github.com/typescript-eslint/typescript-eslint/pull/12924))
+
+### ❤️ Thank You
+
+- Eren Batı @erenbati
+- Evyatar Daud @StyleShit
+- Josh Ghoulberg 👻
+- Josh Goldberg
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.73.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.72.2 (2026-11-09)
 
 ### 🩹 Fixes

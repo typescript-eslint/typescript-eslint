@@ -47,6 +47,7 @@ export default (
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-class-instance-assignment': 'off',
     '@typescript-eslint/no-unsafe-enum-assignment': 'off',
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',

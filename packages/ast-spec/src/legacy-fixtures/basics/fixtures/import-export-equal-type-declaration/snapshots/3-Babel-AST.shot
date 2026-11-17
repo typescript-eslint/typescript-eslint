@@ -39,6 +39,7 @@ Program {
             end: { column: 39, line: 3 },
           },
         },
+        phase: null,
 
         range: [80, 113],
         loc: {

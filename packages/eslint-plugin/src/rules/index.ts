@@ -106,6 +106,8 @@ const rules = lazyRules({
   'no-unsafe-argument': () => require('./no-unsafe-argument'),
   'no-unsafe-assignment': () => require('./no-unsafe-assignment'),
   'no-unsafe-call': () => require('./no-unsafe-call'),
+  'no-unsafe-class-instance-assignment': () =>
+    require('./no-unsafe-class-instance-assignment'),
   'no-unsafe-declaration-merging': () =>
     require('./no-unsafe-declaration-merging'),
   'no-unsafe-enum-assignment': () => require('./no-unsafe-enum-assignment'),

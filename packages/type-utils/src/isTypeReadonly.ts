@@ -124,6 +124,43 @@ function isMethodDeclaration(declaration: ts.Declaration) {
   );
 }
 
+// tsgo's conditional types have no root, so their resolved branches stand in.
+function getConditionalBranchTypes(
+  checker: ts.TypeChecker,
+  type: ts.ConditionalType,
+) {
+  const { root } = type as Partial<ts.ConditionalType>;
+  return root
+    ? [root.node.trueType, root.node.falseType].map(checker.getTypeFromTypeNode)
+    : [type.resolvedTrueType, type.resolvedFalseType].filter(
+        branch => branch != null,
+      );
+}
+
+const READONLY_CHECK_FLAG = (
+  ts as unknown as Record<'CheckFlags', Record<'Readonly', number>>
+).CheckFlags.Readonly;
+
+// ts-api-utils sees through mapped types via their modifiers types, which the
+// tsgo backend can't provide. Both backends flag those properties instead.
+function hasReadonlyCheckFlag(property: ts.Symbol) {
+  const { links } = property as { links?: { checkFlags: number } };
+  return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
+}
+
+// TODO: Remove when ts-api-utils includes this check:
+// https://github.com/typescript-eslint/ts-api-utils/pull/1059
+export function isPropertyReadonlyInType(
+  type: ts.Type,
+  property: ts.Symbol,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    hasReadonlyCheckFlag(property) ||
+    tsutils.isPropertyReadonlyInType(type, property.getEscapedName(), checker)
+  );
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -230,13 +267,7 @@ function isTypeReadonlyObject(
         }
       }
 
-      if (
-        tsutils.isPropertyReadonlyInType(
-          type,
-          property.getEscapedName(),
-          checker,
-        )
-      ) {
+      if (isPropertyReadonlyInType(type, property, checker)) {
         continue;
       }
 
@@ -367,14 +398,12 @@ function isTypeReadonlyRecurser(
   }
 
   if (tsutils.isConditionalType(type)) {
-    const result = [type.root.node.trueType, type.root.node.falseType]
-      .map(checker.getTypeFromTypeNode)
-      .every(
-        t =>
-          seenTypes.has(t) ||
-          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
-            Readonlyness.Readonly,
-      );
+    const result = getConditionalBranchTypes(checker, type).every(
+      t =>
+        seenTypes.has(t) ||
+        isTypeReadonlyRecurser(program, t, options, seenTypes) ===
+          Readonlyness.Readonly,
+    );
 
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;
