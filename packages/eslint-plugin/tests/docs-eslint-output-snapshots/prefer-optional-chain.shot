@@ -146,6 +146,28 @@ declare const thing: bigint;
 thing?.toString();
 
 Incorrect
+Options: { "ignoreIfStatements": false }
+
+declare const foo: { bar: () => void } | undefined;
+
+if (foo) {
+~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  foo.bar();
+~~~~~~~~~~~~
+}
+~
+
+if (foo) foo.bar();
+~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+Correct
+Options: { "ignoreIfStatements": false }
+
+declare const foo: { bar: () => void } | undefined;
+
+foo?.bar();
+
+Incorrect
 Options: { "requireNullish": true }
 
 declare const thing1: string | null;

@@ -9,5 +9,6 @@ export interface PreferOptionalChainOptions {
   checkNumber?: boolean;
   checkString?: boolean;
   checkUnknown?: boolean;
+  ignoreIfStatements?: boolean;
   requireNullish?: boolean;
 }
