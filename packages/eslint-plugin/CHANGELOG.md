@@ -1,3 +1,43 @@
+## 8.73.0 (2026-11-16)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-class-instance-assignment] add rule ([#12907](https://github.com/typescript-eslint/typescript-eslint/pull/12907))
+- **typescript-estree:** add projectService.EXPERIMENTAL_backend for TypeScript 7.1 native parser support over IPC ([#12803](https://github.com/typescript-eslint/typescript-eslint/pull/12803))
+- **eslint-plugin:** [consistent-type-imports] narrow report location ([#12924](https://github.com/typescript-eslint/typescript-eslint/pull/12924))
+
+### ❤️ Thank You
+
+- Eren Batı @erenbati
+- Evyatar Daud @StyleShit
+- Josh Ghoulberg 👻
+- Josh Goldberg
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.73.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.2 (2026-11-09)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] treat unconstrained type parameters as possibly nullish ([#12994](https://github.com/typescript-eslint/typescript-eslint/pull/12994))
+- **eslint-plugin:** [no-unnecessary-type-assertion] don't report number to enum assertions ([#13104](https://github.com/typescript-eslint/typescript-eslint/pull/13104))
+- **eslint-plugin:** [no-deprecated] stop on circular alias chains ([#13117](https://github.com/typescript-eslint/typescript-eslint/pull/13117))
+- **eslint-plugin:** [prefer-string-starts-ends-with] parse RegExps with the v flag in unicode sets mode ([#13102](https://github.com/typescript-eslint/typescript-eslint/pull/13102))
+
+### ❤️ Thank You
+
+- Ankur Dubey
+- Evyatar Daud @StyleShit
+- Harsh Bhanushali @harshbhx
+- Jacob Ley @JacobLey
+- yash
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.72.1 (2026-10-26)
 
 ### 🩹 Fixes

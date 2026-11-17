@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.72.1",
+  "version": "8.73.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -79,7 +79,7 @@
     "ajv": "catalog:",
     "eslint": "catalog:",
     "json-schema": "catalog:",
-    "markdown-table": "^3.0.4",
+    "markdown-table": "^3.1.0",
     "marked": "^15.0.12",
     "mdast-util-from-markdown": "catalog:",
     "mdast-util-mdx": "catalog:",
@@ -89,7 +89,7 @@
     "title-case": "^4.3.2",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.2.0",
     "vitest": "catalog:"
   },
   "peerDependencies": {

@@ -3,9 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, getWrappingFixer } from '../../src/util';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const voidEverythingRule = createRule({
   create(context) {

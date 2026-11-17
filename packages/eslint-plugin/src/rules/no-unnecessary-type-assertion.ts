@@ -17,6 +17,7 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
+  isPropertyReadonlyInType,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
@@ -236,6 +237,7 @@ export default createRule<Options, MessageIds>({
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
         hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
+        isNumberToEnumAssertion(uncast, cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
@@ -291,6 +293,32 @@ export default createRule<Options, MessageIds>({
       return tsutils
         .unionConstituents(type)
         .some(part => checker.getIndexInfosOfType(part).length > 0);
+    }
+
+    // `number` and a numeric enum are assignable to each other, so they count
+    // as mutually assignable even though the assertion changes the type:
+    // `values[+key as Color]` compiles where `values[+key]` does not.
+    function isNumberToEnumAssertion(uncast: ts.Type, cast: ts.Type): boolean {
+      return (
+        (hasEnumConstituent(cast) && hasPlainNumberConstituent(uncast)) ||
+        (hasEnumConstituent(uncast) && hasPlainNumberConstituent(cast))
+      );
+    }
+
+    function hasEnumConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(part => isTypeFlagSet(part, ts.TypeFlags.EnumLike));
+    }
+
+    function hasPlainNumberConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(
+          part =>
+            isTypeFlagSet(part, ts.TypeFlags.NumberLike) &&
+            !isTypeFlagSet(part, ts.TypeFlags.EnumLike),
+        );
     }
 
     function getTypeArguments(type: ts.Type): readonly ts.Type[] {
@@ -377,13 +405,15 @@ export default createRule<Options, MessageIds>({
       if (uncastProps.length !== castProps.length) {
         return false;
       }
-      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
+      const castPropsByName = new Map(
+        castProps.map(p => [p.getEscapedName(), p]),
+      );
       return uncastProps.every(prop => {
-        const name = prop.getEscapedName();
+        const castProp = castPropsByName.get(prop.getEscapedName());
         return (
-          castPropNames.has(name) &&
-          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
-            tsutils.isPropertyReadonlyInType(cast, name, checker)
+          castProp != null &&
+          isPropertyReadonlyInType(uncast, prop, checker) ===
+            isPropertyReadonlyInType(cast, castProp, checker)
         );
       });
     }
