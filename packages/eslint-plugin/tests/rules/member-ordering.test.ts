@@ -9,6 +9,9 @@ import rule from '../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 // no accessibility === public
@@ -2116,6 +2119,8 @@ class Foo {
   baz() {}
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [
         {
           default: ['accessor', 'method'],
@@ -5257,6 +5262,8 @@ class Foo {
   baz() {}
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

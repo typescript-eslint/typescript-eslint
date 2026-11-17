@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-namespace-keyword';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-namespace-keyword', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "declare module 'foo';",
     "declare module 'foo' {}",
@@ -42,7 +45,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
     {
       code: `
 declare module foo {
-  declare module bar {}
+  declare namespace bar {}
 }
       `,
       errors: [
@@ -53,6 +56,20 @@ declare module foo {
           line: 2,
           messageId: 'useNamespace',
         },
+      ],
+      output: `
+declare namespace foo {
+  declare namespace bar {}
+}
+      `,
+    },
+    {
+      code: `
+declare namespace foo {
+  declare module bar {}
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 24,

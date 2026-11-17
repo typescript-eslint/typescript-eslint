@@ -5,6 +5,9 @@ import rule from '../../src/rules/parameter-properties';
 const ruleTester = new RuleTester();
 
 ruleTester.run('parameter-properties', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {
@@ -465,6 +468,8 @@ class Foo {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -561,6 +566,7 @@ class Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -584,6 +590,8 @@ class Foo {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -858,6 +866,7 @@ class Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     {
       code: `

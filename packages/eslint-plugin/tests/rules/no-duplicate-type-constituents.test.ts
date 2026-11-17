@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-duplicate-type-constituents', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'type T = 1 | 2;',

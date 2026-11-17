@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-return-this-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {
@@ -70,20 +73,28 @@ class Derived extends Base {
   }
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor f = () => {
     return this;
   };
 }
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 class Foo {
   accessor f = (): this => {
     return this;
   };
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class Foo {
   f?: string;
@@ -262,6 +273,8 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 20,
@@ -285,6 +298,8 @@ class Foo {
   accessor f = (): Foo => this;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 20,

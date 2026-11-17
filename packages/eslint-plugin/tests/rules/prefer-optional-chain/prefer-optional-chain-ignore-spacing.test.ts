@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-ignore-spacing', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [],
   // One base case does not match the mutator, so we have to dedupe it
   invalid: [

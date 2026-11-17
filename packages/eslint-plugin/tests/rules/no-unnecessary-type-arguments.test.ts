@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'f();',
     'f<string>();',

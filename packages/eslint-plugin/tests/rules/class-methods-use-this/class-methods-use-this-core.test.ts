@@ -7,6 +7,109 @@ import rule from '../../../src/rules/class-methods-use-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('class-methods-use-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    {
+      code: 'class A { constructor() {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { foo() {this} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: "class A { foo() {this.bar = 'bar';} }",
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { foo() {bar(this);} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A extends B { foo() {super.foo();} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { foo() { if(true) { return this; } } }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { static foo() {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: '({ a(){} });',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { foo() { () => this; } }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: '({ a: function () {} });',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A { foo() {this} bar() {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ exceptMethods: ['bar'] }],
+    },
+    {
+      code: 'class A { "foo"() { } }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ exceptMethods: ['foo'] }],
+    },
+    {
+      code: 'class A { 42() { } }',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ exceptMethods: ['42'] }],
+    },
+    {
+      code: 'class A { foo = function() {this} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { foo = () => {this} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { foo = () => {super.toString} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { static foo = function() {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { static foo = () => {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { #bar() {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [{ exceptMethods: ['#bar'] }],
+    },
+    {
+      code: 'class A { foo = function () {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [{ enforceForClassFields: false }],
+    },
+    {
+      code: 'class A { foo = () => {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [{ enforceForClassFields: false }],
+    },
+    {
+      code: 'class A { foo() { return class { [this.foo] = 1 }; } }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: 'class A { static {} }',
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+  ],
   invalid: [
     {
       code: 'class A { foo() {} }',
@@ -390,106 +493,6 @@ ruleTester.run('class-methods-use-this', rule, {
           messageId: 'missingThis',
         },
       ],
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-  ],
-  valid: [
-    {
-      code: 'class A { constructor() {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { foo() {this} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: "class A { foo() {this.bar = 'bar';} }",
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { foo() {bar(this);} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A extends B { foo() {super.foo();} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { foo() { if(true) { return this; } } }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { static foo() {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: '({ a(){} });',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { foo() { () => this; } }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: '({ a: function () {} });',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A { foo() {this} bar() {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ exceptMethods: ['bar'] }],
-    },
-    {
-      code: 'class A { "foo"() { } }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ exceptMethods: ['foo'] }],
-    },
-    {
-      code: 'class A { 42() { } }',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ exceptMethods: ['42'] }],
-    },
-    {
-      code: 'class A { foo = function() {this} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { foo = () => {this} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { foo = () => {super.toString} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { static foo = function() {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { static foo = () => {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { #bar() {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [{ exceptMethods: ['#bar'] }],
-    },
-    {
-      code: 'class A { foo = function () {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [{ enforceForClassFields: false }],
-    },
-    {
-      code: 'class A { foo = () => {} }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [{ enforceForClassFields: false }],
-    },
-    {
-      code: 'class A { foo() { return class { [this.foo] = 1 }; } }',
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-    },
-    {
-      code: 'class A { static {} }',
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
     },
   ],

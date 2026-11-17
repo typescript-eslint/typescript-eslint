@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-await', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Non-async function declaration
     `
@@ -214,11 +217,15 @@ async function* f() {
   yield* x;
 }
     `,
-    `
+    {
+      code: `
 const fn = async () => {
   await using foo = new Bar();
 };
-    `,
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
     `
 async function* test1() {
   yield Promise.resolve(1);
@@ -652,6 +659,8 @@ const fn = async () => {
   using foo = new Bar();
 };
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 21,

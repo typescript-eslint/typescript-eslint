@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-require-imports';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-require-imports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import { l } from 'lib';",
     "var lib3 = load('not_an_import');",
@@ -137,7 +140,7 @@ require('remark-preset-prettier');
     {
       code: `
 var lib5 = require('lib5'),
-  lib6 = require('lib6');
+  lib6 = 'lib6';
       `,
       errors: [
         {
@@ -147,6 +150,14 @@ var lib5 = require('lib5'),
           line: 2,
           messageId: 'noRequireImports',
         },
+      ],
+    },
+    {
+      code: `
+var lib5 = 'lib5',
+  lib6 = require('lib6');
+      `,
+      errors: [
         {
           column: 10,
           endColumn: 25,
@@ -195,7 +206,7 @@ var lib5 = require('lib5'),
     {
       code: `
 var lib5 = require?.('lib5'),
-  lib6 = require?.('lib6');
+  lib6 = 'lib6';
       `,
       errors: [
         {
@@ -205,6 +216,14 @@ var lib5 = require?.('lib5'),
           line: 2,
           messageId: 'noRequireImports',
         },
+      ],
+    },
+    {
+      code: `
+var lib5 = 'lib5',
+  lib6 = require?.('lib6');
+      `,
+      errors: [
         {
           column: 10,
           endColumn: 27,
@@ -371,7 +390,6 @@ var lib5 = require?.('lib5'),
     {
       code: `
 const configValidator = new Validator(require('./a.json'));
-configValidator.addSchema(require('./a.json'));
       `,
       errors: [
         {
@@ -381,6 +399,15 @@ configValidator.addSchema(require('./a.json'));
           line: 2,
           messageId: 'noRequireImports',
         },
+      ],
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+declare const configValidator: Validator;
+configValidator.addSchema(require('./a.json'));
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 46,

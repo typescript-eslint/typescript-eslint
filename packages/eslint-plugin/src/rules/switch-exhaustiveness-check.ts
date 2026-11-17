@@ -98,6 +98,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowDefaultCaseForExhaustiveSwitch: true,
@@ -210,7 +211,9 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes,
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
+          typeToString(a).localeCompare(typeToString(b)),
+        ),
         symbolName,
       };
     }

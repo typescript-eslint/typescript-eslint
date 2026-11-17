@@ -1,9 +1,14 @@
+import * as path from 'node:path';
+
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const original: number | string;
@@ -254,7 +259,7 @@ const b = (a || undefined)!;
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = createRuleTesterWithTypes({
-  project: './tsconfig.noUncheckedIndexedAccess.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'noUncheckedIndexedAccess'),
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(

@@ -1,3 +1,215 @@
+## 8.73.0 (2026-11-16)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-class-instance-assignment] add rule ([#12907](https://github.com/typescript-eslint/typescript-eslint/pull/12907))
+- **typescript-estree:** add projectService.EXPERIMENTAL_backend for TypeScript 7.1 native parser support over IPC ([#12803](https://github.com/typescript-eslint/typescript-eslint/pull/12803))
+- **eslint-plugin:** [consistent-type-imports] narrow report location ([#12924](https://github.com/typescript-eslint/typescript-eslint/pull/12924))
+
+### ❤️ Thank You
+
+- Eren Batı @erenbati
+- Evyatar Daud @StyleShit
+- Josh Ghoulberg 👻
+- Josh Goldberg
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.73.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.2 (2026-11-09)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] treat unconstrained type parameters as possibly nullish ([#12994](https://github.com/typescript-eslint/typescript-eslint/pull/12994))
+- **eslint-plugin:** [no-unnecessary-type-assertion] don't report number to enum assertions ([#13104](https://github.com/typescript-eslint/typescript-eslint/pull/13104))
+- **eslint-plugin:** [no-deprecated] stop on circular alias chains ([#13117](https://github.com/typescript-eslint/typescript-eslint/pull/13117))
+- **eslint-plugin:** [prefer-string-starts-ends-with] parse RegExps with the v flag in unicode sets mode ([#13102](https://github.com/typescript-eslint/typescript-eslint/pull/13102))
+
+### ❤️ Thank You
+
+- Ankur Dubey
+- Evyatar Daud @StyleShit
+- Harsh Bhanushali @harshbhx
+- Jacob Ley @JacobLey
+- yash
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.1 (2026-10-26)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] bound recursive type traversal instead of catching stack overflows ([#13039](https://github.com/typescript-eslint/typescript-eslint/pull/13039))
+- **eslint-plugin:** [no-unnecessary-condition] false positives on unresolved conditional types ([#13062](https://github.com/typescript-eslint/typescript-eslint/pull/13062))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Ghoulberg 👻
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.0 (2026-10-19)
+
+### 🚀 Features
+
+- **eslint-plugin:** [await-thenable] add `allowMixedPromiseArrays` option ([#12992](https://github.com/typescript-eslint/typescript-eslint/pull/12992))
+- **eslint-plugin:** lazy load rules ([#13010](https://github.com/typescript-eslint/typescript-eslint/pull/13010))
+
+### 🩹 Fixes
+
+- **type-utils:** discriminateAnyType crashes when calling getAwaitedType on awaited type in TS < 5.0 ([#13054](https://github.com/typescript-eslint/typescript-eslint/pull/13054))
+- **eslint-plugin:** [require-array-sort-compare] ignore extra this type argument on TS < 5.1 ([#13055](https://github.com/typescript-eslint/typescript-eslint/pull/13055))
+- **eslint-plugin:** [require-array-sort-compare] check tuples ([#13058](https://github.com/typescript-eslint/typescript-eslint/pull/13058))
+- **eslint-plugin:** use isTypeLiteralType instead of type.isLiteral() to include bigint literals on TS < 5.0 ([#13053](https://github.com/typescript-eslint/typescript-eslint/pull/13053))
+- **eslint-plugin:** [no-deprecated] report deprecated properties in object literals ([#12704](https://github.com/typescript-eslint/typescript-eslint/pull/12704))
+- **eslint-plugin:** [prefer-readonly-parameter-types] check where allowed type aliases are declared ([#13016](https://github.com/typescript-eslint/typescript-eslint/pull/13016))
+- **typescript-estree:** include leading and trailing comments & whitespace in Program range ([#12991](https://github.com/typescript-eslint/typescript-eslint/pull/12991))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Junichiro Kasuya @jksy
+- Mitch Fultz @fitchmultz
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.2 (2026-10-12)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] safe fix when the chain ends with a strict null comparison ([#12805](https://github.com/typescript-eslint/typescript-eslint/pull/12805))
+- **eslint-plugin:** [no-unnecessary-type-parameters] parenthesize constraint in optional tuple elements ([#12995](https://github.com/typescript-eslint/typescript-eslint/pull/12995))
+- **eslint-plugin:** [no-unused-vars] ignore type-only refs for after-used ([#12977](https://github.com/typescript-eslint/typescript-eslint/pull/12977))
+- **eslint-plugin:** [no-unnecessary-type-parameters] count instantiated mapped type templates ([#12974](https://github.com/typescript-eslint/typescript-eslint/pull/12974))
+- **eslint-plugin:** [no-unused-vars] avoid false-positives when not using our parser ([#12989](https://github.com/typescript-eslint/typescript-eslint/pull/12989))
+
+### ❤️ Thank You
+
+- Abraham Guo
+- Brad Zacher @bradzacher
+- Josh Goldberg
+- Vinccool96
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] count instantiated mapped type constraints ([#12941](https://github.com/typescript-eslint/typescript-eslint/pull/12941))
+- **eslint-plugin:** [prefer-optional-chain] check the constrained type ([#12953](https://github.com/typescript-eslint/typescript-eslint/pull/12953))
+- **eslint-plugin:** [no-confusing-void-expression] don't autofix when declared return type is unknown ([#12930](https://github.com/typescript-eslint/typescript-eslint/pull/12930))
+- **eslint-plugin:** [no-unsafe-enum-assignment] skip identical types and bound deep type walks ([#12957](https://github.com/typescript-eslint/typescript-eslint/pull/12957))
+- **eslint-plugin:** [require-array-sort-compare] use array argument type constraint ([#12919](https://github.com/typescript-eslint/typescript-eslint/pull/12919))
+- **eslint-plugin:** [no-unused-vars] report usedOnlyAsType for partially exported merged declarations ([#12892](https://github.com/typescript-eslint/typescript-eslint/pull/12892))
+- **eslint-plugin:** [no-misused-promises] skip argument checks for calls without arguments ([#12923](https://github.com/typescript-eslint/typescript-eslint/pull/12923))
+
+### ❤️ Thank You
+
+- Diptajoy Mistry @diptomistry
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+- Josh Goldberg ✨
+- Medhansh Poojari
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.0 (2026-09-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-enum-assignment] add rule ([#12732](https://github.com/typescript-eslint/typescript-eslint/pull/12732))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] handle a return outside of any function ([#12912](https://github.com/typescript-eslint/typescript-eslint/pull/12912))
+- **eslint-plugin:** [no-unnecessary-type-assertion] specialize generic assertion report message ([#12832](https://github.com/typescript-eslint/typescript-eslint/pull/12832))
+- **eslint-plugin:** [unbound-method] respect `this: void` on class properties ([7fce9127d](https://github.com/typescript-eslint/typescript-eslint/commit/7fce9127d))
+- **eslint-plugin:** [switch-exhaustiveness-check] always sort literal cases in stable order ([#12885](https://github.com/typescript-eslint/typescript-eslint/pull/12885))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Fatih Çakır @wfatih
+- Josh Goldberg
+- Josh Goldberg ✨
+- Zamiell @Zamiell
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] handle multiple Promise constituents ([#12904](https://github.com/typescript-eslint/typescript-eslint/pull/12904))
+- **eslint-plugin:** [no-useless-default-assignment] convert the fixer to a suggestion fixer ([#12826](https://github.com/typescript-eslint/typescript-eslint/pull/12826))
+- **eslint-plugin:** [no-unnecessary-condition] handle union-keyed index access on the left-hand side of nullish assignment ([#12747](https://github.com/typescript-eslint/typescript-eslint/pull/12747))
+- **eslint-plugin:** [unbound-method] treat Intl.Collator.prototype.compare as spec-bound ([#12845](https://github.com/typescript-eslint/typescript-eslint/pull/12845))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] account for parameter reassignment ([#12880](https://github.com/typescript-eslint/typescript-eslint/pull/12880))
+- **eslint-plugin:** [await-thenable] prevent autofix from breaking code when removing `await` ([#12716](https://github.com/typescript-eslint/typescript-eslint/pull/12716))
+- **eslint-plugin:** [no-meaningless-void-operator] allow void on assignment expressions ([#12873](https://github.com/typescript-eslint/typescript-eslint/pull/12873))
+- **eslint-plugin:** [no-unnecessary-type-assertion] false positive for empty object asserted to a type alias of Record ([#12869](https://github.com/typescript-eslint/typescript-eslint/pull/12869))
+- **eslint-plugin:** [no-misused-spread] omit WeakMap spread suggestions ([#12850](https://github.com/typescript-eslint/typescript-eslint/pull/12850))
+- **eslint-plugin:** [no-generated-empty-object-type] don't report a mapped type whose keys are not resolved yet ([#12854](https://github.com/typescript-eslint/typescript-eslint/pull/12854))
+- **eslint-plugin:** [no-explicit-any] use unknown[] for bare any rest parameters ([#12818](https://github.com/typescript-eslint/typescript-eslint/pull/12818))
+- **eslint-plugin:** [no-unnecessary-type-parameters] handle type precedence in the suggestion fixer ([#12637](https://github.com/typescript-eslint/typescript-eslint/pull/12637))
+- **eslint-plugin:** [no-useless-default-assignment] avoid false positives on tuples with a rest element ([#12768](https://github.com/typescript-eslint/typescript-eslint/pull/12768))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Diptajoy Mistry @diptomistry
+- Grit @Grit03
+- Hugo @hugop95
+- Michael Naumov @mnaoumov
+- Mikhail Baev @baevm
+- Om Rawat
+- Sanath @sansynx
+- Shinji
+- Vinccool96
+- 김채영 @cchaeyoung
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report deprecated imported values used in object shorthand properties ([#12780](https://github.com/typescript-eslint/typescript-eslint/pull/12780))
+- **eslint-plugin:** [no-unnecessary-condition] no false positive on RHS of a nested logical expression ([#12728](https://github.com/typescript-eslint/typescript-eslint/pull/12728))
+- **eslint-plugin:** [member-ordering] don't report fields that read fields declared before them ([#12729](https://github.com/typescript-eslint/typescript-eslint/pull/12729))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨ @JoshuaKGoldberg
+- Ulrich Stark @ulrichstark
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.69.0 (2026-08-31)
 
 ### 🚀 Features

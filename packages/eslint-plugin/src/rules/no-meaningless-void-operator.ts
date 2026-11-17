@@ -48,6 +48,7 @@ export default createRule<
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{ checkNever: false }],
 
   create(context, [{ checkNever }]) {
@@ -67,6 +68,12 @@ export default createRule<
         if (inner.type !== AST_NODE_TYPES.CallExpression) {
           // `void 0` is a common undefined idiom, not a discarded call.
           if (inner.type === AST_NODE_TYPES.Literal && inner.value === 0) {
+            return;
+          }
+
+          // `void (x = value)` discards the assignment result so the
+          // expression evaluates to undefined (e.g. `() => void (x = 1)`).
+          if (inner.type === AST_NODE_TYPES.AssignmentExpression) {
             return;
           }
 

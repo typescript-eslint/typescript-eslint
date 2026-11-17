@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/member-ordering';
@@ -6,6 +5,50 @@ import rule from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-natural-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    {
+      code: `
+interface Example {
+  1: number;
+  5: number;
+  10: number;
+}
+      `,
+      options: [{ default: { order: 'natural' } }],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  B1(): void;
+  B5(): void;
+  B10(): void;
+  a1(): void;
+  a5(): void;
+  a10(): void;
+
+  B1: number;
+  B5: number;
+  B10: number;
+  a1: number;
+  a5: number;
+  a10: number;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+  ],
   invalid: [
     {
       code: `
@@ -18,23 +61,14 @@ interface Example {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 10,
-            member: 5,
-          },
+          data: { beforeMember: 10, member: 5 },
           endColumn: 13,
           endLine: 5,
           line: 5,
           messageId: 'incorrectOrder',
         },
       ],
-      options: [
-        {
-          default: {
-            order: 'natural',
-          },
-        },
-      ],
+      options: [{ default: { order: 'natural' } }],
     },
 
     {
@@ -45,72 +79,25 @@ interface Example {
   a1(): void;
   a10(): void;
   a5(): void;
-  B5(): void;
-  B10(): void;
-  B1(): void;
+  b1(): void;
+  b5(): void;
+  b10(): void;
 
+  a1: number;
   a5: number;
   a10: number;
-  B1: number;
-  a1: number;
-  B5: number;
-  B10: number;
+  b1: number;
+  b5: number;
+  b10: number;
 }
       `,
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'a10',
-            member: 'a5',
-          },
+          data: { beforeMember: 'a10', member: 'a5' },
           endColumn: 14,
           endLine: 7,
           line: 7,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a5',
-            member: 'B5',
-          },
-          endColumn: 14,
-          endLine: 8,
-          line: 8,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B10',
-            member: 'B1',
-          },
-          endColumn: 14,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a10',
-            member: 'B1',
-          },
-          endColumn: 14,
-          endLine: 14,
-          line: 14,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a1',
-            member: 'B5',
-          },
-          endColumn: 14,
-          endLine: 16,
-          line: 16,
           messageId: 'incorrectOrder',
         },
       ],
@@ -123,19 +110,40 @@ interface Example {
         },
       ],
     },
-  ],
-  valid: [
     {
       code: `
 interface Example {
-  1: number;
-  5: number;
-  10: number;
+  new (): unknown;
+
+  a1(): void;
+  a5(): void;
+  a10(): void;
+  B5(): void;
+  B10(): void;
+  B100(): void;
+
+  a1: number;
+  a5: number;
+  a10: number;
+  b1: number;
+  b5: number;
+  b10: number;
 }
       `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a10', member: 'B5' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [
         {
           default: {
+            memberTypes: ['constructor', 'method', 'field'],
             order: 'natural',
           },
         },
@@ -146,21 +154,109 @@ interface Example {
 interface Example {
   new (): unknown;
 
-  B1(): void;
+  A1(): void;
+  A5(): void;
+  A10(): void;
   B5(): void;
   B10(): void;
-  a1(): void;
-  a5(): void;
-  a10(): void;
+  B1(): void;
 
-  B1: number;
-  B5: number;
-  B10: number;
   a1: number;
   a5: number;
   a10: number;
+  b1: number;
+  b5: number;
+  b10: number;
 }
       `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B10', member: 'B1' },
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  A1(): void;
+  A5(): void;
+  A10(): void;
+  B1(): void;
+  B5(): void;
+  B10(): void;
+
+  a1: number;
+  a5: number;
+  a10: number;
+  B1: number;
+  B5: number;
+  B10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a10', member: 'B1' },
+          endColumn: 14,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  A1(): void;
+  A5(): void;
+  A10(): void;
+  B1(): void;
+  B5(): void;
+  B10(): void;
+
+  A5: number;
+  A10: number;
+  B1: number;
+  a1: number;
+  B5: number;
+  B10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a1', member: 'B5' },
+          endColumn: 14,
+          endLine: 16,
+          line: 16,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [
         {
           default: {

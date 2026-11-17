@@ -36,6 +36,7 @@ Program {
           end: { column: 28, line: 1 },
         },
       },
+      phase: null,
 
       range: [0, 29],
       loc: {

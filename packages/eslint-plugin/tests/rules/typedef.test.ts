@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('typedef', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Array destructuring
     {
@@ -407,6 +410,8 @@ class ClassName {
       ],
       options: [{ objectDestructuring: true }],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const {
@@ -457,6 +462,7 @@ const {
       ],
       options: [{ objectDestructuring: true }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     // Arrow parameters
     {
       code: 'const receivesNumber = (a): void => {};',
@@ -629,6 +635,7 @@ class Test {
       errors: [
         {
           column: 15,
+          data: { name: 'param' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -683,6 +690,7 @@ class Test {
       errors: [
         {
           column: 17,
+          data: { name: 'x' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -817,7 +825,7 @@ interface Test {
       code: `
 const a = 1,
   b: number = 2,
-  c = 3;
+  c: number = 3;
       `,
       errors: [
         {
@@ -828,6 +836,16 @@ const a = 1,
           line: 2,
           messageId: 'expectedTypedefNamed',
         },
+      ],
+      options: [{ variableDeclaration: true }],
+    },
+    {
+      code: `
+const a: number = 1,
+  b: number = 2,
+  c = 3;
+      `,
+      errors: [
         {
           column: 3,
           data: { name: 'c' },
@@ -871,7 +889,7 @@ const a = 1,
       code: `
 let a = 1,
   b: number,
-  c = 2;
+  c: number = 2;
       `,
       errors: [
         {
@@ -882,6 +900,16 @@ let a = 1,
           line: 2,
           messageId: 'expectedTypedefNamed',
         },
+      ],
+      options: [{ variableDeclaration: true }],
+    },
+    {
+      code: `
+let a: number = 1,
+  b: number,
+  c = 2;
+      `,
+      errors: [
         {
           column: 3,
           data: { name: 'c' },
@@ -945,7 +973,6 @@ let a = 1,
       code: `
 class Foo {
   a = (): void => {};
-  b = function (): void {};
 }
       `,
       errors: [
@@ -957,12 +984,28 @@ class Foo {
           line: 3,
           messageId: 'expectedTypedefNamed',
         },
+      ],
+      options: [
+        {
+          memberVariableDeclaration: true,
+          variableDeclaration: true,
+          variableDeclarationIgnoreFunction: false,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  b = function (): void {};
+}
+      `,
+      errors: [
         {
           column: 3,
           data: { name: 'b' },
           endColumn: 28,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'expectedTypedefNamed',
         },
       ],

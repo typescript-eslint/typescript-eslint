@@ -1,3 +1,130 @@
+## 8.73.0 (2026-11-16)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-class-instance-assignment] add rule ([#12907](https://github.com/typescript-eslint/typescript-eslint/pull/12907))
+- **typescript-estree:** add projectService.EXPERIMENTAL_backend for TypeScript 7.1 native parser support over IPC ([#12803](https://github.com/typescript-eslint/typescript-eslint/pull/12803))
+
+### ❤️ Thank You
+
+- Josh Ghoulberg 👻
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.73.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.2 (2026-11-09)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.1 (2026-10-26)
+
+### 🩹 Fixes
+
+- **typescript-estree:** use one Program per tsconfig for the project service in single-run mode ([#12988](https://github.com/typescript-eslint/typescript-eslint/pull/12988))
+
+### ❤️ Thank You
+
+- Josh Ghoulberg 👻
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.72.0 (2026-10-19)
+
+### 🚀 Features
+
+- **typescript-estree:** error on abstract keyword that precedes export ([#13019](https://github.com/typescript-eslint/typescript-eslint/pull/13019))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report deprecated properties in object literals ([#12704](https://github.com/typescript-eslint/typescript-eslint/pull/12704))
+- **typescript-estree:** include leading and trailing comments & whitespace in Program range ([#12991](https://github.com/typescript-eslint/typescript-eslint/pull/12991))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Junichiro Kasuya @jksy
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.2 (2026-10-12)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.1 (2026-10-05)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.0 (2026-09-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-enum-assignment] add rule ([#12732](https://github.com/typescript-eslint/typescript-eslint/pull/12732))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- Zamiell @Zamiell
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **typescript-estree:** require string literal import attribute values ([#12894](https://github.com/typescript-eslint/typescript-eslint/pull/12894))
+- **typescript-estree:** add missing `<` token opening type arguments ([#12821](https://github.com/typescript-eslint/typescript-eslint/pull/12821))
+- **typescript-estree:** resolve symlinked paths when matching files to projects ([#12725](https://github.com/typescript-eslint/typescript-eslint/pull/12725))
+
+### ❤️ Thank You
+
+- Cameron
+- Josh Goldberg ✨
+- overlookmotel
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+
+### 🩹 Fixes
+
+- **typescript-estree:** clarify the parserOptions.project error message ([#12817](https://github.com/typescript-eslint/typescript-eslint/pull/12817))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.69.0 (2026-08-31)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

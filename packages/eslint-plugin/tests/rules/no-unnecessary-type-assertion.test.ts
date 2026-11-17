@@ -1,26 +1,36 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithOnUncheckedIndexedAccess = {
-  project: './tsconfig.noUncheckedIndexedAccess.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
 };
 
 const optionsWithExactOptionalPropertyTypes = {
-  project: './tsconfig.exactOptionalPropertyTypes.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'exactOptionalPropertyTypes'),
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
+    {
+      code: `
+declare const source: { a: number };
+const value = { ...source } as const;
+export const mutable = value as { a: number };
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -32,6 +42,26 @@ declare const recursiveMethod: RecursiveMethod;
 declare const value: object;
 
 value as unknown as typeof recursiveMethod;
+    `,
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const value: object;
+
+value as unknown as RecursiveMethod & { extra: true };
+    `,
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const recursiveMethod: RecursiveMethod;
+
+recursiveMethod as RecursiveMethod & {};
     `,
     `
 function castToSubtype<T extends string>(value: string): T {
@@ -91,6 +121,14 @@ const foo = { hello: 'hello' } as PossibleTuple;
     `
 type PossibleTuple = { 0: 'hello'; 5: 'hello' };
 const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12856
+    `
+const a = {};
+a as Record<string, string>;
+type Dict = Record<string, string>;
+a as Dict;
+a as { [key: string]: string };
     `,
     `
 let bar: number | undefined = x;
@@ -668,7 +706,8 @@ type Tuple = [string | undefined, number];
 const tuple: Tuple = ['hello', 42];
 const [first, second] = tuple as [string, number];
     `,
-    `
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -677,8 +716,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const obj = { value: narrow as Wide } satisfies Record<string, Wide>;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -687,8 +730,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const value = narrow as Wide satisfies Wide;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -698,7 +745,10 @@ interface Narrow {
 declare const narrow: Narrow;
 declare function identity<T>(x: T): T;
 const result = identity({ value: narrow as Wide }) satisfies { value: Wide };
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 declare const x: string | number;
 const result: { tag: string; value: string | number } | { value: number } = {
@@ -940,6 +990,115 @@ enum E {
   A = 1,
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
+    `
+interface Obj {
+  id: number;
+}
+type Optional<T> = { [K in keyof T]?: T[K] };
+type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
+declare const obj: ReadonlyOptional<Obj>;
+const obj2 = obj as Optional<Obj>;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+values[+valueStr as Color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+const color = +valueStr as Color;
+values[color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const color = <Color>value;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const value = color as number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const color = value as Color;
+    `,
+    `
+enum Direction {
+  Up = 1,
+  Down,
+}
+
+declare const value: number | undefined;
+const direction = value as Direction | undefined;
+    `,
+    `
+enum Computed {
+  Length = 'abc'.length,
+}
+
+declare const value: number;
+const computed = value as Computed;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as Color | number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | 5;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as number;
     `,
   ],
 
@@ -1955,6 +2114,130 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color as Color;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 29,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
       `,
     },
     {
@@ -3343,6 +3626,120 @@ maybeFn?.(s as string | number);
 declare const maybeFn: ((arg: string | number) => void) | undefined;
 declare const s: string;
 maybeFn?.(s);
+      `,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 61,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (alert(), db.list()) as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 73,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = db?.list() as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db?.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 62,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>> | undefined;
+};
+declare const db: Storage;
+const results = db.list()! as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function get<T>(): T;
+const value = get<string>() as string;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function get<T>(): T;
+const value = get<string>();
       `,
     },
   ],

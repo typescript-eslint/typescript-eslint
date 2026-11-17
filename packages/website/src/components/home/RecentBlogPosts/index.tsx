@@ -11,7 +11,7 @@ export function RecentBlogPosts(): React.JSX.Element {
   return (
     <section className={styles.blogPosts}>
       <div className="container text--center padding-vert--lg">
-        <Heading as="h2" id="financial-contributors">
+        <Heading as="h2" id="recent-blog-posts">
           Recent Blog Posts
         </Heading>
         <ul className={styles.postsList}>

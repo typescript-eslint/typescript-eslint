@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-array-sort-compare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(a: any[]) {
@@ -147,8 +150,150 @@ function f(a: number[]) {
 }
       `,
     },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : string)[]) {
+  values.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : 'asd')[]) {
+  values.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+interface ExternalIdRow {
+  appointment_id: string;
+  patient_id: string;
+}
+
+declare function acquireAdvisoryLock(key: string): Promise<void>;
+
+async function lockRowsInDeterministicOrder<C extends keyof ExternalIdRow>(
+  ids: ExternalIdRow[C][],
+): Promise<void> {
+  for (const id of [...ids].sort()) {
+    await acquireAdvisoryLock(id);
+  }
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: [string, string]) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f<T extends [string, string]>(a: T) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: readonly [string, ...string[]]) {
+  a.toSorted();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
   ],
   invalid: [
+    {
+      code: `
+function f(a: [number, number]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: [string, string]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+function f<T extends [string, number]>(a: T) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: readonly [string, ...number[]]) {
+  a.toSorted();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: number[] | [string, string]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+    },
     {
       code: `
 function f(a: Array<any>) {
@@ -427,6 +572,40 @@ function f(a: number[]) {
           messageId: 'requireCompare',
         },
       ],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : string)[]) {
+  values.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : number)[]) {
+  values.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
     },
   ],
 });

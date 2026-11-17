@@ -5,6 +5,9 @@ import rule from '../../src/rules/default-param-last';
 const ruleTester = new RuleTester();
 
 ruleTester.run('default-param-last', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo() {}',
     'function foo(a: number) {}',

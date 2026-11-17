@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "const string = 'a';",
     'const string = `a`;',
@@ -646,6 +649,8 @@ function foo<T extends string>() {
       ],
       output: '`useless`;',
     },
+    // Verify nested errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 \`u\${
@@ -689,6 +694,7 @@ function foo<T extends string>() {
       `,
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 \`use\${

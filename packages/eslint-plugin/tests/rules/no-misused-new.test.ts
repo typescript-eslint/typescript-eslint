@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-misused-new';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare abstract class C {
@@ -78,7 +81,6 @@ interface foo {
       code: `
 interface I {
   new (): I;
-  constructor(): void;
 }
       `,
       errors: [
@@ -89,11 +91,20 @@ interface I {
           line: 3,
           messageId: 'errorMessageInterface',
         },
+      ],
+    },
+    {
+      code: `
+interface I {
+  constructor(): void;
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'errorMessageInterface',
         },
       ],

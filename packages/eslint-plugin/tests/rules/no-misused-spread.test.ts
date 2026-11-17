@@ -1,13 +1,17 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-misused-spread';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig-with-dom.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'with-dom'),
 });
 
 ruleTester.run('no-misused-spread', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const a = [...[1, 2, 3]];',
     'const a = [...([1, 2, 3] as const)];',
@@ -969,17 +973,63 @@ const o = { ...map };
           endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
-          suggestions: [
-            {
-              messageId: 'replaceMapSpreadInObject',
-              output: `
-declare const map: WeakMap<{ a: number }, string>;
-const o = Object.fromEntries(map);
-      `,
-            },
-          ],
+          suggestions: [],
         },
       ],
+    },
+    {
+      code: `
+declare const map: Map<object, string> | WeakMap<object, string>;
+const o = { other: 1, ...map };
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+class CustomWeakMap extends WeakMap<object, string> {}
+declare const map: CustomWeakMap;
+const o = { ...map };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+declare const map: WeakMap<object, string>;
+const element = <Component {...map} />;
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
+      },
     },
     {
       code: `

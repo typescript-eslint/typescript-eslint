@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-useless-empty-export', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "declare module '_'",
     "import {} from '_';",
@@ -202,6 +205,8 @@ import _ = require('_');
 
       `,
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 import _ = require('_');
@@ -230,5 +235,6 @@ import _ = require('_');
 
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

@@ -9,6 +9,9 @@ import rule from '../../src/rules/no-unused-private-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unused-private-class-members', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'class Foo {}',
     `
@@ -37,7 +40,8 @@ class C {
   }
 }
     `,
-    `
+    {
+      code: `
 class C {
   private accessor accessorMember = 42;
 
@@ -45,7 +49,10 @@ class C {
     return this.accessorMember;
   }
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class C {
   private static staticMember = 42;
@@ -509,9 +516,7 @@ class C {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#unusedInOuterClass',
-          },
+          data: { classMemberName: '#unusedInOuterClass' },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -548,9 +553,7 @@ class C {
       errors: [
         {
           column: 7,
-          data: {
-            classMemberName: '#unusedOnlyInSecondNestedClass',
-          },
+          data: { classMemberName: '#unusedOnlyInSecondNestedClass' },
           endColumn: 37,
           endLine: 21,
           line: 21,
@@ -581,9 +584,7 @@ class C {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#usedOnlyInTheSecondInnerClass',
-          },
+          data: { classMemberName: '#usedOnlyInTheSecondInnerClass' },
           endColumn: 33,
           endLine: 3,
           line: 3,
@@ -597,12 +598,12 @@ class C {
   private accessor accessorMember = 42;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 20,
-          data: {
-            classMemberName: 'accessorMember',
-          },
+          data: { classMemberName: 'accessorMember' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -619,9 +620,7 @@ class C {
       errors: [
         {
           column: 18,
-          data: {
-            classMemberName: 'staticMember',
-          },
+          data: { classMemberName: 'staticMember' },
           endColumn: 30,
           endLine: 3,
           line: 3,
@@ -638,9 +637,7 @@ class Test1 {
       errors: [
         {
           column: 23,
-          data: {
-            classMemberName: 'parameterProperty',
-          },
+          data: { classMemberName: 'parameterProperty' },
           endColumn: 48,
           endLine: 3,
           line: 3,
@@ -657,9 +654,7 @@ class Test1 {
       errors: [
         {
           column: 32,
-          data: {
-            classMemberName: 'parameterProperty',
-          },
+          data: { classMemberName: 'parameterProperty' },
           endColumn: 57,
           endLine: 3,
           line: 3,
@@ -676,9 +671,7 @@ class Test1 {
       errors: [
         {
           column: 32,
-          data: {
-            classMemberName: 'parameterProperty',
-          },
+          data: { classMemberName: 'parameterProperty' },
           endColumn: 57,
           endLine: 3,
           line: 3,
@@ -700,9 +693,7 @@ console.log(instance.usedOutsideClass);
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'usedOutsideClass',
-          },
+          data: { classMemberName: 'usedOutsideClass' },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -723,9 +714,7 @@ console.log(instance['usedOutsideClass']);
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'usedOutsideClass',
-          },
+          data: { classMemberName: 'usedOutsideClass' },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -749,9 +738,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'prop',
-          },
+          data: { classMemberName: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -769,9 +756,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -788,9 +773,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -808,9 +791,7 @@ class Second {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 4,
           line: 4,
@@ -828,9 +809,7 @@ class Second {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -848,9 +827,7 @@ class Second {}
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -868,9 +845,7 @@ class Second {}
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -878,6 +853,8 @@ class Second {}
         },
       ],
     },
+    // Verify multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class First {
@@ -888,9 +865,7 @@ class First {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -898,9 +873,7 @@ class First {
         },
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember2',
-          },
+          data: { classMemberName: '#privateMember2' },
           endColumn: 18,
           endLine: 4,
           line: 4,
@@ -918,9 +891,7 @@ class First {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -928,9 +899,7 @@ class First {
         },
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember2',
-          },
+          data: { classMemberName: 'privateMember2' },
           endColumn: 25,
           endLine: 4,
           line: 4,
@@ -938,6 +907,7 @@ class First {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -950,9 +920,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -972,9 +940,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -994,9 +960,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1016,9 +980,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1039,9 +1001,7 @@ class C {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1062,9 +1022,7 @@ class C {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1085,9 +1043,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1104,9 +1060,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1129,9 +1083,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1154,9 +1106,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1173,9 +1123,7 @@ class Foo {
       errors: [
         {
           column: 7,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -1192,9 +1140,7 @@ class Foo {
       errors: [
         {
           column: 15,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 28,
           endLine: 3,
           line: 3,
@@ -1215,9 +1161,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1238,9 +1182,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1261,9 +1203,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1284,9 +1224,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1306,9 +1244,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1328,9 +1264,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1350,9 +1284,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1372,9 +1304,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1394,9 +1324,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1416,9 +1344,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1438,9 +1364,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            classMemberName: '#privateMember',
-          },
+          data: { classMemberName: '#privateMember' },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -1460,9 +1384,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1483,9 +1405,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'privateMember',
-          },
+          data: { classMemberName: 'privateMember' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -1507,9 +1427,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'foo',
-          },
+          data: { classMemberName: 'foo' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1517,6 +1435,8 @@ class Foo {
         },
       ],
     },
+    // Verify multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const foo = 'bar';
@@ -1532,9 +1452,7 @@ class Foo {
       errors: [
         {
           column: 11,
-          data: {
-            classMemberName: 'foo',
-          },
+          data: { classMemberName: 'foo' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1542,9 +1460,7 @@ class Foo {
         },
         {
           column: 11,
-          data: {
-            classMemberName: 'bar',
-          },
+          data: { classMemberName: 'bar' },
           endColumn: 14,
           endLine: 5,
           line: 5,
@@ -1552,5 +1468,6 @@ class Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

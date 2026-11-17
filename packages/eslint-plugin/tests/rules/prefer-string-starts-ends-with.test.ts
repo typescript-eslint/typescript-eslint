@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(s: string[]) {
@@ -205,6 +208,11 @@ function f(s: string) {
     `
 function f(s: string) {
   s.match(new RegExp('^/!{[', 'u')) !== null; // has syntax error
+}
+    `,
+    `
+function f(s: string) {
+  /^\\p{N}/v.test(s); // property escape, not 'p{N}'
 }
     `,
     `
@@ -1522,6 +1530,29 @@ function f(s: string) {
   s.startsWith("bar");
 }
       `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\u{61}r/v.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("ar");
+}
+      `,
+      // Node 18 doesn't support the `v` flag; remove once Node 18 support is dropped
+      skip: Number(process.versions.node.split('.')[0]) < 20,
     },
     {
       code: `

@@ -6,7 +6,8 @@
     "strict": false,
     "types": ["node", "react"],
     "lib": ["es2015", "es2017", "esnext"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "stableTypeOrdering": true
   },
   "include": ["file.ts", "react.tsx"]
 }

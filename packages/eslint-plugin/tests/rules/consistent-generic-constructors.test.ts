@@ -5,6 +5,9 @@ import rule from '../../src/rules/consistent-generic-constructors';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-generic-constructors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // default: constructor
     'const a = new Foo();',
@@ -23,11 +26,15 @@ class Foo {
   a = new Foo<string>();
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = new Foo<string>();
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 function foo(a: Foo = new Foo<string>()) {}
     `,
@@ -142,6 +149,8 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: ['type-annotation'],
     },
     {
@@ -355,6 +364,8 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -376,6 +387,8 @@ class Foo {
   accessor a = new Foo<string>();
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -398,6 +411,8 @@ class Foo {
   accessor [a]: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

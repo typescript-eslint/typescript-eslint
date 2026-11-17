@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-literal-enum-member';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-literal-enum-member', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum ValidRegex {
@@ -230,10 +233,6 @@ enum InvalidExpression {
       code: `
 enum InvalidExpression {
   A = delete 2,
-  B = -a,
-  C = void 2,
-  D = ~2,
-  E = !0,
 }
       `,
       errors: [
@@ -244,32 +243,68 @@ enum InvalidExpression {
           line: 3,
           messageId: 'notLiteral',
         },
+      ],
+    },
+    {
+      code: `
+enum InvalidExpression {
+  B = -a,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 4,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'notLiteral',
         },
+      ],
+    },
+    {
+      code: `
+enum InvalidExpression {
+  C = void 2,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 4,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'notLiteral',
         },
+      ],
+    },
+    {
+      code: `
+enum InvalidExpression {
+  D = ~2,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 4,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'notLiteral',
         },
+      ],
+    },
+    {
+      code: `
+enum InvalidExpression {
+  E = !0,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 4,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'notLiteral',
         },
       ],
@@ -371,11 +406,107 @@ enum InvalidSpread {
       code: `
 enum Foo {
   A = 1 << 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   B = 1 >> 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   C = 1 >>> 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   D = 1 | 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   E = 1 & 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   F = 1 ^ 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: false }],
+    },
+    {
+      code: `
+enum Foo {
   G = ~1,
 }
       `,
@@ -387,61 +518,121 @@ enum Foo {
           line: 3,
           messageId: 'notLiteral',
         },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 4,
-          line: 4,
-          messageId: 'notLiteral',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 5,
-          line: 5,
-          messageId: 'notLiteral',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 6,
-          line: 6,
-          messageId: 'notLiteral',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 7,
-          line: 7,
-          messageId: 'notLiteral',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 8,
-          line: 8,
-          messageId: 'notLiteral',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 9,
-          line: 9,
-          messageId: 'notLiteral',
-        },
       ],
       options: [{ allowBitwiseExpressions: false }],
     },
     {
       code: `
-const x = 1;
+const c = 1;
 enum Foo {
   A = x << 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   B = x >> 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   C = x >>> 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   D = x | 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   E = x & 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   F = x ^ 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const c = 1;
+enum Foo {
   G = ~x,
 }
       `,
@@ -453,48 +644,6 @@ enum Foo {
           line: 4,
           messageId: 'notLiteralOrBitwiseExpression',
         },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 5,
-          line: 5,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 6,
-          line: 6,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 7,
-          line: 7,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 8,
-          line: 8,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 9,
-          line: 9,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
-        {
-          column: 3,
-          endColumn: 4,
-          endLine: 10,
-          line: 10,
-          messageId: 'notLiteralOrBitwiseExpression',
-        },
       ],
       options: [{ allowBitwiseExpressions: true }],
     },
@@ -504,7 +653,6 @@ const x = 1;
 enum Foo {
   A = 1 << 0,
   B = x >> Foo.A,
-  C = x >> A,
 }
       `,
       errors: [
@@ -515,11 +663,23 @@ enum Foo {
           line: 5,
           messageId: 'notLiteralOrBitwiseExpression',
         },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = 1 << 0,
+  B = x >> A,
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 4,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'notLiteralOrBitwiseExpression',
         },
       ],

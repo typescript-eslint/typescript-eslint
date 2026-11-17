@@ -5,7 +5,6 @@ import type {
   Linter,
   SourceType,
 } from '@typescript-eslint/utils/ts-eslint';
-import type * as ts from 'typescript';
 
 import type {
   ErrorGroup,
@@ -55,7 +54,7 @@ export function createLinter(
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
-  let compilerOptions: ts.CompilerOptions = {};
+  let compilerOptions = createCompilerOptions({ allowJs: true });
   const parser = createParser(
     system,
     compilerOptions,

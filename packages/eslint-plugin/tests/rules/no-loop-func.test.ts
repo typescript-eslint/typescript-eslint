@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-loop-func';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-loop-func', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 for (let i = 0; i < 10; i++) {
@@ -52,14 +55,19 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
     `,
-    `
+    {
+      code: `
 declare function getResource(): Disposable;
 for (let i = 0; i < 3; i++) {
   using resource = getResource();
   const fn = () => resource;
 }
-    `,
-    `
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    {
+      code: `
 declare function getResource(): AsyncDisposable;
 async function f() {
   for (let i = 0; i < 3; i++) {
@@ -67,13 +75,19 @@ async function f() {
     const fn = () => resource;
   }
 }
-    `,
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
   ],
   invalid: [],
 });
 
 // Forked from https://github.com/eslint/eslint/blob/89a4a0a260b8eb11487fe3d5d4d80f4630933eb3/tests/lib/rules/no-loop-func.js
 ruleTester.run('no-loop-func ESLint tests', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "string = 'function a() {}';",
     `

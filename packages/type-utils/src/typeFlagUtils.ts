@@ -8,7 +8,7 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
  */
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
-  let flags: ts.TypeFlags = 0;
+  let flags: ts.TypeFlags = 0; // eslint-disable-line @typescript-eslint/no-unsafe-enum-assignment
   for (const t of tsutils.unionConstituents(type)) {
     flags |= t.flags;
   }

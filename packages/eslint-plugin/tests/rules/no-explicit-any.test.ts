@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-explicit-any';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const number: number = 1;',
     'function greet(): string {}',
@@ -1646,11 +1649,10 @@ type obj = {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/64
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/64
       code: `
 function test<T extends Partial<any>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
       errors: [
         {
@@ -1664,36 +1666,39 @@ const test = <T extends Partial<any>>() => {};
               messageId: 'suggestUnknown',
               output: `
 function test<T extends Partial<unknown>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
             },
             {
               messageId: 'suggestNever',
               output: `
 function test<T extends Partial<never>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+const test = <T extends Partial<any>>() => {};
+      `,
+      errors: [
         {
           column: 33,
           endColumn: 36,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedAny',
           suggestions: [
             {
               messageId: 'suggestUnknown',
               output: `
-function test<T extends Partial<any>>() {}
 const test = <T extends Partial<unknown>>() => {};
       `,
             },
             {
               messageId: 'suggestNever',
               output: `
-function test<T extends Partial<any>>() {}
 const test = <T extends Partial<never>>() => {};
       `,
             },
@@ -1771,7 +1776,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function foo5(...args: unknown) {}',
+              output: 'function foo5(...args: unknown[]) {}',
             },
             {
               messageId: 'suggestNever',
@@ -1780,7 +1785,8 @@ function foo(a: number, ...rest: never[]): void {
           ],
         },
       ],
-      options: [{ ignoreRestArgs: true }],
+      options: [{ fixToUnknown: true, ignoreRestArgs: true }],
+      output: 'function foo5(...args: unknown[]) {}',
     },
     {
       code: 'const bar5 = function (...args: any) {};',
@@ -1794,7 +1800,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'const bar5 = function (...args: unknown) {};',
+              output: 'const bar5 = function (...args: unknown[]) {};',
             },
             {
               messageId: 'suggestNever',
@@ -1817,7 +1823,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'const baz5 = (...args: unknown) => {};',
+              output: 'const baz5 = (...args: unknown[]) => {};',
             },
             {
               messageId: 'suggestNever',
@@ -1846,7 +1852,7 @@ interface Qux5 {
               messageId: 'suggestUnknown',
               output: `
 interface Qux5 {
-  (...args: unknown): void;
+  (...args: unknown[]): void;
 }
       `,
             },
@@ -1875,7 +1881,8 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function quux5(fn: (...args: unknown) => void): void {}',
+              output:
+                'function quux5(fn: (...args: unknown[]) => void): void {}',
             },
             {
               messageId: 'suggestNever',
@@ -1898,7 +1905,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function quuz5(): (...args: unknown) => void {}',
+              output: 'function quuz5(): (...args: unknown[]) => void {}',
             },
             {
               messageId: 'suggestNever',
@@ -1920,7 +1927,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'type Fred5 = (...args: unknown) => void;',
+              output: 'type Fred5 = (...args: unknown[]) => void;',
             },
             {
               messageId: 'suggestNever',
@@ -1943,7 +1950,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'type Corge5 = new (...args: unknown) => void;',
+              output: 'type Corge5 = new (...args: unknown[]) => void;',
             },
             {
               messageId: 'suggestNever',
@@ -1972,7 +1979,7 @@ interface Grault5 {
               messageId: 'suggestUnknown',
               output: `
 interface Grault5 {
-  new (...args: unknown): void;
+  new (...args: unknown[]): void;
 }
       `,
             },
@@ -2007,7 +2014,7 @@ interface Garply5 {
               messageId: 'suggestUnknown',
               output: `
 interface Garply5 {
-  f(...args: unknown): void;
+  f(...args: unknown[]): void;
 }
       `,
             },
@@ -2036,7 +2043,7 @@ interface Garply5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'declare function waldo5(...args: unknown): void;',
+              output: 'declare function waldo5(...args: unknown[]): void;',
             },
             {
               messageId: 'suggestNever',

@@ -19,6 +19,7 @@ import {
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
+  isTypeLiteralType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -33,6 +34,7 @@ import {
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
 
 function isNullishType(type: ts.Type): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
   return tsutils.isTypeFlagSet(type, nullishFlag);
 }
 
@@ -50,11 +52,21 @@ function isPossiblyNullish(type: ts.Type): boolean {
     .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
 
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNonNullish(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(t => !isNullishType(t) && !isTypeFlagSet(t, ts.TypeFlags.Void));
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
   { value: bigint | boolean | number | string | null | undefined } | undefined {
-  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  // isTypeLiteralType() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
     return { value: tsutils.isTrueLiteralType(type) };
   }
@@ -64,7 +76,7 @@ function toStaticValue(
   if (type.flags === ts.TypeFlags.Null) {
     return { value: null };
   }
-  if (type.isLiteral()) {
+  if (isTypeLiteralType(type)) {
     return { value: getValueOfLiteralType(type) };
   }
 
@@ -250,6 +262,7 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowConstantLoopConditions: 'never',
@@ -337,7 +350,10 @@ export default createRule<Options, MessageId>({
           part =>
             isTypeAnyType(part) ||
             isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+            isTypeFlagSet(
+              part,
+              ts.TypeFlags.TypeVariable | ts.TypeFlags.Conditional,
+            ),
         );
     }
 
@@ -358,14 +374,72 @@ export default createRule<Options, MessageId>({
         .getProperties()
         .find(prop => prop.name === propertyName);
 
-      if (
-        propertyType &&
+      return (
+        propertyType != null &&
         tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
-      ) {
-        return true;
+      );
+    }
+
+    /**
+     * Obtains the property types of the computed member expression
+     * @param node The member expression
+     * @returns The property types, unless the node isn't computed.
+     */
+    function getComputedMemberPropertyTypes(
+      node: TSESTree.MemberExpression,
+    ): ts.Type[] | undefined {
+      if (!node.computed) {
+        return undefined;
       }
 
-      return false;
+      const objectType = getConstrainedTypeAtLocation(services, node.object);
+      const propertyType = getConstrainedTypeAtLocation(
+        services,
+        node.property,
+      );
+      const propertyTypes: ts.Type[] = [];
+
+      for (const keyType of tsutils.unionConstituents(propertyType)) {
+        if (!keyType.isStringLiteral() && !keyType.isNumberLiteral()) {
+          return undefined;
+        }
+
+        const selectedType = getTypeOfPropertyOfName(
+          checker,
+          objectType,
+          String(keyType.value),
+        );
+
+        if (!selectedType) {
+          return undefined;
+        }
+
+        propertyTypes.push(selectedType);
+      }
+
+      return propertyTypes;
+    }
+
+    /**
+     * Verify if the node may have non-nullish properties
+     * @param node The node to verify
+     * @returns If it may have non-nullish properties, unless the node isn't a
+     * MemberExpression
+     */
+    function hasPossiblyNonNullishComputedMemberProperty(
+      node: TSESTree.Expression,
+    ): boolean {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+
+      const propertyTypes = getComputedMemberPropertyTypes(node);
+
+      if (propertyTypes == null) {
+        return false;
+      }
+
+      return propertyTypes.some(isPossiblyNonNullish);
     }
 
     /**
@@ -440,7 +514,8 @@ export default createRule<Options, MessageId>({
           ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable,
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional,
         )
       ) {
         return;
@@ -470,7 +545,10 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (
+        isAlwaysNullish(type) &&
+        !hasPossiblyNonNullishComputedMemberProperty(node)
+      ) {
         messageId = 'alwaysNullish';
       }
 
@@ -532,7 +610,8 @@ export default createRule<Options, MessageId>({
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable;
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional;
 
           // Allow loose comparison to nullish values.
           if (operator === '==' || operator === '!=') {

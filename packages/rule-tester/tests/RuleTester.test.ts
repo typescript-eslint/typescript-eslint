@@ -86,7 +86,6 @@ const NOOP_RULE: RuleModule<'error'> = {
   create() {
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {
       error: 'error',
@@ -123,11 +122,7 @@ describe(RuleTester, () => {
       messages: Linter.LintMessage[];
       outputs: string[];
     }
-  > = vi.spyOn(
-    RuleTester.prototype,
-    // @ts-expect-error -- method is private
-    'runRuleForItem',
-  );
+  > = vi.spyOn(RuleTester.prototype, 'runRuleForItem');
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -2180,7 +2175,6 @@ describe('RuleTester - hooks', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         error: 'error',
@@ -2403,7 +2397,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         messages: {
           error: 'error',
@@ -2487,7 +2480,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2609,7 +2601,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2635,7 +2626,7 @@ describe('RuleTester - multipass fixer', () => {
       }).not.toThrow();
     });
 
-    it('throws with string output', () => {
+    it('throws with string output not matching the final output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
           invalid: [
@@ -2643,6 +2634,21 @@ describe('RuleTester - multipass fixer', () => {
               code: 'foo',
               errors: [{ messageId: 'error' }],
               output: 'bar',
+            },
+          ],
+          valid: [],
+        });
+      }).toThrow('Output is incorrect.');
+    });
+
+    it('throws with string output matching the final output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              output: 'baz',
             },
           ],
           valid: [],
@@ -2707,7 +2713,6 @@ describe('RuleTester - run types', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         customErrorBar: 'Error custom Bar',

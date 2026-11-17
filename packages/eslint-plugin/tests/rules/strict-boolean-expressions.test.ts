@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-boolean-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // boolean in boolean context
     "true ? 'a' : 'b';",
@@ -668,6 +671,7 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 17,
+          data: { context: 'conditional' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -715,6 +719,7 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 6,
+          data: { context: 'conditional' },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -2381,6 +2386,7 @@ if (x) {
       errors: [
         {
           column: 5,
+          data: { context: 'conditional' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -2404,6 +2410,7 @@ if (x != null) {
       errors: [
         {
           column: 25,
+          data: { context: 'conditional' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -2423,6 +2430,7 @@ if (x != null) {
       errors: [
         {
           column: 45,
+          data: { context: 'conditional' },
           endColumn: 46,
           endLine: 1,
           line: 1,
@@ -3210,6 +3218,7 @@ if (Boolean(x)) {
     },
 
     // noStrictNullCheck
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const x: string[] | null;
@@ -3234,26 +3243,27 @@ if (x) {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     // automatic semicolon insertion test
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+obj || 0
+obj && 1 || 0
       `,
       errors: [
         {
-          column: 10,
-          endColumn: 13,
+          column: 2,
+          data: { context: 'conditional' },
+          endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
@@ -3261,18 +3271,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        (obj == null) ? 1 : 0
-        !obj
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+(obj == null) ? 1 : 0
+!obj
+obj || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 10,
-          endColumn: 13,
+          column: 2,
+          data: { context: 'conditional' },
+          endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableObject',
@@ -3280,18 +3291,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        obj == null
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+obj == null
+obj || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 9,
-          endColumn: 12,
+          column: 1,
+          data: { context: 'conditional' },
+          endColumn: 4,
           endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableObject',
@@ -3299,18 +3311,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        ;(obj != null) || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+;(obj != null) || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 9,
-          endColumn: 12,
+          column: 1,
+          data: { context: 'conditional' },
+          endColumn: 4,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableObject',
@@ -3318,11 +3331,11 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        obj || 0
-        ;(obj != null) && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+obj || 0
+;(obj != null) && 1 || 0
       `,
             },
           ],
@@ -3331,6 +3344,7 @@ if (x) {
       options: [{ allowNullableObject: false }],
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare function assert(x: unknown): asserts x;
@@ -3913,6 +3927,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -3994,6 +4009,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 6,
           line: 2,
@@ -4026,6 +4042,7 @@ const predicate = (x: string) => {
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 34,
           endLine: 8,
           line: 8,
@@ -4062,6 +4079,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 26,
           endLine: 6,
           line: 6,
@@ -4094,6 +4112,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4235,6 +4254,7 @@ declare function foo<T>(x: number): T;
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -4250,6 +4270,7 @@ function foo<T extends number>(x: number): T {}
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,

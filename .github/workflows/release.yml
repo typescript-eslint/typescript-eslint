@@ -59,7 +59,7 @@ jobs:
   # Validation job to ensure secure inputs and determine release type
   validate:
     name: Validate Release Parameters
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
     if: github.repository == 'typescript-eslint/typescript-eslint'
     outputs:
@@ -211,7 +211,7 @@ jobs:
         run: npm install -g npm@11.5.2
 
       - name: Build packages
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
       - name: Calculate and apply canary version
         run: pnpm exec tsx tools/release/apply-canary-version.mts
@@ -262,7 +262,7 @@ jobs:
         run: npm install -g npm@11.5.2
 
       - name: Build packages
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
       - name: Configure git user for automated commits
         run: |

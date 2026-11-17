@@ -1,4 +1,7 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+} from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 import { TSESTree } from '@typescript-eslint/utils';
@@ -7,10 +10,13 @@ import * as tsutils from 'ts-api-utils';
 import {
   Awaitable,
   createRule,
+  getAwaitTokenRemovalRange,
   getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
   needsToBeAwaited,
   nullThrows,
@@ -27,7 +33,13 @@ export type MessageId =
   | 'invalidPromiseAggregatorInput'
   | 'removeAwait';
 
-export default createRule<[], MessageId>({
+export type Options = [
+  {
+    allowMixedPromiseArrays?: boolean;
+  },
+];
+
+export default createRule<Options, MessageId>({
   name: 'await-thenable',
   meta: {
     type: 'problem',
@@ -48,11 +60,24 @@ export default createRule<[], MessageId>({
         'Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.',
       removeAwait: 'Remove unnecessary `await`.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowMixedPromiseArrays: {
+            type: 'boolean',
+            description:
+              'Whether to allow promise aggregators to receive iterables mixing Promise and non-Promise values, as long as at least one value may be a Promise.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
+  defaultOptions: [{ allowMixedPromiseArrays: false }],
 
-  create(context) {
+  create(context, [{ allowMixedPromiseArrays = false }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -77,13 +102,46 @@ export default createRule<[], MessageId>({
             suggest: [
               {
                 messageId: 'removeAwait',
-                fix(fixer): TSESLint.RuleFix {
+                fix(fixer) {
                   const awaitKeyword = nullThrows(
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'await expression'),
                   );
 
-                  return fixer.remove(awaitKeyword);
+                  const awaitTokenRemovalRange = getAwaitTokenRemovalRange(
+                    context.sourceCode,
+                    awaitKeyword,
+                  );
+                  const awaitRemovalFix = fixer.removeRange(
+                    awaitTokenRemovalRange,
+                  );
+
+                  const firstOperandToken = nullThrows(
+                    context.sourceCode.getTokenAfter(awaitKeyword),
+                    NullThrowsReasons.MissingToken(
+                      'operand',
+                      'await expression',
+                    ),
+                  );
+                  if (
+                    isStartOfArrowFunctionBodyNeedingParentheses(
+                      node,
+                      firstOperandToken,
+                      context.sourceCode,
+                    ) ||
+                    isStartOfExpressionStatementNeedingParentheses(
+                      node,
+                      firstOperandToken,
+                    )
+                  ) {
+                    return [
+                      awaitRemovalFix,
+                      fixer.insertTextBefore(awaitArgumentEsNode, '('),
+                      fixer.insertTextAfter(awaitArgumentEsNode, ')'),
+                    ];
+                  }
+
+                  return awaitRemovalFix;
                 },
               },
             ],
@@ -99,6 +157,13 @@ export default createRule<[], MessageId>({
         const argument = node.arguments.at(0);
 
         if (argument == null) {
+          return;
+        }
+
+        if (
+          allowMixedPromiseArrays &&
+          hasMaybeAwaitableValue(services, argument)
+        ) {
           return;
         }
 
@@ -169,7 +234,10 @@ export default createRule<[], MessageId>({
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'for await loop'),
                   );
-                  return fixer.remove(awaitToken);
+
+                  return fixer.removeRange(
+                    getAwaitTokenRemovalRange(context.sourceCode, awaitToken),
+                  );
                 },
               },
             ],
@@ -219,7 +287,10 @@ export default createRule<[], MessageId>({
                       context.sourceCode.getFirstToken(node, isAwaitKeyword),
                       NullThrowsReasons.MissingToken('await', 'await using'),
                     );
-                    return fixer.remove(awaitToken);
+
+                    return fixer.removeRange(
+                      getAwaitTokenRemovalRange(context.sourceCode, awaitToken),
+                    );
                   },
                 },
               }),
@@ -254,6 +325,22 @@ function isInvalidPromiseAggregatorInput(
   }
 
   return false;
+}
+
+function hasMaybeAwaitableValue(
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
+): boolean {
+  const checker = services.program.getTypeChecker();
+  const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+
+  return tsutils
+    .unionConstituents(getConstrainedTypeAtLocation(services, node))
+    .some(part =>
+      getValueTypesOfArrayLike(part, checker)?.some(
+        valueType => !isAlwaysNonAwaitableType(valueType, tsNode, checker),
+      ),
+    );
 }
 
 function getValueTypesOfArrayLike(

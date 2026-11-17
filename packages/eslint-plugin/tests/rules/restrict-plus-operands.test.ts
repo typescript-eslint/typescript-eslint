@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('restrict-plus-operands', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'let x = 5;',
     "let y = '10';",
@@ -1465,6 +1468,11 @@ const f = (a: any, b: boolean) => a + b;
       errors: [
         {
           column: 39,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `any`, `null`, `RegExp`, `undefined`',
+            type: 'boolean',
+          },
           endColumn: 40,
           endLine: 2,
           line: 2,
@@ -1520,6 +1528,11 @@ const f = (a: any, b: any) => a + b;
       errors: [
         {
           column: 31,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 32,
           endLine: 2,
           line: 2,
@@ -1527,6 +1540,11 @@ const f = (a: any, b: any) => a + b;
         },
         {
           column: 35,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 36,
           endLine: 2,
           line: 2,
@@ -1542,6 +1560,11 @@ const f = (a: any, b: string) => a + b;
       errors: [
         {
           column: 34,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1557,6 +1580,11 @@ const f = (a: any, b: bigint) => a + b;
       errors: [
         {
           column: 34,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1572,6 +1600,11 @@ const f = (a: any, b: number) => a + b;
       errors: [
         {
           column: 34,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1587,6 +1620,11 @@ const f = (a: any, b: boolean) => a + b;
       errors: [
         {
           column: 35,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `null`, `RegExp`, `undefined`',
+            type: 'any',
+          },
           endColumn: 36,
           endLine: 2,
           line: 2,
@@ -1594,6 +1632,11 @@ const f = (a: any, b: boolean) => a + b;
         },
         {
           column: 39,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `null`, `RegExp`, `undefined`',
+            type: 'boolean',
+          },
           endColumn: 40,
           endLine: 2,
           line: 2,
@@ -1609,6 +1652,11 @@ const f = (a: number, b: RegExp) => a + b;
       errors: [
         {
           column: 41,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'RegExp',
+          },
           endColumn: 42,
           endLine: 2,
           line: 2,

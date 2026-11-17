@@ -19,6 +19,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     function getTestCaseLine(element: TSESTree.ObjectExpression) {
@@ -87,7 +88,7 @@ export default createRule({
             property.key.name !== 'invalid' ||
             property.value.type !== AST_NODE_TYPES.ArrayExpression
           ) {
-            return;
+            continue;
           }
 
           for (const element of property.value.elements) {

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-duplicate-enum-values';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-duplicate-enum-values', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum E {
@@ -382,6 +385,8 @@ enum E {
         },
       ],
     },
+    // Verify multiple duplicates
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum E {
@@ -410,6 +415,7 @@ enum E {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum E {

@@ -53,6 +53,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       lib: 'always',
@@ -94,8 +95,12 @@ export default createRule<Options, MessageIds>({
         programNode = node;
         const referenceRegExp =
           /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
-        const commentsBefore =
-          context.sourceCode.getCommentsBefore(programNode);
+
+        const firstToken = context.sourceCode.getFirstToken(programNode);
+
+        const commentsBefore = firstToken
+          ? context.sourceCode.getCommentsBefore(firstToken)
+          : context.sourceCode.getAllComments();
 
         commentsBefore.forEach(comment => {
           if (comment.type !== AST_TOKEN_TYPES.Line) {

@@ -7,213 +7,6 @@ const rule = getESLintCoreRule('no-undef');
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-undef', rule, {
-  invalid: [
-    {
-      code: 'a = 5;',
-      errors: [
-        {
-          column: 1,
-          data: {
-            name: 'a',
-          },
-          endColumn: 2,
-          endLine: 1,
-          line: 1,
-          messageId: 'undef',
-        },
-      ],
-    },
-    {
-      code: 'a?.b = 5;',
-      errors: [
-        {
-          column: 1,
-          data: {
-            name: 'a',
-          },
-          endColumn: 2,
-          endLine: 1,
-          line: 1,
-          messageId: 'undef',
-        },
-      ],
-    },
-    {
-      code: 'a()?.b = 5;',
-      errors: [
-        {
-          column: 1,
-          data: {
-            name: 'a',
-          },
-          endColumn: 2,
-          endLine: 1,
-          line: 1,
-          messageId: 'undef',
-        },
-      ],
-    },
-    {
-      code: '<Foo />;',
-      errors: [
-        {
-          column: 2,
-          data: {
-            name: 'Foo',
-          },
-          endColumn: 5,
-          endLine: 1,
-          line: 1,
-          messageId: 'undef',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-function Foo() {}
-<Foo attr={x} />;
-      `,
-      errors: [
-        {
-          column: 12,
-          data: {
-            name: 'x',
-          },
-          endColumn: 13,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-function Foo() {}
-<Foo {...x} />;
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            name: 'x',
-          },
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-function Foo() {}
-<Foo<T> />;
-      `,
-      errors: [
-        {
-          column: 6,
-          data: {
-            name: 'T',
-          },
-          endColumn: 7,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-function Foo() {}
-<Foo>{x}</Foo>;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: {
-            name: 'x',
-          },
-          endColumn: 8,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-class Foo {
-  [x: Bar]: string;
-}
-      `,
-      errors: [
-        {
-          column: 7,
-          data: {
-            name: 'Bar',
-          },
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  [x: string]: Bar;
-}
-      `,
-      errors: [
-        {
-          column: 16,
-          data: {
-            name: 'Bar',
-          },
-          endColumn: 19,
-          endLine: 3,
-          line: 3,
-          messageId: 'undef',
-        },
-      ],
-    },
-  ],
   valid: [
     `
 import Beemo from './Beemo';
@@ -480,5 +273,212 @@ class Foo {
   [x: string]: any;
 }
     `,
+  ],
+  invalid: [
+    {
+      code: 'a = 5;',
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'a',
+          },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
+          messageId: 'undef',
+        },
+      ],
+    },
+    {
+      code: 'a?.b = 5;',
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'a',
+          },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
+          messageId: 'undef',
+        },
+      ],
+    },
+    {
+      code: 'a()?.b = 5;',
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'a',
+          },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
+          messageId: 'undef',
+        },
+      ],
+    },
+    {
+      code: '<Foo />;',
+      errors: [
+        {
+          column: 2,
+          data: {
+            name: 'Foo',
+          },
+          endColumn: 5,
+          endLine: 1,
+          line: 1,
+          messageId: 'undef',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+function Foo() {}
+<Foo attr={x} />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            name: 'x',
+          },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+function Foo() {}
+<Foo {...x} />;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            name: 'x',
+          },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+function Foo() {}
+<Foo<T> />;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            name: 'T',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+function Foo() {}
+<Foo>{x}</Foo>;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            name: 'x',
+          },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+class Foo {
+  [x: Bar]: string;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            name: 'Bar',
+          },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: string]: Bar;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          data: {
+            name: 'Bar',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'undef',
+        },
+      ],
+    },
   ],
 });

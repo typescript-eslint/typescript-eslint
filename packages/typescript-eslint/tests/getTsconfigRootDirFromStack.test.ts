@@ -39,7 +39,7 @@ describe(getTSConfigRootDirFromStack, () => {
     expect(notEslintConfig.get()).toBeUndefined();
   });
 
-  it('should work in the presence of a messed up strack trace string', () => {
+  it('should work in the presence of a messed up stack trace string', () => {
     const prepareStackTrace = Error.prepareStackTrace;
     const dummyFunction = () => {};
     Error.prepareStackTrace = dummyFunction;

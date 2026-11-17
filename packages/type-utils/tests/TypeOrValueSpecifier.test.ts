@@ -13,8 +13,17 @@ import {
   valueMatchesSpecifier,
 } from '../src/index.js';
 
+// Specifier paths are relative to the program's current directory: the
+// process's for `project`, and the TSConfig's for the tsgo backend.
 const ROOT_DIR = path.posix.join(
-  ...path.relative(process.cwd(), path.join(__dirname, '..')).split(path.sep),
+  ...path
+    .relative(
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo'
+        ? path.join(__dirname, 'fixtures')
+        : process.cwd(),
+      path.join(__dirname, '..'),
+    )
+    .split(path.sep),
 );
 
 describe('TypeOrValueSpecifier', () => {
@@ -396,6 +405,19 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // The @types package that provides the type can also be named directly.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: '@types/semver' },
+      ],
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@types/babel__code-frame',
+        },
+      ],
       // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
       //
       // The following type is available from the multi-file @types/node package.
@@ -430,6 +452,76 @@ describe('TypeOrValueSpecifier', () => {
           name: 'fail',
           package: 'assert',
         },
+      ],
+      // This has to be a linked workspace package.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/10038
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/types',
+        },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package',
+        },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package/index.d.ts',
+        },
+      ],
+      // Re-exported symbols in ambient declarations.
+      [
+        'import { URL } from "node:url"; declare const url: URL; type Test = typeof url;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'buffer' },
+      ],
+      [
+        'import * as nodeBuffer from "node:buffer"; declare const buffer: nodeBuffer.Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Local as Renamed };
+          }
+          interface Local {}
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      // Globals declared in ambient declarations. Mimics how `URL` is declared.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/9608
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'global-declarer' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
@@ -575,6 +667,75 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+      // A package name must match whole path components, not any substring of the
+      // declaration file's package path.
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'script' },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'semve' },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'sem' },
+      ],
+      // Package names are compared literally; regular expression syntax in them
+      // carries no special meaning.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 's.mver' },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        { from: 'package', name: 'VersionlessType', package: 'versionless' },
+      ],
+      // Linked workspace packages respect package boundaries too.
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/type',
+        },
+      ],
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/utils',
+        },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buff' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Other };
+          }
+
+          interface Local {}
+          interface Other {}
+
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'other-module' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",

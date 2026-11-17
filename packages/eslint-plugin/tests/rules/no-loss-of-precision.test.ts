@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-loss-of-precision';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-loss-of-precision', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const x = 12345;',
     'const x = 123.456;',

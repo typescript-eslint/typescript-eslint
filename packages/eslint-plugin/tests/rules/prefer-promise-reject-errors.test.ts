@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-promise-reject-errors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'Promise.resolve(5);',
     {

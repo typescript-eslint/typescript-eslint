@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // standard type conversions are valid
     'String(1);',
@@ -135,9 +138,12 @@ const compareWithToString = customId === CustomIds.Id1.toString();
   invalid: [
     {
       code: "String('asdf');",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
           endColumn: 7,
           endLine: 1,
           line: 1,
@@ -148,6 +154,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
               output: "'asdf';",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
@@ -157,9 +164,15 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf'.toString();",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 8,
+          data: {
+            type: 'string',
+            violation: "Calling a string's .toString() method",
+          },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -170,6 +183,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
               output: "'asdf';",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
@@ -179,9 +193,12 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'' + 'asdf';",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'string', violation: "Concatenating '' with a string" },
           endColumn: 6,
           endLine: 1,
           line: 1,
@@ -192,6 +209,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
               output: "'asdf';",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
@@ -201,9 +219,12 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf' + '';",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
+          data: { type: 'string', violation: "Concatenating a string with ''" },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -214,6 +235,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
               output: "'asdf';",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
@@ -226,9 +248,12 @@ const compareWithToString = customId === CustomIds.Id1.toString();
 let str = 'asdf';
 str += '';
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'string', violation: "Concatenating a string with ''" },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -242,6 +267,7 @@ let str = 'asdf';
       `,
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
@@ -257,9 +283,12 @@ str satisfies string;
 let str = 'asdf';
 'asdf' + (str += '');
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
+          data: { type: 'string', violation: "Concatenating a string with ''" },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -273,6 +302,7 @@ let str = 'asdf';
       `,
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
@@ -285,9 +315,12 @@ let str = 'asdf';
     },
     {
       code: 'Number(123);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
           endColumn: 7,
           endLine: 1,
           line: 1,
@@ -298,6 +331,7 @@ let str = 'asdf';
               output: '123;',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
@@ -307,9 +341,15 @@ let str = 'asdf';
     },
     {
       code: '+123;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: {
+            type: 'number',
+            violation: 'Using the unary + operator on a number',
+          },
           endColumn: 2,
           endLine: 1,
           line: 1,
@@ -320,6 +360,7 @@ let str = 'asdf';
               output: '123;',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
@@ -329,9 +370,12 @@ let str = 'asdf';
     },
     {
       code: '~~123;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'number', violation: 'Using ~~ on an integer' },
           endColumn: 3,
           endLine: 1,
           line: 1,
@@ -342,6 +386,7 @@ let str = 'asdf';
               output: '123;',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
@@ -351,9 +396,15 @@ let str = 'asdf';
     },
     {
       code: 'Boolean(true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: {
+            type: 'boolean',
+            violation: 'Passing a boolean to Boolean()',
+          },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -364,6 +415,7 @@ let str = 'asdf';
               output: 'true;',
             },
             {
+              data: { type: 'boolean' },
               messageId: 'suggestSatisfies',
               output: 'true satisfies boolean;',
             },
@@ -373,9 +425,12 @@ let str = 'asdf';
     },
     {
       code: '!!true;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'boolean', violation: 'Using !! on a boolean' },
           endColumn: 3,
           endLine: 1,
           line: 1,
@@ -386,6 +441,7 @@ let str = 'asdf';
               output: 'true;',
             },
             {
+              data: { type: 'boolean' },
               messageId: 'suggestSatisfies',
               output: 'true satisfies boolean;',
             },
@@ -395,9 +451,12 @@ let str = 'asdf';
     },
     {
       code: 'BigInt(3n);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'bigint', violation: 'Passing a bigint to BigInt()' },
           endColumn: 7,
           endLine: 1,
           line: 1,
@@ -408,6 +467,7 @@ let str = 'asdf';
               output: '3n;',
             },
             {
+              data: { type: 'bigint' },
               messageId: 'suggestSatisfies',
               output: '3n satisfies bigint;',
             },
@@ -423,9 +483,12 @@ function f<T extends string>(x: T) {
   return String(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: { type: 'string', violation: 'Passing a string to String()' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -440,6 +503,7 @@ function f<T extends string>(x: T) {
       `,
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: `
 function f<T extends string>(x: T) {
@@ -457,9 +521,12 @@ function f<T extends number>(x: T) {
   return Number(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -474,6 +541,7 @@ function f<T extends number>(x: T) {
       `,
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: `
 function f<T extends number>(x: T) {
@@ -491,9 +559,15 @@ function f<T extends boolean>(x: T) {
   return Boolean(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: {
+            type: 'boolean',
+            violation: 'Passing a boolean to Boolean()',
+          },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -508,6 +582,7 @@ function f<T extends boolean>(x: T) {
       `,
             },
             {
+              data: { type: 'boolean' },
               messageId: 'suggestSatisfies',
               output: `
 function f<T extends boolean>(x: T) {
@@ -525,9 +600,12 @@ function f<T extends bigint>(x: T) {
   return BigInt(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: { type: 'bigint', violation: 'Passing a bigint to BigInt()' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -542,6 +620,7 @@ function f<T extends bigint>(x: T) {
       `,
             },
             {
+              data: { type: 'bigint' },
               messageId: 'suggestSatisfies',
               output: `
 function f<T extends bigint>(x: T) {
@@ -557,9 +636,12 @@ function f<T extends bigint>(x: T) {
     // make sure fixes preserve parentheses in cases where logic would otherwise break
     {
       code: "String('a' + 'b').length;",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
           endColumn: 7,
           endLine: 1,
           line: 1,
@@ -570,6 +652,7 @@ function f<T extends bigint>(x: T) {
               output: "('a' + 'b').length;",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "(('a' + 'b') satisfies string).length;",
             },
@@ -579,9 +662,15 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: "('a' + 'b').toString().length;",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
+          data: {
+            type: 'string',
+            violation: "Calling a string's .toString() method",
+          },
           endColumn: 23,
           endLine: 1,
           line: 1,
@@ -592,6 +681,7 @@ function f<T extends bigint>(x: T) {
               output: "('a' + 'b').length;",
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: "(('a' + 'b') satisfies string).length;",
             },
@@ -601,9 +691,15 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * +(2 + 2);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
+          data: {
+            type: 'number',
+            violation: 'Using the unary + operator on a number',
+          },
           endColumn: 6,
           endLine: 1,
           line: 1,
@@ -614,6 +710,7 @@ function f<T extends bigint>(x: T) {
               output: '2 * (2 + 2);',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '2 * ((2 + 2) satisfies number);',
             },
@@ -623,9 +720,12 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * Number(2 + 2);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
           endColumn: 11,
           endLine: 1,
           line: 1,
@@ -636,6 +736,7 @@ function f<T extends bigint>(x: T) {
               output: '2 * (2 + 2);',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '2 * ((2 + 2) satisfies number);',
             },
@@ -645,9 +746,12 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && !!(false || true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: { type: 'boolean', violation: 'Using !! on a boolean' },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -658,6 +762,7 @@ function f<T extends bigint>(x: T) {
               output: 'false && (false || true);',
             },
             {
+              data: { type: 'boolean' },
               messageId: 'suggestSatisfies',
               output: 'false && ((false || true) satisfies boolean);',
             },
@@ -667,9 +772,15 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && Boolean(false || true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
+          data: {
+            type: 'boolean',
+            violation: 'Passing a boolean to Boolean()',
+          },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -680,6 +791,7 @@ function f<T extends bigint>(x: T) {
               output: 'false && (false || true);',
             },
             {
+              data: { type: 'boolean' },
               messageId: 'suggestSatisfies',
               output: 'false && ((false || true) satisfies boolean);',
             },
@@ -689,9 +801,12 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2n * BigInt(2n + 2n);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 6,
+          data: { type: 'bigint', violation: 'Passing a bigint to BigInt()' },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -702,6 +817,7 @@ function f<T extends bigint>(x: T) {
               output: '2n * (2n + 2n);',
             },
             {
+              data: { type: 'bigint' },
               messageId: 'suggestSatisfies',
               output: '2n * ((2n + 2n) satisfies bigint);',
             },
@@ -716,9 +832,12 @@ function f<T extends bigint>(x: T) {
 let str = 'asdf';
 String(str).length;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
           endColumn: 7,
           endLine: 3,
           line: 3,
@@ -732,6 +851,7 @@ str.length;
       `,
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
@@ -747,9 +867,15 @@ let str = 'asdf';
 let str = 'asdf';
 str.toString().length;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
+          data: {
+            type: 'string',
+            violation: "Calling a string's .toString() method",
+          },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -763,6 +889,7 @@ str.length;
       `,
             },
             {
+              data: { type: 'string' },
               messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
@@ -775,9 +902,12 @@ let str = 'asdf';
     },
     {
       code: '~~1;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'number', violation: 'Using ~~ on an integer' },
           endColumn: 3,
           endLine: 1,
           line: 1,
@@ -788,6 +918,7 @@ let str = 'asdf';
               output: '1;',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '1 satisfies number;',
             },
@@ -797,9 +928,12 @@ let str = 'asdf';
     },
     {
       code: '~~-1;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'number', violation: 'Using ~~ on an integer' },
           endColumn: 3,
           endLine: 1,
           line: 1,
@@ -810,6 +944,7 @@ let str = 'asdf';
               output: '(-1);',
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: '(-1) satisfies number;',
             },
@@ -822,9 +957,12 @@ let str = 'asdf';
 declare const threeOrFour: 3 | 4;
 ~~threeOrFour;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
+          data: { type: 'number', violation: 'Using ~~ on an integer' },
           endColumn: 3,
           endLine: 3,
           line: 3,
@@ -838,6 +976,7 @@ threeOrFour;
       `,
             },
             {
+              data: { type: 'number' },
               messageId: 'suggestSatisfies',
               output: `
 declare const threeOrFour: 3 | 4;

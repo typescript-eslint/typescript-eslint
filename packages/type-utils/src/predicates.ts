@@ -137,6 +137,19 @@ export function typeIsOrHasBaseType(
   return false;
 }
 
+/**
+ * Checks if the given type is a string, number, or bigint literal type.
+ * Same as `type.isLiteral()`, which doesn't include bigint literals before TS 5.0.
+ */
+export function isTypeLiteralType(type: ts.Type): type is ts.LiteralType {
+  return tsutils.isTypeFlagSet(
+    type,
+    ts.TypeFlags.StringLiteral |
+      ts.TypeFlags.NumberLiteral |
+      ts.TypeFlags.BigIntLiteral,
+  );
+}
+
 export function isTypeBigIntLiteralType(
   type: ts.Type,
 ): type is ts.BigIntLiteralType {

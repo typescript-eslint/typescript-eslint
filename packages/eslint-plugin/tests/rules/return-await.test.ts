@@ -7,6 +7,9 @@ const ruleTester = createRuleTesterWithTypes();
 
 // default rule is in-try-catch
 ruleTester.run('return-await', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'return;', // No function in scope, so behave like return in a commonjs module
     `
@@ -332,6 +335,8 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -341,6 +346,8 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -352,6 +359,8 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -361,6 +370,8 @@ async function f() {
   using something = bleh;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -370,6 +381,8 @@ async function f() {
   using something = bleh;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: ['always'],
     },
     {
@@ -385,6 +398,8 @@ async function returnAwait() {
   return await asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -402,6 +417,8 @@ async function outerFunction() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -417,6 +434,8 @@ async function outerFunction() {
   const innerFunction = async () => asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -426,6 +445,8 @@ async function outerFunction() {
 using foo = 1 as any;
 return Promise.resolve(42);
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       // intentionally invalid AST - return is outside a function.
@@ -436,6 +457,8 @@ return Promise.resolve(42);
   return Promise.resolve(42);
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -697,7 +720,7 @@ async function test() {
   try {
     return Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -718,7 +741,7 @@ async function test() {
   try {
     return await Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -727,6 +750,23 @@ async function test() {
             },
           ],
         },
+      ],
+      options: ['error-handling-correctness-only'],
+      output: null,
+    },
+    {
+      code: `
+async function test() {
+  try {
+    console.log('try');
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 30,
@@ -739,7 +779,7 @@ async function test() {
               output: `
 async function test() {
   try {
-    return Promise.resolve(1);
+    console.log('try');
   } catch (e) {
     return await Promise.resolve(2);
   } finally {
@@ -760,7 +800,7 @@ async function test() {
   try {
     return Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -781,7 +821,7 @@ async function test() {
   try {
     return await Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -790,6 +830,23 @@ async function test() {
             },
           ],
         },
+      ],
+      options: ['always'],
+      output: null,
+    },
+    {
+      code: `
+async function test() {
+  try {
+    console.log('try');
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 30,
@@ -802,7 +859,7 @@ async function test() {
               output: `
 async function test() {
   try {
-    return Promise.resolve(1);
+    console.log('try');
   } catch (e) {
     return await Promise.resolve(2);
   } finally {
@@ -823,7 +880,7 @@ async function test() {
   try {
     return Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -844,7 +901,7 @@ async function test() {
   try {
     return await Promise.resolve(1);
   } catch (e) {
-    return Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -853,6 +910,23 @@ async function test() {
             },
           ],
         },
+      ],
+      options: ['in-try-catch'],
+      output: null,
+    },
+    {
+      code: `
+async function test() {
+  try {
+    console.log('try');
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 30,
@@ -865,7 +939,7 @@ async function test() {
               output: `
 async function test() {
   try {
-    return Promise.resolve(1);
+    console.log('try');
   } catch (e) {
     return await Promise.resolve(2);
   } finally {
@@ -1002,7 +1076,7 @@ async function test() {
   try {
     return await Promise.resolve(1);
   } catch (e) {
-    return await Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -1023,7 +1097,7 @@ async function test() {
   try {
     return Promise.resolve(1);
   } catch (e) {
-    return await Promise.resolve(2);
+    console.log('catch');
   } finally {
     console.log('cleanup');
   }
@@ -1032,6 +1106,23 @@ async function test() {
             },
           ],
         },
+      ],
+      options: ['never'],
+      output: null,
+    },
+    {
+      code: `
+async function test() {
+  try {
+    console.log('try');
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 36,
@@ -1044,7 +1135,7 @@ async function test() {
               output: `
 async function test() {
   try {
-    return await Promise.resolve(1);
+    console.log('try');
   } catch (e) {
     return Promise.resolve(2);
   } finally {
@@ -1144,24 +1235,16 @@ async function test() {
 async function foo() {}
 async function bar() {}
 async function baz() {}
-async function qux() {}
 async function buzz() {
-  return (await foo()) ? bar() : baz();
+  return (await foo()) ? bar() : await baz();
 }
       `,
       errors: [
         {
           column: 26,
           endColumn: 31,
-          endLine: 7,
-          line: 7,
-          messageId: 'requiredPromiseAwait',
-        },
-        {
-          column: 34,
-          endColumn: 39,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'requiredPromiseAwait',
         },
       ],
@@ -1170,7 +1253,34 @@ async function buzz() {
 async function foo() {}
 async function bar() {}
 async function baz() {}
-async function qux() {}
+async function buzz() {
+  return (await foo()) ? await bar() : await baz();
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function buzz() {
+  return (await foo()) ? await bar() : baz();
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 45,
+          endLine: 6,
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
 async function buzz() {
   return (await foo()) ? await bar() : await baz();
 }
@@ -1185,8 +1295,8 @@ async function qux() {}
 async function buzz() {
   return (await foo())
     ? (
-      bar ? bar() : baz()
-    ) : baz ? baz() : bar();
+      bar ? bar() : await baz()
+    ) : baz ? await baz() : await bar();
 }
       `,
       errors: [
@@ -1197,13 +1307,71 @@ async function buzz() {
           line: 9,
           messageId: 'requiredPromiseAwait',
         },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? await baz() : await bar();
+}
+      `,
+    },
+    {
+      code: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : baz()
+    ) : baz ? await baz() : await bar();
+}
+      `,
+      errors: [
         {
-          column: 21,
-          endColumn: 26,
+          column: 27,
+          endColumn: 32,
           endLine: 9,
           line: 9,
           messageId: 'requiredPromiseAwait',
         },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? await baz() : await bar();
+}
+      `,
+    },
+    {
+      code: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? baz() : await bar();
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 20,
@@ -1211,9 +1379,38 @@ async function buzz() {
           line: 10,
           messageId: 'requiredPromiseAwait',
         },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? await baz() : await bar();
+}
+      `,
+    },
+    {
+      code: noFormat`
+async function foo() {}
+async function bar() {}
+async function baz() {}
+async function qux() {}
+async function buzz() {
+  return (await foo())
+    ? (
+      bar ? await bar() : await baz()
+    ) : baz ? await baz() : bar();
+}
+      `,
+      errors: [
         {
-          column: 23,
-          endColumn: 28,
+          column: 29,
+          endColumn: 34,
           endLine: 10,
           line: 10,
           messageId: 'requiredPromiseAwait',
@@ -1238,7 +1435,7 @@ async function buzz() {
 async function foo() {}
 async function bar() {}
 async function buzz() {
-  return (await foo()) ? await 1 : bar();
+  return (await foo()) ? await 1 : await bar();
 }
       `,
       errors: [
@@ -1249,9 +1446,28 @@ async function buzz() {
           line: 5,
           messageId: 'nonPromiseAwait',
         },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function buzz() {
+  return (await foo()) ? 1 : await bar();
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {}
+async function bar() {}
+async function buzz() {
+  return (await foo()) ? 1 : bar();
+}
+      `,
+      errors: [
         {
-          column: 36,
-          endColumn: 41,
+          column: 30,
+          endColumn: 35,
           endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
@@ -1271,19 +1487,12 @@ async function buzz() {
 async function foo() {}
 async function bar() {}
 async function baz() {}
-const buzz = async () => ((await foo()) ? bar() : baz());
+const buzz = async () => ((await foo()) ? bar() : await baz());
       `,
       errors: [
         {
           column: 43,
           endColumn: 48,
-          endLine: 5,
-          line: 5,
-          messageId: 'requiredPromiseAwait',
-        },
-        {
-          column: 51,
-          endColumn: 56,
           endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
@@ -1301,7 +1510,31 @@ const buzz = async () => ((await foo()) ? await bar() : await baz());
       code: `
 async function foo() {}
 async function bar() {}
-const buzz = async () => ((await foo()) ? await 1 : bar());
+async function baz() {}
+const buzz = async () => ((await foo()) ? await bar() : baz());
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 62,
+          endLine: 5,
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+async function baz() {}
+const buzz = async () => ((await foo()) ? await bar() : await baz());
+      `,
+    },
+    {
+      code: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? await 1 : await bar());
       `,
       errors: [
         {
@@ -1311,9 +1544,24 @@ const buzz = async () => ((await foo()) ? await 1 : bar());
           line: 4,
           messageId: 'nonPromiseAwait',
         },
+      ],
+      options: ['always'],
+      output: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? 1 : await bar());
+      `,
+    },
+    {
+      code: `
+async function foo() {}
+async function bar() {}
+const buzz = async () => ((await foo()) ? 1 : bar());
+      `,
+      errors: [
         {
-          column: 53,
-          endColumn: 58,
+          column: 47,
+          endColumn: 52,
           endLine: 4,
           line: 4,
           messageId: 'requiredPromiseAwait',
@@ -1795,6 +2043,8 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 14,
@@ -1835,6 +2085,8 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 14,
@@ -1874,6 +2126,8 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 12,
@@ -1910,6 +2164,8 @@ async function outerFunction() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 12,
@@ -1948,6 +2204,8 @@ async function outerFunction() {
   const innerFunction = async () => await asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 37,

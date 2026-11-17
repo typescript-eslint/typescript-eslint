@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-empty-function';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-function', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
@@ -91,15 +94,14 @@ class Person {
       errors: [
         {
           column: 29,
-          data: {
-            name: 'constructor',
-          },
+          data: { name: 'constructor' },
           endColumn: 31,
           endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: 'constructor' },
               messageId: 'suggestComment',
               output: `
 class Person {
@@ -120,15 +122,14 @@ class Person {
       errors: [
         {
           column: 29,
-          data: {
-            name: "method 'otherMethod'",
-          },
+          data: { name: "method 'otherMethod'" },
           endColumn: 31,
           endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: "method 'otherMethod'" },
               messageId: 'suggestComment',
               output: `
 class Person {
@@ -149,15 +150,14 @@ class Foo {
       errors: [
         {
           column: 25,
-          data: {
-            name: 'constructor',
-          },
+          data: { name: 'constructor' },
           endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: 'constructor' },
               messageId: 'suggestComment',
               output: `
 class Foo {
@@ -178,15 +178,14 @@ class Foo {
       errors: [
         {
           column: 27,
-          data: {
-            name: 'constructor',
-          },
+          data: { name: 'constructor' },
           endColumn: 29,
           endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: 'constructor' },
               messageId: 'suggestComment',
               output: `
 class Foo {
@@ -205,15 +204,14 @@ function foo() {}
       errors: [
         {
           column: 16,
-          data: {
-            name: "function 'foo'",
-          },
+          data: { name: "function 'foo'" },
           endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: "function 'foo'" },
               messageId: 'suggestComment',
               output: `
 function foo() { /* empty */ }
@@ -233,15 +231,14 @@ class Foo {
       errors: [
         {
           column: 9,
-          data: {
-            name: "method 'foo'",
-          },
+          data: { name: "method 'foo'" },
           endColumn: 11,
           endLine: 4,
           line: 4,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: "method 'foo'" },
               messageId: 'suggestComment',
               output: `
 class Foo {
@@ -263,15 +260,14 @@ class Foo extends Base {
       errors: [
         {
           column: 18,
-          data: {
-            name: "method 'foo'",
-          },
+          data: { name: "method 'foo'" },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
             {
+              data: { name: "method 'foo'" },
               messageId: 'suggestComment',
               output: `
 class Foo extends Base {

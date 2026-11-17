@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-invalid-void-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('allowInGenericTypeArguments: false', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'type Generic<T> = [T];',
@@ -134,11 +137,15 @@ function returnsVoidPromiseDirectly(): Promise<void> {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
-    `
+    {
+      code: `
 class ClassName {
   accessor propName: number;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 function f(): void;
 function f(x: string): string;
@@ -503,6 +510,8 @@ class ClassName {
   accessor propName: void;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 22,

@@ -22,6 +22,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
@@ -39,8 +40,12 @@ export default createRule({
         type.getCallSignatures().length === 0 &&
         type.getConstructSignatures().length === 0 &&
         // Types still awaiting type arguments, such as `Record<T, unknown>`
-        // inside a generic declaration, also have no members yet.
-        checker.isTypeAssignableTo(checker.getNumberType(), type)
+        // inside a generic declaration, also have no members yet. Every
+        // primitive is assignable to `{}`, so probing with more than one of
+        // them rules those out: a mapped type whose keys are not resolved yet,
+        // such as `{ [K in Keys<T>]: K }`, accepts `number` but not `string`.
+        checker.isTypeAssignableTo(checker.getNumberType(), type) &&
+        checker.isTypeAssignableTo(checker.getStringType(), type)
       );
     }
 

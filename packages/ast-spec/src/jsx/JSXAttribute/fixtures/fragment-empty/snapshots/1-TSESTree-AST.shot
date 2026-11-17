@@ -1,0 +1,101 @@
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: JSXElement {
+        type: "JSXElement",
+        children: [],
+        closingElement: null,
+        openingElement: JSXOpeningElement {
+          type: "JSXOpeningElement",
+          attributes: [
+            JSXAttribute {
+              type: "JSXAttribute",
+              name: JSXIdentifier {
+                type: "JSXIdentifier",
+                name: "foo",
+
+                range: [5, 8],
+                loc: {
+                  start: { column: 5, line: 1 },
+                  end: { column: 8, line: 1 },
+                },
+              },
+              value: JSXFragment {
+                type: "JSXFragment",
+                children: [],
+                closingFragment: JSXClosingFragment {
+                  type: "JSXClosingFragment",
+
+                  range: [11, 14],
+                  loc: {
+                    start: { column: 11, line: 1 },
+                    end: { column: 14, line: 1 },
+                  },
+                },
+                openingFragment: JSXOpeningFragment {
+                  type: "JSXOpeningFragment",
+
+                  range: [9, 11],
+                  loc: {
+                    start: { column: 9, line: 1 },
+                    end: { column: 11, line: 1 },
+                  },
+                },
+
+                range: [9, 14],
+                loc: {
+                  start: { column: 9, line: 1 },
+                  end: { column: 14, line: 1 },
+                },
+              },
+
+              range: [5, 14],
+              loc: {
+                start: { column: 5, line: 1 },
+                end: { column: 14, line: 1 },
+              },
+            },
+          ],
+          name: JSXIdentifier {
+            type: "JSXIdentifier",
+            name: "App",
+
+            range: [1, 4],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 4, line: 1 },
+            },
+          },
+          selfClosing: true,
+
+          range: [0, 17],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 17, line: 1 },
+          },
+        },
+
+        range: [0, 17],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 17, line: 1 },
+        },
+      },
+
+      range: [0, 18],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 18, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 19],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

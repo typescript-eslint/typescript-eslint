@@ -8,6 +8,9 @@ import rule from '../../src/rules/consistent-type-assertions';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-type-assertions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'const x = new Generic<int>() as Foo;',
@@ -727,6 +730,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -740,6 +744,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'A' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -753,6 +758,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'readonly number[]' },
           endColumn: 35,
           endLine: 1,
           line: 1,
@@ -766,6 +772,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'a | b' },
           endColumn: 28,
           endLine: 1,
           line: 1,
@@ -779,6 +786,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'A' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -792,6 +800,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 12,
+          data: { cast: 'A' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -805,6 +814,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 39,
           endLine: 1,
           line: 1,
@@ -818,6 +828,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 16,
+          data: { cast: 'Foo' },
           endColumn: 38,
           endLine: 1,
           line: 1,
@@ -831,6 +842,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 16,
+          data: { cast: 'Foo' },
           endColumn: 38,
           endLine: 1,
           line: 1,
@@ -844,6 +856,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 17,
+          data: { cast: 'Foo' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -857,6 +870,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 17,
+          data: { cast: 'Foo' },
           endColumn: 27,
           endLine: 1,
           line: 1,
@@ -870,6 +884,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 39,
           endLine: 1,
           line: 1,
@@ -883,6 +898,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'const' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -896,6 +912,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 34,
           endLine: 1,
           line: 1,
@@ -910,6 +927,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'A' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -924,6 +942,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'readonly number[]' },
           endColumn: 33,
           endLine: 1,
           line: 1,
@@ -938,6 +957,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'a | b' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -952,6 +972,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'A' },
           endColumn: 23,
           endLine: 1,
           line: 1,
@@ -966,6 +987,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'A' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -980,6 +1002,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 37,
           endLine: 1,
           line: 1,
@@ -994,6 +1017,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 16,
+          data: { cast: 'Foo' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -1008,6 +1032,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 16,
+          data: { cast: 'Foo' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -1022,6 +1047,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 17,
+          data: { cast: 'Foo' },
           endColumn: 32,
           endLine: 1,
           line: 1,
@@ -1036,6 +1062,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 17,
+          data: { cast: 'Foo' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -1050,6 +1077,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'Foo' },
           endColumn: 37,
           endLine: 1,
           line: 1,
@@ -1064,6 +1092,7 @@ const x = { key: 'value' } as unknown;
       errors: [
         {
           column: 11,
+          data: { cast: 'const' },
           endColumn: 34,
           endLine: 1,
           line: 1,
@@ -1387,6 +1416,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as Foo<int>;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1417,6 +1448,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as a | b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1447,6 +1480,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = ({} as A) + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 12,
@@ -1472,6 +1507,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <Foo<int>>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1502,6 +1539,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <a | b>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1532,6 +1571,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <A>{} + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1557,6 +1598,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as Foo<int>;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1582,6 +1625,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as a | b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1607,6 +1652,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = ({} as A) + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 12,
@@ -1627,6 +1674,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'print({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -1647,6 +1696,8 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'new print({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1671,6 +1722,8 @@ function foo() {
   throw { bar: 5 } as Foo;
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -1695,6 +1748,8 @@ function foo() {
     },
     {
       code: 'function b(x = {} as Foo.Bar) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 16,
@@ -1715,6 +1770,8 @@ function foo() {
     },
     {
       code: 'function c(x = {} as Foo) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 16,
@@ -1735,6 +1792,8 @@ function foo() {
     },
     {
       code: 'print?.({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -1755,6 +1814,8 @@ function foo() {
     },
     {
       code: 'print?.call({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
@@ -1775,6 +1836,8 @@ function foo() {
     },
     {
       code: 'print`${{ bar: 5 } as Foo}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -1795,6 +1858,8 @@ function foo() {
     },
     {
       code: 'const x = <Foo<int>>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1825,6 +1890,8 @@ function foo() {
     },
     {
       code: 'const x = <a | b>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1855,6 +1922,8 @@ function foo() {
     },
     {
       code: 'const x = <A>{} + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1880,6 +1949,8 @@ function foo() {
     },
     {
       code: 'print(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -1905,6 +1976,8 @@ function foo() {
     },
     {
       code: 'new print(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -1934,6 +2007,8 @@ function foo() {
   throw <Foo>{ bar: 5 };
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -1963,6 +2038,8 @@ function foo() {
     },
     {
       code: 'print?.(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -1988,6 +2065,8 @@ function foo() {
     },
     {
       code: 'print?.call(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
@@ -2013,6 +2092,8 @@ function foo() {
     },
     {
       code: 'print`${<Foo>{ bar: 5 }}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -2039,7 +2120,13 @@ function foo() {
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
       errors: [
-        { column: 25, endColumn: 42, endLine: 1, line: 1, messageId: 'never' },
+        {
+          column: 25,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'never',
+        },
       ],
       languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ assertionStyle: 'never' }],
@@ -2050,6 +2137,7 @@ function foo() {
       errors: [
         {
           column: 11,
+          data: { cast: 'any' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -2068,6 +2156,7 @@ function foo() {
       errors: [
         {
           column: 11,
+          data: { cast: 'any' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -2086,6 +2175,7 @@ function foo() {
       errors: [
         {
           column: 11,
+          data: { cast: 'any' },
           endColumn: 30,
           endLine: 1,
           line: 1,
@@ -2104,6 +2194,7 @@ function foo() {
       errors: [
         {
           column: 11,
+          data: { cast: 'any' },
           endColumn: 32,
           endLine: 1,
           line: 1,
@@ -2128,6 +2219,7 @@ function* g() {
       errors: [
         {
           column: 13,
+          data: { cast: 'any' },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -2153,6 +2245,7 @@ const bs = <any>(x <<= y);
       errors: [
         {
           column: 12,
+          data: { cast: 'any' },
           endColumn: 26,
           endLine: 3,
           line: 3,
@@ -2174,6 +2267,7 @@ const bs = (x <<= y) as any;
       errors: [
         {
           column: 17,
+          data: { cast: 'any' },
           endColumn: 36,
           endLine: 1,
           line: 1,
@@ -2226,6 +2320,7 @@ const bs = (x <<= y) as any;
       errors: [
         {
           column: 11,
+          data: { cast: 'string[]' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -2243,6 +2338,7 @@ const bs = (x <<= y) as any;
       errors: [
         {
           column: 11,
+          data: { cast: 'string[]' },
           endColumn: 23,
           endLine: 1,
           line: 1,
@@ -2258,6 +2354,8 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'const x = [] as string[];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -2288,6 +2386,8 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'const x = <string[]>[];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -2318,6 +2418,8 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'print([5] as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -2343,6 +2445,8 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'new print([5] as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -2368,6 +2472,8 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'function b(x = [5] as Foo.Bar) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 16,
@@ -2397,6 +2503,8 @@ function foo() {
   throw [5] as Foo;
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -2426,6 +2534,8 @@ function foo() {
     },
     {
       code: 'print`${[5] as Foo}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -2451,6 +2561,8 @@ function foo() {
     },
     {
       code: 'const foo = () => [5] as Foo;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 19,
@@ -2476,6 +2588,8 @@ function foo() {
     },
     {
       code: 'new print(<Foo>[5]);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -2501,6 +2615,8 @@ function foo() {
     },
     {
       code: 'function b(x = <Foo.Bar>[5]) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 16,
@@ -2530,6 +2646,8 @@ function foo() {
   throw <Foo>[5];
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -2559,6 +2677,8 @@ function foo() {
     },
     {
       code: 'print`${<Foo>[5]}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 9,
@@ -2584,6 +2704,8 @@ function foo() {
     },
     {
       code: 'const foo = <Foo>[5];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,

@@ -1,10 +1,13 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
+import { clearRealPathCache } from './create-program/shared';
+import { clearNativeBackendCaches } from './nativeParserRegistry';
 import {
   clearDefaultProjectMatchedFiles,
   clearProgramCache as clearProgramCacheOriginal,
 } from './parser';
 import { clearCandidateTSConfigRootDirs } from './parseSettings/candidateTSConfigRootDirs';
 import {
+  clearBackendFallbackWarning,
   clearTSConfigMatchCache,
   clearTSServerProjectService,
 } from './parseSettings/createParseSettings';
@@ -21,10 +24,13 @@ export function clearCaches(): void {
   clearCandidateTSConfigRootDirs();
   clearDefaultProjectMatchedFiles();
   clearProgramCacheOriginal();
+  clearRealPathCache();
   clearWatchCaches();
   clearTSConfigMatchCache();
   clearTSServerProjectService();
   clearGlobCache();
+  clearNativeBackendCaches();
+  clearBackendFallbackWarning();
 }
 
 // TODO - delete this in next major

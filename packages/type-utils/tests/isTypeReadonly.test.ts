@@ -15,6 +15,7 @@ describe(isTypeReadonly, () => {
           it.for([
             ['type Test = { readonly bar: string; };'],
             ['type Test = Readonly<{ bar: string; }>;'],
+            ['type Test = Partial<Readonly<{ bar: string; }>>;'],
           ] as const)(
             'handles fully readonly records: %s',
             ([code], { expect }) => {
@@ -326,6 +327,28 @@ describe(isTypeReadonly, () => {
             expect(code).toBeReadOnly(options);
           },
         );
+
+        it.for([
+          [
+            'function foo() {} foo.bar = function () {}; type Test = typeof foo;',
+          ],
+        ] as const)(
+          'treats methods assigned to functions as readonly: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('is not readonly', () => {
+        it.for([
+          ['function foo() {} foo.bar = 1; type Test = typeof foo;'],
+        ] as const)(
+          'treats properties assigned to functions as mutable: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
       });
     });
 
@@ -398,6 +421,25 @@ describe(isTypeReadonly, () => {
           'checks structure when type alias not in allow list: %s',
           ([code], { expect }) => {
             expect(code).not.toBeReadOnly(options);
+          },
+        );
+
+        it.for([
+          ['lib', { from: 'lib', name: 'MyMutableType' }],
+          [
+            'package',
+            { from: 'package', name: 'MyMutableType', package: 'some-package' },
+          ],
+          [
+            'another file',
+            { from: 'file', name: 'MyMutableType', path: 'other-file.ts' },
+          ],
+        ] as const)(
+          'checks structure when the type alias is not declared in the allowed %s',
+          ([, specifier], { expect }) => {
+            expect(
+              'type MyMutableType = { prop: string }; type Test = MyMutableType;',
+            ).not.toBeReadOnly({ allow: [specifier] });
           },
         );
       });

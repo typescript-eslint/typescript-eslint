@@ -35,3 +35,6 @@ void 0;
 
 declare const promise: Promise<number>;
 void promise;
+
+declare let x: number;
+() => void (x = 1);

@@ -26,8 +26,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-import { referenceContainsTypePredicate } from '../util/referenceContainsTypePredicate';
-import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
+import { isTypeOnlyReference } from '../util/isTypeOnlyReference';
 
 export type MessageIds =
   | 'removeUnusedImportDeclaration'
@@ -293,6 +292,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<
@@ -965,7 +965,9 @@ export default createRule<Options, MessageIds>({
 
         // If any used parameters occur after this parameter, do not report.
         return !posteriorParams.some(
-          v => v.references.length > 0 || v.eslintUsed,
+          v =>
+            v.eslintUsed ||
+            v.references.some(ref => !isTypeOnlyReference(v, ref)),
         );
       }
 
@@ -1206,10 +1208,8 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
-            const usedOnlyAsType = unusedVar.references.some(
-              ref =>
-                referenceContainsTypeQuery(ref.identifier) ||
-                referenceContainsTypePredicate(ref.identifier),
+            const usedOnlyAsType = unusedVar.references.some(ref =>
+              isTypeOnlyReference(unusedVar, ref),
             );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 

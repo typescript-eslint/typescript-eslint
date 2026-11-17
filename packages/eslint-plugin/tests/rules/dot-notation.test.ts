@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/dot-notation';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -15,6 +16,9 @@ function q(str: string): string {
 }
 
 ruleTester.run('dot-notation', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     //  baseRule
     'a.b;',
@@ -153,9 +157,10 @@ foo['key_baz'];
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },
@@ -169,11 +174,14 @@ type Foo = {
 declare const foo: Foo;
 foo['bar'];
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },
@@ -192,9 +200,10 @@ function f<T extends Foo>(x: T) {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },
@@ -212,6 +221,7 @@ x['priv_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"priv_prop"' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -240,6 +250,7 @@ x['pub_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"pub_prop"' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -412,6 +423,8 @@ a
   .SHOUT_CASE;
       `,
     },
+    // Verify multiple instances of error
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 getResource()
@@ -446,6 +459,7 @@ getResource()
   .catch(function () {});
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 foo
@@ -579,6 +593,7 @@ x['protected_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"protected_prop"' },
           endColumn: 19,
           endLine: 7,
           line: 7,
@@ -608,6 +623,7 @@ x['prop'] = 'hello';
       errors: [
         {
           column: 3,
+          data: { key: '"prop"' },
           endColumn: 9,
           endLine: 8,
           line: 8,
@@ -636,6 +652,7 @@ foo['key_baz'];
       errors: [
         {
           column: 5,
+          data: { key: '"key_baz"' },
           endColumn: 14,
           endLine: 6,
           line: 6,
@@ -666,6 +683,7 @@ function f<T extends Foo>(x: T) {
       errors: [
         {
           column: 5,
+          data: { key: '"extraKey"' },
           endColumn: 15,
           endLine: 10,
           line: 10,

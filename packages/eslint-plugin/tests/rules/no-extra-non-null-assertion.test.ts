@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-extra-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extra-non-null-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `

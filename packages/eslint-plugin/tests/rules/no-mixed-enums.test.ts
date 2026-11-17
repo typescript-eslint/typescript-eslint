@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-mixed-enums', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum Fruit {}
@@ -575,6 +578,8 @@ enum Foo {
         },
       ],
     },
+    // Verify for multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Foo {
@@ -604,6 +609,7 @@ enum Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Foo {

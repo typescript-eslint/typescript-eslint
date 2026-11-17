@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportAttribute > _error_ > number-value > Babel - Error`]
+BabelError
+  1 | import data from 'mod' with {
+> 2 |   type: 123,
+    |         ^ Only string literals are allowed as module attribute values. (2:8)
+  3 | };
+  4 |
+  

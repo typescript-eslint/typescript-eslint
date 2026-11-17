@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-confusing-void-expression', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '() => Math.random();',
     "console.log('foo');",
@@ -1156,8 +1159,210 @@ function foo(): void {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<unknown> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
+      output: null,
+    },
+    {
+      code: `
+const a = <T,>(): T => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const b = <T,>(): T | void => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
       output: `
-(): unknown => { console.log('foo'); };
+const b = <T,>(): T | void => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+const c = <T,>(): T | unknown => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const d = <T extends undefined>(): T => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 41,
+          endColumn: 59,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const e = <T extends unknown>(): T => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Thenable = { then: () => void };
+async (): Thenable => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const aa = async <T,>(): Promise<T> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const bb = async <T,>(): Promise<T | void> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 47,
+          endColumn: 65,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+const bb = async <T,>(): Promise<T | void> => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+const cc = async <T,>(): Promise<T | unknown> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 50,
+          endColumn: 68,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const dd = async <T extends undefined>(): Promise<T> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 75,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const ee = async <T extends unknown>(): Promise<T> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 55,
+          endColumn: 73,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<void> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
+      output: `
+async (): Promise<void> => { console.log('foo'); };
       `,
     },
     {
@@ -1217,10 +1422,7 @@ type Foo = unknown;
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-type Foo = unknown;
-(): Foo => { console.log(); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1260,11 +1462,7 @@ function test(): unknown {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-function test(): unknown {
-  console.log();
-}
-      `,
+      output: null,
     },
     {
       code: `

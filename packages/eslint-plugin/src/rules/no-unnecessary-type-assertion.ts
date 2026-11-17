@@ -17,9 +17,11 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isStartOfArrowFunctionBody,
-  isStartOfExpressionStatement,
+  isPropertyReadonlyInType,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
+  isTypeLiteralType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -30,7 +32,12 @@ export type Options = [
     typesToIgnore?: string[];
   },
 ];
-export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds =
+  | 'contextuallyInferredTypeArguments'
+  | 'contextuallyUnnecessary'
+  | 'unnecessaryAssertion';
+
+const MAX_TYPE_CONTAINS_DEPTH = 50;
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -44,6 +51,8 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
+      contextuallyInferredTypeArguments:
+        'The type arguments for this generic call may be inferred from the assertion. Specify them explicitly instead.',
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
       unnecessaryAssertion:
@@ -69,6 +78,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{}],
   create(context, [options]) {
     const services = getParserServices(context);
@@ -226,7 +236,8 @@ export default createRule<Options, MessageIds>({
       if (
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
-        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
+        isNumberToEnumAssertion(uncast, cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
@@ -275,13 +286,39 @@ export default createRule<Options, MessageIds>({
     }
 
     function isTypeLiteral(type: ts.Type): boolean {
-      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+      return isTypeLiteralType(type) || tsutils.isBooleanLiteralType(type);
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
       return tsutils
         .unionConstituents(type)
         .some(part => checker.getIndexInfosOfType(part).length > 0);
+    }
+
+    // `number` and a numeric enum are assignable to each other, so they count
+    // as mutually assignable even though the assertion changes the type:
+    // `values[+key as Color]` compiles where `values[+key]` does not.
+    function isNumberToEnumAssertion(uncast: ts.Type, cast: ts.Type): boolean {
+      return (
+        (hasEnumConstituent(cast) && hasPlainNumberConstituent(uncast)) ||
+        (hasEnumConstituent(uncast) && hasPlainNumberConstituent(cast))
+      );
+    }
+
+    function hasEnumConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(part => isTypeFlagSet(part, ts.TypeFlags.EnumLike));
+    }
+
+    function hasPlainNumberConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(
+          part =>
+            isTypeFlagSet(part, ts.TypeFlags.NumberLike) &&
+            !isTypeFlagSet(part, ts.TypeFlags.EnumLike),
+        );
     }
 
     function getTypeArguments(type: ts.Type): readonly ts.Type[] {
@@ -291,12 +328,14 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    // Recursive generic types instantiate new types forever, so give up past a fixed depth (#12705).
     function typeContains(
       type: ts.Type,
       predicate: (type: ts.Type) => boolean,
       seen = new Set<ts.Type>(),
+      depth = 0,
     ): boolean {
-      if (seen.has(type)) {
+      if (seen.has(type) || depth > MAX_TYPE_CONTAINS_DEPTH) {
         return false;
       }
       seen.add(type);
@@ -304,7 +343,9 @@ export default createRule<Options, MessageIds>({
         return true;
       }
       if (type.isUnionOrIntersection()) {
-        return type.types.some(t => typeContains(t, predicate, seen));
+        return type.types.some(t =>
+          typeContains(t, predicate, seen, depth + 1),
+        );
       }
       const nestedTypes = [
         ...getTypeArguments(type),
@@ -315,22 +356,11 @@ export default createRule<Options, MessageIds>({
             ...sig.getParameters().map(p => checker.getTypeOfSymbol(p)),
           ]),
       ];
-      return nestedTypes.some(t => typeContains(t, predicate, seen));
+      return nestedTypes.some(t => typeContains(t, predicate, seen, depth + 1));
     }
 
     function containsAny(type: ts.Type): boolean {
-      try {
-        return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
-      } catch (error) {
-        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
-        if (
-          error instanceof RangeError &&
-          error.message === 'Maximum call stack size exceeded'
-        ) {
-          return false;
-        }
-        throw error;
-      }
+      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
@@ -375,13 +405,15 @@ export default createRule<Options, MessageIds>({
       if (uncastProps.length !== castProps.length) {
         return false;
       }
-      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
+      const castPropsByName = new Map(
+        castProps.map(p => [p.getEscapedName(), p]),
+      );
       return uncastProps.every(prop => {
-        const name = prop.getEscapedName();
+        const castProp = castPropsByName.get(prop.getEscapedName());
         return (
-          castPropNames.has(name) &&
-          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
-            tsutils.isPropertyReadonlyInType(cast, name, checker)
+          castProp != null &&
+          isPropertyReadonlyInType(uncast, prop, checker) ===
+            isPropertyReadonlyInType(cast, castProp, checker)
         );
       });
     }
@@ -509,6 +541,40 @@ export default createRule<Options, MessageIds>({
 
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    function getInnermostCall(
+      expression: TSESTree.Expression,
+    ): TSESTree.CallExpression | undefined {
+      switch (expression.type) {
+        case AST_NODE_TYPES.AwaitExpression:
+          return getInnermostCall(expression.argument);
+        case AST_NODE_TYPES.CallExpression:
+          return expression;
+        case AST_NODE_TYPES.ChainExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+          return getInnermostCall(expression.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return getInnermostCall(
+            nullThrows(
+              expression.expressions.at(-1),
+              'Expected SequenceExpression to have at least one expression',
+            ),
+          );
+        default:
+          return undefined;
+      }
+    }
+
+    function isGenericCallWithInferredTypeArguments(
+      expression: TSESTree.Expression,
+    ): boolean {
+      const call = getInnermostCall(expression);
+      return (
+        call != null &&
+        call.typeArguments == null &&
+        hasGenericCallSignature(services.getTypeAtLocation(call.callee))
+      );
     }
 
     function isArgumentToOverloadedFunction(
@@ -819,14 +885,16 @@ export default createRule<Options, MessageIds>({
             context.sourceCode.getTokenAfter(closingAngleBracket),
             NullThrowsReasons.MissingToken('operand', 'type assertion'),
           );
-          const breaksExpressionStatement =
-            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isStartOfExpressionStatement(node);
-          const breaksArrowFunctionBody =
-            firstOperandToken.value === '{' &&
-            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
-            breaksExpressionStatement || breaksArrowFunctionBody;
+            isStartOfExpressionStatementNeedingParentheses(
+              node,
+              firstOperandToken,
+            ) ||
+            isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            );
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
@@ -927,11 +995,18 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
-          context.report({
-            node,
-            messageId: 'unnecessaryAssertion',
-            fix: createAssertionFixer(node),
-          });
+          if (isGenericCallWithInferredTypeArguments(node.expression)) {
+            context.report({
+              node,
+              messageId: 'contextuallyInferredTypeArguments',
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'unnecessaryAssertion',
+              fix: createAssertionFixer(node),
+            });
+          }
           return;
         }
 

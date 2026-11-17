@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-enum-initializers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-enum-initializers', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum Direction {}
@@ -46,6 +49,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -54,6 +58,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -62,6 +67,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -73,6 +79,8 @@ enum Direction {
         },
       ],
     },
+    // Multiple values
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Direction {
@@ -90,6 +98,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -99,6 +108,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -108,6 +118,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -127,6 +138,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Down', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -136,6 +148,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: '2' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -145,6 +158,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: "'Down'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -157,6 +171,7 @@ enum Direction {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Direction {
@@ -174,6 +189,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Down', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -183,6 +199,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: '2' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -192,6 +209,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: "'Down'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -221,6 +239,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -230,6 +249,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -239,6 +259,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
