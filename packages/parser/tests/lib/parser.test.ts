@@ -2,7 +2,7 @@ import type { ParserOptions } from '@typescript-eslint/types';
 
 import * as scopeManager from '@typescript-eslint/scope-manager';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
-import { ScriptTarget } from 'typescript';
+import { JsxEmit, ScriptTarget } from 'typescript';
 
 import { parse, parseForESLint } from '../../src/parser.js';
 import { FIXTURES_DIR } from '../test-utils/test-utils.js';
@@ -254,6 +254,56 @@ describe('parser', () => {
         expect.objectContaining({
           lib: [lib],
         }),
+      );
+    },
+  );
+
+  it.for([
+    [null, 'jsx: react-jsx', { jsx: JsxEmit.ReactJSX }, undefined],
+    [null, 'jsx: react-jsxdev', { jsx: JsxEmit.ReactJSXDev }, undefined],
+    [undefined, 'jsx: react', { jsx: JsxEmit.React }, undefined],
+    [undefined, 'jsx: preserve', { jsx: JsxEmit.Preserve }, undefined],
+    [
+      'h',
+      'jsxFactory: h.createElement',
+      { jsxFactory: 'h.createElement' },
+      undefined,
+    ],
+    [
+      'Foo',
+      'jsx: react-jsx` and a provided `jsxPragma: Foo',
+      { jsx: JsxEmit.ReactJSX },
+      'Foo',
+    ],
+  ] as const)(
+    'calls analyze() with `jsxPragma: %s` when the compiler options have `%s`',
+    ([jsxPragma, , compilerOptions, providedJsxPragma], { expect }) => {
+      const code = 'const valid = true;';
+      const spy = vi.spyOn(scopeManager, 'analyze');
+      const config: ParserOptions = {
+        filePath: 'isolated-file.src.ts',
+        jsxPragma: providedJsxPragma,
+        project: 'tsconfig.json',
+        tsconfigRootDir: FIXTURES_DIR,
+      };
+
+      vi.spyOn(
+        typescriptESTree,
+        'parseAndGenerateServices',
+      ).mockReturnValueOnce({
+        ast: {},
+        services: {
+          program: {
+            getCompilerOptions: () => compilerOptions,
+          },
+        },
+      } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      parseForESLint(code, config);
+
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        expect.objectContaining({ jsxPragma }),
       );
     },
   );
