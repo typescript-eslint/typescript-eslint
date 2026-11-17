@@ -1,8 +1,9 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "types": ["node", "react"],
     "lib": ["esnext", "DOM"]
-  }
+  },
+  "include": ["file.ts", "react.tsx"]
 }

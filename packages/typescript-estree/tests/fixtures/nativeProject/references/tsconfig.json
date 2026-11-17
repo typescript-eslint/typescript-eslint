@@ -1,0 +1,4 @@
+{
+  "files": ["file.ts"],
+  "references": [{ "path": "../second" }]
+}

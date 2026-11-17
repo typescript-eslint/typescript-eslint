@@ -300,9 +300,62 @@ function setTimeout() {}
   setTimeout("alert('evil!')");
 }
     `,
+    `
+declare module 'my-timers-promises' {
+  export function setTimeout(ms: number): Promise<void>;
+}
+
+import { setTimeout } from 'my-timers-promises';
+
+switch (setTimeout(1000)) {
+}
+    `,
+    `
+function setTimeout(input: string) {}
+
+switch (setTimeout('')) {
+  case undefined:
+    setTimeout('');
+}
+    `,
   ],
 
   invalid: [
+    {
+      code: `
+switch (setTimeout('x = 1', 0)) {
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'noImpliedEvalError',
+        },
+      ],
+    },
+    {
+      code: `
+function setTimeout(input: string) {}
+
+setTimeout('');
+
+function foo() {
+  window.setTimeout('x = 1', 0);
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'noImpliedEvalError',
+        },
+      ],
+    },
     {
       code: `
 setTimeout('x = 1', 0);
