@@ -29,6 +29,12 @@ foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 foo.a !== null && foo.a !== undefined && foo.a.b;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
+// With ternaries
+foo == null ? undefined : foo.bar;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+foo != null ? foo.bar : undefined;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
 Correct
 
 foo?.a?.b?.c;
@@ -42,6 +48,8 @@ foo?.a?.b?.c?.d?.e;
 !foo?.bar?.baz?.();
 
 foo?.a != null;
+
+foo?.bar;
 
 Options: { "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true }
 
