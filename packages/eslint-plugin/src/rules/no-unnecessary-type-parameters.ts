@@ -313,50 +313,6 @@ function skipConstituentsUpward(node: TSESTree.Node): TSESTree.Node {
 
 type Polarity = 'input' | 'output-contravariant' | 'output-covariant' | 'root';
 
-function getParamPolarity(polarity: Polarity): Polarity {
-  switch (polarity) {
-    case 'output-covariant':
-      return 'output-contravariant';
-    case 'output-contravariant':
-      return 'output-covariant';
-    case 'input':
-    case 'root':
-      return 'input';
-  }
-}
-
-function getReturnPolarity(polarity: Polarity): Polarity {
-  return polarity === 'root' ? 'output-covariant' : polarity;
-}
-
-function isOutputPolarity(polarity: Polarity): boolean {
-  return polarity === 'output-covariant' || polarity === 'output-contravariant';
-}
-
-function hasModifier(node: ts.HasModifiers, kind: ts.SyntaxKind): boolean {
-  return (
-    ts.getModifiers(node)?.some(modifier => modifier.kind === kind) ?? false
-  );
-}
-
-function isPrivateMember(
-  member: ts.HasModifiers & {
-    readonly name: ts.BindingName | ts.PropertyName;
-  },
-): boolean {
-  return (
-    hasModifier(member, ts.SyntaxKind.PrivateKeyword) ||
-    ts.isPrivateIdentifier(member.name)
-  );
-}
-
-function isReadonlyMappedType(type: MappedType): boolean {
-  const { readonlyToken } = type.declaration;
-  return (
-    readonlyToken != null && readonlyToken.kind !== ts.SyntaxKind.MinusToken
-  );
-}
-
 /**
  * Count uses of type parameters in inferred return types.
  * We need to resolve and analyze the inferred return type of a function
@@ -370,107 +326,9 @@ function countTypeParameterUsage(
   const counts = new Map<ts.Identifier, number>();
 
   if (ts.isClassLike(node)) {
-    for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts, 'input');
-    }
-    const hasConstructorOverloads = node.members.some(
-      (member): member is ts.ConstructorDeclaration =>
-        ts.isConstructorDeclaration(member) && !member.body,
-    );
-    for (const member of node.members) {
-      if (ts.isConstructorDeclaration(member)) {
-        for (const parameter of member.parameters) {
-          if (!hasConstructorOverloads || !member.body) {
-            collectTypeParameterUsageCounts(
-              checker,
-              parameter,
-              counts,
-              'input',
-            );
-          }
-          if (
-            ts.isParameterPropertyDeclaration(parameter, member) &&
-            !isPrivateMember(parameter)
-          ) {
-            const isReadonly = hasModifier(
-              parameter,
-              ts.SyntaxKind.ReadonlyKeyword,
-            );
-            collectTypeParameterUsageCounts(
-              checker,
-              parameter,
-              counts,
-              'output-covariant',
-              !isReadonly,
-            );
-          }
-        }
-      } else if (ts.isIndexSignatureDeclaration(member)) {
-        collectTypeParameterUsageCounts(
-          checker,
-          member.type,
-          counts,
-          'output-covariant',
-          true,
-        );
-      } else if (
-        ts.isPropertyDeclaration(member) ||
-        ts.isMethodDeclaration(member) ||
-        ts.isGetAccessorDeclaration(member) ||
-        ts.isSetAccessorDeclaration(member)
-      ) {
-        if (hasModifier(member, ts.SyntaxKind.StaticKeyword)) {
-          continue;
-        }
-        if (isPrivateMember(member)) {
-          collectTypeParameterUsageCounts(checker, member, counts, 'input');
-        } else if (ts.isSetAccessorDeclaration(member)) {
-          collectTypeParameterUsageCounts(
-            checker,
-            member,
-            counts,
-            'output-contravariant',
-          );
-        } else if (ts.isPropertyDeclaration(member)) {
-          const isReadonly = hasModifier(member, ts.SyntaxKind.ReadonlyKeyword);
-          collectTypeParameterUsageCounts(
-            checker,
-            member,
-            counts,
-            'output-covariant',
-            !isReadonly,
-          );
-        } else if (ts.isMethodDeclaration(member)) {
-          const isOverloadImplementation =
-            member.body != null &&
-            node.members.some(
-              other =>
-                other !== member &&
-                ts.isMethodDeclaration(other) &&
-                !other.body &&
-                checker.getSymbolAtLocation(other.name) ===
-                  checker.getSymbolAtLocation(member.name),
-            );
-          if (!isOverloadImplementation) {
-            collectTypeParameterUsageCounts(
-              checker,
-              member,
-              counts,
-              'output-covariant',
-            );
-          }
-        } else {
-          collectTypeParameterUsageCounts(
-            checker,
-            member,
-            counts,
-            'output-covariant',
-          );
-        }
-      }
-    }
+    collectClassTypeParameterUsageCounts(checker, node, counts);
   } else {
-    collectTypeParameterUsageCounts(checker, node, counts, 'root');
+    collectTypeParameterUsageCounts(checker, node, counts, 'root', false);
   }
 
   return counts;
@@ -486,7 +344,7 @@ function collectTypeParameterUsageCounts(
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
   initialPolarity: Polarity,
-  initialAssumeMultipleUses = false,
+  initialAssumeMultipleUses: boolean,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -789,11 +647,42 @@ function collectTypeParameterUsageCounts(
       visitType(type, assumeMultipleUses, polarity);
     }
   }
+
+  function getParamPolarity(polarity: Polarity): Polarity {
+    switch (polarity) {
+      case 'output-covariant':
+        return 'output-contravariant';
+      case 'output-contravariant':
+        return 'output-covariant';
+      case 'input':
+      case 'root':
+        return 'input';
+    }
+  }
+
+  function getReturnPolarity(polarity: Polarity): Polarity {
+    return polarity === 'root' ? 'output-covariant' : polarity;
+  }
+
+  function isOutputPolarity(polarity: Polarity): boolean {
+    return (
+      polarity === 'output-covariant' || polarity === 'output-contravariant'
+    );
+  }
+
+  function isReadonlyMappedType(type: MappedType): boolean {
+    const readonlyToken = type
+      .getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isMappedTypeNode)?.readonlyToken;
+    return (
+      readonlyToken != null && readonlyToken.kind !== ts.SyntaxKind.MinusToken
+    );
+  }
 }
 
 interface MappedType extends ts.ObjectType {
   constraintType?: ts.Type;
-  declaration: ts.MappedTypeNode;
   templateType?: ts.Type;
   typeParameter: ts.Type;
   nameType?: ts.Type;
@@ -809,4 +698,145 @@ interface OperatorType extends ts.Type {
 
 function isOperatorType(type: ts.Type): type is OperatorType {
   return 'type' in type && !!type.type;
+}
+
+function collectClassTypeParameterUsageCounts(
+  checker: ts.TypeChecker,
+  node: ts.ClassLikeDeclaration & {
+    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>;
+  },
+  counts: Map<ts.Identifier, number>,
+): void {
+  for (const typeParameter of node.typeParameters) {
+    collectTypeParameterUsageCounts(
+      checker,
+      typeParameter,
+      counts,
+      'input',
+      false,
+    );
+  }
+  const hasConstructorOverloads = node.members.some(
+    (member): member is ts.ConstructorDeclaration =>
+      ts.isConstructorDeclaration(member) && !member.body,
+  );
+  for (const member of node.members) {
+    if (ts.isConstructorDeclaration(member)) {
+      for (const parameter of member.parameters) {
+        if (!hasConstructorOverloads || !member.body) {
+          collectTypeParameterUsageCounts(
+            checker,
+            parameter,
+            counts,
+            'input',
+            false,
+          );
+        }
+        if (
+          ts.isParameterPropertyDeclaration(parameter, member) &&
+          !isPrivateMember(parameter)
+        ) {
+          const isReadonly = hasModifier(
+            parameter,
+            ts.SyntaxKind.ReadonlyKeyword,
+          );
+          collectTypeParameterUsageCounts(
+            checker,
+            parameter,
+            counts,
+            'output-covariant',
+            !isReadonly,
+          );
+        }
+      }
+    } else if (ts.isIndexSignatureDeclaration(member)) {
+      collectTypeParameterUsageCounts(
+        checker,
+        member.type,
+        counts,
+        'output-covariant',
+        true,
+      );
+    } else if (
+      ts.isPropertyDeclaration(member) ||
+      ts.isMethodDeclaration(member) ||
+      ts.isGetAccessorDeclaration(member) ||
+      ts.isSetAccessorDeclaration(member)
+    ) {
+      if (hasModifier(member, ts.SyntaxKind.StaticKeyword)) {
+        continue;
+      }
+      if (isPrivateMember(member)) {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'input',
+          false,
+        );
+      } else if (ts.isSetAccessorDeclaration(member)) {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-contravariant',
+          false,
+        );
+      } else if (ts.isPropertyDeclaration(member)) {
+        const isReadonly = hasModifier(member, ts.SyntaxKind.ReadonlyKeyword);
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-covariant',
+          !isReadonly,
+        );
+      } else if (ts.isMethodDeclaration(member)) {
+        const isOverloadImplementation =
+          member.body != null &&
+          node.members.some(
+            other =>
+              other !== member &&
+              ts.isMethodDeclaration(other) &&
+              !other.body &&
+              checker.getSymbolAtLocation(other.name) ===
+                checker.getSymbolAtLocation(member.name),
+          );
+        if (!isOverloadImplementation) {
+          collectTypeParameterUsageCounts(
+            checker,
+            member,
+            counts,
+            'output-covariant',
+            false,
+          );
+        }
+      } else {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-covariant',
+          false,
+        );
+      }
+    }
+  }
+
+  function hasModifier(node: ts.HasModifiers, kind: ts.SyntaxKind): boolean {
+    return (
+      ts.getModifiers(node)?.some(modifier => modifier.kind === kind) ?? false
+    );
+  }
+
+  function isPrivateMember(
+    member: ts.HasModifiers & {
+      readonly name: ts.BindingName | ts.PropertyName;
+    },
+  ): boolean {
+    return (
+      hasModifier(member, ts.SyntaxKind.PrivateKeyword) ||
+      ts.isPrivateIdentifier(member.name)
+    );
+  }
 }
