@@ -2522,6 +2522,48 @@ export const x = _foo;
     },
     {
       code: `
+import { _foo, bar } from 'foo';
+_foo();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+        {
+          column: 16,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'bar',
+          },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'bar' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { _foo } from 'foo';
+_foo();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
 enum _Foo {
   A = 1,
 }

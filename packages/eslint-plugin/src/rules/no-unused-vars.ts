@@ -314,7 +314,12 @@ export default createRule<Options, MessageIds>({
         node?: TSESTree.Node;
       },
     ) => {
-      reportedUnusedVariables.add(unusedVar);
+      // A used name stays out of this set. Otherwise a mixed import like
+      // `import { _foo, bar }` is treated as fully unused and the suggestion
+      // deletes the used specifier too.
+      if (opts.messageId === 'unusedVar') {
+        reportedUnusedVariables.add(unusedVar);
+      }
 
       const writeReferences = unusedVar.references.filter(
         ref =>
