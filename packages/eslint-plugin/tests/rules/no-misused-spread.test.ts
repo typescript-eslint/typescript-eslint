@@ -292,6 +292,28 @@ const a = {
       `,
       options: [{ allow: ['A'] }],
     },
+    {
+      code: `
+interface User {
+  name: string;
+}
+declare const user: User;
+const chars = [...user.name];
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'User', properties: 'name' }] },
+      ],
+    },
+    {
+      code: `
+interface Box {
+  fn: () => void;
+}
+declare const box: Box;
+const copy = { ...box.fn };
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Box', properties: 'fn' }] }],
+    },
   ],
 
   invalid: [
@@ -2092,6 +2114,48 @@ const o = <div {...await promise} />;
           },
         },
       },
+    },
+    {
+      code: `
+interface User {
+  name: string;
+  other: string;
+}
+declare const user: User;
+const chars = [...user.other];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'noStringSpread',
+        },
+      ],
+      options: [
+        { allow: [{ from: 'file', name: 'User', properties: 'name' }] },
+      ],
+    },
+    {
+      code: `
+interface Box {
+  fn: () => void;
+  other: () => void;
+}
+declare const box: Box;
+const copy = { ...box.other };
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+      options: [{ allow: [{ from: 'file', name: 'Box', properties: 'fn' }] }],
     },
   ],
 });

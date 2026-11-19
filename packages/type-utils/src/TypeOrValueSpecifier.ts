@@ -6,6 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
+import { specifierPropertyMatches } from './typeOrValueSpecifiers/specifierPropertyMatches';
 import { specifierSourceMatches } from './typeOrValueSpecifiers/specifierSourceMatches';
 import { typeDeclaredInPackageDeclarationFile } from './typeOrValueSpecifiers/typeDeclaredInPackageDeclarationFile';
 
@@ -25,6 +26,9 @@ export interface FileSpecifier {
    * A specific file the types or values must be declared in.
    */
   path?: string;
+
+  /** Property name(s) to match on the matched type or value. */
+  properties?: string | string[];
 }
 
 /**
@@ -38,6 +42,9 @@ export interface LibSpecifier {
    * Type or value name(s) to match on.
    */
   name: string | string[];
+
+  /** Property name(s) to match on the matched type or value. */
+  properties?: string | string[];
 }
 
 /**
@@ -56,6 +63,9 @@ export interface PackageSpecifier {
    * Package name the type or value must be declared in.
    */
   package: string;
+
+  /** Property name(s) to match on the matched type or value. */
+  properties?: string | string[];
 }
 
 /**
@@ -96,6 +106,21 @@ export const typeOrValueSpecifiersSchema = {
           path: {
             type: 'string',
           },
+          properties: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
         },
         required: ['from', 'name'],
         type: 'object',
@@ -108,6 +133,21 @@ export const typeOrValueSpecifiersSchema = {
             type: 'string',
           },
           name: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
+          properties: {
             oneOf: [
               {
                 type: 'string',
@@ -151,6 +191,21 @@ export const typeOrValueSpecifiersSchema = {
           package: {
             type: 'string',
           },
+          properties: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
         },
         required: ['from', 'name', 'package'],
         type: 'object',
@@ -164,9 +219,16 @@ export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
+  propertyName?: string,
 ): boolean {
+  if (!specifierPropertyMatches(specifier, propertyName)) {
+    return false;
+  }
+
   if (tsutils.isUnionType(type)) {
-    return type.types.every(t => typeMatchesSpecifier(t, specifier, program));
+    return type.types.every(t =>
+      typeMatchesSpecifier(t, specifier, program, propertyName),
+    );
   }
 
   const wholeTypeMatches = ((): boolean => {
@@ -194,7 +256,9 @@ export function typeMatchesSpecifier(
     tsutils.isIntersectionType(type) &&
     tsutils
       .intersectionConstituents(type)
-      .some(part => typeMatchesSpecifier(part, specifier, program))
+      .some(part =>
+        typeMatchesSpecifier(part, specifier, program, propertyName),
+      )
   ) {
     return true;
   }
@@ -206,8 +270,11 @@ export const typeMatchesSomeSpecifier = (
   type: ts.Type,
   specifiers: TypeOrValueSpecifier[] = [],
   program: ts.Program,
+  propertyName?: string,
 ): boolean =>
-  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+  specifiers.some(specifier =>
+    typeMatchesSpecifier(type, specifier, program, propertyName),
+  );
 
 const getSpecifierNames = (specifierName: string | string[]): string[] => {
   return typeof specifierName === 'string' ? [specifierName] : specifierName;
@@ -234,7 +301,12 @@ export function valueMatchesSpecifier(
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
   type: ts.Type,
+  propertyName?: string,
 ): boolean {
+  if (!specifierPropertyMatches(specifier, propertyName)) {
+    return false;
+  }
+
   const staticName = getStaticName(node);
   if (!staticName) {
     return false;
@@ -271,7 +343,8 @@ export const valueMatchesSomeSpecifier = (
   specifiers: TypeOrValueSpecifier[] = [],
   program: ts.Program,
   type: ts.Type,
+  propertyName?: string,
 ): boolean =>
   specifiers.some(specifier =>
-    valueMatchesSpecifier(node, specifier, program, type),
+    valueMatchesSpecifier(node, specifier, program, type, propertyName),
   );

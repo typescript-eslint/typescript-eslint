@@ -19,6 +19,7 @@ import {
   isTypeFlagSet,
   isTypeNeverType,
   matchesTypeOrBaseType,
+  memberExpressionMatchesSomeSpecifier,
 } from '../util';
 
 type OptionTester = (
@@ -140,6 +141,18 @@ export default createRule<Options, MessageId>({
         }
 
         for (const expression of node.expressions) {
+          if (
+            memberExpressionMatchesSomeSpecifier(
+              expression,
+              allow,
+              context,
+              services,
+              { checkBaseTypes: true },
+            )
+          ) {
+            continue;
+          }
+
           const expressionType = getConstrainedTypeAtLocation(
             services,
             expression,

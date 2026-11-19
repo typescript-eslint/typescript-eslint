@@ -478,5 +478,54 @@ describe(isTypeReadonly, () => {
         });
       });
     });
+
+    describe('properties in allow specifier', () => {
+      const options: ReadonlynessOptions = {
+        allow: [
+          'UnrelatedStringSpecifier',
+          { from: 'file', name: 'Foo', properties: 'mutableProp' },
+          {
+            from: 'file',
+            name: 'MyAlias',
+            properties: ['mutableProp', 'mutableNested'],
+          },
+        ],
+      };
+
+      describe('is readonly', () => {
+        it.for([
+          [
+            'interface Foo { mutableProp: string; readonly ok: number }; type Test = Foo;',
+          ],
+          [
+            'interface Foo { readonly mutableProp: string[]; readonly ok: number }; type Test = Foo;',
+          ],
+          [
+            'type MyAlias = { mutableProp: string; readonly mutableNested: number[]; readonly ok: boolean }; type Test = MyAlias;',
+          ],
+        ] as const)(
+          'treats types whose only mutable properties are allowlisted as readonly: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('is not readonly', () => {
+        it.for([
+          [
+            'interface Foo { mutableProp: string; otherMutable: number }; type Test = Foo;',
+          ],
+          [
+            'type MyAlias = { mutableProp: string; otherMutable: number }; type Test = MyAlias;',
+          ],
+        ] as const)(
+          'still checks non-allowlisted properties on the same type: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+    });
   });
 });

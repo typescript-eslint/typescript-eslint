@@ -350,6 +350,18 @@ new Promise((resolve, reject) => reject(createError()));
         },
       ],
     },
+    {
+      code: `
+interface Errors {
+  bad: string;
+}
+declare const errors: Errors;
+Promise.reject(errors.bad);
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Errors', properties: 'bad' }] },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1578,6 +1590,28 @@ new Promise((resolve, reject) => reject(createError()));
           line: 3,
           messageId: 'rejectAnError',
         },
+      ],
+    },
+    {
+      code: `
+interface Errors {
+  bad: string;
+  other: string;
+}
+declare const errors: Errors;
+Promise.reject(errors.other);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'rejectAnError',
+        },
+      ],
+      options: [
+        { allow: [{ from: 'file', name: 'Errors', properties: 'bad' }] },
       ],
     },
   ],

@@ -743,6 +743,21 @@ function foo(arg: import('foo-lib').Foo) {}
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  mutableProp: string;
+  readonly ok: number;
+}
+
+function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo', properties: 'mutableProp' }],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1687,6 +1702,30 @@ foo<string[]>(arg => {});
         },
       ],
       name: 'type inference with mutable type',
+    },
+    {
+      code: `
+interface Foo {
+  mutableProp: string;
+  otherMutable: number;
+}
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo', properties: 'mutableProp' }],
+        },
+      ],
     },
   ],
 });

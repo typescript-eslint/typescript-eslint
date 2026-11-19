@@ -16,6 +16,7 @@ import {
   isPromiseLike,
   isReadonlyErrorLike,
   isStaticMemberAccessOfValue,
+  memberExpressionMatchesSomeSpecifier,
   skipChainExpression,
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
@@ -91,7 +92,15 @@ export default createRule<Options, MessageIds>({
       if (argument) {
         const type = services.getTypeAtLocation(argument);
 
-        if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
+        if (
+          typeMatchesSomeSpecifier(type, options.allow, services.program) ||
+          memberExpressionMatchesSomeSpecifier(
+            argument,
+            options.allow,
+            context,
+            services,
+          )
+        ) {
           return;
         }
 

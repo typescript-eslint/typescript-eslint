@@ -45,6 +45,7 @@ interface CustomMatchers<ActualType = unknown> {
 
   toMatchSpecifier(
     expectedTypeOrValueSpecifier: TypeOrValueSpecifier,
+    propertyName?: string,
   ): ActualType;
 
   toBeReadOnly(

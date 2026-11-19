@@ -262,6 +262,18 @@ function* foo(): Generator<number, void, Error> {
       `,
       options: [{ allowThrowingAny: false }],
     },
+    {
+      code: `
+interface Errors {
+  bad: string;
+}
+declare const errors: Errors;
+throw errors.bad;
+      `,
+      options: [
+        { allow: [{ from: 'file', name: 'Errors', properties: 'bad' }] },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1007,6 +1019,28 @@ async function foo() {
         },
       ],
       options: [{ allowThrowingAny: false }],
+    },
+    {
+      code: `
+interface Errors {
+  bad: string;
+  other: string;
+}
+declare const errors: Errors;
+throw errors.other;
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'object',
+        },
+      ],
+      options: [
+        { allow: [{ from: 'file', name: 'Errors', properties: 'bad' }] },
+      ],
     },
   ],
 });
