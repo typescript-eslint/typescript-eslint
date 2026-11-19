@@ -72,6 +72,7 @@ export type Lib =
   | 'es2022.intl'
   | 'es2022.object'
   | 'es2022.regexp'
+  | 'es2022.sharedmemory'
   | 'es2022.string'
   | 'es2023'
   | 'es2023.array'

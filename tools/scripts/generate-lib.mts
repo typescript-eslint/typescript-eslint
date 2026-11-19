@@ -50,6 +50,8 @@ for (const [lib] of tsLibMap) {
     libMap.set(`${lib}.full`, `lib.${lib}.full.d.ts`);
   }
 }
+// TS 5.7 folded es2022.sharedmemory into es2024.sharedmemory, but TS <5.7 (which we support) still accepts the name
+libMap.set('es2022.sharedmemory', 'lib.es2024.sharedmemory.d.ts');
 // the base lib used when the target is unknown
 libMap.set('lib', 'lib.d.ts');
 
