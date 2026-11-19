@@ -73,6 +73,7 @@ import { es2022_full } from './es2022.full';
 import { es2022_intl } from './es2022.intl';
 import { es2022_object } from './es2022.object';
 import { es2022_regexp } from './es2022.regexp';
+import { es2022_sharedmemory } from './es2022.sharedmemory';
 import { es2022_string } from './es2022.string';
 import { es2023 } from './es2023';
 import { es2023_array } from './es2023.array';
@@ -247,5 +248,6 @@ export const lib: ReadonlyMap<string, LibDefinition> = new Map<
   ['es2024.full', es2024_full],
   ['es2025.full', es2025_full],
   ['esnext.full', esnext_full],
+  ['es2022.sharedmemory', es2022_sharedmemory],
   ['lib', libBase],
 ]);
