@@ -1,18 +1,18 @@
+# Created by https://www.toptal.com/developers/gitignore/api/node
+# Edit at https://www.toptal.com/developers/gitignore?templates=node
+
+### Node ###
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
-# Website
-docs/packages/*/generated
-packages/website/.docusaurus
-packages/website/.cache-loader
-packages/website/build
-packages/website/data/recent-blog-posts.json
-packages/website/static/img/og
-packages/website/static/sandbox
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -25,11 +25,12 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+*.lcov
 
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
 # Bower dependency directory (https://bower.io/)
@@ -45,11 +46,26 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
 # Optional npm cache directory
 .npm
 
 # Optional eslint cache
 .eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
@@ -57,43 +73,72 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
-# dotenv environment variables file
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
 .env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
-# next.js build output
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
 .next
+out
 
-# Editor-specific metadata folders
-.vs
-
-# nodejs cpu profiles
-*.cpuprofile
-
-.DS_Store
-.idea
+# Nuxt.js build / generate output
+.nuxt
 dist
-*.tsbuildinfo
-.watchmanconfig
-.rollup.cache
 
-# Files copied as part of the build
-packages/types/src/generated/**/*.ts
+# Gatsby files
+.cache/
+# Comment in the public line in if your project uses Gatsby and not Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
 
-.nx/cache
-.nx/workspace-data
+# vuepress build output
+.vuepress/dist
 
-# Vitest type tests
-tsconfig*.vitest-temp.json
+# vuepress v2.x temp and cache directory
+.temp
 
-# Leave these AI agent files up to individual contributors for now
-.cursor/mcp.json
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
+# Docusaurus cache and generated files
+.docusaurus
 
-.claude/worktrees
-.worktrees
-.nx/polygraph
-.nx/self-healing
+# Serverless directories
+.serverless/
 
-.nx/migrate-runs
-.claude/settings.local.json
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+### Node Patch ###
+# Serverless Webpack directories
+.webpack/
+
+# Optional stylelint cache
+
+# SvelteKit build / generate output
+.svelte-kit
+
+# End of https://www.toptal.com/developers/gitignore/api/node
