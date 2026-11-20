@@ -2,7 +2,13 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isAssignee } from '../util';
+import {
+  createRule,
+  getTextWithParentheses,
+  isAssignee,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export default createRule({
   name: 'prefer-for-of',
@@ -13,6 +19,7 @@ export default createRule({
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       preferForOf:
         'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
@@ -126,8 +133,35 @@ export default createRule({
       });
     }
 
+    // Names declared or referenced anywhere in the file. A fix only uses a
+    // name outside this set, so it can't shadow or capture another variable.
+    let namesInFile: Set<string> | undefined;
+    // Fixes in one pass can't see each other's names, so each fix gets a new
+    // suffix. It only counts up, so a taken name is skipped once per file.
+    let nameSuffix = 0;
+
+    function getElementName(): string {
+      namesInFile ??= new Set(
+        nullThrows(
+          context.sourceCode.scopeManager,
+          'Missing required scope manager',
+        ).scopes.flatMap(scope => [
+          ...scope.variables.map(variable => variable.name),
+          ...scope.references.map(reference => reference.identifier.name),
+        ]),
+      );
+
+      let name: string;
+      do {
+        name = nameSuffix === 0 ? 'value' : `value${nameSuffix}`;
+        nameSuffix++;
+      } while (namesInFile.has(name));
+      return name;
+    }
+
     return {
-      'ForStatement:exit'(node: TSESTree.ForStatement): void {
+      // Outer loops are visited first so they get the lower suffix.
+      ForStatement(node: TSESTree.ForStatement): void {
         if (!isSingleVariableDeclaration(node.init)) {
           return;
         }
@@ -159,6 +193,39 @@ export default createRule({
           context.report({
             node,
             messageId: 'preferForOf',
+            *fix(fixer) {
+              // The fix deletes the index, so it can't be used in code the
+              // fix keeps: outside a `var` loop, or in the array expression.
+              if (
+                indexVar.references.some(
+                  reference =>
+                    !contains(node, reference.identifier) ||
+                    contains(arrayExpression, reference.identifier),
+                )
+              ) {
+                return;
+              }
+
+              const name = getElementName();
+              yield fixer.replaceTextRange(
+                [
+                  node.range[0],
+                  nullThrows(
+                    context.sourceCode.getTokenBefore(node.body),
+                    NullThrowsReasons.MissingToken(')', 'for loop'),
+                  ).range[1],
+                ],
+                `for (const ${name} of ${getTextWithParentheses(
+                  context.sourceCode,
+                  arrayExpression,
+                )})`,
+              );
+              for (const reference of indexVar.references) {
+                if (contains(node.body, reference.identifier)) {
+                  yield fixer.replaceText(reference.identifier.parent, name);
+                }
+              }
+            },
           });
         }
       },
