@@ -66,7 +66,8 @@
           "{projectRoot}/dist"
         ],
         "options": {
-          "cwd": "{projectRoot}"
+          "cwd": "{projectRoot}",
+          "args": []
         }
       },
       "lint": {
