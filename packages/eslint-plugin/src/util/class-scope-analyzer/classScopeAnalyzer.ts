@@ -278,7 +278,17 @@ abstract class ThisScope extends Visitor {
     thisContext: ThisScope['thisContext'];
     type: 'instance' | 'static';
   } | null {
-    switch (node.object.type) {
+    let object = node.object;
+    while (
+      object.type === AST_NODE_TYPES.TSAsExpression ||
+      object.type === AST_NODE_TYPES.TSNonNullExpression ||
+      object.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+      object.type === AST_NODE_TYPES.TSTypeAssertion
+    ) {
+      object = object.expression;
+    }
+
+    switch (object.type) {
       case AST_NODE_TYPES.ThisExpression: {
         if (this.thisContext == null) {
           return null;
@@ -290,13 +300,13 @@ abstract class ThisScope extends Visitor {
       }
 
       case AST_NODE_TYPES.Identifier: {
-        const thisContext = this.findClassScopeWithName(node.object.name);
+        const thisContext = this.findClassScopeWithName(object.name);
         if (thisContext != null) {
           return { thisContext, type: 'static' };
         }
 
         // the following code does some very rudimentary scope analysis to handle some trivial cases
-        const variable = this.findVariableInScope(node, node.object.name);
+        const variable = this.findVariableInScope(node, object.name);
         if (variable == null || variable.defs.length === 0) {
           return null;
         }

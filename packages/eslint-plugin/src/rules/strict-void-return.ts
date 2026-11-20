@@ -66,6 +66,7 @@ export default util.createRule<Options, MessageId>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
+      AccessorProperty: checkClassPropertyNode,
       ArrayExpression: (node): void => {
         for (const elemNode of node.elements) {
           if (
@@ -299,7 +300,7 @@ export default util.createRule<Options, MessageId>({
      * and the implemented interfaces (when the class implements an interface).
      */
     function checkClassPropertyNode(
-      propNode: TSESTree.PropertyDefinition,
+      propNode: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
       if (propNode.value == null) {
         return;

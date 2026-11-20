@@ -210,6 +210,33 @@ for (let i = 0; i < arr.length; i++) {
 }
     `,
     `
+for (let i = 0; i < arr.length; i++) {
+  ({ foo: arr[i] } = obj);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  ({ foo: arr[i] = 1 } = obj);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  [arr[i] = 1] = [];
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  for (arr[i] of xs) {
+  }
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  for (arr[i] in obj) {
+  }
+}
+    `,
+    `
 for (let i = 0; i < arr1?.length; i++) {
   const x = arr1[i] === arr2[i];
 }
@@ -578,6 +605,87 @@ for (let i = 0; i < arr.length; i++) {
           column: 1,
           endColumn: 2,
           endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  const x = arr[i] + 1;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  const x = { foo: arr[i] };
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  ({ [arr[i]]: x } = obj);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  [x = arr[i]] = [];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  for (const x of arr[i]) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
           line: 2,
           messageId: 'preferForOf',
         },

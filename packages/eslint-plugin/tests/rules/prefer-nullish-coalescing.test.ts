@@ -2635,6 +2635,28 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       output: null,
     },
     {
+      code: 'x !== undefined && x !== null ? x : y == z;',
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `x ?? y == z;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
       code: 'x !== null && x !== undefined ? x : y;',
       errors: [
         {

@@ -43,12 +43,30 @@ export function isAssignee(node: TSESTree.Node): boolean {
     return true;
   }
 
-  // ({ foo: a[i] }) = { foo: 0 }
+  // [a[i] = 0] = [], ({ foo: a[i] = 0 } = {}), etc.
+  if (
+    parent.type === AST_NODE_TYPES.AssignmentPattern &&
+    parent.left === node
+  ) {
+    return true;
+  }
+
+  // for (a[i] of b) {}, for (a[i] in b) {}
+  if (
+    (parent.type === AST_NODE_TYPES.ForInStatement ||
+      parent.type === AST_NODE_TYPES.ForOfStatement) &&
+    parent.left === node
+  ) {
+    return true;
+  }
+
+  // ({ foo: a[i] } = { foo: 0 }), and the invalid ({ foo: a[i] }) = { foo: 0 }
+  // that typescript-estree parses with an ObjectExpression on the left
   if (
     parent.type === AST_NODE_TYPES.Property &&
     parent.value === node &&
-    parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
-    isAssignee(parent.parent)
+    (parent.parent.type === AST_NODE_TYPES.ObjectPattern ||
+      isAssignee(parent.parent))
   ) {
     return true;
   }

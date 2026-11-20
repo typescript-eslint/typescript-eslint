@@ -446,6 +446,132 @@ document.querySelector('input')!.files = new FileList();
       ],
     },
     {
+      code: '({ a: x!.y } = obj);',
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: '({ a: x!.y = 1 } = obj);',
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: '[x!.y = 1] = [];',
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: `
+for (x!.y of xs) {
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: `
+for (x!.y in obj) {
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: '({ [x!.y]: a } = obj);',
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: '({ [x?.y]: a } = obj);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '[a = x!.y] = [];',
+      errors: [
+        {
+          column: 6,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: '[a = x?.y] = [];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+for (const a of x!.y) {
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: `
+for (const a of x?.y) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 hoge.files = document.querySelector('input')!.files;
       `,

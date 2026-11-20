@@ -139,49 +139,86 @@ export function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 }
 
 /**
+ * @returns Whether `name` at `location` refers to the given enum, so that it
+ * isn't out of scope or shadowed there.
+ */
+function enumNameResolvesAtLocation(
+  typeChecker: ts.TypeChecker,
+  enumDeclaration: ts.EnumDeclaration,
+  location: ts.Node,
+): boolean {
+  const enumSymbol = typeChecker.getSymbolAtLocation(enumDeclaration.name);
+  const symbolInScope = typeChecker
+    .getSymbolsInScope(location, ts.SymbolFlags.Value | ts.SymbolFlags.Alias)
+    .find(symbol => symbol.name === enumDeclaration.name.text);
+  if (enumSymbol == null || symbolInScope == null) {
+    return false;
+  }
+
+  let resolvedSymbol = typeChecker.getExportSymbolOfSymbol(symbolInScope);
+  if (tsutils.isSymbolFlagSet(resolvedSymbol, ts.SymbolFlags.Alias)) {
+    resolvedSymbol = typeChecker.getAliasedSymbol(resolvedSymbol);
+  }
+
+  return resolvedSymbol === enumSymbol;
+}
+
+/**
  * Returns the enum key that matches the given literal node, or null if none
- * match. For example:
+ * match or the enum's name can't be referenced at `location`. For example:
  * ```ts
  * enum Fruit {
  *   Apple = 'apple',
  *   Banana = 'banana',
  * }
  *
- * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'apple') --> 'Fruit.Apple'
- * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'banana') --> 'Fruit.Banana'
- * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'cherry') --> null
+ * getEnumKeyForLiteral(checker, [Fruit.Apple, Fruit.Banana], 'apple', location) --> 'Fruit.Apple'
+ * getEnumKeyForLiteral(checker, [Fruit.Apple, Fruit.Banana], 'banana', location) --> 'Fruit.Banana'
+ * getEnumKeyForLiteral(checker, [Fruit.Apple, Fruit.Banana], 'cherry', location) --> null
  * ```
  */
 export function getEnumKeyForLiteral(
+  typeChecker: ts.TypeChecker,
   enumLiterals: ts.LiteralType[],
   literal: unknown,
+  location: ts.Node,
 ): string | null {
   for (const enumLiteral of enumLiterals) {
-    if (enumLiteral.value === literal) {
-      const { symbol } = enumLiteral;
+    if (enumLiteral.value !== literal) {
+      continue;
+    }
 
-      const memberDeclaration = symbol.valueDeclaration as ts.EnumMember;
-      const enumDeclaration = memberDeclaration.parent;
+    const { symbol } = enumLiteral;
 
-      const memberNameIdentifier = memberDeclaration.name;
-      const enumName = enumDeclaration.name.text;
+    const memberDeclaration = symbol.valueDeclaration as ts.EnumMember;
+    const enumDeclaration = memberDeclaration.parent;
 
-      switch (memberNameIdentifier.kind) {
-        case ts.SyntaxKind.Identifier:
-          return `${enumName}.${memberNameIdentifier.text}`;
+    if (!enumNameResolvesAtLocation(typeChecker, enumDeclaration, location)) {
+      continue;
+    }
 
-        case ts.SyntaxKind.StringLiteral: {
-          const memberName = memberNameIdentifier.text.replaceAll("'", "\\'");
+    const memberNameIdentifier = memberDeclaration.name;
+    const enumName = enumDeclaration.name.text;
 
-          return `${enumName}['${memberName}']`;
-        }
+    switch (memberNameIdentifier.kind) {
+      case ts.SyntaxKind.Identifier:
+        return `${enumName}.${memberNameIdentifier.text}`;
 
-        case ts.SyntaxKind.ComputedPropertyName:
-          return `${enumName}[${memberNameIdentifier.expression.getText()}]`;
+      case ts.SyntaxKind.StringLiteral: {
+        const memberName = memberNameIdentifier.text
+          .replaceAll('\\', '\\\\')
+          .replaceAll("'", "\\'")
+          .replaceAll('\n', '\\n')
+          .replaceAll('\r', '\\r');
 
-        default:
-          break;
+        return `${enumName}['${memberName}']`;
       }
+
+      case ts.SyntaxKind.ComputedPropertyName:
+        return `${enumName}[${memberNameIdentifier.expression.getText()}]`;
+
+      default:
+        break;
     }
   }
 

@@ -53,8 +53,10 @@ export default createRule({
                   // Fruit.Apple === 'apple'; // Fruit.Apple === Fruit.Apple
                   // ```
                   const leftEnumKey = getEnumKeyForLiteral(
+                    typeChecker,
                     getEnumLiterals(leftType),
                     getStaticValue(node.right)?.value,
+                    parserServices.esTreeNodeToTSNodeMap.get(node.right),
                   );
 
                   if (leftEnumKey) {
@@ -68,8 +70,10 @@ export default createRule({
                   // 'apple' === Fruit.Apple; // Fruit.Apple === Fruit.Apple
                   // ```
                   const rightEnumKey = getEnumKeyForLiteral(
+                    typeChecker,
                     getEnumLiterals(rightType),
                     getStaticValue(node.left)?.value,
+                    parserServices.esTreeNodeToTSNodeMap.get(node.left),
                   );
 
                   if (rightEnumKey) {

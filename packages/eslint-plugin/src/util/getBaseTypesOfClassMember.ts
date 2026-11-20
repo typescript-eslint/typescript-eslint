@@ -10,7 +10,10 @@ import type * as ts from 'typescript';
  */
 export function* getBaseTypesOfClassMember(
   services: ParserServicesWithTypeInformation,
-  memberNode: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+  memberNode:
+    | TSESTree.AccessorProperty
+    | TSESTree.MethodDefinition
+    | TSESTree.PropertyDefinition,
 ): Generator<{
   baseType: ts.Type;
   baseMemberType: ts.Type;

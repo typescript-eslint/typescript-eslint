@@ -3077,6 +3077,79 @@ class Bar extends Foo {
     },
     {
       code: `
+class Foo {
+  cb = () => {};
+}
+class Bar extends Foo {
+  accessor cb = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          endColumn: 28,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
+declare class B {
+  f: () => void;
+}
+class A extends B {
+  accessor f = async () => {};
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 25,
+          endColumn: 27,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare class B {
+  f: () => void;
+}
+class A extends B {
+  accessor f =  () => void (async () => {})();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor cb: () => void = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 29,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
 const foo = () =>
   class {
     cb = () => {};
