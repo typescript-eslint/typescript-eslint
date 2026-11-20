@@ -1,10 +1,25 @@
 
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "ignoreAccessors": {
+        "description": "Whether to ignore getters and setters, which cannot be overloaded.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];
+type Options = [
+  {
+    /** Whether to ignore getters and setters, which cannot be overloaded. */
+    ignoreAccessors?: boolean;
+  },
+];
