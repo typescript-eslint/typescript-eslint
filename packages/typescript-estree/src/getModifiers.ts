@@ -26,6 +26,7 @@ export function getModifiers(
   return (
     // @ts-expect-error intentional fallback for older TS versions
     (node.modifiers as ts.Modifier[] | undefined)?.filter(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (m): m is ts.Modifier => !ts.isDecorator(m),
     )
   );

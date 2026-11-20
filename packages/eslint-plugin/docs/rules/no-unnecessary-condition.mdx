@@ -176,9 +176,14 @@ function isString(value: unknown): value is string {
 }
 
 declare const s: string;
+declare const n: number;
 
 // Unnecessary; s is always a string.
 if (isString(s)) {
+}
+
+// Unnecessary; n can never be a string.
+if (isString(n)) {
 }
 
 function assertIsString(value: unknown): asserts value is string {
@@ -188,6 +193,7 @@ function assertIsString(value: unknown): asserts value is string {
 }
 
 assertIsString(s); // Unnecessary; s is always a string.
+assertIsString(n); // Unnecessary; n can never be a string.
 ```
 
 Whether this option makes sense for your project may vary.
