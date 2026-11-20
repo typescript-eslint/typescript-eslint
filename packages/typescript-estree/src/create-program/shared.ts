@@ -17,13 +17,15 @@ export interface ASTAndDefiniteProgram {
 export type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
 
 /**
- * Default compiler options for program generation
+ * Default compiler options for program generation.
+ *
+ * These are passed as `optionsToExtend` to watch programs, so they override
+ * the user's tsconfig; don't add options here that change type information
+ * (such as `allowJs`, which would allow resolving imports of JS files).
  */
 const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   ...CORE_COMPILER_OPTIONS,
-  allowJs: true,
   allowNonTsExtensions: true,
-  checkJs: true,
 };
 
 export const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
