@@ -227,6 +227,16 @@ class Foo {
     `,
     `
 class Foo {
+  bar = [1].map(() => {
+    this.foo = 'bar';
+  });
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
   constructor(public foo: string) {
     ((foo: string) => {
       this.foo = foo;

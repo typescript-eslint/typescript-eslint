@@ -74,10 +74,6 @@ class Foo {
   }
 }
     `,
-    `
-declare const x: any;
-const foo: () => string = (): any => x;
-    `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
 function foo(): any[] {
@@ -897,6 +893,22 @@ async function foo() {
           endColumn: 16,
           endLine: 8,
           line: 8,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+const foo: () => string = (): any => x;
+      `,
+      errors: [
+        {
+          column: 38,
+          data: { type: '`any`' },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
           messageId: 'unsafeReturn',
         },
       ],

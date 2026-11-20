@@ -352,6 +352,58 @@ async function fn(): Promise<string> {
 }
       `,
     },
+    {
+      code: noFormat`
+declare const a: string | null;
+
+function fn(): string {
+  return <string>
+    a;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 6,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+function fn(): string {
+  return a!;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const a: string | null;
+
+function fn(): string {
+  return <string>/* comment
+  */ a;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 7,
+          endLine: 6,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+function fn(): string {
+  return a!;
+}
+      `,
+    },
   ],
 });
 

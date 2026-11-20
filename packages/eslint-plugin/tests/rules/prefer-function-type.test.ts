@@ -326,6 +326,28 @@ type Foo<T> = (bar: T) => string;
     },
     {
       code: `
+interface Foo<Foo> {
+  (bar: Foo): string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo<Foo> = (bar: Foo) => string;
+      `,
+    },
+    {
+      code: `
 interface Foo<T> {
   (this: T): void;
 }

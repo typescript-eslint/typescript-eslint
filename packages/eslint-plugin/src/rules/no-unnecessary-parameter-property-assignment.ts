@@ -279,10 +279,13 @@ export default createRule({
         }
 
         const functionNode = findParentFunction(node);
+        // An arrow passed as an argument (`bar = list.map(() => ...)`) counts
+        // too, since it may run before the constructor body.
         if (
           functionNode &&
           !(
-            isArrowIIFE(functionNode) &&
+            functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+            functionNode.parent.type === AST_NODE_TYPES.CallExpression &&
             findParentPropertyDefinition(node)?.value === functionNode.parent
           )
         ) {

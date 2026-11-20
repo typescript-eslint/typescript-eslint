@@ -81,19 +81,21 @@ export default createRule({
       // so we have to use the contextual typing in these cases, i.e.
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
-      let functionType =
+      const isFunctionExpression =
         ts.isFunctionExpression(functionTSNode) ||
-        ts.isArrowFunction(functionTSNode)
-          ? getContextualType(checker, functionTSNode)
-          : services.getTypeAtLocation(functionNode);
+        ts.isArrowFunction(functionTSNode);
+      let functionType = isFunctionExpression
+        ? getContextualType(checker, functionTSNode)
+        : services.getTypeAtLocation(functionNode);
       functionType ??= services.getTypeAtLocation(functionNode);
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
         // with overloads, `callSignatures` doesn't include the implementation's own signature
-        const declaredSignature =
-          checker.getSignatureFromDeclaration(functionTSNode);
+        const declaredSignature = isFunctionExpression
+          ? undefined
+          : checker.getSignatureFromDeclaration(functionTSNode);
         for (const signature of declaredSignature
           ? [declaredSignature, ...callSignatures]
           : callSignatures) {

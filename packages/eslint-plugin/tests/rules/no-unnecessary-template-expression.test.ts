@@ -25,6 +25,7 @@ function foo(undefined: string) {
   return \`undefined: \${undefined}\`;
 }
     `,
+    'const string = `globalThis: ${globalThis}`;',
     `
 declare const string: 'a';
 \`\${string}b\`;

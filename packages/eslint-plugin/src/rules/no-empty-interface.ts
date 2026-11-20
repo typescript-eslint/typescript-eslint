@@ -91,9 +91,11 @@ export default createRule<Options, MessageIds>({
               )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
             );
           };
-          const scope = context.sourceCode.getScope(node);
+          const ownScope = context.sourceCode.getScope(node);
+          // generic interfaces create their own nested scope for their type parameters
+          const scope = node.typeParameters ? ownScope.upper : ownScope;
 
-          const mergedWithOtherDeclaration = scope.set
+          const mergedWithOtherDeclaration = scope?.set
             .get(node.id.name)
             ?.defs.some(
               def =>
@@ -108,7 +110,7 @@ export default createRule<Options, MessageIds>({
             node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
           const isInAmbientDeclaration =
-            scope.type === ScopeType.tsModule && scope.block.declare;
+            scope?.type === ScopeType.tsModule && scope.block.declare;
 
           const useAutoFix = !(isInAmbientDeclaration || cannotFix);
 

@@ -103,12 +103,20 @@ export default createRule({
 
         // Check the owner type of the `reduce` method.
         if (isArrayType(checker.getNonNullableType(calleeObjType))) {
+          // The fix keeps the expression, and moves the type annotation
+          // into the type arguments only if there are none yet.
+          const keptNodes = callee.parent.typeArguments
+            ? [secondArg.expression]
+            : [secondArg.expression, secondArg.typeAnnotation];
           const fixRemovesComments = context.sourceCode
             .getCommentsInside(secondArg)
             .some(
               comment =>
-                comment.range[0] < secondArg.expression.range[0] ||
-                comment.range[1] > secondArg.expression.range[1],
+                !keptNodes.some(
+                  kept =>
+                    comment.range[0] >= kept.range[0] &&
+                    comment.range[1] <= kept.range[1],
+                ),
             );
 
           context.report({

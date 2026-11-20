@@ -466,6 +466,25 @@ class Foo {
     {
       code: `
 class Foo {
+  readonly A = 1;
+  B = 2;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { raw: '2' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noMagic',
+        },
+      ],
+      options: [{ ignoreReadonlyClassProperties: true }],
+    },
+    {
+      code: `
+class Foo {
   static readonly D = 4;
 }
       `,

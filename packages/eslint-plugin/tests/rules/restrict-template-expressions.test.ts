@@ -967,5 +967,29 @@ const msg = \`arg = \${arg}\`;
       ],
       options: [{ allowArray: true }],
     },
+    {
+      code: `
+declare const arg: object;
+const msg = \`\${arg} \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { type: 'object' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidType',
+        },
+        {
+          column: 23,
+          data: { type: 'object' },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+    },
   ],
 });

@@ -147,10 +147,14 @@ export default createRule<Options, MessageIds>({
     function isMergeableInterface(
       node: TSESTree.TSInterfaceDeclaration,
     ): boolean {
+      const container =
+        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
+          ? node.parent.parent
+          : node.parent;
       if (
-        node.parent.type === AST_NODE_TYPES.TSModuleBlock &&
-        (node.parent.parent.kind === 'global' ||
-          node.parent.parent.id.type === AST_NODE_TYPES.Literal)
+        container.type === AST_NODE_TYPES.TSModuleBlock &&
+        (container.parent.kind === 'global' ||
+          container.parent.id.type === AST_NODE_TYPES.Literal)
       ) {
         return true;
       }

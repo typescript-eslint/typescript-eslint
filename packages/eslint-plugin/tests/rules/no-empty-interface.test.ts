@@ -223,6 +223,64 @@ declare global {
     },
     {
       code: `
+interface Foo<T> {
+  props: T;
+}
+
+interface Bar<T> extends Foo<T> {}
+
+interface Bar<T> {
+  other: T;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<T> {
+  props: T;
+}
+
+declare module 'bar' {
+  interface Bar<T> extends Foo<T> {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo<T> {
+  props: T;
+}
+
+declare module 'bar' {
+  type Bar<T> = Foo<T>
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 interface Foo {
   props: string;
 }

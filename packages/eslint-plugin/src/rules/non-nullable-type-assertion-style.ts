@@ -9,6 +9,7 @@ import {
   getOperatorPrecedence,
   getParserServices,
   isParenthesized,
+  isTokenOnSameLine,
   nullThrows,
   NullThrowsReasons,
   OperatorPrecedence,
@@ -154,8 +155,23 @@ export default createRule({
                   ),
                   NullThrowsReasons.MissingToken('>', 'type annotation'),
                 );
+                const tokenAfterAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(closingAngleBracket),
+                  NullThrowsReasons.MissingToken('token', '>'),
+                );
+                // A line break after `>` would move the expression to its own
+                // line, which changes behavior after `return`, `throw`, and
+                // `yield`, so the code between them is removed in that case.
                 yield fixer.replaceTextRange(
-                  [node.range[0], closingAngleBracket.range[1]],
+                  [
+                    node.range[0],
+                    isTokenOnSameLine(
+                      closingAngleBracket,
+                      tokenAfterAngleBracket,
+                    )
+                      ? closingAngleBracket.range[1]
+                      : tokenAfterAngleBracket.range[0],
+                  ],
                   needsParens ? '(' : '',
                 );
                 yield fixer.insertTextAfter(node, needsParens ? ')!' : '!');

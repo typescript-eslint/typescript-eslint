@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
@@ -335,6 +336,18 @@ export default createRule<Options, MessageIds>({
 
       // check all of the definitions
       for (const definition of variable.defs) {
+        // cases we don't care about in this rule
+        if (
+          [
+            DefinitionType.CatchClause,
+            DefinitionType.ImplicitGlobalVariable,
+            DefinitionType.ImportBinding,
+            DefinitionType.Parameter,
+          ].includes(definition.type)
+        ) {
+          continue;
+        }
+
         checkNode(definition.node);
       }
 

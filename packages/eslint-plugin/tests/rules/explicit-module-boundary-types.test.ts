@@ -856,6 +856,22 @@ export class Test {
     },
     'export let foo;',
     `
+let foo: unknown;
+function setFoo(value: unknown) {
+  foo = value;
+}
+setFoo(1);
+export { foo };
+    `,
+    `
+let foo: unknown;
+const setFoo = (value: unknown) => {
+  foo = value;
+};
+setFoo(1);
+export { foo };
+    `,
+    `
 let foo: unknown[] = [];
 foo = [foo];
 export { foo };

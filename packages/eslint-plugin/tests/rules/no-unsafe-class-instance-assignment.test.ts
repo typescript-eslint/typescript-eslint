@@ -2527,6 +2527,35 @@ const target: TargetOption = source;
     },
     {
       code: `
+class Plugin {
+  name = 'plugin';
+}
+type SourceOption = { name: string } | SourceOption[];
+type TargetOption = Plugin | TargetOption[];
+declare const source: SourceOption;
+const targets: TargetOption[] = [source, source];
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { type: 'Plugin' },
+          endColumn: 40,
+          endLine: 8,
+          line: 8,
+          messageId: 'nonInstance',
+        },
+        {
+          column: 42,
+          data: { type: 'Plugin' },
+          endColumn: 48,
+          endLine: 8,
+          line: 8,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
 class Point {
   constructor(
     public x: number,

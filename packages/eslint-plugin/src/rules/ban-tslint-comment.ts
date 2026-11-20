@@ -75,15 +75,18 @@ export default createRule({
                   ]);
                 }
 
-                if (!spacesBefore && !spacesAfter && textAfter) {
-                  // Keep the code on either side from joining into one token
-                  return fixer.replaceText(c, ' ');
+                if (!textAfter.trim()) {
+                  return fixer.removeRange([
+                    c.range[0] - spacesBefore,
+                    c.range[1],
+                  ]);
                 }
 
-                return fixer.removeRange([
-                  c.range[0] - spacesBefore,
-                  c.range[1],
-                ]);
+                // Keep the code on either side from joining into one token
+                return fixer.replaceTextRange(
+                  [c.range[0] - spacesBefore, c.range[1] + spacesAfter],
+                  ' ',
+                );
               },
             });
           }

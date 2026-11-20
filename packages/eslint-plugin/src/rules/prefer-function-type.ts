@@ -1,11 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { DefinitionType } from '@typescript-eslint/scope-manager';
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  ASTUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -59,12 +55,9 @@ export default createRule({
     function isMergedDeclaration(
       node: TSESTree.TSInterfaceDeclaration,
     ): boolean {
-      const variable = ASTUtils.findVariable(
-        context.sourceCode.getScope(node),
-        node.id,
-      );
+      const [variable] = context.sourceCode.getDeclaredVariables(node);
 
-      return !!variable?.defs.some(
+      return variable.defs.some(
         def =>
           def.node !== node &&
           (def.type === DefinitionType.Type ||

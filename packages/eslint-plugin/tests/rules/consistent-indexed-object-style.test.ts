@@ -504,6 +504,25 @@ declare module 'foo' {
     },
     {
       code: `
+declare module 'foo' {
+  export interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 declare namespace Bar {
   interface Foo {
     [key: string]: unknown;

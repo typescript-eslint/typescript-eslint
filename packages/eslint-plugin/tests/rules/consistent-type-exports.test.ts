@@ -653,5 +653,25 @@ export type { T as 'a-b' };
 export { v };
       `,
     },
+    {
+      code: `
+export { 'Type1' as T, value1 } from './consistent-type-exports';
+      `,
+      dependencyConstraints: { typescript: '5.6' },
+      errors: [
+        {
+          column: 1,
+          data: { exportNames: 'Type1' },
+          endColumn: 66,
+          endLine: 2,
+          line: 2,
+          messageId: 'singleExportIsType',
+        },
+      ],
+      output: `
+export type { 'Type1' as T } from './consistent-type-exports';
+export { value1 } from './consistent-type-exports';
+      `,
+    },
   ],
 });

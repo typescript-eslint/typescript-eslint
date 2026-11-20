@@ -336,7 +336,7 @@ function f() {
           messageId: 'commentDetected',
         },
       ],
-      output: 'const a =1;',
+      output: 'const a = 1;',
     },
     {
       code: noFormat`a;/* tslint:disable */ b;`,
@@ -351,6 +351,34 @@ function f() {
         },
       ],
       output: 'a; b;',
+    },
+    {
+      code: noFormat`typeof /* tslint:disable */x;`,
+      errors: [
+        {
+          column: 8,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: 'typeof x;',
+    },
+    {
+      code: noFormat`const c = a + /* tslint:disable */+b;`,
+      errors: [
+        {
+          column: 15,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: 'const c = a + +b;',
     },
   ],
 });

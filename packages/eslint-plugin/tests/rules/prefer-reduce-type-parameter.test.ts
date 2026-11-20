@@ -474,5 +474,40 @@ declare const arr: number[];
 arr.reduce<number[]>((a, s) => a.concat(s * 2), [/* a */]);
       `,
     },
+    {
+      code: `
+declare const arr: number[];
+arr.reduce((a, s) => a.concat(s * 2), [] as Array</* a */ number>);
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 66,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: `
+declare const arr: number[];
+arr.reduce<Array</* a */ number>>((a, s) => a.concat(s * 2), []);
+      `,
+    },
+    {
+      code: `
+declare const arr: number[];
+arr.reduce<number[]>((a, s) => a.concat(s * 2), [] as Array</* a */ number>);
+      `,
+      errors: [
+        {
+          column: 49,
+          endColumn: 76,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: null,
+    },
   ],
 });

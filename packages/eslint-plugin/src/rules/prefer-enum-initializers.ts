@@ -35,10 +35,9 @@ export default createRule<[], MessageIds>({
             member.id.type === AST_NODE_TYPES.Identifier
               ? member.id.name
               : member.id.value;
+          const idText = context.sourceCode.getText(member.id);
           const stringValue =
-            member.id.type === AST_NODE_TYPES.Identifier
-              ? `'${name}'`
-              : context.sourceCode.getText(member.id);
+            member.id.type === AST_NODE_TYPES.Identifier ? `'${name}'` : idText;
           context.report({
             node: member,
             messageId: 'defineInitializer',
@@ -48,19 +47,19 @@ export default createRule<[], MessageIds>({
             suggest: [
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: index },
+                data: { name: idText, suggested: index },
                 fix: (fixer): TSESLint.RuleFix =>
                   fixer.insertTextAfter(member.id, ` = ${index}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: index + 1 },
+                data: { name: idText, suggested: index + 1 },
                 fix: (fixer): TSESLint.RuleFix =>
                   fixer.insertTextAfter(member.id, ` = ${index + 1}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: stringValue },
+                data: { name: idText, suggested: stringValue },
                 fix: (fixer): TSESLint.RuleFix =>
                   fixer.insertTextAfter(member.id, ` = ${stringValue}`),
               },

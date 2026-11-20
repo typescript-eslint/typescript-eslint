@@ -288,7 +288,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
-              data: { name: 'Up-Left', suggested: '0' },
+              data: { name: "'Up-Left'", suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -297,7 +297,7 @@ enum Direction {
       `,
             },
             {
-              data: { name: 'Up-Left', suggested: '1' },
+              data: { name: "'Up-Left'", suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -306,7 +306,7 @@ enum Direction {
       `,
             },
             {
-              data: { name: 'Up-Left', suggested: "'Up-Left'" },
+              data: { name: "'Up-Left'", suggested: "'Up-Left'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -334,7 +334,7 @@ enum Direction {
           messageId: 'defineInitializer',
           suggestions: [
             {
-              data: { name: "Up's", suggested: '0' },
+              data: { name: '"Up\'s"', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -343,7 +343,7 @@ enum Direction {
       `,
             },
             {
-              data: { name: "Up's", suggested: '1' },
+              data: { name: '"Up\'s"', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -352,7 +352,7 @@ enum Direction {
       `,
             },
             {
-              data: { name: "Up's", suggested: '"Up\'s"' },
+              data: { name: '"Up\'s"', suggested: '"Up\'s"' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {

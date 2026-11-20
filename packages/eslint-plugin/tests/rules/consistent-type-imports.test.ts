@@ -359,10 +359,14 @@ export type Y = {
   get [key](): string;
 };
         `,
-        `
+        {
+          code: `
 import { A } from 'foo' with { type: 'json' };
 type T = A;
-        `,
+          `,
+          // import attributes require TS 5.3
+          dependencyConstraints: { typescript: '5.3' },
+        },
         `
 import A from 'foo';
 export = A;

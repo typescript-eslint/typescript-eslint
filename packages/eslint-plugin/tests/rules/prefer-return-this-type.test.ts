@@ -141,6 +141,12 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  next: this | Foo = this;
+  f = (): Foo => this.next;
+}
+    `,
   ],
   invalid: [
     {
