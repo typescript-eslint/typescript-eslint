@@ -1,7 +1,7 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -28,7 +28,7 @@ export default createRule({
       node: TSESTree.Identifier,
       unsafeKind: AST_NODE_TYPES,
     ): void {
-      const variable = ASTUtils.findVariable(scope, node.name);
+      const variable = scope.set.get(node.name);
       if (!variable) {
         return;
       }
@@ -64,8 +64,16 @@ export default createRule({
         }
       },
       TSInterfaceDeclaration(node): void {
+        const scope = context.sourceCode.getScope(node);
+        // a generic interface's scope holds only its type parameters,
+        // so the interface itself is declared in the scope above it
+        const currentScope = scope.block === node ? scope.upper : scope;
+        if (currentScope == null) {
+          return;
+        }
+
         checkUnsafeDeclaration(
-          context.sourceCode.getScope(node),
+          currentScope,
           node.id,
           AST_NODE_TYPES.ClassDeclaration,
         );

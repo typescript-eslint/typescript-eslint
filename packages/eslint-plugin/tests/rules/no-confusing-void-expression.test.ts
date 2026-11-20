@@ -429,6 +429,20 @@ function f() {
       output: null,
     },
     {
+      // a top-level \`return\`, as in a CommonJS module
+      code: 'return console.log();',
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: '{ console.log(); return; }',
+    },
+    {
       code: noFormat`
 function f() {
   console.log('a')

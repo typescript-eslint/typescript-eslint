@@ -196,6 +196,56 @@ declare function foo(): void;
     },
     {
       code: noFormat`
+declare function foo(): void;
+function bar() {
+  return void // comment
+    foo();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { type: 'void' },
+          endColumn: 10,
+          endLine: 5,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function bar() {
+  return foo();
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+function bar() {
+  throw void /*
+  */ foo();
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { type: 'void' },
+          endColumn: 11,
+          endLine: 5,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function bar() {
+  throw foo();
+}
+      `,
+    },
+    {
+      code: noFormat`
 void function () {}();
       `,
       errors: [
@@ -349,6 +399,59 @@ void {};
       ],
       output: `
 ({});
+      `,
+    },
+    {
+      code: `
+void async function () {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+(async function () {});
+      `,
+    },
+    {
+      code: `
+declare const async: number;
+void async;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare const async: number;
+async;
+      `,
+    },
+    {
+      code: noFormat`
+void (function () {});
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+(function () {});
       `,
     },
     {

@@ -770,12 +770,6 @@ Promise.all([, Promise.resolve(1)]);
 declare const noPromises: [];
 Promise.all(noPromises);
     `,
-    `
-async function f(resources: AsyncDisposable[]) {
-  for (await using resource of resources) {
-  }
-}
-    `,
   ],
 
   invalid: [

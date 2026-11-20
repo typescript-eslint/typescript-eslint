@@ -152,7 +152,14 @@ export default createRule<Options, MessageIds>({
         scope.upper;
         scope = scope.upper
       ) {
-        if (scope.set.has(name)) {
+        // `declare global { interface Array<T> {} }` augments the global type
+        if (
+          scope.set.has(name) &&
+          !(
+            scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            scope.block.kind === 'global'
+          )
+        ) {
           return true;
         }
       }

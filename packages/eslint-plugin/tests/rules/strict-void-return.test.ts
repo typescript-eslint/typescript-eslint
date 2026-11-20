@@ -3078,7 +3078,7 @@ class Bar extends Foo {
     {
       code: `
 class Foo {
-  cb = () => {};
+  accessor cb = () => {};
 }
 class Bar extends Foo {
   accessor cb = Math.random;
@@ -3098,10 +3098,10 @@ class Bar extends Foo {
     },
     {
       code: `
-declare class B {
+interface B {
   f: () => void;
 }
-class A extends B {
+class A implements B {
   accessor f = async () => {};
 }
       `,
@@ -3118,10 +3118,10 @@ class A extends B {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-declare class B {
+interface B {
   f: () => void;
 }
-class A extends B {
+class A implements B {
   accessor f =  () => void (async () => {})();
 }
       `,

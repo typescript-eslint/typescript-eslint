@@ -123,6 +123,9 @@ export default createRule({
         );
         const addSemiColon =
           nextToken.type === AST_TOKEN_TYPES.Punctuator &&
+          // `static async *a()` becomes `static *a()`, which ASI handles
+          context.sourceCode.getFirstToken(nodeWithAsyncKeyword) ===
+            asyncToken &&
           (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
             isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
           needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);

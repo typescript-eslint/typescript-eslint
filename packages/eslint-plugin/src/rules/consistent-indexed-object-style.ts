@@ -159,12 +159,8 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
-      const variable = ASTUtils.findVariable(
-        context.sourceCode.getScope(node.id),
-        node.id.name,
-      );
-
-      return variable != null && variable.defs.length > 1;
+      const [variable] = context.sourceCode.getDeclaredVariables(node);
+      return variable.defs.length > 1;
     }
 
     return {

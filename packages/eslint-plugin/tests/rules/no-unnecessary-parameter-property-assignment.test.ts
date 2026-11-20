@@ -401,6 +401,50 @@ class Foo {
     {
       code: `
 class Foo {
+  bar = [1].map(function () {
+    this.foo = 'bar';
+  });
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar = [
+    () => {
+      this.foo = 'bar';
+    },
+  ];
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   constructor(public foo: string) {
     this.foo = foo;
   }

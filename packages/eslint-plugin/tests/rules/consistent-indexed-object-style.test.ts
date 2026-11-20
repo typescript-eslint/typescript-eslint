@@ -466,6 +466,26 @@ interface Foo {
     },
     {
       code: `
+interface Foo<Foo> {
+  [key: string]: number;
+}
+interface Foo<Foo> {
+  bar: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 declare global {
   interface Foo {
     [key: string]: unknown;

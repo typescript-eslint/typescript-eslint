@@ -3003,6 +3003,27 @@ const x = (a, b);
     },
     {
       code: `
+declare const a: number;
+declare const b: number;
+const x = ((a || b) as unknown as number).toFixed();
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: number;
+declare const b: number;
+const x = (a || b).toFixed();
+      `,
+    },
+    {
+      code: `
 declare function fn(param: number): void;
 fn(42 as unknown as number);
       `,

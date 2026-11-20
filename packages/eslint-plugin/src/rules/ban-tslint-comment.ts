@@ -82,10 +82,11 @@ export default createRule({
                   ]);
                 }
 
-                // Keep the code on either side from joining into one token
+                // Keep the code on either side from joining into one token, and
+                // keep a line break so that ASI (e.g. after `return`) is unchanged
                 return fixer.replaceTextRange(
                   [c.range[0] - spacesBefore, c.range[1] + spacesAfter],
-                  ' ',
+                  c.loc.start.line === c.loc.end.line ? ' ' : '\n',
                 );
               },
             });

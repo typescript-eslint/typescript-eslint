@@ -380,5 +380,29 @@ function f() {
       ],
       output: 'const c = a + +b;',
     },
+    {
+      code: noFormat`
+function f() {
+  return /* tslint:disable
+  */ x;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 5,
+          endLine: 4,
+          line: 3,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+function f() {
+  return
+x;
+}
+      `,
+    },
   ],
 });

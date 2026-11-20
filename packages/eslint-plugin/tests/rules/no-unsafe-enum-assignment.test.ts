@@ -4277,18 +4277,19 @@ const fruitConfig: { a: { b: { c: { d: { fruit: Fruit } } } } } = config;
       code: `
 enum Fruit {
   Apple,
+  Banana,
 }
 declare const condition: boolean;
 declare const numbers: number[];
-const fruits: Fruit[] = condition ? numbers : [, 1];
+const fruits: (Fruit | undefined)[] = condition ? numbers : [, 1];
       `,
       errors: [
         {
           column: 7,
           data: { enumNames: "'Fruit'" },
-          endColumn: 52,
-          endLine: 7,
-          line: 7,
+          endColumn: 66,
+          endLine: 8,
+          line: 8,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -4297,16 +4298,17 @@ const fruits: Fruit[] = condition ? numbers : [, 1];
       code: `
 enum Fruit {
   Apple,
+  Banana,
 }
-const fruits: Fruit[] = [, 1];
+const fruits: (Fruit | undefined)[] = [, 1];
       `,
       errors: [
         {
-          column: 28,
+          column: 42,
           data: { enumNames: "'Fruit'" },
-          endColumn: 29,
-          endLine: 5,
-          line: 5,
+          endColumn: 43,
+          endLine: 6,
+          line: 6,
           messageId: 'unsafeEnumAssignment',
         },
       ],

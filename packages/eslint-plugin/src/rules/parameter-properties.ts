@@ -227,7 +227,6 @@ export default createRule<Options, MessageIds>({
               AST_NODE_TYPES.MemberExpression ||
             statement.expression.left.object.type !==
               AST_NODE_TYPES.ThisExpression ||
-            statement.expression.left.computed ||
             statement.expression.left.property.type !==
               AST_NODE_TYPES.Identifier ||
             statement.expression.right.type !== AST_NODE_TYPES.Identifier
@@ -236,8 +235,9 @@ export default createRule<Options, MessageIds>({
           }
 
           if (
+            !statement.expression.left.computed &&
             statement.expression.left.property.name ===
-            statement.expression.right.name
+              statement.expression.right.name
           ) {
             getNodesByName(
               statement.expression.right.name,

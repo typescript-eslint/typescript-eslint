@@ -74,6 +74,22 @@ class Foo {
   }
 }
     `,
+    `
+declare const x: any;
+class Foo {
+  get bar(): any {
+    return x;
+  }
+}
+    `,
+    `
+declare const x: any;
+class Foo {
+  get bar(): unknown {
+    return x;
+  }
+}
+    `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
 function foo(): any[] {
@@ -959,6 +975,26 @@ class Foo {
           column: 5,
           data: { type: '`any`' },
           endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+class Foo {
+  get bar(): string {
+    return x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { type: '`any`' },
+          endColumn: 14,
           endLine: 5,
           line: 5,
           messageId: 'unsafeReturn',

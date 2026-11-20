@@ -147,6 +147,19 @@ class Foo {
   f = (): Foo => this.next;
 }
     `,
+    `
+class Foo {
+  foo = 1;
+  f(): Foo {
+    return Math.random() > 0.5 ? this : new Sub();
+  }
+  g = (): Foo => (Math.random() > 0.5 ? this : new Sub());
+}
+
+class Sub extends Foo {
+  sub = 1;
+}
+    `,
   ],
   invalid: [
     {

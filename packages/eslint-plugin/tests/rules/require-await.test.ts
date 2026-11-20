@@ -1447,6 +1447,107 @@ class A {
       code: noFormat`
 class A {
   a = 0
+  static async *b() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Static async generator method 'b'" },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  static *b() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  static async [b]() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Static async method' },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  static [b]() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const dec: any;
+class A {
+  a = 0
+  @dec async *b() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: "Async generator method 'b'" },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const dec: any;
+class A {
+  a = 0
+  @dec *b() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
   async b() {
     return 1;
   }

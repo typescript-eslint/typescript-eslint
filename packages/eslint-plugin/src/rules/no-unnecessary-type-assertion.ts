@@ -18,6 +18,7 @@ import {
   getOperatorPrecedenceForNode,
   getParserServices,
   isNullableType,
+  isParenthesized,
   isPropertyReadonlyInType,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
@@ -946,11 +947,12 @@ export default createRule<Options, MessageIds>({
             const originalExpr = getOriginalExpression(node);
             let text = context.sourceCode.getText(originalExpr);
             if (
-              getOperatorPrecedenceForNode(originalExpr) <
+              !isParenthesized(node, context.sourceCode) &&
+              (getOperatorPrecedenceForNode(originalExpr) <
                 getOperatorPrecedenceForNode(node) ||
-              (originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
-                node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-                node.parent.body === node)
+                (originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
+                  node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+                  node.parent.body === node))
             ) {
               text = `(${text})`;
             }

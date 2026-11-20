@@ -1826,14 +1826,17 @@ declare const foo: Foo;
 declare const bazz: string;
 foo[bazz];
     `,
-    `
+    {
+      code: `
 class ContainsMethods {
   unbound(): void {}
 }
 declare const instance: ContainsMethods;
 
 (instance.unbound satisfies () => void)();
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class ContainsMethods {
   unbound(): void {}

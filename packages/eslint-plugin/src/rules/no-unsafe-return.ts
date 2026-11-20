@@ -92,7 +92,7 @@ export default createRule({
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
-        // with overloads, `callSignatures` doesn't include the implementation's own signature
+        // for overloads and accessors, `callSignatures` doesn't include the function's own signature
         const declaredSignature = isFunctionExpression
           ? undefined
           : checker.getSignatureFromDeclaration(functionTSNode);

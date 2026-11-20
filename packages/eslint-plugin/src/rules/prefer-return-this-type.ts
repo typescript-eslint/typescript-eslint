@@ -67,6 +67,29 @@ export default createRule({
       );
     }
 
+    function getReturnedClassKind(
+      type: ts.Type,
+      classType: ts.InterfaceType,
+    ): 'class' | 'this' | undefined {
+      const typeParts = unionConstituents(type);
+      if (typeParts.includes(classType)) {
+        return 'class';
+      }
+
+      if (!typeParts.some(part => part === classType.thisType)) {
+        return undefined;
+      }
+
+      // `this | Subclass` can't be narrowed to `this | ...`
+      return typeParts.some(
+        part =>
+          part !== classType.thisType &&
+          checker.isTypeAssignableTo(part, classType),
+      )
+        ? 'class'
+        : 'this';
+    }
+
     function isFunctionReturningThis(
       originalFunc: FunctionLike,
       originalClass: ClassLikeDeclaration,
@@ -86,12 +109,11 @@ export default createRule({
       ) as ts.InterfaceType;
 
       if (func.body.kind !== ts.SyntaxKind.Block) {
-        const typeParts = unionConstituents(
-          checker.getTypeAtLocation(func.body),
-        );
         return (
-          !typeParts.includes(classType) &&
-          typeParts.some(part => part === classType.thisType)
+          getReturnedClassKind(
+            checker.getTypeAtLocation(func.body),
+            classType,
+          ) === 'this'
         );
       }
 
@@ -110,13 +132,16 @@ export default createRule({
           return;
         }
 
-        const typeParts = unionConstituents(checker.getTypeAtLocation(expr));
-        if (typeParts.includes(classType)) {
+        const kind = getReturnedClassKind(
+          checker.getTypeAtLocation(expr),
+          classType,
+        );
+        if (kind === 'class') {
           hasReturnClassType = true;
           return true;
         }
 
-        if (typeParts.some(part => part === classType.thisType)) {
+        if (kind === 'this') {
           hasReturnThis = true;
         }
 

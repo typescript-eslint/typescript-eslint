@@ -694,6 +694,8 @@ function data<
     },
     {
       code: 'function data<const /* a */ T extends any = /* b */ string>() {}',
+      // `const` type parameters require TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 15,

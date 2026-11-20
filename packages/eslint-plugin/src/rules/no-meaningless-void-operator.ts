@@ -9,6 +9,7 @@ import {
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatement,
   isStartOfExpressionStatementNeedingParentheses,
+  isTokenOnSameLine,
   needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
@@ -76,21 +77,31 @@ export default createRule<
           );
           const voidRange: TSESTree.Range = [
             voidToken.range[0],
-            nullThrows(
-              context.sourceCode.getTokenAfter(voidToken, {
-                includeComments: true,
-              }),
-              NullThrowsReasons.MissingToken('argument', 'void expression'),
+            // Keeping a comment that spans a line break would end a
+            // `return`, `throw` or `yield` before the argument.
+            (isTokenOnSameLine(voidToken, argumentToken)
+              ? nullThrows(
+                  context.sourceCode.getTokenAfter(voidToken, {
+                    includeComments: true,
+                  }),
+                  NullThrowsReasons.MissingToken('argument', 'void expression'),
+                )
+              : argumentToken
             ).range[0],
           ];
 
-          // Without `void`, a leading `{`, `function` or `class` would start a
-          // block or declaration instead of an expression.
+          // Without `void`, a leading `{`, `function`, `async function` or
+          // `class` would start a block or declaration instead of an
+          // expression.
           if (
             isStartOfExpressionStatementNeedingParentheses(
               node,
               argumentToken,
             ) ||
+            // Not a call, so only fixed as a whole statement
+            (argumentToken.value === 'async' &&
+              context.sourceCode.getTokenAfter(argumentToken)?.value ===
+                'function') ||
             isStartOfArrowFunctionBodyNeedingParentheses(
               node,
               argumentToken,

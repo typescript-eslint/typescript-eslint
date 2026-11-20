@@ -455,6 +455,17 @@ let a: string[];
       `,
       options: [{ default: 'generic' }],
     },
+    {
+      code: `
+namespace N {
+  interface Array<T> {
+    value: T;
+  }
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2302,6 +2313,64 @@ interface FooInterface {
       ],
       options: [{ default: 'array-simple' }],
       output: ['let a: Array<number>[] = [];', 'let a: number[][] = [];'],
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
     },
   ],
 });

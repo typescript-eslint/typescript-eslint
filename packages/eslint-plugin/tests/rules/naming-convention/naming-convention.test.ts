@@ -1052,6 +1052,8 @@ abstract class Foo {
   notAbstract = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [
         { format: ['PascalCase'], selector: 'class' },
         { format: ['camelCase'], selector: 'default' },

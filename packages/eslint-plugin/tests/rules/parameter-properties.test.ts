@@ -1280,6 +1280,29 @@ class Foo {
     {
       code: `
 class Foo {
+  [key: string]: string;
+  name: string;
+  constructor(name: string, key: string) {
+    this[key] = key;
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { parameter: 'name' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferParameterProperty',
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
   name;
   constructor(name) {
     this.name = name;

@@ -181,6 +181,8 @@ declare const x: { 0: Disposable };
   using y = x[0];
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: [
         { array: true, object: true },
         { enforceForRenamedProperties: true },
@@ -193,6 +195,8 @@ async function f() {
   await using y = x[0];
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       options: [
         { array: true, object: true },
         { enforceForRenamedProperties: true },

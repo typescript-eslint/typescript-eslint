@@ -397,6 +397,8 @@ class foo {
   accessor bar: 'baz' = 'baz';
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 17,
