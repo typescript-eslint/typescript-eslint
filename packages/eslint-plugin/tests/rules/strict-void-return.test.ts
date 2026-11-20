@@ -963,6 +963,37 @@ beforeEach(() => {});
 beforeEach(async () => {});
       `,
     },
+    `
+class Foo {
+  cb = () => {};
+}
+class Bar extends Foo {
+  static cb = Math.random;
+}
+    `,
+    `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+  cb() {}
+  static cb() {
+    return 1;
+  }
+}
+    `,
+    {
+      code: `
+class Foo {
+  accessor cb = () => {};
+}
+class Bar extends Foo {
+  static accessor cb = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
   invalid: [
     {

@@ -73,8 +73,7 @@ export default createRule<Options, MessageIds>({
           }
         } else if (
           !allowDestructuring &&
-          (id.type === AST_NODE_TYPES.ArrayPattern ||
-            id.type === AST_NODE_TYPES.ObjectPattern)
+          id.type !== AST_NODE_TYPES.MemberExpression
         ) {
           context.report({
             node: id,

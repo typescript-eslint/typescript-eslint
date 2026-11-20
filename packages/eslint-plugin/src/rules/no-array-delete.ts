@@ -8,6 +8,8 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   isParenthesized,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
 } from '../util';
 
 export type MessageId = 'noArrayDelete' | 'useSplice';
@@ -89,7 +91,14 @@ export default createRule<[], MessageId>({
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
-                let suggestion = `${target}.splice(${key}, 1)`;
+                const semicolon =
+                  /^[([]/.test(target) &&
+                  isStartOfExpressionStatement(node) &&
+                  needsPrecedingSemicolon(context.sourceCode, node)
+                    ? ';'
+                    : '';
+
+                let suggestion = `${semicolon}${target}.splice(${key}, 1)`;
 
                 const comments = context.sourceCode.getCommentsInside(node);
 

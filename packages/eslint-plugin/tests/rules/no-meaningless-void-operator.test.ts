@@ -263,6 +263,49 @@ void function () {}();
       `,
     },
     {
+      code: noFormat`
+declare let x: number;
+x = 1
+void function () {}()
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;(function () {}())
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;({})
+      `,
+    },
+    {
       code: `
 const fn = () => void { method() {} }.method();
       `,

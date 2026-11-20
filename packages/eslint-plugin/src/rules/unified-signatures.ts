@@ -686,7 +686,7 @@ export default createRule<Options, MessageIds>({
         }
       },
       TSAbstractMethodDefinition(node): void {
-        if (!isGetterOrSetter(node)) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },

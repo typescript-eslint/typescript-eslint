@@ -188,6 +188,7 @@ export default interface Bar extends Foo {}
     },
     {
       code: `
+export {};
 interface Foo {
   props: string;
 }
@@ -200,13 +201,14 @@ declare global {
         {
           column: 13,
           endColumn: 16,
-          endLine: 7,
-          line: 7,
+          endLine: 8,
+          line: 8,
           messageId: 'noEmptyWithSuper',
           suggestions: [
             {
               messageId: 'noEmptyWithSuper',
               output: `
+export {};
 interface Foo {
   props: string;
 }

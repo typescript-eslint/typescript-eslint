@@ -492,6 +492,15 @@ class C {
   a(x: unknown) {}
 }
     `,
+    {
+      code: noFormat`
+abstract class C {
+  abstract f(x: string): void;
+  abstract f(x: number): void {}
+}
+      `,
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+    },
   ],
   invalid: [
     {

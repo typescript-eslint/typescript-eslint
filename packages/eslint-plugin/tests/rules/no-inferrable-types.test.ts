@@ -853,5 +853,28 @@ class Foo {
 }
       `,
     },
+    {
+      code: `
+class Foo {
+  a!: number = 5;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: 'number' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      output: `
+class Foo {
+  a = 5;
+}
+      `,
+    },
   ],
 });

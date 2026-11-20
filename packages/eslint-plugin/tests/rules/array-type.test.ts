@@ -443,6 +443,7 @@ declare module '2' {
     },
     {
       code: `
+export {};
 type Array<T> = { value: T };
 let a: Array<string>;
       `,
@@ -450,6 +451,7 @@ let a: Array<string>;
     },
     {
       code: `
+export {};
 type Array<T> = { value: T };
 let a: string[];
       `,
@@ -2313,6 +2315,56 @@ interface FooInterface {
       ],
       options: [{ default: 'array-simple' }],
       output: ['let a: Array<number>[] = [];', 'let a: number[][] = [];'],
+    },
+    {
+      code: `
+export {};
+const Array = 1;
+let a: string[];
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+const Array = 1;
+let a: Array<string>;
+      `,
+    },
+    {
+      code: `
+export {};
+function ReadonlyArray() {}
+let a: ReadonlyArray<string>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+function ReadonlyArray() {}
+let a: readonly string[];
+      `,
     },
     {
       code: `

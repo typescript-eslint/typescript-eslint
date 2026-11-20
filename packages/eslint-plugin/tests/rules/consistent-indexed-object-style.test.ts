@@ -759,6 +759,26 @@ type Foo<A, B> = Readonly<Record<A, B>>;
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
     },
+    {
+      code: `
+const Record = 1;
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+const Record = 1;
+type Foo = { [key: string]: any };
+      `,
+    },
 
     // Type literal with generic parameter
     {

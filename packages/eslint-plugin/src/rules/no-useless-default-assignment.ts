@@ -155,8 +155,6 @@ export default createRule<Options, MessageId>({
       ) {
         const paramIndex = parent.params.indexOf(node);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
-        // Methods map to `ts.MethodDeclaration`, which still has a contextual
-        // type in an object literal
         const contextualType = checker.getContextualType(
           tsFunc as ts.Expression,
         );

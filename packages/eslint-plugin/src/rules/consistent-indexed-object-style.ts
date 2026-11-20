@@ -9,6 +9,7 @@ import {
   getFixOrSuggest,
   isNodeEqual,
   isParenthesized,
+  isReferenceToGlobalFunction,
   nullThrows,
 } from '../util';
 
@@ -176,8 +177,7 @@ export default createRule<Options, MessageIds>({
 
           // Only the global `Record` utility type can become an index signature.
           if (
-            ASTUtils.findVariable(context.sourceCode.getScope(node), 'Record')
-              ?.defs.length
+            !isReferenceToGlobalFunction('Record', typeName, context.sourceCode)
           ) {
             return;
           }

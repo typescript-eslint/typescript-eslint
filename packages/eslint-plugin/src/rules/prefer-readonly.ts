@@ -146,7 +146,8 @@ export default createRule<Options, MessageIds>({
           );
         } else if (
           ts.isForOfStatement(parent) &&
-          !ts.isPropertyAccessExpression(current)
+          !ts.isPropertyAccessExpression(current) &&
+          !ts.isElementAccessExpression(current)
         ) {
           return parent.initializer === current;
         } else {

@@ -19,6 +19,10 @@ export function* getBaseTypesOfClassMember(
   baseMemberType: ts.Type;
   heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
 }> {
+  // The base types below are instance types, which don't have static members
+  if (memberNode.static) {
+    return;
+  }
   const memberTsNode = services.esTreeNodeToTSNodeMap.get(memberNode);
   if (memberTsNode.name == null) {
     return;

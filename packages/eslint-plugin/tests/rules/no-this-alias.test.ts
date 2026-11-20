@@ -281,5 +281,21 @@ class TestClass {
       ],
       options: [{ allowDestructuring: false }],
     },
+    {
+      code: `
+let a: unknown;
+(a as any) = this;
+      `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'thisDestructure',
+        },
+      ],
+      options: [{ allowDestructuring: false }],
+    },
   ],
 });

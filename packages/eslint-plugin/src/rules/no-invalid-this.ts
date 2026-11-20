@@ -54,10 +54,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      'AccessorProperty > *.value, PropertyDefinition > *.value'(): void {
+      ':matches(AccessorProperty, PropertyDefinition) > :matches(.typeAnnotation, .value)'(): void {
         thisIsValidStack.push(true);
       },
-      'AccessorProperty > *.value, PropertyDefinition > *.value:exit'(): void {
+      ':matches(AccessorProperty, PropertyDefinition) > :matches(.typeAnnotation, .value):exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {

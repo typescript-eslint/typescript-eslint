@@ -93,7 +93,7 @@ export default createRule<
           // Without `void`, a leading `{`, `function`, `async function` or
           // `class` would start a block or declaration instead of an
           // expression.
-          if (
+          const needsParentheses =
             isStartOfExpressionStatementNeedingParentheses(
               node,
               argumentToken,
@@ -106,22 +106,25 @@ export default createRule<
               node,
               argumentToken,
               context.sourceCode,
-            )
-          ) {
+            );
+
+          // Without `void`, a statement relying on ASI could continue the
+          // previous line, as in `a = b\n(c)`.
+          const prefix =
+            (needsParentheses || /^[-([`+/<]/.test(argumentToken.value)) &&
+            isStartOfExpressionStatement(node) &&
+            needsPrecedingSemicolon(context.sourceCode, node)
+              ? ';'
+              : '';
+
+          if (needsParentheses) {
             return [
-              fixer.replaceTextRange(voidRange, '('),
+              fixer.replaceTextRange(voidRange, `${prefix}(`),
               fixer.insertTextAfter(node, ')'),
             ];
           }
 
-          // Without `void`, a statement relying on ASI could continue the
-          // previous line, as in `a = b\n(c)`.
-          const needsSemicolon =
-            /^[-([`+/<]/.test(argumentToken.value) &&
-            isStartOfExpressionStatement(node) &&
-            needsPrecedingSemicolon(context.sourceCode, node);
-
-          return [fixer.replaceTextRange(voidRange, needsSemicolon ? ';' : '')];
+          return [fixer.replaceTextRange(voidRange, prefix)];
         };
 
         const inner = unwrapVoidArgument(node.argument);

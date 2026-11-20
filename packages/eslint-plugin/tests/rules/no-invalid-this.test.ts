@@ -438,6 +438,23 @@ class A {
       // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
+    `
+class A {
+  a = 1;
+  b: typeof this.a = 1;
+  declare c: typeof this;
+}
+    `,
+    {
+      code: `
+class A {
+  a = 1;
+  accessor b: typeof this.a = 1;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [

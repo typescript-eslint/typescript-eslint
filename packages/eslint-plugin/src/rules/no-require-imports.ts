@@ -83,7 +83,16 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       TSExternalModuleReference(node): void {
-        if (allowAsImport || isImportPathAllowed(node.expression.value)) {
+        if (isStringOrTemplateLiteral(node.expression)) {
+          const argValue = util.getStaticStringValue(node.expression);
+          if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
+            return;
+          }
+        }
+        if (
+          allowAsImport &&
+          node.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration
+        ) {
           return;
         }
         context.report({

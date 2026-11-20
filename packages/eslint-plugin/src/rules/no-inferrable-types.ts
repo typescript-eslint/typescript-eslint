@@ -226,8 +226,9 @@ export default createRule<Options, MessageIds>({
         },
         *fix(fixer) {
           if (
-            node.type === AST_NODE_TYPES.AssignmentPattern &&
-            node.left.optional
+            (node.type === AST_NODE_TYPES.AssignmentPattern &&
+              node.left.optional) ||
+            (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
             yield fixer.remove(
               nullThrows(
