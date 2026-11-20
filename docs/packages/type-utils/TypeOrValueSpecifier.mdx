@@ -45,7 +45,7 @@ interface FileSpecifier {
 Describes specific types or values declared in local files.
 
 `path` may be used to specify a file the types or values must be declared in.
-If omitted, all files will be matched.
+If omitted, all files will be matched, except for files from packages and TypeScript's built-in lib files.
 
 ### FileSpecifier Examples
 

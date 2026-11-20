@@ -3,6 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { parseForESLint } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as path from 'node:path';
+import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../src/index.js';
 
@@ -301,12 +302,47 @@ describe('TypeOrValueSpecifier', () => {
           path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
         },
       ],
+      // Without a path, types declared in packages are not matched.
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        { from: 'file', name: 'VersionlessType' },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched file specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
     );
+
+    it("doesn't match a lib type with a path-less file specifier when lib files are inside the current directory", () => {
+      // Mimics a project with TypeScript installed in its own node_modules,
+      // where TypeScript's lib files are inside the current directory.
+      const options: ts.CompilerOptions = { types: [] };
+      const host = ts.createCompilerHost(options);
+      const libDirectory = path.dirname(ts.getDefaultLibFilePath(options));
+      host.getCurrentDirectory = () => libDirectory;
+      const program = ts.createProgram({
+        host,
+        options,
+        rootNames: [path.join(__dirname, 'fixtures', 'file.ts')],
+      });
+      const checker = program.getTypeChecker();
+      const symbol = checker.resolveName(
+        'RegExp',
+        undefined,
+        ts.SymbolFlags.Type,
+        false,
+      );
+      assert.isDefined(symbol);
+
+      expect(
+        typeMatchesSpecifier(
+          checker.getDeclaredTypeOfSymbol(symbol),
+          { from: 'file', name: 'RegExp' },
+          program,
+        ),
+      ).toBe(false);
+    });
 
     it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],

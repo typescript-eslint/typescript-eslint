@@ -10,8 +10,12 @@ export function typeDeclaredInFile(
 ): boolean {
   if (relativePath == null) {
     const cwd = getCanonicalFileName(program.getCurrentDirectory());
-    return declarationFiles.some(declaration =>
-      getCanonicalFileName(declaration.fileName).startsWith(cwd),
+    return declarationFiles.some(
+      declaration =>
+        // Package and lib types are matched by `PackageSpecifier` and `LibSpecifier`
+        !program.isSourceFileFromExternalLibrary(declaration) &&
+        !program.isSourceFileDefaultLibrary(declaration) &&
+        getCanonicalFileName(declaration.fileName).startsWith(cwd),
     );
   }
   const absolutePath = getCanonicalFileName(
