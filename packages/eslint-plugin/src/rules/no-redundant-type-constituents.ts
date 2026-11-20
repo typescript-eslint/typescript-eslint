@@ -515,6 +515,17 @@ export default createRule({
         // group those literals by their primitive type,
         // then report each primitive type with all its literals
         for (const [typeNode, typeFlagsWithText] of overriddenTypeNodes) {
+          // A type such as an alias reference can't be removed from the union
+          // if only some of its constituents are overridden, e.g.
+          // `type B = 'a' | 1; type T = B | string;`
+          if (
+            typeNode.type !== AST_NODE_TYPES.TSUnionType &&
+            typeFlagsWithText.length <
+              getTypeNodeTypePartFlagsCached(typeNode).length
+          ) {
+            continue;
+          }
+
           const grouped = arrayGroupByToMap(
             typeFlagsWithText,
             pair => pair.primitiveTypeFlag,
