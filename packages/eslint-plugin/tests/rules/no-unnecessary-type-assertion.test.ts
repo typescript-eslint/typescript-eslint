@@ -207,6 +207,39 @@ function bar<T extends any>(value: T | undefined): T {
 }
     `,
     `
+function bar<T>(value: T): T & {} {
+  return value!;
+}
+    `,
+    `
+function bar<T extends string | undefined>(value: T) {
+  return value as NonNullable<T>;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  return value as NonNullable<T>;
+}
+    `,
+    `
+type WithA<T> = T & { a: 1 };
+function bar<T extends string>(value: T) {
+  return value as WithA<T>;
+}
+    `,
+    `
+type With<T, U> = T & U;
+function bar<T extends string, U>(value: T) {
+  return value as With<T, U>;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const nonNullable: {} = value!;
+  return nonNullable;
+}
+    `,
+    `
 declare function nonNull(s: string);
 let s: string | null = null;
 nonNull(s!);
@@ -2859,6 +2892,113 @@ interface Props {
   a: number;
 }
 const fn = (): Props => ({ a: 1 });
+      `,
+    },
+    {
+      code: `
+declare const value: number;
+const fn = (): number => value as unknown as number;
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const value: number;
+const fn = (): number => value;
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const props = { a: 1 } as unknown as Props;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const props = { a: 1 };
+      `,
+    },
+    {
+      code: `
+function bar<T extends string>(value: T) {
+  return value as T & {};
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T extends string>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const same: T = value!;
+  return same;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const same: T = value;
+  return same;
+}
+      `,
+    },
+    {
+      code: `
+declare const a: string;
+declare const b: number;
+const x = (a, b) as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 38,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: string;
+declare const b: number;
+const x = (a, b);
       `,
     },
     {

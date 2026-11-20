@@ -504,10 +504,8 @@ export default createRule<Options, MessageIds>({
       if (isTypeLiteralType(propertyType)) {
         const objectType = services.getTypeAtLocation(node.object);
 
-        const propertyName = propertyType.isStringLiteral()
-          ? propertyType.value
-          : // eslint-disable-next-line @typescript-eslint/no-base-to-string
-            String(propertyType.value);
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        const propertyName = String(propertyType.value);
 
         const deprecation = getPropertyDeprecation(objectType, propertyName);
         if (!deprecation) {

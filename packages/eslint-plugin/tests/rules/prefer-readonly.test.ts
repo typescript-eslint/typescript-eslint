@@ -180,6 +180,73 @@ class TestModifiableDeleted {
 }
     `,
     `
+class Test {
+  private x = 1;
+
+  public mutate() {
+    this.x++;
+  }
+}
+    `,
+    `
+class Test {
+  private x = {};
+
+  public mutate() {
+    ({ ...this.x } = {});
+  }
+}
+    `,
+    `
+class Test {
+  private x: number[] = [];
+
+  public mutate() {
+    [...this.x] = [];
+  }
+}
+    `,
+    `
+class Test {
+  private x = 1;
+
+  public mutate() {
+    for (this.x of [1, 2]) {
+    }
+  }
+}
+    `,
+    `
+class Test {
+  private x = '';
+
+  public mutate() {
+    for (this.x in {}) {
+    }
+  }
+}
+    `,
+    `
+class Test {
+  private x = 1;
+
+  public mutate() {
+    for ([this.x] of [[1]]) {
+    }
+  }
+}
+    `,
+    `
+class Test {
+  private x = 1;
+
+  public mutate() {
+    for ({ a: this.x } of [{ a: 1 }]) {
+    }
+  }
+}
+    `,
+    `
 class TestModifiableWithinConstructor {
   private correctlyModifiableWithinConstructor = 7;
 
@@ -771,6 +838,264 @@ class Test3 {
     `,
   ],
   invalid: [
+    {
+      code: `
+class Test {
+  private x = [1];
+
+  public method() {
+    for (const a of this.x) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = [1];
+
+  public method() {
+    for (const a of this.x) {
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 1;
+
+  public method() {
+    const y = this.x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 1;
+
+  public method() {
+    const y = this.x;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 1;
+
+  public method() {
+    let y;
+    y = this.x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 1;
+
+  public method() {
+    let y;
+    y = this.x;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 1;
+
+  public method() {
+    let y;
+    y = [this.x];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 1;
+
+  public method() {
+    let y;
+    y = [this.x];
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 1;
+
+  public method() {
+    return [this.x] === [];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 1;
+
+  public method() {
+    return [this.x] === [];
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private static x = 1;
+  private x = 2;
+
+  public method() {
+    this.x = 3;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private static readonly x = 1;
+  private x = 2;
+
+  public method() {
+    this.x = 3;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  public constructor(private x: number) {}
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            name: 'x',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  public constructor(private readonly x: number) {}
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = { y: 1 };
+
+  public mutate() {
+    for (this.x.y of [1, 2]) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = { y: 1 };
+
+  public mutate() {
+    for (this.x.y of [1, 2]) {
+    }
+  }
+}
+      `,
+    },
     {
       code: `
 class Test2 {

@@ -142,6 +142,27 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    // A type alias can't merge with other declarations the way an interface
+    // can, so converting a merged or augmenting interface would break it.
+    function isMergeableInterface(
+      node: TSESTree.TSInterfaceDeclaration,
+    ): boolean {
+      if (
+        node.parent.type === AST_NODE_TYPES.TSModuleBlock &&
+        (node.parent.parent.kind === 'global' ||
+          node.parent.parent.id.type === AST_NODE_TYPES.Literal)
+      ) {
+        return true;
+      }
+
+      const variable = ASTUtils.findVariable(
+        context.sourceCode.getScope(node.id),
+        node.id.name,
+      );
+
+      return variable != null && variable.defs.length > 1;
+    }
+
     return {
       ...(mode === 'index-signature' && {
         TSTypeReference(node): void {
@@ -150,6 +171,14 @@ export default createRule<Options, MessageIds>({
             return;
           }
           if (typeName.name !== 'Record') {
+            return;
+          }
+
+          // Only the global `Record` utility type can become an index signature.
+          if (
+            ASTUtils.findVariable(context.sourceCode.getScope(node), 'Record')
+              ?.defs.length
+          ) {
             return;
           }
 
@@ -202,10 +231,17 @@ export default createRule<Options, MessageIds>({
             `type ${node.id.name}${genericTypes} = `,
             ';',
             !node.extends.length &&
-              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration,
+              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+              !isMergeableInterface(node),
           );
         },
         TSMappedType(node): void {
+          // A key remapping clause (`as`) changes the keys, which a Record
+          // can't express.
+          if (node.nameType) {
+            return;
+          }
+
           const key = node.key;
           const scope = context.sourceCode.getScope(key);
 

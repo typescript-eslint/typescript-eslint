@@ -367,8 +367,203 @@ const fn: Fn = (value = 'default') => {
   return value;
 };
     `,
+    `
+declare const obj: { k: string; x?: string };
+const k = 'x';
+const { [k]: a = '' } = obj;
+    `,
+    `
+declare const obj: { a: number; [key: string]: number | undefined };
+declare const suffix: string;
+const { [\`a\${suffix}\`]: a = 1 } = obj;
+    `,
+    `
+declare function f(
+  callback: ((a: number) => void) | ((a: number, b: string) => void),
+): void;
+f((a, b = '') => {});
+    `,
+    `
+const x = 1;
+function f(a = x) {}
+    `,
+    `
+declare function useCallback<T>(callback: T): void;
+useCallback((value: number[] = [], other: string) => {});
+    `,
+    `
+class C {
+  constructor(private a: [number] = [1]) {}
+}
+    `,
+    {
+      code: `
+declare function f(callback: (a?: number) => void): void;
+f((a = 1) => {});
+      `,
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      options: [
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
+      ],
+    },
   ],
   invalid: [
+    {
+      code: `
+[1, 2].map(function (a = 0) {
+  return a;
+});
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+[1, 2].map(function (a) {
+  return a;
+});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const t: [{ a: number }, ...{ a: number }[]];
+const [, , { a = 1 }] = t;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'property' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const t: [{ a: number }, ...{ a: number }[]];
+const [, , { a }] = t;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, { a = 1 }: { a: number }) {}
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(this: void, { a }: { a: number }) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: { a: number };
+declare const y: { a: number };
+const { a = 1 } = Math.random() ? x : y;
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const x: { a: number };
+declare const y: { a: number };
+const { a } = Math.random() ? x : y;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b: number) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'parameter' },
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(a: number | undefined, b: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f({ a }: { a?: number } | undefined = undefined) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          data: { type: 'parameter' },
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f({ a }: { a?: number } | undefined) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     {
       code: `
 declare const mixed: [boolean, ...number[], string];

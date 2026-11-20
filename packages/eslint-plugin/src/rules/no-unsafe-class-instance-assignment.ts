@@ -122,7 +122,32 @@ export default createRule({
       return undefined;
     }
 
+    // Source and target pairs being compared, so recursive types don't recurse forever.
+    const pairsInProgress = new Map<ts.Type, Set<ts.Type>>();
+
     function findViolation(
+      source: ts.Type,
+      target: ts.Type,
+      shallow: boolean,
+    ): ts.Type | undefined {
+      let targetsInProgress = pairsInProgress.get(source);
+      if (targetsInProgress?.has(target)) {
+        return undefined;
+      }
+      if (!targetsInProgress) {
+        targetsInProgress = new Set();
+        pairsInProgress.set(source, targetsInProgress);
+      }
+
+      targetsInProgress.add(target);
+      try {
+        return findPairViolation(source, target, shallow);
+      } finally {
+        targetsInProgress.delete(target);
+      }
+    }
+
+    function findPairViolation(
       source: ts.Type,
       target: ts.Type,
       shallow: boolean,

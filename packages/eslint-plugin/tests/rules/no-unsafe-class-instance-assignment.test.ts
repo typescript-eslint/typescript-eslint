@@ -6,6 +6,98 @@ const ruleTester = createRuleTesterWithTypes();
 ruleTester.run('no-unsafe-class-instance-assignment', rule, {
   valid: [
     `
+class Plugin {
+  name = 'plugin';
+}
+type SourceOption = Plugin | SourceOption[];
+type TargetOption = Plugin | TargetOption[];
+declare const source: SourceOption;
+const target: TargetOption = source;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+interface Pair<A, B> {
+  a: A;
+  b: B;
+}
+interface Swapped<B, A> {
+  a: A;
+  b: B;
+}
+declare const pair: Pair<Point, { x: number; y: number }>;
+const swapped: Swapped<{ x: number; y: number }, Point> = pair;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare const object: { a: Point };
+const record: Record<string, Point> = object;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+interface Wrapper<T> {
+  value?: T;
+}
+declare const record: Record<string, Point>;
+const wrapper: Wrapper<Point> = record;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+function f<T>(t: T) {
+  const value: Point | T = t;
+}
+    `,
+    `
+class A {
+  a = 1;
+}
+class B {
+  a = 1;
+}
+declare const b: B;
+const value: A | B = b;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare const points: Point[];
+const morePoints: Point[] = [, ...points];
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare function takePoints(...points: Point[]): void;
+declare const points: Point[];
+takePoints(...points);
+    `,
+    `
 class Point {
   constructor(
     public x: number,
@@ -2408,6 +2500,119 @@ const beta = value as Beta;
           endColumn: 19,
           endLine: 6,
           line: 6,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Plugin {
+  name = 'plugin';
+}
+type SourceOption = { name: string } | SourceOption[];
+type TargetOption = Plugin | TargetOption[];
+declare const source: SourceOption;
+const target: TargetOption = source;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'Plugin' },
+          endColumn: 36,
+          endLine: 8,
+          line: 8,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare const condition: boolean;
+declare const plain: { x: number; y: number };
+const point: Point = condition ? new Point(1, 2) : plain;
+      `,
+      errors: [
+        {
+          column: 52,
+          data: { type: 'Point' },
+          endColumn: 57,
+          endLine: 10,
+          line: 10,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare const maybePoint: Point | undefined;
+declare const plain: { x: number; y: number };
+const point: Point = maybePoint ?? plain;
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'Point' },
+          endColumn: 41,
+          endLine: 10,
+          line: 10,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare let point: Point | undefined;
+declare const plain: { x: number; y: number };
+point &&= plain;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { type: 'Point' },
+          endColumn: 16,
+          endLine: 10,
+          line: 10,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare let point: Point;
+declare const plain: { x: number; y: number };
+point ||= plain;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { type: 'Point' },
+          endColumn: 16,
+          endLine: 10,
+          line: 10,
           messageId: 'nonInstance',
         },
       ],

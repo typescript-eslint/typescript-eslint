@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
@@ -282,7 +281,7 @@ export default createRule<Options, MessageIds>({
       if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-        (node.type === AST_NODE_TYPES.Property && node.method) ||
+        node.type === AST_NODE_TYPES.Property ||
         node.type === AST_NODE_TYPES.PropertyDefinition ||
         node.type === AST_NODE_TYPES.AccessorProperty
       ) {
@@ -336,18 +335,6 @@ export default createRule<Options, MessageIds>({
 
       // check all of the definitions
       for (const definition of variable.defs) {
-        // cases we don't care about in this rule
-        if (
-          [
-            DefinitionType.CatchClause,
-            DefinitionType.ImplicitGlobalVariable,
-            DefinitionType.ImportBinding,
-            DefinitionType.Parameter,
-          ].includes(definition.type)
-        ) {
-          continue;
-        }
-
         checkNode(definition.node);
       }
 
@@ -435,6 +422,10 @@ export default createRule<Options, MessageIds>({
     function checkEmptyBodyFunctionExpression(
       node: TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
+      if (isAllowedName(node.parent)) {
+        return;
+      }
+
       const isConstructor =
         node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.kind === 'constructor';
@@ -502,7 +493,7 @@ export default createRule<Options, MessageIds>({
       }
       checkedFunctions.add(node);
 
-      if (isAllowedName(node) || ancestorHasReturnType(node)) {
+      if (isAllowedName(node)) {
         return;
       }
 

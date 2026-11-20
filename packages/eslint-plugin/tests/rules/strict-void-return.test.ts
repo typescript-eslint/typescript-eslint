@@ -4135,5 +4135,83 @@ async function* cb() {
         },
       ],
     },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(): Promise<number>;
+takesCallback(async () => await getNumber());
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(): Promise<number>;
+takesCallback( () => void (async () => await getNumber())());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(cb?: () => Promise<number>): Promise<number>;
+takesCallback(async () => getNumber(async () => await getNumber()));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(cb?: () => Promise<number>): Promise<number>;
+takesCallback( () => void getNumber(async () => await getNumber()));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(value?: number): Promise<number>;
+takesCallback(async () => getNumber(await getNumber()));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(value?: number): Promise<number>;
+takesCallback( () => void (async () => getNumber(await getNumber()))());
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

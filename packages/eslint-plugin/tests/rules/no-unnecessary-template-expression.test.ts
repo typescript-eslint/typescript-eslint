@@ -16,6 +16,16 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
     'const string = `undefined: ${/* comment */ undefined}`;',
     'const string = `Infinity: ${Infinity /* comment */}`;',
     `
+function foo(Infinity: string) {
+  return \`Infinity: \${Infinity}\`;
+}
+    `,
+    `
+function foo(undefined: string) {
+  return \`undefined: \${undefined}\`;
+}
+    `,
+    `
 declare const string: 'a';
 \`\${string}b\`;
     `,

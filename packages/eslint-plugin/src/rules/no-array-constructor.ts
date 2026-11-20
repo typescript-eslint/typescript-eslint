@@ -6,7 +6,12 @@ import {
   isClosingParenToken,
 } from '@typescript-eslint/utils/ast-utils';
 
-import { createRule } from '../util';
+import {
+  createRule,
+  isReferenceToGlobalFunction,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
+} from '../util';
 
 export default createRule({
   name: 'no-array-constructor',
@@ -27,6 +32,23 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.sourceCode;
+
+    function hasCommentsOutsideArguments(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ): boolean {
+      const lastToken = sourceCode.getLastToken(node);
+      let token = sourceCode.getLastToken(node.callee);
+
+      while (token && token !== lastToken && !isOpeningParenToken(token)) {
+        token = sourceCode.getTokenAfter(token);
+      }
+
+      const argumentsStart = token?.range[0] ?? node.range[1];
+
+      return sourceCode
+        .getCommentsInside(node)
+        .some(comment => comment.range[1] <= argumentsStart);
+    }
 
     function getArgumentsText(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
@@ -60,16 +82,26 @@ export default createRule({
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeArguments
+        !node.typeArguments &&
+        isReferenceToGlobalFunction('Array', node.callee, sourceCode)
       ) {
         context.report({
           node,
           messageId: 'useLiteral',
-          fix(fixer) {
-            const argsText = getArgumentsText(node);
+          fix: hasCommentsOutsideArguments(node)
+            ? null
+            : fixer => {
+                const semicolon =
+                  isStartOfExpressionStatement(node) &&
+                  needsPrecedingSemicolon(sourceCode, node)
+                    ? ';'
+                    : '';
 
-            return fixer.replaceText(node, `[${argsText}]`);
-          },
+                return fixer.replaceText(
+                  node,
+                  `${semicolon}[${getArgumentsText(node)}]`,
+                );
+              },
         });
       }
     }

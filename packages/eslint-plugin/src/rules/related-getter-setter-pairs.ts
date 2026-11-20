@@ -4,7 +4,10 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getNameFromMember, getParserServices } from '../util';
 
-type Method = TSESTree.MethodDefinition | TSESTree.TSMethodSignature;
+type Method =
+  | TSESTree.MethodDefinition
+  | TSESTree.TSAbstractMethodDefinition
+  | TSESTree.TSMethodSignature;
 
 type GetMethod = {
   kind: 'get';
@@ -52,9 +55,11 @@ export default createRule({
     ): void {
       const methodPairs = methodPairsStack[methodPairsStack.length - 1];
       const { name } = getNameFromMember(member, context.sourceCode);
+      // static and instance members with the same name are separate properties
+      const key = `${member.static}:${name}`;
 
-      methodPairs.set(name, {
-        ...methodPairs.get(name),
+      methodPairs.set(key, {
+        ...methodPairs.get(key),
         [kind]: inner,
       });
     }
@@ -83,7 +88,7 @@ export default createRule({
 
         methodPairsStack.pop();
       },
-      ':matches(MethodDefinition, TSMethodSignature)[kind=get]'(
+      ':matches(MethodDefinition, TSAbstractMethodDefinition, TSMethodSignature)[kind=get]'(
         node: GetMethodRaw,
       ): void {
         const getter = getMethodFromNode(node);
@@ -92,7 +97,7 @@ export default createRule({
           addPropertyNode(node, getter, 'get');
         }
       },
-      ':matches(MethodDefinition, TSMethodSignature)[kind=set]'(
+      ':matches(MethodDefinition, TSAbstractMethodDefinition, TSMethodSignature)[kind=set]'(
         node: SetMethod,
       ): void {
         const setter = getMethodFromNode(node);

@@ -127,6 +127,19 @@ class Foo {
 }
       `,
     },
+    'let a: number;',
+    `
+class Foo {
+  a: number;
+}
+    `,
+    'const a: number = foo;',
+    'const a: number = foo();',
+    'const a: null = foo;',
+    'let a: number = null;',
+    'let a: RegExp = null;',
+    'const a: Foo = /a/;',
+    "const a: RegExp = new MyRegExp('a');",
   ],
 
   invalid: [

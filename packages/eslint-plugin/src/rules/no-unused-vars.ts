@@ -737,12 +737,31 @@ export default createRule<Options, MessageIds>({
         }
 
         case AST_NODE_TYPES.ImportNamespaceSpecifier: {
-          // namespace specifiers cannot be used with any other specifier -- so
-          // we can just remove entire import declaration
           const importDecl = def.node.parent;
+          if (
+            importDecl.specifiers.length === 1 ||
+            areAllSpecifiersUnused(importDecl)
+          ) {
+            return {
+              messageId: 'removeUnusedImportDeclaration',
+              fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
+            };
+          }
+
+          // a namespace specifier can only follow a default specifier, and in
+          // this branch we know that default specifier is used
+          //
+          //     import Used, * as Unused from 'module';
+          //                ^^^^^^^^^^^^^ remove this
           return {
-            messageId: 'removeUnusedImportDeclaration',
-            fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
+            messageId: 'removeUnusedVar',
+            fix: fixer => {
+              const comma = assertToken(
+                isCommaToken,
+                context.sourceCode.getTokenBefore(def.node),
+              );
+              return fixer.removeRange([comma.range[0], def.node.range[1]]);
+            },
           };
         }
       }

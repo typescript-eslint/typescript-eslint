@@ -354,6 +354,63 @@ class ClassName {
       `,
       options: [{ memberVariableDeclaration: true }],
     },
+    {
+      code: `
+const {
+  a: [b],
+}: { a: number[] } = { a: [1] };
+      `,
+      options: [{ arrayDestructuring: true }],
+    },
+    {
+      code: '({ a } = { a: 1 });',
+      options: [{ objectDestructuring: true }],
+    },
+    {
+      code: 'function foo(a: number = 1, [b]: [string], ...c: number[]) {}',
+      options: [{ parameter: true }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(
+    private a: string,
+    private b: string = 'b',
+  ) {}
+}
+      `,
+      options: [{ parameter: true }],
+    },
+    {
+      code: 'const foo = (a, b = 1) => {};',
+      options: [{ parameter: true }],
+    },
+    {
+      code: 'function foo(a, b = 1) {}',
+      options: [{ arrowParameter: true }],
+    },
+    {
+      code: `
+class Foo {
+  bar = () => {};
+}
+      `,
+      options: [
+        {
+          memberVariableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: string;
+  [key: string]: string;
+};
+      `,
+      options: [{ propertyDeclaration: true }],
+    },
   ],
   invalid: [
     // Array destructuring
@@ -1016,6 +1073,137 @@ class Foo {
           variableDeclarationIgnoreFunction: false,
         },
       ],
+    },
+    {
+      code: 'function foo(...[a]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ arrayDestructuring: true }],
+    },
+    {
+      code: 'const [a] = [1];',
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ arrayDestructuring: true, variableDeclaration: true }],
+    },
+    {
+      code: 'const { a } = { a: 1 };',
+      errors: [
+        {
+          column: 7,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ objectDestructuring: true, variableDeclaration: true }],
+    },
+    {
+      code: 'let foo;',
+      errors: [
+        {
+          column: 5,
+          data: { name: 'foo' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        { variableDeclaration: true, variableDeclarationIgnoreFunction: true },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'bar' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'expectedTypedefNamed',
+        },
+      ],
+      options: [
+        {
+          memberVariableDeclaration: true,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const key: string;
+class Foo {
+  [key] = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ memberVariableDeclaration: true }],
+    },
+    {
+      code: `
+declare const key: 'key';
+type Foo = {
+  [key];
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ propertyDeclaration: true }],
+    },
+    {
+      code: `
+class Foo {
+  #bar = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [{ memberVariableDeclaration: true }],
     },
   ],
 });

@@ -444,5 +444,30 @@ configValidator.addSchema(require('./a.json'));
       ],
       options: [{ allowAsImport: true }],
     },
+    {
+      code: 'require();',
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require(`./${name}/package.json`);',
+      errors: [
+        {
+          column: 13,
+          endColumn: 46,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+      options: [{ allow: ['/package\\.json$'] }],
+    },
   ],
 });

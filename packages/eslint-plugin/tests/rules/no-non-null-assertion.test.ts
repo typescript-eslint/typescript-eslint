@@ -467,5 +467,98 @@ hoge.files = document.querySelector('input')?.files;
         },
       ],
     },
+    {
+      code: noFormat`(x!).y;`,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: '(x)?.y;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`(x!)[y];`,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: '(x)?.[y];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`(x!)();`,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: '(x)?.();',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'x[y!];',
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'f(x!);',
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: undefined,
+        },
+      ],
+    },
+    {
+      code: 'new X!();',
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: undefined,
+        },
+      ],
+    },
   ],
 });

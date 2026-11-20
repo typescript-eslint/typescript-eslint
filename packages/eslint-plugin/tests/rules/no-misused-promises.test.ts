@@ -1339,6 +1339,45 @@ return console.log('foo');
     `
 return Promise.resolve();
     `,
+    {
+      code: `
+const a = {
+  [Symbol.dispose]() {},
+};
+const b: Disposable = a;
+      `,
+      // `Symbol.dispose` requires TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    {
+      code: `
+const a = {
+  async [Symbol.dispose]() {},
+};
+const b: { [Symbol.dispose](): Promise<void> } = a;
+      `,
+      // `Symbol.dispose` requires TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    `
+const obj: { f(): Promise<void> } = {
+  async f() {},
+};
+    `,
+    `
+function f(): () => Promise<void> {
+  return async () => {};
+}
+    `,
+    `
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  setThing(): void {}
+  async [Symbol.iterator]() {}
+}
+    `,
   ],
 
   invalid: [
@@ -3447,6 +3486,106 @@ const b: Disposable = a;
           endLine: 9,
           line: 9,
           messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const p: Promise<void>;
+if (p || true) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+declare const p: Promise<void>;
+if (p ?? true) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+declare const d: { [Symbol.dispose](): Promise<void> };
+using e: Disposable = d;
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+      errors: [
+        {
+          column: 23,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const obj: { predicate: (value: number) => Promise<boolean> };
+[1, 2, 3].filter(obj.predicate);
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+    },
+    {
+      code: `
+const obj: { 'set-thing'(): void } = {
+  async 'set-thing'() {},
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+interface MySyncInterface {
+  'set-thing'(): void;
+}
+class MyClass implements MySyncInterface {
+  async 'set-thing'(): Promise<void> {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { heritageTypeName: 'MySyncInterface' },
+          endColumn: 40,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },

@@ -7,6 +7,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isParenthesized,
 } from '../util';
 
 export type MessageId = 'noArrayDelete' | 'useSplice';
@@ -55,7 +56,10 @@ export default createRule<[], MessageId>({
       ): void {
         const { argument } = node;
 
-        if (argument.type !== AST_NODE_TYPES.MemberExpression) {
+        if (
+          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          !argument.computed
+        ) {
           return;
         }
 
@@ -78,7 +82,10 @@ export default createRule<[], MessageId>({
                   property.type === AST_NODE_TYPES.SequenceExpression;
 
                 const nodeMap = services.esTreeNodeToTSNodeMap;
-                const target = nodeMap.get(object).getText();
+                const rawTarget = nodeMap.get(object).getText();
+                const target = isParenthesized(object, context.sourceCode)
+                  ? `(${rawTarget})`
+                  : rawTarget;
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 

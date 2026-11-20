@@ -116,6 +116,13 @@ export default createRule<Options, MessageIds>({
         performCheck(node.left, node.right, node);
       },
       VariableDeclarator(node): void {
+        // `using` declarations can't be destructured
+        if (
+          node.parent.kind === 'using' ||
+          node.parent.kind === 'await using'
+        ) {
+          return;
+        }
         performCheck(node.id, node.init, node);
       },
     };

@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isUnionType } from 'ts-api-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
@@ -86,8 +86,13 @@ export default createRule({
       ) as ts.InterfaceType;
 
       if (func.body.kind !== ts.SyntaxKind.Block) {
-        const type = checker.getTypeAtLocation(func.body);
-        return classType.thisType === type;
+        const typeParts = unionConstituents(
+          checker.getTypeAtLocation(func.body),
+        );
+        return (
+          !typeParts.includes(classType) &&
+          typeParts.some(part => part === classType.thisType)
+        );
       }
 
       let hasReturnThis = false;
@@ -105,23 +110,14 @@ export default createRule({
           return;
         }
 
-        const type = checker.getTypeAtLocation(expr);
-        if (classType === type) {
+        const typeParts = unionConstituents(checker.getTypeAtLocation(expr));
+        if (typeParts.includes(classType)) {
           hasReturnClassType = true;
           return true;
         }
 
-        if (classType.thisType === type) {
+        if (typeParts.some(part => part === classType.thisType)) {
           hasReturnThis = true;
-          return;
-        }
-
-        if (
-          isUnionType(type) &&
-          type.types.some(typePart => typePart === classType)
-        ) {
-          hasReturnClassType = true;
-          return true;
         }
 
         return;

@@ -39,6 +39,13 @@ class C {
     `,
     `
 class C {
+  new(): C {
+    return new C();
+  }
+}
+    `,
+    `
+class C {
   constructor() {}
 }
     `,
@@ -73,6 +80,12 @@ interface foo {
     `
 interface foo {
   new <T>(): 'x';
+}
+    `,
+    `
+declare const constructor: unique symbol;
+interface I {
+  [constructor](): void;
 }
     `,
   ],

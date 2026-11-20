@@ -1377,6 +1377,32 @@ export function g(a: string, b: unknown) {
       `,
       options: [{ args: 'after-used' }],
     },
+    {
+      code: `
+try {
+} catch (_error) {}
+      `,
+      options: [
+        { caughtErrorsIgnorePattern: '^_', reportUsedIgnorePattern: true },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (_error) {
+  console.log(_error);
+}
+      `,
+      options: [{ caughtErrorsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+declare const values: number[];
+const [_first] = values;
+console.log(_first);
+      `,
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
   ],
 
   invalid: [
@@ -1403,6 +1429,32 @@ export class Foo {}
               messageId: 'removeUnusedImportDeclaration',
               output: `
 export class Foo {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used from 'foo';
+Used();
       `,
             },
           ],
@@ -3552,6 +3604,60 @@ export function g(a: string, b: unknown, c: string) {
         },
       ],
       options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+declare const obj: { a: number; b: number };
+const { a, b } = obj;
+console.log(b);
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { action: 'assigned a value', additional: '', varName: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreRestSiblings: true }],
+    },
+    {
+      code: `
+const unused = 1;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'unused',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreUsingDeclarations: true }],
+    },
+    {
+      code: `
+export function foo(unused: number) {}
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreUsingDeclarations: true }],
     },
   ],
 });

@@ -441,6 +441,20 @@ declare module '2' {
       code: "let z: Array = [3, '4'];",
       options: [{ default: 'array-simple' }],
     },
+    {
+      code: `
+type Array<T> = { value: T };
+let a: Array<string>;
+      `,
+      options: [{ default: 'array' }],
+    },
+    {
+      code: `
+type Array<T> = { value: T };
+let a: string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2160,6 +2174,135 @@ interface FooInterface {
       output:
         'type Conditional<T> = Array<T extends string ? string : number>;',
     },
+    {
+      code: "type T = ReadonlyArray<string>['length'];",
+      errors: [
+        {
+          column: 10,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: "type T = (readonly string[])['length'];",
+    },
+    {
+      code: 'type T = Readonly<string[]>[number];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = (readonly string[])[number];',
+    },
+    {
+      code: 'type T = keyof string[];',
+      errors: [
+        {
+          column: 16,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: 'type T = keyof Array<string>;',
+    },
+    {
+      code: 'let a: Array</* comment */ string> = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: null,
+    },
+    {
+      code: 'let a: string /* comment */[] = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: null,
+    },
+    {
+      code: 'type T = Foo[ReadonlyArray<string>];',
+      errors: [
+        {
+          column: 14,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = Foo[readonly string[]];',
+    },
+    {
+      code: 'let a: Array<Array<number>> = [];',
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'Array',
+            readonlyPrefix: '',
+            type: 'Array<number>',
+          },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArraySimple',
+        },
+        {
+          column: 14,
+          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArraySimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output: ['let a: Array<number>[] = [];', 'let a: number[][] = [];'],
+    },
   ],
 });
 
@@ -2202,6 +2345,16 @@ describe('array-type (nested)', () => {
       });
     }
 
+    testOutput(
+      'array-simple',
+      'let a: Array<Array<number>> = [];',
+      'let a: number[][] = [];',
+    );
+    testOutput(
+      'array',
+      'let a: Array<ReadonlyArray<string>> = [];',
+      'let a: (readonly string[])[] = [];',
+    );
     testOutput(
       'array',
       'let a: ({ foo: Array<Array<Bar> | Array<any>> })[] = []',

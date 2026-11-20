@@ -1826,6 +1826,43 @@ declare const foo: Foo;
 declare const bazz: string;
 foo[bazz];
     `,
+    `
+class ContainsMethods {
+  unbound(): void {}
+}
+declare const instance: ContainsMethods;
+
+(instance.unbound satisfies () => void)();
+    `,
+    `
+class ContainsMethods {
+  unbound(): void {}
+}
+declare const instance: ContainsMethods;
+
+(<() => void>instance.unbound)();
+    `,
+    `
+class ContainsMethods {
+  unbound(): void {}
+}
+declare const instance: ContainsMethods;
+
+const a = instance.unbound == null;
+const b = instance.unbound != null;
+const c = instance.unbound === undefined;
+const d = instance.unbound !== undefined;
+const e = instance.unbound instanceof Function;
+    `,
+    `
+class ContainsMethods {
+  m(): void {}
+  #m = () => {};
+  f() {
+    return this.#m;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -3304,6 +3341,103 @@ const f = collator.compare;
           endColumn: 27,
           endLine: 8,
           line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+interface Math {
+  custom(): void;
+}
+const f = Math.custom;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  unbound(): void {}
+}
+declare const instance: ContainsMethods;
+declare const condition: boolean;
+const f = condition && instance.unbound;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 40,
+          endLine: 7,
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  unbound(): void {}
+}
+declare const instance: ContainsMethods;
+class Other {
+  x: unknown;
+  f() {
+    this.x = instance.unbound;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Base {
+  m(): void {}
+}
+class Derived extends Base {
+  f(other: { x: unknown }) {
+    other.x = super.m;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Logger {
+  log(): void {}
+}
+function f({ log }: Logger = console) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

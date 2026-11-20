@@ -10,8 +10,8 @@ import {
   getMovedNodeCode,
   getParserServices,
   isNodeOfType,
+  isReferenceToGlobalFunction,
   isStringLike,
-  isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -27,6 +27,8 @@ interface InterpolationInfo {
   prevQuasi: TSESTree.TemplateElement;
   nextQuasi: TSESTree.TemplateElement;
 }
+
+const FIXABLE_IDENTIFIER_NAMES = new Set(['Infinity', 'NaN', 'undefined']);
 
 const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 
@@ -76,21 +78,11 @@ export default createRule<[], MessageId>({
       return node.type === AST_NODE_TYPES.TemplateLiteral;
     }
 
-    function isInfinityIdentifier(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.Identifier && node.name === 'Infinity'
-      );
-    }
-
-    function isNaNIdentifier(node: TSESTree.Node): boolean {
-      return node.type === AST_NODE_TYPES.Identifier && node.name === 'NaN';
-    }
-
     function isFixableIdentifier(node: TSESTree.Node): boolean {
       return (
-        isUndefinedIdentifier(node) ||
-        isInfinityIdentifier(node) ||
-        isNaNIdentifier(node)
+        node.type === AST_NODE_TYPES.Identifier &&
+        FIXABLE_IDENTIFIER_NAMES.has(node.name) &&
+        isReferenceToGlobalFunction(node.name, node, context.sourceCode)
       );
     }
 

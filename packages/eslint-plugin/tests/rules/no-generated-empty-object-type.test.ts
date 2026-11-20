@@ -89,6 +89,24 @@ type Keys<T> = T extends infer U ? keyof U : never;
 type ReadonlyMapped<T extends object> = { readonly [Key in Keys<T>]: number };
 type Referenced<T extends object> = ReadonlyMapped<T>;
     `,
+    `
+interface Box<T> {}
+type Alias = Box<string>;
+    `,
+    `
+class Box<T> {}
+type Alias = Box<string>;
+    `,
+    `
+type Stringable = Pick<number, 'toString'>;
+    `,
+    `
+type Unknown = Awaited<unknown>;
+    `,
+    `
+type Data = { a: string };
+type Intersected = { b: string } & (Omit<Data, 'a'> & Omit<Data, 'a'>);
+    `,
   ],
   invalid: [
     {
@@ -229,6 +247,21 @@ type Unexpected = Omit<Data, 'a'> & Omit<Data, 'a'>;
         {
           column: 19,
           endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'noGeneratedEmptyObjectType',
+        },
+      ],
+    },
+    {
+      code: `
+type Data = { a: string };
+type Unexpected = Omit<Data, 'a'> & (Omit<Data, 'a'> & Omit<Data, 'a'>);
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 72,
           endLine: 3,
           line: 3,
           messageId: 'noGeneratedEmptyObjectType',

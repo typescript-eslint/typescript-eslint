@@ -236,6 +236,10 @@ class Test {
   }
 }
     `,
+    {
+      code: 'const returnsNumber = () => 1;',
+      options: [{ allowAny: false }],
+    },
   ],
   invalid: [
     {
@@ -1298,6 +1302,56 @@ class Test {
 class Test {
   public override async method() {
     return Promise.resolve(1);
+  }
+}
+      `,
+    },
+    {
+      code: `
+const container = {
+  method: function () {
+    return Promise.resolve();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+const container = {
+  method: async function () {
+    return Promise.resolve();
+  },
+};
+      `,
+    },
+    {
+      code: `
+class Test {
+  static() {
+    return Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
+  async static() {
+    return Promise.resolve();
   }
 }
       `,

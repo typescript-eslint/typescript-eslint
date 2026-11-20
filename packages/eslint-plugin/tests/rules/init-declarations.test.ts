@@ -185,6 +185,11 @@ function foo() {
 
     // typescript-eslint
     {
+      code: 'export let foo: number;',
+      filename: 'file.d.ts',
+      options: ['always'],
+    },
+    {
       code: 'declare const foo: number;',
       options: ['always'],
     },
@@ -920,6 +925,33 @@ namespace myLib1 {
           endColumn: 14,
           endLine: 7,
           line: 7,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: 'let foo: number;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'foo' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
+        },
+      ],
+    },
+    {
+      code: 'export let foo: number;',
+      errors: [
+        {
+          column: 12,
+          data: { idName: 'foo' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'initialized',
         },
       ],

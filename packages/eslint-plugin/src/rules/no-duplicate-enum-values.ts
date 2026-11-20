@@ -51,8 +51,7 @@ export default createRule({
     ): node is TSESTree.TemplateLiteral {
       return (
         node.type === AST_NODE_TYPES.TemplateLiteral &&
-        node.expressions.length === 0 &&
-        node.quasis.length === 1
+        node.expressions.length === 0
       );
     }
 

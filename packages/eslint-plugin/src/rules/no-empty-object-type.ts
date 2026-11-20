@@ -104,10 +104,8 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const scope = context.sourceCode.getScope(node);
-
-          const mergedWithOtherDeclaration = scope.set
-            .get(node.id.name)
+          const mergedWithOtherDeclaration = context.sourceCode
+            .getDeclaredVariables(node)[0]
             ?.defs.some(
               def =>
                 def.node !== node &&

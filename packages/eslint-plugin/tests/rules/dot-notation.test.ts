@@ -20,6 +20,13 @@ ruleTester.run('dot-notation', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const x: { [key: string]: number; [key: symbol]: number };
+x['foo'];
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+    },
     //  baseRule
     'a.b;',
     'a.b.c;',
@@ -145,6 +152,28 @@ let x: X | undefined;
 console.log(x?.['priv_prop']);
       `,
       options: [{ allowProtectedClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  private __priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['__priv_prop']);
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.[\`priv_prop\`]);
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
     },
     {
       code: `
@@ -701,6 +730,156 @@ type Foo = {
 function f<T extends Foo>(x: T) {
   x.extraKey;
 }
+      `,
+    },
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+declare const x: X;
+x['priv_prop'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"priv_prop"' },
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowProtectedClassPropertyAccess: true }],
+      output: `
+class X {
+  private priv_prop = 123;
+}
+declare const x: X;
+x.priv_prop;
+      `,
+    },
+    {
+      code: `
+class X {
+  protected prot_prop = 123;
+}
+declare const x: X;
+x['prot_prop'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"prot_prop"' },
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowPrivateClassPropertyAccess: true }],
+      output: `
+class X {
+  protected prot_prop = 123;
+}
+declare const x: X;
+x.prot_prop;
+      `,
+    },
+    {
+      code: `
+class X {
+  pub_prop = 123;
+}
+declare const x: X;
+x['pub_prop'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"pub_prop"' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowPrivateClassPropertyAccess: true }],
+      output: `
+class X {
+  pub_prop = 123;
+}
+declare const x: X;
+x.pub_prop;
+      `,
+    },
+    {
+      code: `
+class X {
+  pub_prop = 123;
+}
+declare const x: X;
+x['pub_prop'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"pub_prop"' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowProtectedClassPropertyAccess: true }],
+      output: `
+class X {
+  pub_prop = 123;
+}
+declare const x: X;
+x.pub_prop;
+      `,
+    },
+    {
+      code: `
+declare const x: Record<string, number>;
+x['foo'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"foo"' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowPrivateClassPropertyAccess: true }],
+      output: `
+declare const x: Record<string, number>;
+x.foo;
+      `,
+    },
+    {
+      code: `
+declare const x: { [key: number]: number };
+x['foo'];
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '"foo"' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'useDot',
+        },
+      ],
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+      output: `
+declare const x: { [key: number]: number };
+x.foo;
       `,
     },
   ],

@@ -180,7 +180,7 @@ export default createRule({
 
     function getDesiredTypeForDefinition(
       node: TSESTree.TSEnumDeclaration,
-    ): AllowedType | ts.TypeFlags.Unknown | undefined {
+    ): AllowedType {
       const { imports, previousSibling } = collectNodeDefinitions(node);
 
       // Case: Merged ambiently via module augmentation
@@ -220,8 +220,8 @@ export default createRule({
           return;
         }
 
-        let desiredType = getDesiredTypeForDefinition(node);
-        if (desiredType === ts.TypeFlags.Unknown) {
+        const desiredType = getDesiredTypeForDefinition(node);
+        if (desiredType === AllowedType.Unknown) {
           return;
         }
 
@@ -229,10 +229,6 @@ export default createRule({
           const currentType = getMemberType(member);
           if (currentType === AllowedType.Unknown) {
             return;
-          }
-
-          if (currentType === AllowedType.Number) {
-            desiredType ??= currentType;
           }
 
           if (currentType !== desiredType) {

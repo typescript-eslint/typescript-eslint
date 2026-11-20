@@ -287,6 +287,7 @@ export default createRule<Options, MessageIds>({
      */
     function parseRegExp(
       node: TSESTree.Node,
+      disallowedFlags: string[],
     ): { isEndsWith: boolean; isStartsWith: boolean; text: string } | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
@@ -299,8 +300,7 @@ export default createRule<Options, MessageIds>({
       const isEndsWith = /[^\\](\\\\)*\$$/.test(source);
       if (
         isStartsWith === isEndsWith ||
-        flags.includes('i') ||
-        flags.includes('m')
+        disallowedFlags.some(flag => flags.includes(flag))
       ) {
         return null;
       }
@@ -311,6 +311,21 @@ export default createRule<Options, MessageIds>({
       }
 
       return { isEndsWith, isStartsWith, text };
+    }
+
+    /**
+     * Get the end of a binary expression's left operand, including any parentheses around it.
+     * E.g. `(foo.indexOf(bar)) === 0` → the end of `(foo.indexOf(bar))`
+     */
+    function getLeftOperandEnd(node: TSESTree.BinaryExpression): number {
+      const operatorToken = nullThrows(
+        context.sourceCode.getTokenAfter(node.left, isNotClosingParenToken),
+        NullThrowsReasons.MissingToken('operator', 'binary expression'),
+      );
+      return nullThrows(
+        context.sourceCode.getTokenBefore(operatorToken),
+        NullThrowsReasons.MissingToken('left operand', 'binary expression'),
+      ).range[1];
     }
 
     function getLeftNode(
@@ -350,10 +365,10 @@ export default createRule<Options, MessageIds>({
         yield fixer.insertTextBefore(node, '!');
       }
       yield fixer.replaceTextRange(
-        [propertyRange[0], node.right.range[0]],
-        `${isOptional ? '?.' : '.'}${kind}sWith(`,
+        [propertyRange[0], node.left.range[1]],
+        `${isOptional ? '?.' : '.'}${kind}sWith(${context.sourceCode.getText(node.right)})`,
       );
-      yield fixer.replaceTextRange([node.right.range[1], node.range[1]], ')');
+      yield fixer.removeRange([getLeftOperandEnd(node), node.range[1]]);
     }
 
     /**
@@ -380,7 +395,7 @@ export default createRule<Options, MessageIds>({
         getPropertyRange(calleeNode),
         `${isOptional ? '?.' : '.'}${kind}sWith`,
       );
-      yield fixer.removeRange([callNode.range[1], node.range[1]]);
+      yield fixer.removeRange([getLeftOperandEnd(node), node.range[1]]);
     }
 
     function getParent(node: NodeWithParent): TSESTree.Node {
@@ -429,6 +444,16 @@ export default createRule<Options, MessageIds>({
         if (
           (allowSingleElementEquality === 'always' && isStartsWith) ||
           (!isStartsWith && !isEndsWith)
+        ) {
+          return;
+        }
+
+        // `foo[0] === undefined` and `foo.charAt(0) === ''` check for an empty string
+        const comparedValue = getStaticValue(parentNode.right, globalScope);
+        if (
+          comparedValue != null &&
+          (typeof comparedValue.value !== 'string' ||
+            comparedValue.value === '')
         ) {
           return;
         }
@@ -540,7 +565,8 @@ export default createRule<Options, MessageIds>({
 
         const parsed =
           callNode.arguments.length === 1
-            ? parseRegExp(callNode.arguments[0])
+            ? // `y` only matches at index 0
+              parseRegExp(callNode.arguments[0], ['i', 'm', 'y'])
             : null;
         if (parsed == null) {
           return;
@@ -564,7 +590,10 @@ export default createRule<Options, MessageIds>({
               callNode.arguments[0],
               JSON.stringify(text),
             );
-            yield fixer.removeRange([callNode.range[1], parentNode.range[1]]);
+            yield fixer.removeRange([
+              getLeftOperandEnd(parentNode),
+              parentNode.range[1],
+            ]);
           },
         });
       },
@@ -612,11 +641,8 @@ export default createRule<Options, MessageIds>({
             isStartsWith = true;
           } else if (
             // foo.slice(foo.length - bar.length, foo.length) === bar
-            // foo.slice(foo.length - bar.length, 0) === bar
             // foo.slice(-bar.length, foo.length) === bar
-            // foo.slice(-bar.length, 0) === bar
-            (isLengthExpression(callNode.arguments[1], node.object) ||
-              isNumber(callNode.arguments[1], 0)) &&
+            isLengthExpression(callNode.arguments[1], node.object) &&
             isLengthAheadOfEnd(
               callNode.arguments[0],
               parentNode.right,
@@ -646,27 +672,13 @@ export default createRule<Options, MessageIds>({
             ) {
               return null;
             }
-            // code being checked is likely mistake:
-            // unequal length of strings being checked for equality
-            // or reliant on behavior of substring (negative indices interpreted as 0)
-            if (isStartsWith) {
-              if (!isLengthExpression(callNode.arguments[1], eqNode.right)) {
-                return null;
-              }
-            } else {
-              const posNode = callNode.arguments[0];
-              const posNodeIsAbsolutelyValid =
-                (posNode.type === AST_NODE_TYPES.BinaryExpression &&
-                  posNode.operator === '-' &&
-                  isLengthExpression(posNode.left, node.object) &&
-                  isLengthExpression(posNode.right, eqNode.right)) ||
-                (negativeIndexSupported &&
-                  posNode.type === AST_NODE_TYPES.UnaryExpression &&
-                  posNode.operator === '-' &&
-                  isLengthExpression(posNode.argument, eqNode.right));
-              if (!posNodeIsAbsolutelyValid) {
-                return null;
-              }
+            // `substring` treats a negative start as 0, so `foo.substring(-3)` isn't `endsWith`
+            if (
+              isEndsWith &&
+              !negativeIndexSupported &&
+              callNode.arguments[0].type === AST_NODE_TYPES.UnaryExpression
+            ) {
+              return null;
             }
 
             return fixWithRightOperand(
@@ -687,7 +699,10 @@ export default createRule<Options, MessageIds>({
       ): void {
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parsed =
-          callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
+          callNode.arguments.length === 1
+            ? // `g` and `y` make `test` depend on and update `lastIndex`
+              parseRegExp(node.object, ['g', 'i', 'm', 'y'])
+            : null;
         if (parsed == null) {
           return;
         }

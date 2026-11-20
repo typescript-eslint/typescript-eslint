@@ -237,6 +237,9 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
+              if (!canFix(invalidAncestor)) {
+                return null;
+              }
               const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
@@ -396,7 +399,8 @@ export default createRule<Options, MessageId>({
         NullThrowsReasons.MissingToken('first token', node.type),
       );
 
-      return ['(', '[', '`'].includes(startToken.value);
+      // a template token's value is the whole template, such as `` `foo` ``
+      return /^[([`]/.test(startToken.value);
     }
 
     function canFix(
@@ -412,13 +416,15 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const functionNode = nullThrows(
+      const functionNode =
         node.type === AST_NODE_TYPES.ArrowFunctionExpression
           ? node
-          : getParentFunctionNode(node),
-        'Expected a return statement to be inside a function.',
+          : getParentFunctionNode(node);
+      // a top-level `return`, as in a CommonJS module, has no declared return type
+      return (
+        functionNode == null ||
+        functionDeclarationAllowsEmptyReturn(functionNode)
       );
-      return functionDeclarationAllowsEmptyReturn(functionNode);
     }
 
     function functionDeclarationAllowsEmptyReturn(

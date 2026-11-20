@@ -31,8 +31,10 @@ export default createRule({
     function isEmptyObjectType(type: ts.Type) {
       return (
         tsutils.isObjectType(type) &&
+        // Instantiations of a generic class or interface, such as `Box<string>`,
+        // only carry the class or interface flag on their target type.
         !tsutils.isObjectFlagSet(
-          type,
+          tsutils.isTypeReference(type) ? type.target : type,
           ts.ObjectFlags.Class | ts.ObjectFlags.Interface,
         ) &&
         checker.getPropertiesOfType(type).length === 0 &&
@@ -66,7 +68,11 @@ export default createRule({
     }
 
     return {
-      TSIntersectionType: checkNode,
+      TSIntersectionType(node) {
+        if (node.parent.type !== AST_NODE_TYPES.TSIntersectionType) {
+          checkNode(node);
+        }
+      },
       TSTypeReference(node) {
         if (
           node.typeArguments &&

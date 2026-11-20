@@ -54,10 +54,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      AccessorProperty(): void {
+      'AccessorProperty > *.value, PropertyDefinition > *.value'(): void {
         thisIsValidStack.push(true);
       },
-      'AccessorProperty:exit'(): void {
+      'AccessorProperty > *.value, PropertyDefinition > *.value:exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
@@ -82,16 +82,16 @@ export default createRule<Options, MessageIds>({
       'FunctionExpression:exit'(): void {
         thisIsValidStack.pop();
       },
-      PropertyDefinition(): void {
-        thisIsValidStack.push(true);
-      },
-      'PropertyDefinition:exit'(): void {
-        thisIsValidStack.pop();
-      },
       ThisExpression(node: TSESTree.ThisExpression): void {
         const thisIsValidHere = thisIsValidStack[thisIsValidStack.length - 1];
 
-        if (thisIsValidHere) {
+        // `this` as the whole class field value is visited before its push above
+        if (
+          thisIsValidHere ||
+          ((node.parent.type === AST_NODE_TYPES.AccessorProperty ||
+            node.parent.type === AST_NODE_TYPES.PropertyDefinition) &&
+            node.parent.value === node)
+        ) {
           return;
         }
 

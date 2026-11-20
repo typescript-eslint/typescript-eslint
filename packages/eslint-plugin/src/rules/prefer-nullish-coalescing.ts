@@ -353,17 +353,24 @@ export default createRule<Options, MessageIds>({
       function* fix(
         fixer: TSESLint.RuleFixer,
       ): IterableIterator<TSESLint.RuleFix> {
-        if (isLogicalOrOperator(node.parent)) {
-          // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
-          if (
-            node.left.type === AST_NODE_TYPES.LogicalExpression &&
-            !isLogicalOrOperator(node.left.left)
-          ) {
-            yield fixer.insertTextBefore(node.left.right, '(');
-          } else {
-            yield fixer.insertTextBefore(node.left, '(');
+        // `??` can't be mixed with `&&` or `||` without parentheses (e.g. a && b ?? c)
+        const wrapsNode = isLogicalOrOperator(node.parent);
+        if (wrapsNode) {
+          yield fixer.insertTextBefore(node, '(');
+        }
+        if (node.type === AST_NODE_TYPES.LogicalExpression) {
+          for (const operand of [node.left, node.right]) {
+            if (
+              operand.type === AST_NODE_TYPES.LogicalExpression &&
+              !isParenthesized(operand, context.sourceCode)
+            ) {
+              yield fixer.insertTextBefore(operand, '(');
+              yield fixer.insertTextAfter(operand, ')');
+            }
           }
-          yield fixer.insertTextAfter(node.right, ')');
+        }
+        if (wrapsNode) {
+          yield fixer.insertTextAfter(node, ')');
         }
         yield fixer.replaceText(
           barBarOperator,
@@ -552,7 +559,8 @@ export default createRule<Options, MessageIds>({
                     : getWrappedCode(
                         nullishBranchText,
                         getOperatorPrecedenceForNode(nullishBranch),
-                        OperatorPrecedence.Coalesce,
+                        // `??` can't be mixed with `&&` or `||` without parentheses
+                        OperatorPrecedence.LogicalAND,
                       );
 
                   return fixer.replaceText(
@@ -745,7 +753,7 @@ function isMixedLogicalExpression(
         return true;
       }
 
-      if (['||', '||='].includes(current.operator)) {
+      if (current.operator === '||') {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }
@@ -867,7 +875,7 @@ function getOperatorAndNodesInsideTestExpression(
       node.test.right.left,
       node.test.right.right,
     ];
-    if (['||', '||='].includes(node.test.operator)) {
+    if (node.test.operator === '||') {
       if (
         node.test.left.operator === '===' &&
         node.test.right.operator === '==='

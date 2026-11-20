@@ -21,35 +21,6 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
-    /**
-     * checks if node is optional parameter
-     * @param node the node to be evaluated
-     * @private
-     */
-    function isOptionalParam(node: TSESTree.Parameter): boolean {
-      return (
-        (node.type === AST_NODE_TYPES.ArrayPattern ||
-          node.type === AST_NODE_TYPES.AssignmentPattern ||
-          node.type === AST_NODE_TYPES.Identifier ||
-          node.type === AST_NODE_TYPES.ObjectPattern ||
-          node.type === AST_NODE_TYPES.RestElement) &&
-        node.optional
-      );
-    }
-
-    /**
-     * checks if node is plain parameter
-     * @param node the node to be evaluated
-     * @private
-     */
-    function isPlainParam(node: TSESTree.Parameter): boolean {
-      return !(
-        node.type === AST_NODE_TYPES.AssignmentPattern ||
-        node.type === AST_NODE_TYPES.RestElement ||
-        isOptionalParam(node)
-      );
-    }
-
     function checkDefaultParamLast(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -64,16 +35,13 @@ export default createRule({
             ? current.parameter
             : current;
 
-        if (isPlainParam(param)) {
-          hasSeenPlainParam = true;
-          continue;
-        }
-
         if (
-          hasSeenPlainParam &&
-          (isOptionalParam(param) ||
-            param.type === AST_NODE_TYPES.AssignmentPattern)
+          param.type !== AST_NODE_TYPES.AssignmentPattern &&
+          param.type !== AST_NODE_TYPES.RestElement &&
+          !param.optional
         ) {
+          hasSeenPlainParam = true;
+        } else if (hasSeenPlainParam) {
           context.report({ node: current, messageId: 'shouldBeLast' });
         }
       }

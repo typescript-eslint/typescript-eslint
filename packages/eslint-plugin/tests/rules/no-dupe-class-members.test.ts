@@ -82,8 +82,51 @@ class Foo {
   foo(a: any): any {}
 }
     `,
+    `
+class Foo {
+  ['foo'](a: string): string;
+  ['foo'](a: number): number;
+  ['foo'](a: any): any {}
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+class A {
+  ['foo']() {}
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  [10]() {}
+  1e1() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: '10' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
+      ],
+    },
     {
       code: `
 class A {

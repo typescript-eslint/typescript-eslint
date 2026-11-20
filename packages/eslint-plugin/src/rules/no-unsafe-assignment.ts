@@ -66,27 +66,25 @@ export default createRule({
       'noImplicitThis',
     );
 
-    // returns true if the assignment reported
     function checkArrayDestructureHelper(
       receiverNode: TSESTree.Node,
       senderNode: TSESTree.Node,
-    ): boolean {
+    ): void {
       if (receiverNode.type !== AST_NODE_TYPES.ArrayPattern) {
-        return false;
+        return;
       }
 
       const senderTsNode = services.esTreeNodeToTSNodeMap.get(senderNode);
       const senderType = services.getTypeAtLocation(senderNode);
 
-      return checkArrayDestructure(receiverNode, senderType, senderTsNode);
+      checkArrayDestructure(receiverNode, senderType, senderTsNode);
     }
 
-    // returns true if the assignment reported
     function checkArrayDestructure(
       receiverNode: TSESTree.ArrayPattern,
       senderType: ts.Type,
       senderNode: ts.Node,
-    ): boolean {
+    ): void {
       // any array
       // const [x] = ([] as any[]);
       if (isTypeAnyArrayType(senderType, checker)) {
@@ -95,18 +93,17 @@ export default createRule({
           messageId: 'unsafeArrayPattern',
           data: createData(senderType),
         });
-        return false;
+        return;
       }
 
       if (!checker.isTupleType(senderType)) {
-        return true;
+        return;
       }
 
       const tupleElements = checker.getTypeArguments(senderType);
 
       // tuple with any
       // const [x] = [1 as any];
-      let didReport = false;
       for (
         let receiverIndex = 0;
         receiverIndex < receiverNode.elements.length;
@@ -134,47 +131,33 @@ export default createRule({
             messageId: 'unsafeArrayPatternFromTuple',
             data: createData(senderType),
           });
-          // we want to report on every invalid element in the tuple
-          didReport = true;
         } else if (receiverElement.type === AST_NODE_TYPES.ArrayPattern) {
-          didReport = checkArrayDestructure(
-            receiverElement,
-            senderType,
-            senderNode,
-          );
+          checkArrayDestructure(receiverElement, senderType, senderNode);
         } else if (receiverElement.type === AST_NODE_TYPES.ObjectPattern) {
-          didReport = checkObjectDestructure(
-            receiverElement,
-            senderType,
-            senderNode,
-          );
+          checkObjectDestructure(receiverElement, senderType, senderNode);
         }
       }
-
-      return didReport;
     }
 
-    // returns true if the assignment reported
     function checkObjectDestructureHelper(
       receiverNode: TSESTree.Node,
       senderNode: TSESTree.Node,
-    ): boolean {
+    ): void {
       if (receiverNode.type !== AST_NODE_TYPES.ObjectPattern) {
-        return false;
+        return;
       }
 
       const senderTsNode = services.esTreeNodeToTSNodeMap.get(senderNode);
       const senderType = services.getTypeAtLocation(senderNode);
 
-      return checkObjectDestructure(receiverNode, senderType, senderTsNode);
+      checkObjectDestructure(receiverNode, senderType, senderTsNode);
     }
 
-    // returns true if the assignment reported
     function checkObjectDestructure(
       receiverNode: TSESTree.ObjectPattern,
       senderType: ts.Type,
       senderNode: ts.Node,
-    ): boolean {
+    ): void {
       const properties = new Map(
         senderType
           .getProperties()
@@ -184,7 +167,6 @@ export default createRule({
           ]),
       );
 
-      let didReport = false;
       for (const receiverProperty of receiverNode.properties) {
         if (receiverProperty.type === AST_NODE_TYPES.RestElement) {
           // don't bother checking rest
@@ -225,27 +207,20 @@ export default createRule({
             messageId: 'unsafeObjectPattern',
             data: createData(senderType),
           });
-          didReport = true;
         } else if (
           receiverProperty.value.type === AST_NODE_TYPES.ArrayPattern
         ) {
-          didReport = checkArrayDestructure(
-            receiverProperty.value,
-            senderType,
-            senderNode,
-          );
+          checkArrayDestructure(receiverProperty.value, senderType, senderNode);
         } else if (
           receiverProperty.value.type === AST_NODE_TYPES.ObjectPattern
         ) {
-          didReport = checkObjectDestructure(
+          checkObjectDestructure(
             receiverProperty.value,
             senderType,
             senderNode,
           );
         }
       }
-
-      return didReport;
     }
 
     // returns true if the assignment reported
@@ -354,10 +329,10 @@ export default createRule({
           getComparisonType(node.typeAnnotation),
         );
       },
-      'AssignmentExpression[operator = "="], AssignmentPattern'(
+      'AssignmentExpression[operator = "="], AssignmentExpression[operator = "&&="], AssignmentExpression[operator = "||="], AssignmentExpression[operator = "??="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {
-        let didReport = checkAssignment(
+        const didReport = checkAssignment(
           node.left,
           node.right,
           node,
@@ -366,9 +341,7 @@ export default createRule({
         );
 
         if (!didReport) {
-          didReport = checkArrayDestructureHelper(node.left, node.right);
-        }
-        if (!didReport) {
+          checkArrayDestructureHelper(node.left, node.right);
           checkObjectDestructureHelper(node.left, node.right);
         }
       },
@@ -389,7 +362,7 @@ export default createRule({
           node.init,
           NullThrowsReasons.MissingToken(node.type, 'init'),
         );
-        let didReport = checkAssignment(
+        const didReport = checkAssignment(
           node.id,
           init,
           node,
@@ -397,9 +370,7 @@ export default createRule({
         );
 
         if (!didReport) {
-          didReport = checkArrayDestructureHelper(node.id, init);
-        }
-        if (!didReport) {
+          checkArrayDestructureHelper(node.id, init);
           checkObjectDestructureHelper(node.id, init);
         }
       },

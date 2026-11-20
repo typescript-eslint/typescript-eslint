@@ -757,6 +757,32 @@ foo5: boolean;
       },
       options: [{ builtinGlobals: true }],
     },
+    `
+class Foo {
+  static method<Array>() {}
+}
+    `,
+    `
+import type { Foo } from 'bar';
+declare module 'bar' {
+  type Foo = 1;
+}
+    `,
+    `
+class Foo<T> {
+  static method<T>(): void;
+  static method<T>() {}
+}
+    `,
+    {
+      code: `
+const a = [].map(function b() {
+  const a = 1;
+  return a;
+});
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
   ],
   invalid: [
     {
@@ -1844,6 +1870,389 @@ const fn = (has: string) => {};
         },
       },
       options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+type arg = 1;
+type Fn = (arg: string) => void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            name: 'arg',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreTypeValueShadow: false }],
+    },
+    {
+      code: `
+class Foo<T> {
+  method<T>() {}
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            name: 'T',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+class Foo {
+  static method<T>() {}
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            name: 'T',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo<T> {
+  static prop = function <T>() {};
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: {
+            name: 'T',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+declare module 'baz' {
+  interface Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            name: 'Foo',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+import type Foo = require('bar');
+declare module 'bar' {
+  interface Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            name: 'Foo',
+            shadowedColumn: 13,
+            shadowedLine: 2,
+          },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const a = 1;
+const b = [].map(() => {
+  const a = 2;
+  return a;
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const { a = 1 } = obj;
+const b = [].map(() => {
+  const a = 2;
+  return a;
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'a',
+            shadowedColumn: 9,
+            shadowedLine: 2,
+          },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const x = function (a) {
+  return [].map(() => {
+    const a = 1;
+    return a;
+  });
+};
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'a',
+            shadowedColumn: 21,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const x = a =>
+  [].map(() => {
+    const a = 1;
+    return a;
+  });
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+for (const a of []) {
+  [].map(() => {
+    const a = 1;
+    return a;
+  });
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'a',
+            shadowedColumn: 12,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const a = [].map(() => () => {
+  const a = 1;
+  return a;
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const a = function a() {} ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+function a() {
+  const b = 1;
+}
+function b() {}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'b',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+}
+function f() {
+  const Foo = 1;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'Foo',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const A = 2;
+enum Test {
+  A = 1,
+  B = A,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'noEnumShadow',
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+class Foo<T> {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'T',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'noShadow',
+        },
+      ],
     },
   ],
 });

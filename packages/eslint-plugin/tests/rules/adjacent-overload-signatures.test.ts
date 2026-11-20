@@ -1083,5 +1083,24 @@ class Test {
       options: [{ ignoreAccessors: true }],
     },
     /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+interface Foo {
+  (s: string): void;
+  call(): void;
+  (n: number): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'call' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'adjacentSignature',
+        },
+      ],
+    },
   ],
 });

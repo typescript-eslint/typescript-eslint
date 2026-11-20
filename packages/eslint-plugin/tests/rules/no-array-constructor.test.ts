@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-array-constructor';
 
@@ -33,6 +33,16 @@ ruleTester.run('no-array-constructor', rule, {
     'Array.foo?.();',
     'Array?.<Foo>(1, 2, 3);',
     'Array?.<Foo>();',
+    'foo(x, y);',
+    `
+const Array = (...items: number[]) => items;
+Array(1, 2);
+    `,
+    `
+function create(Array: ArrayConstructor) {
+  return new Array(1, 2);
+}
+    `,
   ],
 
   invalid: [
@@ -86,7 +96,7 @@ ruleTester.run('no-array-constructor', rule, {
           messageId: 'useLiteral',
         },
       ],
-      output: '/* a */ /* b */ []; /* g */ /* h */',
+      output: null,
     },
     {
       code: 'new Array(x, y);',
@@ -138,7 +148,7 @@ ruleTester.run('no-array-constructor', rule, {
           messageId: 'useLiteral',
         },
       ],
-      output: '/* a */ /* b */ [x, y]; /* g */ /* h */',
+      output: null,
     },
     {
       code: 'new Array(0, 1, 2);',
@@ -196,13 +206,7 @@ ruleTester.run('no-array-constructor', rule, {
           messageId: 'useLiteral',
         },
       ],
-      output: `
-/* a */ /* b */ [
-  0,
-  1,
-  2,
-]; /* g */ /* h */
-      `,
+      output: null,
     },
     {
       code: `
@@ -220,6 +224,125 @@ new Array(0, 1, 2);
       output: `
 [0, 1, 2];
       `,
+    },
+    {
+      code: `
+/* a */ Array(/* b */ x, y /* c */); /* d */
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+/* a */ [/* b */ x, y /* c */]; /* d */
+      `,
+    },
+    {
+      code: `
+new /* a */ Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+new Array /* a */;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+[] /* a */;
+      `,
+    },
+    {
+      code: noFormat`
+foo
+Array(x, y)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+foo
+;[x, y]
+      `,
+    },
+    {
+      code: noFormat`
+foo
+new Array(x, y).forEach(bar)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+foo
+;[x, y].forEach(bar)
+      `,
+    },
+    {
+      code: `
+foo;
+Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+foo;
+[x, y];
+      `,
+    },
+    {
+      code: 'void Array(x, y);',
+      errors: [
+        {
+          column: 6,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: 'void [x, y];',
     },
   ],
 });

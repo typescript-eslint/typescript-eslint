@@ -22,6 +22,9 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
     '(a: { x: number }) => -a.x;',
     '(a: never) => -a;',
     '<T extends number>(t: T) => -t;',
+    "(a: number & { __brand: 'a' }) => -a;",
+    "(a: bigint & { __brand: 'a' }) => -a;",
+    "<T extends number>(t: T & { __brand: 'a' }) => -t;",
   ],
   invalid: [
     {
@@ -135,6 +138,32 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
           column: 15,
           data: { type: 'T' },
           endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'unaryMinus',
+        },
+      ],
+    },
+    {
+      code: "(a: string & { __brand: 'a' }) => -a;",
+      errors: [
+        {
+          column: 35,
+          data: { type: 'string & { __brand: "a"; }' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'unaryMinus',
+        },
+      ],
+    },
+    {
+      code: "(a: (number & { __brand: 'a' }) | string) => -a;",
+      errors: [
+        {
+          column: 46,
+          data: { type: 'string | (number & { __brand: "a"; })' },
+          endColumn: 48,
           endLine: 1,
           line: 1,
           messageId: 'unaryMinus',

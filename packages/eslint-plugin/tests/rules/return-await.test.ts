@@ -508,6 +508,37 @@ class C<R extends unknown> {
 }
       `,
     },
+    `
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return p;
+  } catch {}
+}
+    `,
+    {
+      code: `
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return p;
+  } catch {}
+}
+      `,
+      options: ['error-handling-correctness-only'],
+    },
+    {
+      code: `
+declare const bleh: any;
+declare const p: Promise<number>;
+async function* test() {
+  using something = bleh;
+  return p;
+}
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
   ],
   invalid: [
     {
@@ -2297,6 +2328,33 @@ class C<R extends number> {
   async wrapper<T extends R>(value: T) {
     return value;
   }
+}
+      `,
+    },
+    {
+      code: `
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return await p;
+  } catch {}
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      output: `
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return p;
+  } catch {}
 }
       `,
     },

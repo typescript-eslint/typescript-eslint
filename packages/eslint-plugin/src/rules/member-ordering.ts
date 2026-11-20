@@ -752,9 +752,6 @@ function groupMembersByType(
   );
   let previousRank: number | undefined = undefined;
   members.forEach((member, index) => {
-    if (index === members.length - 1) {
-      return;
-    }
     const rankOfCurrentMember = memberRanks[index];
     const rankOfNextMember = memberRanks[index + 1];
     if (rankOfCurrentMember === previousRank) {
@@ -962,16 +959,10 @@ export default createRule<Options, MessageIds>({
      *
      * @param members Members to be validated.
      * @param order What order the members should be sorted in.
-     *
-     * @return True if all members are correctly sorted.
      */
-    function checkAlphaSort(
-      members: Member[],
-      order: AlphabeticalOrder,
-    ): boolean {
+    function checkAlphaSort(members: Member[], order: AlphabeticalOrder): void {
       let previousName = '';
       let previousIndex = 0;
-      let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
       members.forEach((member, index) => {
@@ -1000,16 +991,12 @@ export default createRule<Options, MessageIds>({
                 member: name,
               },
             });
-
-            isCorrectlySorted = false;
           }
 
           previousName = name;
           previousIndex = index;
         }
       });
-
-      return isCorrectlySorted;
     }
 
     function naturalOutOfOrder(
@@ -1124,8 +1111,7 @@ export default createRule<Options, MessageIds>({
         }
       };
 
-      // returns true if everything is good and false if an error was reported
-      const checkOrder = (memberSet: Member[]): boolean => {
+      const checkOrder = (memberSet: Member[]): void => {
         const hasAlphaSort = !!(order && order !== 'as-written');
 
         // Check order
@@ -1137,8 +1123,8 @@ export default createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
-            checkAlphaSortForAllMembers(members);
-            return false;
+            checkAlphaSortForAllMembers(memberSet);
+            return;
           }
 
           if (hasAlphaSort) {
@@ -1147,10 +1133,8 @@ export default createRule<Options, MessageIds>({
             );
           }
         } else if (hasAlphaSort) {
-          return checkAlphaSort(memberSet, order as AlphabeticalOrder);
+          checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
-
-        return false;
       };
 
       if (Array.isArray(orderConfig)) {
@@ -1191,11 +1175,6 @@ export default createRule<Options, MessageIds>({
           options.classes ?? options.default!,
           true,
         );
-      },
-      'ClassDeclaration, FunctionDeclaration'(node): void {
-        if ('superClass' in node) {
-          // ...
-        }
       },
       ClassExpression(node): void {
         validateMembersOrder(

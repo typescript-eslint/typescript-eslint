@@ -1008,6 +1008,118 @@ class foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  implicit_public = 1;
+  public explicit_public = 2;
+  private privateProperty = 3;
+}
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'class' },
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['snake_case'],
+          modifiers: ['public'],
+          selector: 'classProperty',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  readonly read_only = 1;
+  notReadonly = 2;
+}
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'class' },
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['snake_case'],
+          modifiers: ['readonly'],
+          selector: 'classProperty',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  abstract abstract_property: string;
+  abstract abstract_method(): void;
+  abstract accessor abstract_accessor: string;
+  notAbstract = 1;
+}
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'class' },
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['snake_case'],
+          modifiers: ['abstract'],
+          selector: 'memberLike',
+        },
+      ],
+    },
+    {
+      code: `
+let notConst = 1;
+const IS_CONST = 2;
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['const'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+var GLOBAL_VAR = 1;
+function f() {
+  var localVar = 2;
+}
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['global'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+export default class exported_class {}
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'default' },
+        {
+          format: ['snake_case'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+      ],
+    },
+    {
+      code: `
+const exported_var = 1;
+export default exported_var;
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'default' },
+        {
+          format: ['snake_case'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2821,6 +2933,62 @@ export { PascalCaseInterface };
     {
       code: `
 type PascalCaseType = {};
+export { PascalCaseType };
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseType',
+            type: 'Type Alias',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+      ],
+    },
+    {
+      code: `
+interface PascalCaseInterface<t> {}
+export { PascalCaseInterface };
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseInterface',
+            type: 'Interface',
+          },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+      ],
+    },
+    {
+      code: `
+type PascalCaseType<t> = {};
 export { PascalCaseType };
       `,
       errors: [

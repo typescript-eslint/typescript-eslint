@@ -245,6 +245,88 @@ for (let i = 0; i < this.length; ++i) {
   yield this[i];
 }
     `,
+    `
+for (const i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0, j = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.size; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+const length = 1;
+for (let i = 0; i < arr[length]; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+class Foo {
+  #length = 1;
+  method(arr: Foo) {
+    for (let i = 0; i < arr.#length; i++) {
+      console.log(arr[i]);
+    }
+  }
+}
+    `,
+    `
+for (let i = 0; i < arr.length; j += 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i *= i + 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = i - 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = j + 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = 2 + i) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = 1 + j) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (var i = 0; i < arr.length; i++) {
+  if (arr[i] === target) {
+    break;
+  }
+}
+console.log(i);
+    `,
+    `
+for (var i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+for (let j = 0; j < 1; j++) {
+  console.log(i);
+}
+    `,
   ],
   invalid: [
     {
@@ -521,6 +603,25 @@ for (let i = 0; i < this.item.length; ++i) {
       code: `
 for (let i = 0; i < this.array.length; ++i) {
   yield this.array[i];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (var i = 0; i < arr1.length; i++) {
+  console.log(arr1[i]);
+}
+for (var i = 0; i < arr2.length; i++) {
+  console.log(i);
 }
       `,
       errors: [

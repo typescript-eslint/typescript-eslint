@@ -74,5 +74,18 @@ ruleTester.run('no-import-type-side-effects', rule, {
       ],
       output: "import type { A as AA, B as BB } from 'mod';",
     },
+    {
+      code: "import { type /* comment */ A } from 'mod';",
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'useTopLevelQualifier',
+        },
+      ],
+      output: "import type { /* comment */ A } from 'mod';",
+    },
   ],
 });

@@ -384,7 +384,10 @@ export default createRule<Options, MessageIds>({
           break;
         }
         case 'no-public': {
-          if (node.accessibility === 'public' && node.readonly) {
+          if (
+            node.accessibility === 'public' &&
+            (node.readonly || node.override)
+          ) {
             const publicKeyword = findPublicKeyword(node);
             context.report({
               loc: rangeToLoc(context.sourceCode, publicKeyword.range),

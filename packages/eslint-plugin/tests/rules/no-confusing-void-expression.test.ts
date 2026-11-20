@@ -410,6 +410,123 @@ test((() => {
   invalid: [
     {
       code: `
+declare function v(): void;
+declare const c: boolean;
+function f() {
+  if (c) return c ? v() : 1;
+  return 2;
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+function f() {
+  console.log('a')
+  return \`x\`.split('').forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f() {
+  console.log('a')
+  ;\`x\`.split('').forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f() {
+  console.log('a')
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f() {
+  console.log('a')
+  ;(console.log)('b');
+}
+      `,
+    },
+    {
+      code: `
+function f(): void {
+  return console.log();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f(): void {
+  console.log();
+}
+      `,
+    },
+    {
+      code: `
+let x;
+x = console.log();
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExpr',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'const x = console.log();',
+      errors: [
+        {
+          column: 11,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidExpr',
+        },
+      ],
+      options: [{ ignoreArrowShorthand: true }],
+      output: null,
+    },
+    {
+      code: `
 const x = console.log('foo');
       `,
       errors: [

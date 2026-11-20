@@ -759,6 +759,23 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
       `,
       options: [{ allowMixedPromiseArrays: true }],
     },
+    `
+declare function takesNumbers(numbers: number[]): void;
+takesNumbers([1, 2, 3]);
+    `,
+    `
+Promise.all([, Promise.resolve(1)]);
+    `,
+    `
+declare const noPromises: [];
+Promise.all(noPromises);
+    `,
+    `
+async function f(resources: AsyncDisposable[]) {
+  for (await using resource of resources) {
+  }
+}
+    `,
   ],
 
   invalid: [

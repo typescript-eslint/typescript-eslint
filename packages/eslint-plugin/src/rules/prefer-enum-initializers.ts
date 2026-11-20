@@ -1,5 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 export type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
@@ -29,7 +31,14 @@ export default createRule<[], MessageIds>({
 
       members.forEach((member, index) => {
         if (member.initializer == null) {
-          const name = context.sourceCode.getText(member);
+          const name =
+            member.id.type === AST_NODE_TYPES.Identifier
+              ? member.id.name
+              : member.id.value;
+          const stringValue =
+            member.id.type === AST_NODE_TYPES.Identifier
+              ? `'${name}'`
+              : context.sourceCode.getText(member.id);
           context.report({
             node: member,
             messageId: 'defineInitializer',
@@ -40,23 +49,20 @@ export default createRule<[], MessageIds>({
               {
                 messageId: 'defineInitializerSuggestion',
                 data: { name, suggested: index },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = ${index}`);
-                },
+                fix: (fixer): TSESLint.RuleFix =>
+                  fixer.insertTextAfter(member.id, ` = ${index}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
                 data: { name, suggested: index + 1 },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = ${index + 1}`);
-                },
+                fix: (fixer): TSESLint.RuleFix =>
+                  fixer.insertTextAfter(member.id, ` = ${index + 1}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: `'${name}'` },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = '${name}'`);
-                },
+                data: { name, suggested: stringValue },
+                fix: (fixer): TSESLint.RuleFix =>
+                  fixer.insertTextAfter(member.id, ` = ${stringValue}`),
               },
             ],
           });

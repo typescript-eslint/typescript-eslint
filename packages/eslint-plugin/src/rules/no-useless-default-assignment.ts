@@ -8,7 +8,6 @@ import {
   createRule,
   getParserServices,
   isFunction,
-  isRestParameterDeclaration,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -128,11 +127,14 @@ export default createRule<Options, MessageId>({
       ) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(node);
         if (
+          node.left.type === AST_NODE_TYPES.Identifier &&
           ts.isParameter(tsNode) &&
           tsNode.type &&
-          canBeUndefined(checker.getTypeFromTypeNode(tsNode.type))
+          canBeUndefined(checker.getTypeFromTypeNode(tsNode.type)) &&
+          // A parameter followed by required ones can't use `?`
+          checker.isOptionalParameter(tsNode)
         ) {
-          reportPreferOptionalSyntax(node);
+          reportPreferOptionalSyntax(node, node.left);
           return;
         }
 
@@ -152,56 +154,53 @@ export default createRule<Options, MessageId>({
         parent.type === AST_NODE_TYPES.FunctionExpression
       ) {
         const paramIndex = parent.params.indexOf(node);
-        if (paramIndex !== -1) {
-          const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
-          // tsFunc is already a FunctionLike subtype; defensive runtime check
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          if (ts.isFunctionLike(tsFunc)) {
-            const contextualType = checker.getContextualType(
-              tsFunc as ts.Expression,
-            );
-            if (!contextualType) {
-              return;
-            }
+        const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
+        // Methods map to `ts.MethodDeclaration`, which still has a contextual
+        // type in an object literal
+        const contextualType = checker.getContextualType(
+          tsFunc as ts.Expression,
+        );
+        if (!contextualType) {
+          return;
+        }
 
-            const signatures = contextualType.getCallSignatures();
-            if (
-              signatures.length === 0 ||
-              signatures[0].getDeclaration() === tsFunc
-            ) {
-              return;
-            }
+        // Each member of a union of function types may be called differently
+        const signaturesByType = tsutils
+          .unionConstituents(contextualType)
+          .map(type => type.getCallSignatures());
+        if (signaturesByType.some(signatures => signatures.length === 0)) {
+          return;
+        }
 
-            const defaultCanBeUsed = signatures.some(signature => {
-              const params = signature.getParameters();
-              if (paramIndex >= params.length) {
-                return true;
-              }
+        const signatures = signaturesByType.flat();
+        if (signatures[0].getDeclaration() === tsFunc) {
+          return;
+        }
 
-              const paramSymbol = params[paramIndex];
-              if (
-                paramSymbol.valueDeclaration &&
-                isRestParameterDeclaration(paramSymbol.valueDeclaration)
-              ) {
-                return true;
-              }
-
-              if (
-                tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
-              ) {
-                return true;
-              }
-
-              const paramType = checker.getTypeOfSymbol(paramSymbol);
-              return (
-                tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
-              );
-            });
-
-            if (!defaultCanBeUsed) {
-              reportUselessDefaultAssignment(node, 'parameter');
-            }
+        const defaultCanBeUsed = signatures.some(signature => {
+          const params = signature.getParameters();
+          if (paramIndex >= params.length) {
+            return true;
           }
+
+          const declaration = params[paramIndex].valueDeclaration;
+          if (
+            declaration &&
+            ts.isParameter(declaration) &&
+            (declaration.dotDotDotToken != null ||
+              checker.isOptionalParameter(declaration))
+          ) {
+            return true;
+          }
+
+          const paramType = checker.getTypeOfSymbol(params[paramIndex]);
+          return (
+            tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
+          );
+        });
+
+        if (!defaultCanBeUsed) {
+          reportUselessDefaultAssignment(node, 'parameter');
         }
         return;
       }
@@ -227,9 +226,6 @@ export default createRule<Options, MessageId>({
 
         const tupleArgs = checker.getTypeArguments(sourceType);
         const elementIndex = parent.elements.indexOf(node);
-        if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
-          return;
-        }
         const { fixedLength, minLength } = sourceType.target;
 
         if (elementIndex >= minLength) {
@@ -254,7 +250,7 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      const propertyName = getPropertyName(node.key);
+      const propertyName = getPropertyName(node);
       if (!propertyName) {
         return null;
       }
@@ -271,7 +267,7 @@ export default createRule<Options, MessageId>({
           parent.init &&
           hasConditionalInitializer(objectPattern)
         ) {
-          const propertyName = getPropertyName(node.key);
+          const propertyName = getPropertyName(node);
 
           if (
             !propertyName ||
@@ -349,12 +345,11 @@ export default createRule<Options, MessageId>({
       return null;
     }
 
-    function getPropertyName(
-      key: TSESTree.Expression | TSESTree.PrivateIdentifier,
-    ): string | null {
+    function getPropertyName(property: TSESTree.Property): string | null {
+      const { key } = property;
       switch (key.type) {
         case AST_NODE_TYPES.Identifier:
-          return key.name;
+          return property.computed ? null : key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
         case AST_NODE_TYPES.TemplateLiteral:
@@ -390,29 +385,27 @@ export default createRule<Options, MessageId>({
 
     function reportPreferOptionalSyntax(
       node: TSESTree.AssignmentPattern,
+      left: TSESTree.Identifier,
     ): void {
       context.report({
         node: node.right,
         messageId: 'preferOptionalSyntax',
-        suggest: [useOptionalSyntaxSuggestion(node)],
+        suggest: [useOptionalSyntaxSuggestion(node, left)],
       });
     }
 
     function useOptionalSyntaxSuggestion(
       node: TSESTree.AssignmentPattern,
+      left: TSESTree.Identifier,
     ): TSESLint.SuggestionReportDescriptor<MessageId> {
       return {
         messageId: 'useOptionalSyntax',
         *fix(fixer) {
           yield removeDefault(fixer, node);
-
-          const { left } = node;
-          if (left.type === AST_NODE_TYPES.Identifier) {
-            yield fixer.insertTextAfterRange(
-              [left.range[0], left.range[0] + left.name.length],
-              '?',
-            );
-          }
+          yield fixer.insertTextAfterRange(
+            [left.range[0], left.range[0] + left.name.length],
+            '?',
+          );
         },
       };
     }
@@ -444,7 +437,7 @@ export default createRule<Options, MessageId>({
           expression.properties.some(
             prop =>
               prop.type === AST_NODE_TYPES.Property &&
-              getPropertyName(prop.key) === propertyName,
+              getPropertyName(prop) === propertyName,
           )) ||
         (expression.type === AST_NODE_TYPES.ConditionalExpression &&
           hasPropertyInAllBranches(expression.consequent, propertyName) &&

@@ -39,6 +39,15 @@ for (const key in obj) {
   console.log(key);
 }
     `,
+    `
+declare const obj: {
+  length: number;
+};
+
+for (const key in obj) {
+  console.log(key);
+}
+    `,
   ],
 
   invalid: [

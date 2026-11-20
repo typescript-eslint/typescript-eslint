@@ -52,6 +52,14 @@ delete test[0];
     `
 delete console.log();
     `,
+    `
+declare const arr: number[] & { foo?: number };
+delete arr.foo;
+    `,
+    `
+declare const arrOrRecord: number[] | Record<number, number>;
+delete arrOrRecord[0];
+    `,
   ],
 
   invalid: [
@@ -644,6 +652,58 @@ delete arr[0];
               output: `
 declare const arr: string & Array<number>;
 arr.splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+delete (condition ? a : b)[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+(condition ? a : b).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: unknown;
+delete (value as number[])[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const value: unknown;
+(value as number[]).splice(0, 1);
       `,
             },
           ],

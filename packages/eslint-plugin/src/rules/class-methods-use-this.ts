@@ -159,14 +159,11 @@ export default createRule<Options, MessageIds>({
       return oldStack;
     }
 
-    function isPublicField(
-      accessibility: TSESTree.Accessibility | undefined,
-    ): boolean {
-      if (!accessibility || accessibility === 'public') {
-        return true;
-      }
-
-      return false;
+    function isPublicField(member: NonNullable<Stack['member']>): boolean {
+      return (
+        member.key.type !== AST_NODE_TYPES.PrivateIdentifier &&
+        (!member.accessibility || member.accessibility === 'public')
+      );
     }
 
     /**
@@ -216,7 +213,7 @@ export default createRule<Options, MessageIds>({
           stackContext.class.implements.length > 0) ||
         (ignoreClassesThatImplementAnInterface === 'public-fields' &&
           stackContext.class.implements.length > 0 &&
-          isPublicField(stackContext.member.accessibility))
+          isPublicField(stackContext.member))
       ) {
         return;
       }

@@ -22,7 +22,6 @@ Within `&` intersections:
 
 - `any` and `never` "override" all other intersection members
 - `unknown` is dropped from intersections
-- literal types "override" any primitive types in an intersection
 - literal types such as `""` "override" any of their primitive types such as `string`
 
 ## Examples
@@ -41,7 +40,7 @@ type UnionStringLiteral = string | 'foo';
 
 type IntersectionAny = any & 'foo';
 type IntersectionUnknown = string & unknown;
-type IntersectionNever = string | never;
+type IntersectionNever = string & never;
 
 type IntersectionBooleanLiteral = boolean & false;
 type IntersectionNumberLiteral = number & 1;
@@ -62,7 +61,7 @@ type UnionStringLiteral = string;
 
 type IntersectionAny = any;
 type IntersectionUnknown = string;
-type IntersectionNever = string;
+type IntersectionNever = never;
 
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;

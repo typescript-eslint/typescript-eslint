@@ -10,6 +10,9 @@ import {
   getParserServices,
   getTextWithParentheses,
   isParenthesized,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
@@ -200,12 +203,8 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSUnknownKeyword:
           return false;
         case AST_NODE_TYPES.TSTypeReference:
-          return (
-            // Ignore `as const` and `<const>`
-            !isConst(node) ||
-            // Allow qualified names which have dots between identifiers, `Foo.Bar`
-            node.typeName.type === AST_NODE_TYPES.TSQualifiedName
-          );
+          // Ignore `as const` and `<const>`
+          return !isConst(node);
 
         default:
           return true;
@@ -241,16 +240,28 @@ export default createRule<Options, MessageIds>({
       suggestions.push({
         messageId: satisfiesMessageId,
         data: { cast: context.sourceCode.getText(node.typeAnnotation) },
-        fix: fixer => [
-          fixer.replaceText(
+        fix: fixer => {
+          const text = `${getTextWithParentheses(
+            context.sourceCode,
+            node.expression,
+          )} satisfies ${context.sourceCode.getText(node.typeAnnotation)}`;
+
+          // `() => <T>{}` would otherwise become a block body: `() => {} satisfies T`
+          return fixer.replaceText(
             node,
-            getTextWithParentheses(context.sourceCode, node.expression),
-          ),
-          fixer.insertTextAfter(
-            node,
-            ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
-          ),
-        ],
+            !isParenthesized(node.expression, context.sourceCode) &&
+              isStartOfArrowFunctionBodyNeedingParentheses(
+                node,
+                nullThrows(
+                  context.sourceCode.getFirstToken(node.expression),
+                  NullThrowsReasons.MissingToken('first token', node.type),
+                ),
+                context.sourceCode,
+              )
+              ? `(${text})`
+              : text,
+          );
+        },
       });
       return suggestions;
     }

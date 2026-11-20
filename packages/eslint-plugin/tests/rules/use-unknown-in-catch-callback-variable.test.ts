@@ -970,5 +970,74 @@ Promise.resolve('foo').catch(
         },
       ],
     },
+    {
+      code: `
+Promise.resolve().catch(function (this: void, err) {});
+      `,
+      errors: [
+        {
+          column: 47,
+          data: { append: '', method: 'catch' },
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch(function (this: void, err: unknown) {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().catch(function (this: void, ...args) {});
+      `,
+      errors: [
+        {
+          column: 47,
+          data: { append: '', method: 'catch' },
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownRestTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch(function (this: void, ...args: [unknown]) {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().catch((console.log('caught'), err => {}));
+      `,
+      errors: [
+        {
+          column: 49,
+          data: { append: '', method: 'catch' },
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch((console.log('caught'), (err: unknown) => {}));
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

@@ -284,6 +284,21 @@ interface Foo {
       code: 'type T = A.B;',
       options: ['index-signature'],
     },
+    {
+      code: `
+import { Record } from 'immutable';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    "type Foo = { [K in 'a' | 'b' as 'c']: number };",
 
     {
       // mapped type that uses the key cannot be converted to record
@@ -428,6 +443,87 @@ export default interface Foo {
         },
       ],
       output: null,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: unknown;
+}
+interface Foo {
+  bar: string;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare global {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare namespace Bar {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+declare namespace Bar {
+  type Foo = Record<string, unknown>;
+}
+      `,
     },
     // Readonly interface with generic parameter
     {

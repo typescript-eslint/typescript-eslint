@@ -455,6 +455,14 @@ function collectTypeParameterUsageCounts(
     else if (tsutils.isConditionalType(type)) {
       visitType(type.checkType, assumeMultipleUses);
       visitType(type.extendsType, assumeMultipleUses);
+
+      // The true and false types are populated lazily, which building a type
+      // node forces.
+      if (!type.resolvedTrueType) {
+        checker.typeToTypeNode(type, undefined, undefined);
+      }
+      visitType(type.resolvedTrueType, assumeMultipleUses);
+      visitType(type.resolvedFalseType, assumeMultipleUses);
     }
 
     // Catch-all: inferred object types like `{ K: V }`.

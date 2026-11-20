@@ -743,6 +743,27 @@ function foo(arg: import('foo-lib').Foo) {}
         },
       ],
     },
+    {
+      code: `
+type Foo = RegExp | string[];
+
+function foo(arg?: Foo) {}
+      `,
+      name: 'optional parameter with a union type alias in the allow list',
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: "function foo(arg = ['a']) {}",
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1687,6 +1708,23 @@ foo<string[]>(arg => {});
         },
       ],
       name: 'type inference with mutable type',
+    },
+    {
+      code: 'function foo(arg: string[] = []) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
     },
   ],
 });

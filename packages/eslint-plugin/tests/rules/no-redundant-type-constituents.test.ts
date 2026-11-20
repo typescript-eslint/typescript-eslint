@@ -163,6 +163,83 @@ type U = T & string;
 
   invalid: [
     {
+      code: `
+type U = unknown;
+type T = U | string;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { container: 'union', typeName: 'unknown' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+type B = 'a' | 'b';
+type T = B | string;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { literal: '"a" | "b"', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type B = false | 'a';
+type T = B | string;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { literal: '"a"', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type B = string | true;
+type T = B | boolean;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { literal: 'true', primitive: 'boolean' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: 'declare const value: string | never;',
+      errors: [
+        {
+          column: 31,
+          data: { container: 'union', typeName: 'never' },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
       code: 'type T = number | any;',
       errors: [
         {

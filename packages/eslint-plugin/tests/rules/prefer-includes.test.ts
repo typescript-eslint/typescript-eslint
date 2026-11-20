@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/prefer-includes';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -89,8 +91,246 @@ function f(a) {
   return pattern.test(a);
 }
     `,
+    `
+function f(a: string): void {
+  /bar/g.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  /bar/y.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  a.lastIndexOf(b) !== -1;
+}
+    `,
+    `
+declare const a: {
+  indexOf: (x: string) => number;
+  includes(x: string): boolean;
+};
+a.indexOf(b) !== -1;
+    `,
   ],
   invalid: [
+    {
+      code: noFormat`
+function f(a: string): void {
+  (a.indexOf(b)) !== -1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  (a.includes(b));
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f(a: string): void {
+  (a.indexOf(b)) === -1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  (!a.includes(b));
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\x001/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\x001');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /'1/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\'1');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/?.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a?.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test('foo');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  'foo'.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test(\`foo\`);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  \`foo\`.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test([a][0]);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  [a][0].includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test(a.trim());
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.trim().includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+declare const a: {
+  indexOf(x: string): number;
+  includes(x: number): boolean;
+  includes(x: string): boolean;
+};
+a.indexOf(b) !== -1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+declare const a: {
+  indexOf(x: string): number;
+  includes(x: number): boolean;
+  includes(x: string): boolean;
+};
+a.includes(b);
+      `,
+    },
     // positive
     {
       code: `

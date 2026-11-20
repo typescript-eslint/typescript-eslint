@@ -197,6 +197,22 @@ const msg = \`arg = \${arg}\`;
       `,
       options: [{ allowAny: true, allowArray: true }],
     },
+    {
+      code: `
+type Nested = Nested[];
+declare const arg: Nested;
+const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+type NestedNumbers = number | NestedNumbers[];
+declare const arg: NestedNumbers[];
+const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true }],
+    },
     // allowAny
     {
       code: `
@@ -932,6 +948,24 @@ declare const obj: Derived;
         },
       ],
       options: [{ allow: [] }],
+    },
+    {
+      code: `
+type NestedObjects = object | NestedObjects[];
+declare const arg: NestedObjects[];
+const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { type: 'NestedObjects[]' },
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
     },
   ],
 });

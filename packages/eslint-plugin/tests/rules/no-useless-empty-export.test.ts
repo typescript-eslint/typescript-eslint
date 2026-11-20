@@ -35,6 +35,28 @@ ruleTester.run('no-useless-empty-export', rule, {
     `
       export {};
     `,
+    `
+      const _ = {};
+      export {};
+    `,
+    `
+      namespace _ {
+        export const a = {};
+      }
+      import a = _.a;
+      export {};
+    `,
+    `
+      declare module '_' {
+        export const a: {};
+        const b: {};
+        export {};
+      }
+    `,
+    `
+      export {} from '_';
+      export const _ = {};
+    `,
     // https://github.com/microsoft/TypeScript/issues/38592
     {
       code: `
@@ -202,6 +224,63 @@ export {};
       ],
       output: `
 import _ = require('_');
+
+      `,
+    },
+    {
+      code: `
+import _ from '_';
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+import _ from '_';
+
+      `,
+    },
+    {
+      code: `
+export = {};
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export = {};
+
+      `,
+    },
+    {
+      code: `
+export {} from '_';
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export {} from '_';
 
       `,
     },

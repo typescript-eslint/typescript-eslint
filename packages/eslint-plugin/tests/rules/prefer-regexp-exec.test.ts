@@ -103,6 +103,7 @@ declare function returnsRegexp(): RegExp;
 text.match(returnsRegexp());
       `,
     },
+    "'something'.search(/thing/);",
   ],
   invalid: [
     {
@@ -366,6 +367,19 @@ function temp(text: string): void {
   new RegExp(\`\${'hello'.toString()}\`).exec(text);
 }
       `,
+    },
+    {
+      code: "'something'.match(RegExp('thing'));",
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: "RegExp('thing').exec('something');",
     },
   ],
 });

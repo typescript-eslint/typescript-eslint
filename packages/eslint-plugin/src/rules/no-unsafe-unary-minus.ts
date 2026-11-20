@@ -40,13 +40,17 @@ export default util.createRule<Options, MessageIds>({
             .unionConstituents(argType)
             .some(
               type =>
-                !tsutils.isTypeFlagSet(
-                  type,
-                  ts.TypeFlags.Any |
-                    ts.TypeFlags.Never |
-                    ts.TypeFlags.BigIntLike |
-                    ts.TypeFlags.NumberLike,
-                ),
+                !tsutils
+                  .intersectionConstituents(type)
+                  .some(part =>
+                    tsutils.isTypeFlagSet(
+                      part,
+                      ts.TypeFlags.Any |
+                        ts.TypeFlags.Never |
+                        ts.TypeFlags.BigIntLike |
+                        ts.TypeFlags.NumberLike,
+                    ),
+                  ),
             )
         ) {
           context.report({

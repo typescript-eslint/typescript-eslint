@@ -146,6 +146,35 @@ export default createRule<Options, MessageIds>({
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
+    function isShadowed(node: TSESTree.Node, name: string): boolean {
+      for (
+        let scope = context.sourceCode.getScope(node);
+        scope.upper;
+        scope = scope.upper
+      ) {
+        if (scope.set.has(name)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Checks whether a fix would drop comments outside of the kept type node.
+     */
+    function hasCommentsOutside(
+      outer: TSESTree.Node,
+      inner: TSESTree.Node,
+    ): boolean {
+      return context.sourceCode
+        .getCommentsInside(outer)
+        .some(
+          comment =>
+            comment.range[1] <= inner.range[0] ||
+            comment.range[0] >= inner.range[1],
+        );
+    }
+
     /**
      * @param node the node to be evaluated.
      */
@@ -176,6 +205,12 @@ export default createRule<Options, MessageIds>({
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent : node;
+        const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+
+        // a local `Array` type can't be used for the global one
+        if (isShadowed(node, arrayType)) {
+          return;
+        }
 
         context.report({
           node: errorNode,
@@ -187,7 +222,9 @@ export default createRule<Options, MessageIds>({
           },
           fix(fixer) {
             const typeNode = node.elementType;
-            const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+            if (hasCommentsOutside(errorNode, typeNode)) {
+              return null;
+            }
 
             return [
               fixer.replaceTextRange(
@@ -217,19 +254,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        for (
-          let scope = context.sourceCode.getScope(node);
-          scope.upper;
-          scope = scope.upper
-        ) {
-          if (scope.set.has(node.typeName.name)) {
-            return;
-          }
+        if (isShadowed(node, node.typeName.name)) {
+          return;
         }
 
         const isReadonlyWithGenericArrayType =
-          node.typeName.name === 'Readonly' &&
-          node.typeArguments?.params[0].type === AST_NODE_TYPES.TSArrayType;
+          node.typeName.name === 'Readonly';
         const isReadonlyArrayType =
           node.typeName.name === 'ReadonlyArray' ||
           isReadonlyWithGenericArrayType;
@@ -266,10 +296,13 @@ export default createRule<Options, MessageIds>({
 
         const type = typeParams[0];
         const typeParens = typeNeedsParentheses(type);
+        // `readonly T[][]` and `readonly T[][number]` would apply to the outer type
         const parentParens =
           readonlyPrefix &&
-          node.parent.type === AST_NODE_TYPES.TSArrayType &&
-          !isParenthesized(node.parent.elementType, context.sourceCode);
+          (node.parent.type === AST_NODE_TYPES.TSArrayType ||
+            (node.parent.type === AST_NODE_TYPES.TSIndexedAccessType &&
+              node.parent.objectType === node)) &&
+          !isParenthesized(node, context.sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''
@@ -280,10 +313,14 @@ export default createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(type),
-            className: isReadonlyArrayType ? node.typeName.name : 'Array',
+            className: node.typeName.name,
             readonlyPrefix,
           },
           fix(fixer) {
+            if (hasCommentsOutside(node, type)) {
+              return null;
+            }
+
             return [
               fixer.replaceTextRange([node.range[0], type.range[0]], start),
               fixer.replaceTextRange([type.range[1], node.range[1]], end),

@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
   name: 'prefer-namespace-keyword',
@@ -23,25 +23,22 @@ export default createRule({
   create(context) {
     return {
       TSModuleDeclaration(node): void {
-        // Do nothing if the name is a string.
-        if (node.id.type === AST_NODE_TYPES.Literal) {
+        // `declare module 'foo'` declares an external module, not a namespace
+        if (node.kind !== 'module' || node.id.type === AST_NODE_TYPES.Literal) {
           return;
         }
-        // Get tokens of the declaration header.
-        const moduleType = context.sourceCode.getTokenBefore(node.id);
 
-        if (
-          moduleType?.type === AST_TOKEN_TYPES.Identifier &&
-          moduleType.value === 'module'
-        ) {
-          context.report({
-            node,
-            messageId: 'useNamespace',
-            fix(fixer) {
-              return fixer.replaceText(moduleType, 'namespace');
-            },
-          });
-        }
+        context.report({
+          node,
+          messageId: 'useNamespace',
+          fix(fixer) {
+            const moduleKeyword = nullThrows(
+              context.sourceCode.getTokenBefore(node.id),
+              NullThrowsReasons.MissingToken('module', 'module declaration'),
+            );
+            return fixer.replaceText(moduleKeyword, 'namespace');
+          },
+        });
       },
     };
   },

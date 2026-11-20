@@ -248,6 +248,34 @@ Promise.reject('foo').catch(e => {
     },
     {
       code: `
+Promise.reject('foo').catch(function (e) {
+  throw e;
+});
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(undefined, function (e) {
+  throw e;
+});
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
 async function foo() {
   throw await Promise.resolve(new Error('error'));
 }
@@ -803,6 +831,101 @@ throw new UnknownError();
       options: [
         {
           allow: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (e) {
+  throw e;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: false,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (e: unknown) => {
+  throw e;
+};
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(callback: (e: unknown) => void): void;
+foo(e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const notAPromise: { catch(callback: (e: unknown) => void): void };
+notAPromise.catch(e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },

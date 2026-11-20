@@ -731,5 +731,86 @@ ruleTester.run('no-restricted-types', rule, {
       ],
       output: null,
     },
+    {
+      code: 'let value: any;',
+      errors: [
+        {
+          column: 12,
+          data: {
+            customMessage: ' Use unknown instead.',
+            name: 'any',
+          },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [{ types: { any: 'Use unknown instead.' } }],
+    },
+    {
+      code: 'class Derived implements Banned<string> {}',
+      errors: [
+        {
+          column: 26,
+          data: {
+            customMessage: ' Use Ok instead.',
+            name: 'Banned<string>',
+          },
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [{ types: { 'Banned<string>': 'Use Ok instead.' } }],
+    },
+    {
+      code: 'interface Derived extends Banned<string> {}',
+      errors: [
+        {
+          column: 27,
+          data: {
+            customMessage: ' Use Ok instead.',
+            name: 'Banned<string>',
+          },
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [{ types: { 'Banned<string>': 'Use Ok instead.' } }],
+    },
+    {
+      code: 'let value: Banned;',
+      errors: [
+        {
+          column: 12,
+          data: {
+            customMessage: '',
+            name: 'Banned',
+          },
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedTypeMessage',
+          suggestions: [
+            {
+              data: { name: 'Banned', replacement: 'Ok' },
+              messageId: 'bannedTypeReplacement',
+              output: 'let value: Ok;',
+            },
+            {
+              data: { name: 'Banned', replacement: 'Fine' },
+              messageId: 'bannedTypeReplacement',
+              output: 'let value: Fine;',
+            },
+          ],
+        },
+      ],
+      options: [{ types: { Banned: { suggest: ['Ok', 'Fine'] } } }],
+      output: null,
+    },
   ],
 });

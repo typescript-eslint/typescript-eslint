@@ -63,10 +63,16 @@ export default createRule<Options, MessageIds>({
                   'import specifier',
                 ),
               );
+              const afterQualifier = nullThrows(
+                context.sourceCode.getTokenAfter(qualifier, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('token', 'type keyword'),
+              );
               fixes.push(
                 fixer.removeRange([
                   qualifier.range[0],
-                  specifier.imported.range[0],
+                  afterQualifier.range[0],
                 ]),
               );
             }

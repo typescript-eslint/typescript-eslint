@@ -75,7 +75,12 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (ts.isDeleteExpression(parent) || isDestructuringAssignment(node)) {
+      if (
+        ts.isDeleteExpression(parent) ||
+        ((ts.isForInStatement(parent) || ts.isForOfStatement(parent)) &&
+          parent.initializer === node) ||
+        isDestructuringAssignment(node)
+      ) {
         classScope.addVariableModification(node);
         return;
       }
@@ -139,6 +144,11 @@ export default createRule<Options, MessageIds>({
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
           );
+        } else if (
+          ts.isForOfStatement(parent) &&
+          !ts.isPropertyAccessExpression(current)
+        ) {
+          return parent.initializer === current;
         } else {
           break;
         }
@@ -310,7 +320,11 @@ export default createRule<Options, MessageIds>({
             ...reportNodeOrLoc,
             messageId: 'preferReadonly',
             data: {
-              name: context.sourceCode.getText(nameNode),
+              // A parameter property's name node also covers its type annotation
+              name:
+                nameNode.type === AST_NODE_TYPES.Identifier
+                  ? nameNode.name
+                  : context.sourceCode.getText(nameNode),
             },
             *fix(fixer) {
               const readonlyInsertionTarget =

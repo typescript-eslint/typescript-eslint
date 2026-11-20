@@ -223,6 +223,8 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         enforceConst?: boolean;
         ignore?: (number | string)[];
         ignoreArrayIndexes?: boolean;
+        ignoreClassFieldInitialValues?: boolean;
+        ignoreDefaultValues?: boolean;
         ignoreEnums?: boolean;
         ignoreNumericLiteralTypes?: boolean;
         ignoreReadonlyClassProperties?: boolean;

@@ -903,6 +903,38 @@ function wrapNode<T>(getNode: () => CustomNode<T>) {
   });
 })().catch(() => {});
     `,
+    `
+interface Box<T> {
+  value: T;
+}
+declare function getBox(): Box<Promise<void>>;
+getBox();
+    `,
+    {
+      code: `
+declare const thenable: { then(onFulfilled: () => void): void };
+thenable;
+      `,
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+declare const thenable: {
+  then(onFulfilled: () => void, onRejected: number): void;
+};
+thenable;
+      `,
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+declare const thenable: {
+  then(onFulfilled: number, onRejected: () => void): void;
+};
+thenable;
+      `,
+      options: [{ checkThenables: true }],
+    },
   ],
 
   invalid: [
@@ -5526,6 +5558,50 @@ void createPromise();
               output: `
 declare const createPromise: () => PromiseLike<number>;
 await createPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+interface OverloadedThenable {
+  then(onFulfilled: number): void;
+  then(onFulfilled: () => void, onRejected: () => void): void;
+}
+declare const thenable: OverloadedThenable;
+thenable;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface OverloadedThenable {
+  then(onFulfilled: number): void;
+  then(onFulfilled: () => void, onRejected: () => void): void;
+}
+declare const thenable: OverloadedThenable;
+void thenable;
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+interface OverloadedThenable {
+  then(onFulfilled: number): void;
+  then(onFulfilled: () => void, onRejected: () => void): void;
+}
+declare const thenable: OverloadedThenable;
+await thenable;
       `,
             },
           ],

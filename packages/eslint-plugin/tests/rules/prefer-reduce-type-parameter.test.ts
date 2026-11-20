@@ -96,6 +96,10 @@ function f<T>() {
     `
 ['a', 'b'].reduce((accum, name) => \`\${accum} | hello \${name}!\`);
     `,
+    `
+declare const arr: number[];
+arr.reduce((a, n) => a, [1, 2] as const);
+    `,
   ],
   invalid: [
     {
@@ -398,6 +402,76 @@ function f<T extends Record<string, boolean>>(t: T) {
     t,
   );
 }
+      `,
+    },
+    {
+      code: `
+declare const arr: number[] | undefined;
+arr?.reduce((a, s) => a.concat(s * 2), [] as number[]);
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: `
+declare const arr: number[] | undefined;
+arr?.reduce<number[]>((a, s) => a.concat(s * 2), []);
+      `,
+    },
+    {
+      code: `
+declare const arr: number[];
+arr.reduce((a, s) => a.concat(s * 2), [] /* a */ as number[]);
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 61,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const arr: number[];
+arr.reduce((a, s) => a.concat(s * 2), <number[]>/* a */ []);
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 59,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const arr: number[];
+arr.reduce((a, s) => a.concat(s * 2), [/* a */] as number[]);
+      `,
+      errors: [
+        {
+          column: 39,
+          endColumn: 60,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: `
+declare const arr: number[];
+arr.reduce<number[]>((a, s) => a.concat(s * 2), [/* a */]);
       `,
     },
   ],

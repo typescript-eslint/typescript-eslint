@@ -9,7 +9,10 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isClosingParenToken,
   isStaticMemberAccessOfValue,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export default createRule({
@@ -109,7 +112,8 @@ export default createRule({
       if (
         pattern.alternatives.length !== 1 ||
         flags.ignoreCase ||
-        flags.global
+        flags.global ||
+        flags.sticky
       ) {
         return null;
       }
@@ -139,9 +143,11 @@ export default createRule({
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replaceAll(
-        replaceRegex,
-        char => EscapeMap[char as keyof typeof EscapeMap],
+      return str.replaceAll(replaceRegex, (char, offset: number) =>
+        // `\0` followed by a digit would be a (disallowed) legacy octal escape
+        char === '\0' && /\d/.test(str.charAt(offset + 1))
+          ? '\\x00'
+          : EscapeMap[char as keyof typeof EscapeMap],
       );
     }
 
@@ -177,15 +183,15 @@ export default createRule({
 
       // Check if every declaration of `indexOf` method has `includes` method
       // and the two methods have the same parameters.
-      for (const instanceofMethodDecl of indexofMethodDeclarations) {
-        const typeDecl = instanceofMethodDecl.parent;
+      for (const indexofMethodDecl of indexofMethodDeclarations) {
+        const typeDecl = indexofMethodDecl.parent;
         const type = checker.getTypeAtLocation(typeDecl);
         const includesMethodDecl = type
           .getProperty('includes')
           ?.getDeclarations();
         if (
           !includesMethodDecl?.some(includesMethodDecl =>
-            hasSameParameters(includesMethodDecl, instanceofMethodDecl),
+            hasSameParameters(includesMethodDecl, indexofMethodDecl),
           )
         ) {
           return;
@@ -202,7 +208,17 @@ export default createRule({
               yield fixer.insertTextBefore(callNode, '!');
             }
             yield fixer.replaceText(node.property, 'includes');
-            yield fixer.removeRange([callNode.range[1], compareNode.range[1]]);
+            // keep any parentheses around the call, as in `(a.indexOf(b)) !== -1`
+            const lastLeftToken = nullThrows(
+              context.sourceCode.getTokenBefore(compareNode.right, {
+                filter: isClosingParenToken,
+              }),
+              NullThrowsReasons.MissingToken(')', 'call expression'),
+            );
+            yield fixer.removeRange([
+              lastLeftToken.range[1],
+              compareNode.range[1],
+            ]);
           },
         }),
       });

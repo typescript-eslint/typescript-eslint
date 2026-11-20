@@ -37,15 +37,15 @@ export default createRule({
       node: TSESTree.EntityName | TSESTree.Expression,
       includeFix: boolean,
     ): void {
-      const typeName = node.type === AST_NODE_TYPES.Identifier && node.name;
       if (
-        !typeName ||
-        !classNames.has(typeName) ||
-        !isReferenceToGlobalFunction(typeName, node, context.sourceCode)
+        node.type !== AST_NODE_TYPES.Identifier ||
+        !classNames.has(node.name) ||
+        !isReferenceToGlobalFunction(node.name, node, context.sourceCode)
       ) {
         return;
       }
 
+      const typeName = node.name;
       const preferred = typeName.toLowerCase();
 
       context.report({

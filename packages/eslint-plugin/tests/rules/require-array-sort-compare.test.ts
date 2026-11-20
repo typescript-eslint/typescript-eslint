@@ -209,6 +209,31 @@ function f(a: readonly [string, ...string[]]) {
       `,
       options: [{ ignoreStringArrays: true }],
     },
+    `
+function f(a: number[]) {
+  a.reverse();
+}
+    `,
+    `
+function f(a: number[] | { sort(): void }) {
+  a.sort();
+}
+    `,
+    `
+function f(a: string[] | [string, string]) {
+  a.sort();
+}
+    `,
+    `
+function f(a: string[] | readonly string[]) {
+  a.toSorted();
+}
+    `,
+    `
+function f(a: string[] | undefined) {
+  a?.sort();
+}
+    `,
   ],
   invalid: [
     {
@@ -606,6 +631,39 @@ function sort<T>(values: (T extends 0 ? string : number)[]) {
         },
       ],
       options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f(a: number[] | undefined) {
+  a?.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: string[] | [string, string]) {
+  a.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: false }],
     },
   ],
 });

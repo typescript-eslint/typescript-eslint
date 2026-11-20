@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/ban-tslint-comment';
 
@@ -158,6 +158,199 @@ console.log(woah);
 const woah = doSomeStuff();
 console.log(woah);
       `,
+    },
+    {
+      code: noFormat`const a = 1/* tslint:disable */+2;`,
+      errors: [
+        {
+          column: 12,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `const a = 1 +2;`,
+    },
+    {
+      code: noFormat`typeof/* tslint:disable */x;`,
+      errors: [
+        {
+          column: 7,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `typeof x;`,
+    },
+    {
+      code: noFormat`a(); /* tslint:disable */ b();`,
+      errors: [
+        {
+          column: 6,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `a(); b();`,
+    },
+    {
+      code: '/* tslint:disable */ foo();',
+      errors: [
+        {
+          column: 1,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `foo();`,
+    },
+    {
+      code: `
+if (a) {
+  /* tslint:disable */ foo();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+if (a) {
+  foo();
+}
+      `,
+    },
+    {
+      code: `
+if (a) {
+  // tslint:disable-next-line
+  foo();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { text: '// tslint:disable-next-line' },
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+if (a) {
+  foo();
+}
+      `,
+    },
+    {
+      code: `
+/* tslint:disable
+ */
+foo();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 4,
+          endLine: 3,
+          line: 2,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+foo();
+      `,
+    },
+    {
+      code: noFormat`
+a();// tslint:disable-line
+(b);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { text: '// tslint:disable-line' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+a();
+(b);
+      `,
+    },
+    {
+      code: noFormat`
+function f() {
+  return // tslint:disable-line
+  x;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { text: '// tslint:disable-line' },
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: `
+function f() {
+  return
+  x;
+}
+      `,
+    },
+    {
+      code: noFormat`const a = /* tslint:disable */1;`,
+      errors: [
+        {
+          column: 11,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: 'const a =1;',
+    },
+    {
+      code: noFormat`a;/* tslint:disable */ b;`,
+      errors: [
+        {
+          column: 3,
+          data: { text: '/* tslint:disable */' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'commentDetected',
+        },
+      ],
+      output: 'a; b;',
     },
   ],
 });

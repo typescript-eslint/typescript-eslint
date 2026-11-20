@@ -293,7 +293,11 @@ export default createRule({
       ];
     }
 
-    function test(node: TSESTree.Expression, expression: ts.Node): void {
+    function test(
+      node: TSESTree.Expression,
+      expression: ts.Node,
+      isInAsyncGenerator: boolean,
+    ): void {
       let child: ts.Node;
 
       const isAwait = ts.isAwaitExpression(expression);
@@ -325,9 +329,12 @@ export default createRule({
 
       // At this point it's definitely a thenable.
 
+      // An async generator's `return` awaits its operand before leaving the
+      // function, so returning an unawaited promise there is always safe.
       const affectsErrorHandling =
-        affectsExplicitErrorHandling(expression) ||
-        affectsExplicitResourceManagement(node);
+        !isInAsyncGenerator &&
+        (affectsExplicitErrorHandling(expression) ||
+          affectsExplicitResourceManagement(node));
       const useAutoFix = !affectsErrorHandling;
 
       const ruleConfiguration = getConfiguration(option as Option);
@@ -405,7 +412,7 @@ export default createRule({
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           findPossiblyReturnedNodes(node.body).forEach(node => {
             const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-            test(node, tsNode);
+            test(node, tsNode, false);
           });
         }
       },
@@ -416,7 +423,7 @@ export default createRule({
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
           const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-          test(node, tsNode);
+          test(node, tsNode, scopeInfo.owningFunc.generator);
         });
       },
     };

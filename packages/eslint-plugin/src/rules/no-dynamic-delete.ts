@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, skipChainExpression } from '../util';
 
 export default createRule({
   name: 'no-dynamic-delete',
@@ -23,16 +23,17 @@ export default createRule({
   create(context) {
     return {
       'UnaryExpression[operator=delete]'(node: TSESTree.UnaryExpression): void {
+        const argument = skipChainExpression(node.argument);
         if (
-          node.argument.type !== AST_NODE_TYPES.MemberExpression ||
-          !node.argument.computed ||
-          isAcceptableIndexExpression(node.argument.property)
+          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          !argument.computed ||
+          isAcceptableIndexExpression(argument.property)
         ) {
           return;
         }
 
         context.report({
-          node: node.argument.property,
+          node: argument.property,
           messageId: 'dynamicDelete',
         });
       },
@@ -44,6 +45,8 @@ function isAcceptableIndexExpression(property: TSESTree.Expression): boolean {
   return (
     (property.type === AST_NODE_TYPES.Literal &&
       ['number', 'string'].includes(typeof property.value)) ||
+    (property.type === AST_NODE_TYPES.TemplateLiteral &&
+      property.expressions.length === 0) ||
     (property.type === AST_NODE_TYPES.UnaryExpression &&
       property.operator === '-' &&
       property.argument.type === AST_NODE_TYPES.Literal &&

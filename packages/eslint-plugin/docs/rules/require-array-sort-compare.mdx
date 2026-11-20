@@ -29,12 +29,8 @@ This rule aims to ensure all calls of the native sort methods provide a `compare
 
 ```ts
 const array: any[];
-const stringArray: string[];
 
 array.sort();
-
-// String arrays should be sorted using `String#localeCompare`.
-stringArray.sort();
 ```
 
 </TabItem>

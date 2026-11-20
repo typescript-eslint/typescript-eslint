@@ -42,15 +42,48 @@ export default createRule({
               messageId: 'commentDetected',
               data: { text: toText(c.value, c.type) },
               fix(fixer) {
-                const rangeStart = context.sourceCode.getIndexFromLoc({
-                  column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
-                  line: c.loc.start.line,
-                });
-                const rangeEnd = context.sourceCode.getIndexFromLoc({
-                  column: c.loc.end.column,
-                  line: c.loc.end.line,
-                });
-                return fixer.removeRange([rangeStart, rangeEnd + 1]);
+                const { lines } = context.sourceCode;
+                const textBefore = lines[c.loc.start.line - 1].slice(
+                  0,
+                  c.loc.start.column,
+                );
+                const textAfter = lines[c.loc.end.line - 1].slice(
+                  c.loc.end.column,
+                );
+                const spacesBefore =
+                  textBefore.length - textBefore.trimEnd().length;
+                const spacesAfter =
+                  textAfter.length - textAfter.trimStart().length;
+
+                if (!textBefore.trim() && !textAfter.trim()) {
+                  // The comment is alone on its line(s), so remove the line(s)
+                  return fixer.removeRange([
+                    c.range[0] - spacesBefore,
+                    c.loc.end.line < lines.length
+                      ? context.sourceCode.getIndexFromLoc({
+                          column: 0,
+                          line: c.loc.end.line + 1,
+                        })
+                      : c.range[1] + spacesAfter,
+                  ]);
+                }
+
+                if (!textBefore.trim()) {
+                  return fixer.removeRange([
+                    c.range[0],
+                    c.range[1] + spacesAfter,
+                  ]);
+                }
+
+                if (!spacesBefore && !spacesAfter && textAfter) {
+                  // Keep the code on either side from joining into one token
+                  return fixer.replaceText(c, ' ');
+                }
+
+                return fixer.removeRange([
+                  c.range[0] - spacesBefore,
+                  c.range[1],
+                ]);
               },
             });
           }

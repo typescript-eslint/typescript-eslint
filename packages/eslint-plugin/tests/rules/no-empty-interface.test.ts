@@ -123,6 +123,141 @@ interface Foo {
 
 interface Bar extends Foo {}
 
+interface Bar {
+  other: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+function Bar() {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+
+function Bar() {}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+export default interface Bar extends Foo {}
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+declare global {
+  interface Bar extends Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+
+declare global {
+  type Bar = Foo
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  interface Bar extends Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  type Bar = Foo
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
 const bar = class Bar {};
       `,
       errors: [

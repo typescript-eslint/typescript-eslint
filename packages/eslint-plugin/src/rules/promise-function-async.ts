@@ -118,11 +118,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      if (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
-        // Abstract method can't be async
-        return;
-      }
-
       if (
         (node.parent.type === AST_NODE_TYPES.Property ||
           node.parent.type === AST_NODE_TYPES.MethodDefinition) &&

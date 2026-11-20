@@ -197,6 +197,14 @@ function f<T = number>() {}
 function takesFn(fn: () => void) {}
 takesFn(f<number>);
     `,
+    `
+class C<T = string> {}
+const D = C<string>;
+    `,
+    `
+declare function f<T = number>(): void;
+f<number, string>();
+    `,
   ],
   invalid: [
     {
@@ -692,6 +700,106 @@ function Button<T = string>() {
   return <div></div>;
 }
 const button = <Button />;
+      `,
+    },
+    {
+      code: `
+namespace NS {
+  export interface I<T = number> {}
+}
+import I = NS.I;
+type X = I<number>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+namespace NS {
+  export interface I<T = number> {}
+}
+import I = NS.I;
+type X = I;
+      `,
+    },
+    {
+      code: `
+interface Foo<T = string> {}
+declare var Foo: {
+  new <T>(type: T): any;
+};
+interface Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+interface Foo<T = string> {}
+declare var Foo: {
+  new <T>(type: T): any;
+};
+interface Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+interface Foo<T = string> {}
+declare var Foo: {
+  new <T>(type: T): any;
+};
+type Bar = Foo<string>;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+interface Foo<T = string> {}
+declare var Foo: {
+  new <T>(type: T): any;
+};
+type Bar = Foo;
+      `,
+    },
+    {
+      code: `
+declare var Foo: {
+  new <T>(type: T): any;
+};
+type Foo<T = string> = { type: T };
+type Bar = Foo<string>;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+declare var Foo: {
+  new <T>(type: T): any;
+};
+type Foo<T = string> = { type: T };
+type Bar = Foo;
       `,
     },
   ],

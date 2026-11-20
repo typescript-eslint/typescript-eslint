@@ -80,9 +80,12 @@ export default createRule<[Options], MessageIds>({
     ];
     const invalidGrandParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSPropertySignature,
+      AST_NODE_TYPES.TSIndexSignature,
       AST_NODE_TYPES.CallExpression,
       AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.TSAbstractPropertyDefinition,
       AST_NODE_TYPES.AccessorProperty,
+      AST_NODE_TYPES.TSAbstractAccessorProperty,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [
@@ -263,23 +266,29 @@ function getNotReturnOrGenericMessageId(
     : 'invalidVoidNotReturnOrGeneric';
 }
 
+/**
+ * Finds the function or method whose return type annotation contains the node.
+ */
 function getParentFunctionDeclarationNode(
   node: TSESTree.Node,
 ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
   let current = node.parent;
-  while (current) {
-    if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
-      return current;
-    }
-
-    if (
-      current.type === AST_NODE_TYPES.MethodDefinition &&
-      current.value.body != null
-    ) {
-      return current;
-    }
-
+  while (current && current.type !== AST_NODE_TYPES.TSTypeAnnotation) {
     current = current.parent;
+  }
+
+  const declaringFunction = current?.parent;
+
+  // A type annotation directly under a function is its return type.
+  if (declaringFunction?.type === AST_NODE_TYPES.FunctionDeclaration) {
+    return declaringFunction;
+  }
+
+  if (
+    declaringFunction?.type === AST_NODE_TYPES.FunctionExpression &&
+    declaringFunction.parent.type === AST_NODE_TYPES.MethodDefinition
+  ) {
+    return declaringFunction.parent;
   }
 
   return null;

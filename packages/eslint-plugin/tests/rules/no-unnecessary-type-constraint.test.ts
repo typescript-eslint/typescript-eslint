@@ -548,5 +548,169 @@ const Data = class {
         },
       ],
     },
+    {
+      code: noFormat`function data<T extends (any)>() {}`,
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'any', name: 'T' },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'any' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'function data<T>() {}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`function data<T extends (any) = string>() {}`,
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'any', name: 'T' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'any' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'function data<T = string>() {}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const data = <T extends (unknown)>() => {};`,
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'const data = <T,>() => {};',
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: 'function data<T extends any>() {}',
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'any', name: 'T' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'any' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'function data<T>() {}',
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: 'function data<T /* a */ extends /* b */ unknown>() {}',
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'function data<T /* a */ /* b */>() {}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function data<
+  T // a
+    extends unknown,
+>() {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 20,
+          endLine: 4,
+          line: 3,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: `
+function data<
+  T // a
+,
+>() {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'function data<const /* a */ T extends any = /* b */ string>() {}',
+      errors: [
+        {
+          column: 15,
+          data: { constraint: 'any', name: 'T' },
+          endColumn: 59,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'any' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: 'function data<const /* a */ T = /* b */ string>() {}',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

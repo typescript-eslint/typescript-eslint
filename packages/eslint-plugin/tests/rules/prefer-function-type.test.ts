@@ -43,6 +43,30 @@ interface Bar extends Function, Foo {
   (): void;
 }
     `,
+    `
+interface Foo {
+  bar(): void;
+}
+    `,
+    `
+type Foo = {
+  ();
+};
+    `,
+    `
+interface Foo {
+  (): void;
+}
+interface Foo {
+  bar: string;
+}
+    `,
+    `
+interface Foo {
+  (): void;
+}
+class Foo {}
+    `,
   ],
 
   invalid: [
@@ -460,6 +484,287 @@ type X = {} & { (): void; };
       ],
       output: `
 type X = {} & (() => void);
+      `,
+    },
+    {
+      code: `
+type Foo = {
+  new (): Foo;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = new () => Foo;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  (): void;
+}
+function Foo() {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = () => void;
+function Foo() {}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  (): void; // comment
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+// comment
+type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+type Foo = {
+  (): void; // comment
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = // comment
+() => void;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  // first
+  (): void; // second
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+// first
+// second
+type Foo = () => void;
+      `,
+    },
+    {
+      code: noFormat`
+type Foo = { (): void, };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+type Foo = [{ (): void }?];
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = [(() => void)?];
+      `,
+    },
+    {
+      code: `
+type Foo = keyof { (): void };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = keyof (() => void);
+      `,
+    },
+    {
+      code: `
+type Foo = { (): void }['call'];
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = (() => void)['call'];
+      `,
+    },
+    {
+      code: `
+type Foo = Bar[{ (): void }];
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = Bar[() => void];
+      `,
+    },
+    {
+      code: `
+type Foo = { (): void } extends Bar ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo = (() => void) extends Bar ? 1 : 2;
+      `,
+    },
+    {
+      code: `
+type Foo<T> = T extends { (): void } ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 27,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+type Foo<T> = T extends () => void ? 1 : 2;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  /* comment */
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+/* comment */
+type Foo = () => void;
       `,
     },
   ],

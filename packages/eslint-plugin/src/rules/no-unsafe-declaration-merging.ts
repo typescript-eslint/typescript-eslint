@@ -1,7 +1,7 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -28,7 +28,7 @@ export default createRule({
       node: TSESTree.Identifier,
       unsafeKind: AST_NODE_TYPES,
     ): void {
-      const variable = scope.set.get(node.name);
+      const variable = ASTUtils.findVariable(scope, node.name);
       if (!variable) {
         return;
       }

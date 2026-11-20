@@ -1,12 +1,17 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { extname } from 'node:path';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
 
-import { createRule } from '../util';
+import {
+  createRule,
+  isClosingParenToken,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
@@ -93,9 +98,40 @@ export default createRule({
                 constraint,
               },
               fix(fixer): TSESLint.RuleFix | null {
+                const { sourceCode } = context;
+                // the constraint's range doesn't include any parentheses around it
+                let constraintEnd = nullThrows(
+                  sourceCode.getLastToken(node.constraint),
+                  NullThrowsReasons.MissingToken('token', 'constraint'),
+                );
+                for (
+                  let next = sourceCode.getTokenAfter(constraintEnd);
+                  next && isClosingParenToken(next);
+                  next = sourceCode.getTokenAfter(next)
+                ) {
+                  constraintEnd = next;
+                }
+
+                const removedRange: TSESTree.Range = [
+                  node.name.range[1],
+                  constraintEnd.range[1],
+                ];
+                const comments = sourceCode
+                  .getCommentsInside(node)
+                  .filter(
+                    comment =>
+                      comment.range[0] >= removedRange[0] &&
+                      comment.range[1] <= removedRange[1],
+                  );
+                const commentsText = comments
+                  .map(comment => ` ${sourceCode.getText(comment)}`)
+                  .join('');
+                const lineBreak =
+                  comments.at(-1)?.type === AST_TOKEN_TYPES.Line ? '\n' : '';
+
                 return fixer.replaceTextRange(
-                  [node.name.range[1], node.constraint.range[1]],
-                  shouldAddTrailingComma() ? ',' : '',
+                  removedRange,
+                  `${commentsText}${lineBreak}${shouldAddTrailingComma() ? ',' : ''}`,
                 );
               },
             },

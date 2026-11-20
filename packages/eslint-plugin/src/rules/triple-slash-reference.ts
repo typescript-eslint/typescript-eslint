@@ -62,41 +62,32 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ lib, path, types }]) {
-    let programNode: TSESTree.Node | undefined;
+    // Maps each `types` reference comment to the module it references
+    const references = new Map<TSESTree.Comment, string>();
 
-    const references: {
-      comment: TSESTree.Comment;
-      importName: string;
-    }[] = [];
-
-    function hasMatchingReference(source: TSESTree.Literal): void {
-      references.forEach(reference => {
-        if (reference.importName === source.value) {
+    function reportMatchingReferences(source: TSESTree.StringLiteral): void {
+      for (const [comment, importName] of references) {
+        if (importName === source.value) {
+          references.delete(comment);
           context.report({
-            node: reference.comment,
+            node: comment,
             messageId: 'tripleSlashReference',
             data: {
-              module: reference.importName,
+              module: importName,
             },
           });
         }
-      });
+      }
     }
     return {
       ImportDeclaration(node): void {
-        if (programNode) {
-          hasMatchingReference(node.source);
-        }
+        reportMatchingReferences(node.source);
       },
       Program(node): void {
-        if (lib === 'always' && path === 'always' && types === 'always') {
-          return;
-        }
-        programNode = node;
         const referenceRegExp =
-          /^\/\s*<reference\s*(types|path|lib)\s*=\s*["|'](.*)["|']/;
+          /^\/\s*<reference\s*(types|path|lib)\s*=\s*(["'])(.*?)\2/;
 
-        const firstToken = context.sourceCode.getFirstToken(programNode);
+        const firstToken = context.sourceCode.getFirstToken(node);
 
         const commentsBefore = firstToken
           ? context.sourceCode.getCommentsBefore(firstToken)
@@ -109,33 +100,32 @@ export default createRule<Options, MessageIds>({
           const referenceResult = referenceRegExp.exec(comment.value);
 
           if (referenceResult) {
+            const [, kind, , importName] = referenceResult;
             if (
-              (referenceResult[1] === 'types' && types === 'never') ||
-              (referenceResult[1] === 'path' && path === 'never') ||
-              (referenceResult[1] === 'lib' && lib === 'never')
+              (kind === 'types' && types === 'never') ||
+              (kind === 'path' && path === 'never') ||
+              (kind === 'lib' && lib === 'never')
             ) {
               context.report({
                 node: comment,
                 messageId: 'tripleSlashReference',
                 data: {
-                  module: referenceResult[2],
+                  module: importName,
                 },
               });
               return;
             }
-            if (referenceResult[1] === 'types' && types === 'prefer-import') {
-              references.push({ comment, importName: referenceResult[2] });
+            if (kind === 'types' && types === 'prefer-import') {
+              references.set(comment, importName);
             }
           }
         });
       },
       TSImportEqualsDeclaration(node): void {
-        if (programNode) {
-          const reference = node.moduleReference;
+        const reference = node.moduleReference;
 
-          if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
-            hasMatchingReference(reference.expression);
-          }
+        if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
+          reportMatchingReferences(reference.expression);
         }
       },
     };

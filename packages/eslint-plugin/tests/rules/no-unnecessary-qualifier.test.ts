@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unnecessary-qualifier';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -8,6 +10,11 @@ ruleTester.run('no-unnecessary-qualifier', rule, {
     requireData: true,
   },
   valid: [
+    `
+namespace A {
+  const value = undeclaredValue.x;
+}
+    `,
     `
 namespace X {
   export type T = number;
@@ -308,6 +315,100 @@ declare module './foo' {
 import * as Foo from './foo';
 declare module './foo' {
   const x: T = 3;
+}
+      `,
+    },
+    {
+      code: noFormat`
+namespace A {
+  export const x = 3;
+  export const y = (A).x;
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'x' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryQualifier',
+        },
+      ],
+      output: `
+namespace A {
+  export const x = 3;
+  export const y = x;
+}
+      `,
+    },
+    {
+      code: `
+namespace A {
+  export const x = 3;
+  export const y = A./* comment */ x;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'x' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryQualifier',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace A {
+  export type B = number;
+  const x: A /* comment */.B = 3;
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'B' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryQualifier',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace A {
+  export const x = 3;
+  export const y = [A.x, A.x];
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'x' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryQualifier',
+        },
+        {
+          column: 26,
+          data: { name: 'x' },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryQualifier',
+        },
+      ],
+      output: `
+namespace A {
+  export const x = 3;
+  export const y = [x, x];
 }
       `,
     },

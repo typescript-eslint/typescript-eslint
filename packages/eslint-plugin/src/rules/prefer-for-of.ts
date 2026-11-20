@@ -59,6 +59,7 @@ export default createRule({
         node.operator === '<' &&
         isMatchingIdentifier(node.left, name) &&
         node.right.type === AST_NODE_TYPES.MemberExpression &&
+        !node.right.computed &&
         isMatchingIdentifier(node.right.property, 'length')
       ) {
         return node.right.object;
@@ -106,6 +107,28 @@ export default createRule({
       );
     }
 
+    function isInLoopDeclaringVariable(
+      node: TSESTree.Node,
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      for (
+        let current: TSESTree.Node | undefined = node;
+        current;
+        current = current.parent
+      ) {
+        if (
+          current.type === AST_NODE_TYPES.ForStatement &&
+          current.init?.type === AST_NODE_TYPES.VariableDeclaration &&
+          context.sourceCode
+            .getDeclaredVariables(current.init)
+            .includes(variable)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function isIndexOnlyUsedWithArray(
       body: TSESTree.Statement,
       indexVar: TSESLint.Scope.Variable,
@@ -114,14 +137,17 @@ export default createRule({
       const arrayText = context.sourceCode.getText(arrayExpression);
       return indexVar.references.every(reference => {
         const id = reference.identifier;
+        if (!contains(body, id)) {
+          // a `var` index can also be used after the loop, unless another loop redeclares it
+          return isInLoopDeclaringVariable(id, indexVar);
+        }
         const node = id.parent;
         return (
-          !contains(body, id) ||
-          (node.type === AST_NODE_TYPES.MemberExpression &&
-            node.object.type !== AST_NODE_TYPES.ThisExpression &&
-            node.property === id &&
-            context.sourceCode.getText(node.object) === arrayText &&
-            !isAssignee(node))
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          node.object.type !== AST_NODE_TYPES.ThisExpression &&
+          node.property === id &&
+          context.sourceCode.getText(node.object) === arrayText &&
+          !isAssignee(node)
         );
       });
     }
@@ -132,10 +158,8 @@ export default createRule({
           return;
         }
 
-        const declarator = node.init.declarations[0] as
-          TSESTree.VariableDeclarator | undefined;
+        const declarator = node.init.declarations[0];
         if (
-          !declarator ||
           !isZeroInitialized(declarator) ||
           declarator.id.type !== AST_NODE_TYPES.Identifier
         ) {

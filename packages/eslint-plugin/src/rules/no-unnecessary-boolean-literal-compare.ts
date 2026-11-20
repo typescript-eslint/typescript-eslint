@@ -127,12 +127,12 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const { constraintType, isTypeParameter } = getConstraintInfo(
+      const { constraintType } = getConstraintInfo(
         checker,
         services.getTypeAtLocation(comparison.expression),
       );
 
-      if (isTypeParameter && constraintType == null) {
+      if (constraintType == null) {
         return undefined;
       }
 
@@ -274,6 +274,14 @@ export default createRule<Options, MessageIds>({
             const isWrappedInUnaryNegation = nodeIsUnaryNegation(node.parent);
             const mutatedNode = isWrappedInUnaryNegation ? node.parent : node;
 
+            // the fix keeps only the compared expression's text, so it would drop other comments
+            if (
+              context.sourceCode.getCommentsInside(mutatedNode).length >
+              context.sourceCode.getCommentsInside(comparison.expression).length
+            ) {
+              return null;
+            }
+
             // Whether the truth table of the overall expression being replaced
             // is negated, _ignoring the nullish cases_.
             const isOverallNegated = booleanXor(
@@ -339,7 +347,6 @@ export default createRule<Options, MessageIds>({
 
 interface EqualsKind {
   isPositive: boolean;
-  isStrict: boolean;
 }
 
 function getEqualsKind(operator: string): EqualsKind | undefined {
@@ -347,25 +354,21 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
     case '!=':
       return {
         isPositive: false,
-        isStrict: false,
       };
 
     case '!==':
       return {
         isPositive: false,
-        isStrict: true,
       };
 
     case '==':
       return {
         isPositive: true,
-        isStrict: false,
       };
 
     case '===':
       return {
         isPositive: true,
-        isStrict: true,
       };
 
     default:

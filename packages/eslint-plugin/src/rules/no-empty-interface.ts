@@ -3,7 +3,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isDefinitionFile } from '../util';
+import { createRule } from '../util';
 
 export type Options = [
   {
@@ -93,27 +93,31 @@ export default createRule<Options, MessageIds>({
           };
           const scope = context.sourceCode.getScope(node);
 
-          const mergedWithClassDeclaration = scope.set
+          const mergedWithOtherDeclaration = scope.set
             .get(node.id.name)
             ?.defs.some(
-              def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
+              def =>
+                def.node !== node &&
+                (def.node.type === AST_NODE_TYPES.ClassDeclaration ||
+                  def.node.type === AST_NODE_TYPES.TSInterfaceDeclaration),
             );
 
-          const isInAmbientDeclaration =
-            isDefinitionFile(context.filename) &&
-            scope.type === ScopeType.tsModule &&
-            scope.block.declare;
+          // `export default type` is not valid syntax
+          const cannotFix =
+            mergedWithOtherDeclaration ||
+            node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
-          const useAutoFix = !(
-            isInAmbientDeclaration || mergedWithClassDeclaration
-          );
+          const isInAmbientDeclaration =
+            scope.type === ScopeType.tsModule && scope.block.declare;
+
+          const useAutoFix = !(isInAmbientDeclaration || cannotFix);
 
           context.report({
             node: node.id,
             messageId: 'noEmptyWithSuper',
             ...(useAutoFix
               ? { fix }
-              : !mergedWithClassDeclaration
+              : !cannotFix
                 ? {
                     suggest: [
                       {
