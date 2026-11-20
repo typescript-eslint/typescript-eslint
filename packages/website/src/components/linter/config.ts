@@ -24,6 +24,7 @@ export const defaultParseSettings: ParseSettings = {
   projects: new Map(),
   projectService: undefined,
   range: true,
+  runExternalCode: false,
   singleRun: false,
   suppressDeprecatedPropertyWarnings: false,
   tokens: [],

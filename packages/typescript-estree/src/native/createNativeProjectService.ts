@@ -42,6 +42,7 @@ export function toCompilerPath(filePath: string): string {
 
 export function createNativeProjectService(
   cwd = process.cwd(),
+  runExternalCode = false,
 ): NativeProjectService {
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
@@ -53,7 +54,7 @@ export function createNativeProjectService(
 
   function startAPI() {
     try {
-      return new API({ cwd });
+      return new API({ cwd, runExternalCode });
     } catch (error) {
       throw startupError(error);
     }
@@ -271,14 +272,24 @@ export function createNativeProjectService(
   };
 }
 
-let nativeProjectService: NativeProjectService | undefined;
+const nativeProjectServices = new Map<boolean, NativeProjectService>();
 
 export function clearNativeProjectService(): void {
-  const service = nativeProjectService;
-  nativeProjectService = undefined;
-  service?.close();
+  const services = [...nativeProjectServices.values()];
+  nativeProjectServices.clear();
+  for (const service of services) {
+    service.close();
+  }
 }
 
-export function getNativeProjectService(cwd?: string): NativeProjectService {
-  return (nativeProjectService ??= createNativeProjectService(cwd));
+export function getNativeProjectService(
+  cwd?: string,
+  runExternalCode = false,
+): NativeProjectService {
+  let service = nativeProjectServices.get(runExternalCode);
+  if (!service) {
+    service = createNativeProjectService(cwd, runExternalCode);
+    nativeProjectServices.set(runExternalCode, service);
+  }
+  return service;
 }
