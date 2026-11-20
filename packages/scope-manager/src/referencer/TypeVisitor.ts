@@ -85,7 +85,11 @@ export class TypeVisitor extends Visitor {
   }
 
   protected MemberExpression(node: TSESTree.MemberExpression): void {
-    this.visit(node.object);
+    if (node.object.type === AST_NODE_TYPES.Identifier) {
+      this.#referencer.currentScope().referenceTypeQualifiedName(node.object);
+    } else {
+      this.visit(node.object);
+    }
     // don't visit the property
   }
 
@@ -226,7 +230,11 @@ export class TypeVisitor extends Visitor {
   }
 
   protected TSQualifiedName(node: TSESTree.TSQualifiedName): void {
-    this.visit(node.left);
+    if (node.left.type === AST_NODE_TYPES.Identifier) {
+      this.#referencer.currentScope().referenceTypeQualifiedName(node.left);
+    } else {
+      this.visit(node.left);
+    }
     // we don't visit the right as it a name on the thing, not a name to reference
   }
 

@@ -1377,9 +1377,136 @@ export function g(a: string, b: unknown) {
       `,
       options: [{ args: 'after-used' }],
     },
+    `
+import type * as T from 'a.js';
+
+export class Bar<T> implements T.Foo {
+  someMethod(value: T): void {
+    console.log(value);
+  }
+}
+    `,
+    `
+export namespace B3 {
+  namespace T {
+    export interface I<U = 1> {
+      prop: U;
+    }
+  }
+
+  export class Foo<T> implements T.I<T> {}
+}
+    `,
+    `
+export namespace Three {
+  namespace T {
+    export type Foo<U = 1> = U;
+  }
+
+  export type Foo<T> = T.Foo<T>;
+}
+    `,
   ],
 
   invalid: [
+    {
+      code: `
+import type * as T from 'a.js';
+
+export class Bar<T> implements T.Foo {}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'T',
+          },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export namespace B1 {
+  namespace T {
+    export interface I<U = 1> {
+      prop: U;
+    }
+  }
+
+  export class Foo<T> implements T.I {}
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'T',
+          },
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export namespace One {
+  namespace T {
+    export type Foo<U = 1> = U;
+  }
+
+  export type Foo<T> = T.Foo;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'T',
+          },
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export namespace Two {
+  namespace T {
+    export type Foo<U = 1> = U;
+  }
+
+  export type Foo<T> = T;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'T',
+          },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
     {
       code: `
 import { ClassDecoratorFactory } from 'decorators';
