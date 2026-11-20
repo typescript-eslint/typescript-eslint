@@ -398,7 +398,12 @@ export default util.createRule<Options, MessageId>({
       if (funcNode.async) {
         // The provided function is an async function.
 
-        if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
+        if (
+          funcNode.body.type !== AST_NODE_TYPES.BlockStatement &&
+          !hasAwaitInScope(
+            parserServices.esTreeNodeToTSNodeMap.get(funcNode.body),
+          )
+        ) {
           // This async function is an arrow function shorthand without braces.
 
           return context.report({
@@ -509,6 +514,30 @@ export default util.createRule<Options, MessageId>({
       // No invalid returns found. The function is allowed.
     }
 
+    function hasAwaitInScope(node: ts.Node): boolean {
+      if (ts.isAwaitExpression(node)) {
+        return true;
+      }
+      if (
+        ts.isArrowFunction(node) ||
+        ts.isFunctionExpression(node) ||
+        ts.isClassStaticBlockDeclaration(node)
+      ) {
+        return false;
+      }
+      if (
+        ts.isMethodDeclaration(node) ||
+        ts.isAccessor(node) ||
+        ts.isConstructorDeclaration(node)
+      ) {
+        return Boolean(
+          node.modifiers?.some(hasAwaitInScope) ||
+          (node.name && hasAwaitInScope(node.name)),
+        );
+      }
+      return Boolean(ts.forEachChild(node, hasAwaitInScope));
+    }
+
     /**
      * Removes the async keyword and replaces the return type with void.
      */
@@ -518,15 +547,16 @@ export default util.createRule<Options, MessageId>({
     ): Generator<TSESLint.RuleFix> {
       if (funcNode.async) {
         // Remove async keyword
-        const funcHeadNode =
-          funcNode.parent.type === AST_NODE_TYPES.Property ||
-          funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
-            ? funcNode.parent
-            : funcNode;
+        const { parent } = funcNode;
         const asyncToken = util.nullThrows(
-          sourceCode.getFirstToken(funcHeadNode, {
-            filter: token => token.value === 'async',
-          }),
+          parent.type === AST_NODE_TYPES.MethodDefinition ||
+            (parent.type === AST_NODE_TYPES.Property && parent.method)
+            ? sourceCode.getTokenBefore(parent.key, {
+                filter: token => token.value === 'async',
+              })
+            : sourceCode.getFirstToken(funcNode, {
+                filter: token => token.value === 'async',
+              }),
           util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
         );
         yield fixer.remove(asyncToken);
