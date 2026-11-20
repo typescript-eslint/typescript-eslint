@@ -566,9 +566,10 @@ function collectTypeParameterUsageCounts(
       visitType(typeParameter, false);
     }
 
+    const returnType = signature.getReturnType();
+
     visitType(
-      checker.getTypePredicateOfSignature(signature)?.type ??
-        signature.getReturnType(),
+      checker.getTypePredicateOfSignature(signature)?.type ?? returnType,
       false,
       true,
     );
