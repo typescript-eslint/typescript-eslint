@@ -314,7 +314,12 @@ export default createRule<Options, MessageIds>({
         node?: TSESTree.Node;
       },
     ) => {
-      reportedUnusedVariables.add(unusedVar);
+      // A used name stays out of this set. Otherwise a mixed import like
+      // `import { _foo, bar }` is treated as fully unused and the suggestion
+      // deletes the used specifier too.
+      if (opts.messageId === 'unusedVar') {
+        reportedUnusedVariables.add(unusedVar);
+      }
 
       const writeReferences = unusedVar.references.filter(
         ref =>
@@ -343,6 +348,11 @@ export default createRule<Options, MessageIds>({
           messageId?: MessageIds;
           useAutofix?: boolean;
         } => {
+          if (opts.messageId !== 'unusedVar') {
+            // The variable is used, so removing it would break the code.
+            return {};
+          }
+
           if (unusedVar.defs.length !== 1) {
             // If there's multiple definitions then we'd have to clean them all
             // up! That's complicated and messy so for now let's just ignore it.
@@ -413,9 +423,17 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.Type:
-              // TODO(bradzacher) -- this would be really easy to implement and
-              // is side-effect free!
-              return {};
+              // Type parameters and mapped type keys are part of a larger
+              // type, so they can't be removed on their own.
+              if (
+                def.node.type !== AST_NODE_TYPES.TSInterfaceDeclaration &&
+                def.node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration
+              ) {
+                return {};
+              }
+              return {
+                fix: fixer => removeNodeWithTrailingNewline(fixer, def.node),
+              };
 
             case VariableType.Variable:
               // TODO(bradzacher) -- this would be really easy to implement
