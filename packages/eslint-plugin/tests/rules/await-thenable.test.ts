@@ -792,6 +792,172 @@ Promise.all(noPromises);
       ],
     },
     {
+      code: noFormat`
+async function test() {
+  return await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  throw await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  throw ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function* test() {
+  yield await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function* test() {
+  yield ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  return await /* comment */ 0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return /* comment */ 0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = // comment
+    0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = typeof await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = typeof // comment
+    0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "await 'value';",
       errors: [
         {
