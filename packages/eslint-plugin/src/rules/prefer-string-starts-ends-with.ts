@@ -314,6 +314,44 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
+     * Whether `node` creates a new `RegExp` object, so its `lastIndex` is 0.
+     */
+    function isNewRegExpObject(node: TSESTree.Node): boolean {
+      while (
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSNonNullExpression ||
+        node.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        node = node.expression;
+      }
+      if (node.type === AST_NODE_TYPES.Literal) {
+        return true;
+      }
+      if (
+        (node.type !== AST_NODE_TYPES.CallExpression &&
+          node.type !== AST_NODE_TYPES.NewExpression) ||
+        node.callee.type !== AST_NODE_TYPES.Identifier ||
+        node.callee.name !== 'RegExp'
+      ) {
+        return false;
+      }
+      if (node.type === AST_NODE_TYPES.NewExpression) {
+        return true;
+      }
+      // `RegExp(re)` and `RegExp(re, undefined)` return `re` itself
+      const pattern = node.arguments.at(0);
+      const flags = node.arguments.at(1);
+      if (pattern == null || pattern.type === AST_NODE_TYPES.SpreadElement) {
+        return false;
+      }
+      return (
+        (flags != null && getStaticValue(flags, globalScope)?.value != null) ||
+        isNewRegExpObject(pattern)
+      );
+    }
+
+    /**
      * Get the end of a binary expression's left operand, including any parentheses around it.
      * E.g. `(foo.indexOf(bar)) === 0` → the end of `(foo.indexOf(bar))`
      */
@@ -698,21 +736,6 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.MemberExpression,
       ): void {
         const callNode = getParent(node) as TSESTree.CallExpression;
-        let regExpNode = node.object;
-        while (
-          regExpNode.type === AST_NODE_TYPES.TSAsExpression ||
-          regExpNode.type === AST_NODE_TYPES.TSNonNullExpression ||
-          regExpNode.type === AST_NODE_TYPES.TSSatisfiesExpression ||
-          regExpNode.type === AST_NODE_TYPES.TSTypeAssertion
-        ) {
-          regExpNode = regExpNode.expression;
-        }
-        const isNewRegExp =
-          regExpNode.type === AST_NODE_TYPES.Literal ||
-          regExpNode.type === AST_NODE_TYPES.NewExpression ||
-          // `RegExp(re)` returns `re` itself, but with flags it creates a new object
-          (regExpNode.type === AST_NODE_TYPES.CallExpression &&
-            regExpNode.arguments.length >= 2);
         const parsed =
           callNode.arguments.length === 1
             ? // `g` and `y` make `test` depend on and update `lastIndex`. A regex
@@ -722,7 +745,7 @@ export default createRule<Options, MessageIds>({
                 'i',
                 'm',
                 'y',
-                ...(isNewRegExp ? [] : ['g']),
+                ...(isNewRegExpObject(node.object) ? [] : ['g']),
               ])
             : null;
         if (parsed == null) {

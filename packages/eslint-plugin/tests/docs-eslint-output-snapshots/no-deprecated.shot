@@ -46,7 +46,6 @@ unescape('...');
 Correct
 Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}
 
-import { Bar } from 'bar-lib';
 /** @deprecated */
 declare function apiV1(): Promise<string>;
 

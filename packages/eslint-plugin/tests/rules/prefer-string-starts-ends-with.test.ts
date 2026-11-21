@@ -346,6 +346,43 @@ function f(s: string) {
     `,
     `
 function f(s: string) {
+  RegExp().test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern, undefined).test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+const args = [pattern, undefined];
+function f(s: string) {
+  RegExp(...(args as [RegExp]), 'g').test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+const empty: string[] = [];
+function f(s: string) {
+  RegExp(pattern, ...(empty as [])).test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  [pattern].find(Boolean, null)!.test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  (new Object(pattern) as RegExp).test(s);
+}
+    `,
+    `
+function f(s: string) {
   s.match(/a$/y) === null;
 }
     `,
@@ -574,6 +611,73 @@ function f(s: string) {
         {
           column: 3,
           endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+const pattern = /^a/g;
+function f(s: string) {
+  new RegExp(pattern).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+const pattern = /^a/g;
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern, 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+const pattern = /^a/g;
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  RegExp(/^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
           endLine: 3,
           line: 3,
           messageId: 'preferStartsWith',

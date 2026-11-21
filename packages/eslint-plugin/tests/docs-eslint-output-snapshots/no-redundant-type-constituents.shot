@@ -18,8 +18,8 @@ type IntersectionAny = any & 'foo';
                        ~~~ 'any' overrides all other types in this intersection type.
 type IntersectionUnknown = string & unknown;
                                     ~~~~~~~ 'unknown' is overridden by other types in this intersection type.
-type IntersectionNever = string | never;
-                                  ~~~~~ 'never' is overridden by other types in this union type.
+type IntersectionNever = string & never;
+                                  ~~~~~ 'never' overrides all other types in this intersection type.
 
 type IntersectionBooleanLiteral = boolean & false;
                                   ~~~~~~~ boolean is overridden by the false in this intersection type.
@@ -40,7 +40,7 @@ type UnionStringLiteral = string;
 
 type IntersectionAny = any;
 type IntersectionUnknown = string;
-type IntersectionNever = string;
+type IntersectionNever = never;
 
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;

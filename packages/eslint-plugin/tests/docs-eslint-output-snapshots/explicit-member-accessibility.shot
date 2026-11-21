@@ -35,13 +35,11 @@ class Animal {
     this.animalName = name;
   }
   private animalName: string; // Property
-  get name(): string {
-  ~~~~~~~~ Missing accessibility modifier on get property accessor name.
+  public get name(): string {
     // get accessor
     return this.animalName;
   }
-  set name(value: string) {
-  ~~~~~~~~ Missing accessibility modifier on set property accessor name.
+  public set name(value: string) {
     // set accessor
     this.animalName = value;
   }

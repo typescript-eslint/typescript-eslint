@@ -7,7 +7,6 @@ type MorePossibleValues = string | ((number & any) | (string | void));
 
 function logSomething(thing: void) {}
                              ~~~~ void is only valid as a return type or generic type argument.
-function printArg<T = void>(arg: T) {}
 
 logAndReturn<void>(undefined);
              ~~~~ void is only valid as a return type or generic type argument.
@@ -32,6 +31,8 @@ function noop(): void {}
 let trulyUndefined = void 0;
 
 async function promiseMeSomething(): Promise<void> {}
+
+function printArg<T = void>(arg: T) {}
 
 type stillVoid = void | never;
 
