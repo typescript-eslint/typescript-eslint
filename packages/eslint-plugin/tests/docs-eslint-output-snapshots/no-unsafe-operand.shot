@@ -1,0 +1,46 @@
+Incorrect
+
+declare let price: any;
+declare let total: number;
+declare const input: unknown;
+
+price * 2;
+~~~~~ Unsafe `any` typed operand of the `*` operator.
+price & 1;
+~~~~~ Unsafe `any` typed operand of the `&` operator.
+-price;
+ ~~~~~ Unsafe `any` typed operand of the `-` operator.
+price++;
+~~~~~ Unsafe `any` typed operand of the `++` operator.
+total -= price;
+         ~~~~~ Unsafe `any` typed operand of the `-=` operator.
+price < 100;
+~~~~~ Unsafe `any` typed operand of the `<` operator.
+
+const doubled: number = price * 2;
+                        ~~~~~ Unsafe `any` typed operand of the `*` operator.
+
+if (Array.isArray(input)) {
+  // `Array.isArray` narrows `input` to `any[]`
+  input.map(item => item * 2);
+                    ~~~~ Unsafe `any` typed operand of the `*` operator.
+}
+
+Correct
+
+declare let price: any;
+declare let total: number;
+declare const input: unknown;
+
+total * 2;
+total & 1;
+-total;
+total++;
+total -= Number(price);
+total < 100;
+
+const doubled: number = typeof price === 'number' ? price * 2 : 0;
+
+if (Array.isArray(input)) {
+  input.map((item: unknown) => (typeof item === 'number' ? item * 2 : 0));
+}
