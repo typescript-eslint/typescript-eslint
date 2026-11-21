@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getStaticStringValue } from '../util';
 
 export type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
@@ -31,10 +31,11 @@ export default createRule<[], MessageIds>({
 
       members.forEach((member, index) => {
         if (member.initializer == null) {
+          const memberText = context.sourceCode.getText(member);
           const name =
             member.id.type === AST_NODE_TYPES.Identifier
               ? member.id.name
-              : member.id.value;
+              : (getStaticStringValue(member.id) ?? memberText);
           const idText = context.sourceCode.getText(member.id);
           const stringValue =
             member.id.type === AST_NODE_TYPES.Identifier ? `'${name}'` : idText;
@@ -47,21 +48,21 @@ export default createRule<[], MessageIds>({
             suggest: [
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name: idText, suggested: index },
+                data: { name: memberText, suggested: index },
                 fix: (fixer): TSESLint.RuleFix =>
-                  fixer.insertTextAfter(member.id, ` = ${index}`),
+                  fixer.insertTextAfter(member, ` = ${index}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name: idText, suggested: index + 1 },
+                data: { name: memberText, suggested: index + 1 },
                 fix: (fixer): TSESLint.RuleFix =>
-                  fixer.insertTextAfter(member.id, ` = ${index + 1}`),
+                  fixer.insertTextAfter(member, ` = ${index + 1}`),
               },
               {
                 messageId: 'defineInitializerSuggestion',
-                data: { name: idText, suggested: stringValue },
+                data: { name: memberText, suggested: stringValue },
                 fix: (fixer): TSESLint.RuleFix =>
-                  fixer.insertTextAfter(member.id, ` = ${stringValue}`),
+                  fixer.insertTextAfter(member, ` = ${stringValue}`),
               },
             ],
           });

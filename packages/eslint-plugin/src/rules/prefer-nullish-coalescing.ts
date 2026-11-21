@@ -24,6 +24,8 @@ import {
   NullThrowsReasons,
   skipChainExpression,
   isParenthesized,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
   getOperatorPrecedenceForNode,
   OperatorPrecedence,
 } from '../util';
@@ -355,19 +357,27 @@ export default createRule<Options, MessageIds>({
       ): IterableIterator<TSESLint.RuleFix> {
         // `??` can't be mixed with `&&` or `||` without parentheses (e.g. a && b ?? c)
         const wrapsNode = isLogicalOrOperator(node.parent);
+        const operandsToWrap =
+          node.type === AST_NODE_TYPES.LogicalExpression
+            ? [node.left, node.right].filter(
+                operand =>
+                  operand.type === AST_NODE_TYPES.LogicalExpression &&
+                  !isParenthesized(operand, context.sourceCode),
+              )
+            : [];
+        if (
+          (wrapsNode || operandsToWrap.includes(node.left)) &&
+          isStartOfExpressionStatement(node) &&
+          needsPrecedingSemicolon(context.sourceCode, node)
+        ) {
+          yield fixer.insertTextBefore(node, ';');
+        }
         if (wrapsNode) {
           yield fixer.insertTextBefore(node, '(');
         }
-        if (node.type === AST_NODE_TYPES.LogicalExpression) {
-          for (const operand of [node.left, node.right]) {
-            if (
-              operand.type === AST_NODE_TYPES.LogicalExpression &&
-              !isParenthesized(operand, context.sourceCode)
-            ) {
-              yield fixer.insertTextBefore(operand, '(');
-              yield fixer.insertTextAfter(operand, ')');
-            }
-          }
+        for (const operand of operandsToWrap) {
+          yield fixer.insertTextBefore(operand, '(');
+          yield fixer.insertTextAfter(operand, ')');
         }
         if (wrapsNode) {
           yield fixer.insertTextAfter(node, ')');

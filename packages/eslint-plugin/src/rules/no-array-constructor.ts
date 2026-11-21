@@ -1,5 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isOpeningParenToken,
@@ -8,7 +9,6 @@ import {
 
 import {
   createRule,
-  isReferenceToGlobalFunction,
   isStartOfExpressionStatement,
   needsPrecedingSemicolon,
 } from '../util';
@@ -32,6 +32,32 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.sourceCode;
+
+    /**
+     * Checks whether `Array` resolves to a declared value. A script's
+     * `interface Array<T>` merges into the global, and a namespace alone
+     * doesn't need to be a value.
+     */
+    function isShadowed(callee: TSESTree.Identifier): boolean {
+      for (
+        let scope: TSESLint.Scope.Scope | null = sourceCode.getScope(callee);
+        scope;
+        scope = scope.upper
+      ) {
+        const reference = scope.references.find(
+          ref => ref.identifier === callee,
+        );
+        if (reference) {
+          const variable = reference.resolved;
+          return !!variable?.defs.some(
+            def =>
+              def.type !== DefinitionType.Type &&
+              def.type !== DefinitionType.TSModuleName,
+          );
+        }
+      }
+      return false;
+    }
 
     function hasCommentsOutsideArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
@@ -83,7 +109,7 @@ export default createRule({
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
         !node.typeArguments &&
-        isReferenceToGlobalFunction('Array', node.callee, sourceCode)
+        !isShadowed(node.callee)
       ) {
         context.report({
           node,

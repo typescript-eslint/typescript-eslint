@@ -15,12 +15,18 @@ function hasAssignmentBeforeNode(
     ) ||
     // Parameters, imports, functions, and the like always hold a value.
     // Variable initializers are already counted as write references above.
-    variable.defs.some(
-      def =>
-        def.type !== DefinitionType.Variable ||
-        def.node.definite ||
-        def.parent.declare,
-    )
+    variable.defs.some(def => {
+      switch (def.type) {
+        case DefinitionType.Variable:
+          return def.node.definite || def.parent.declare;
+        // Type-only declarations can merge with an unassigned `let`.
+        case DefinitionType.TSModuleName:
+        case DefinitionType.Type:
+          return false;
+        default:
+          return true;
+      }
+    })
   );
 }
 

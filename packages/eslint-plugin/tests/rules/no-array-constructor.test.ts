@@ -43,6 +43,19 @@ function create(Array: ArrayConstructor) {
   return new Array(1, 2);
 }
     `,
+    `
+function create(Array: ArrayConstructor) {
+  switch (new Array(1, 2)) {
+  }
+}
+    `,
+    {
+      code: `
+function Array() {}
+Array(1, 2);
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
   ],
 
   invalid: [
@@ -343,6 +356,49 @@ foo;
         },
       ],
       output: 'void [x, y];',
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T;
+}
+new Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'useLiteral',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+interface Array<T> {
+  custom(): T;
+}
+[x, y];
+      `,
+    },
+    {
+      code: `
+namespace Array {}
+new Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+namespace Array {}
+[x, y];
+      `,
     },
   ],
 });

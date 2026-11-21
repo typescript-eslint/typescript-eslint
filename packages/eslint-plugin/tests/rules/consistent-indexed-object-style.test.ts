@@ -497,6 +497,91 @@ interface Foo<Foo> {
     },
     {
       code: `
+interface Foo {
+  [key: string]: number;
+}
+const Foo = 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, number>;
+const Foo = 1;
+      `,
+    },
+    {
+      code: `
+function Foo() {}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function Foo() {}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+namespace Foo {
+  export const value = 1;
+}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 7,
+          line: 5,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+namespace Foo {
+  export const value = 1;
+}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: number;
+}
+declare class Foo {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 declare global {
   interface Foo {
     [key: string]: unknown;

@@ -267,28 +267,32 @@ function getNotReturnOrGenericMessageId(
 }
 
 /**
- * Finds the function or method whose return type annotation contains the node.
+ * Finds the function or method whose return type annotation contains the node,
+ * at any depth.
  */
 function getParentFunctionDeclarationNode(
   node: TSESTree.Node,
 ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
-  let current = node.parent;
-  while (current && current.type !== AST_NODE_TYPES.TSTypeAnnotation) {
-    current = current.parent;
-  }
+  let current: TSESTree.Node = node;
+  while (current.parent) {
+    const parent: TSESTree.Node = current.parent;
 
-  const declaringFunction = current?.parent;
+    if (
+      parent.type === AST_NODE_TYPES.FunctionDeclaration &&
+      parent.returnType === current
+    ) {
+      return parent;
+    }
 
-  // A type annotation directly under a function is its return type.
-  if (declaringFunction?.type === AST_NODE_TYPES.FunctionDeclaration) {
-    return declaringFunction;
-  }
+    if (
+      parent.type === AST_NODE_TYPES.FunctionExpression &&
+      parent.returnType === current &&
+      parent.parent.type === AST_NODE_TYPES.MethodDefinition
+    ) {
+      return parent.parent;
+    }
 
-  if (
-    declaringFunction?.type === AST_NODE_TYPES.FunctionExpression &&
-    declaringFunction.parent.type === AST_NODE_TYPES.MethodDefinition
-  ) {
-    return declaringFunction.parent;
+    current = parent;
   }
 
   return null;

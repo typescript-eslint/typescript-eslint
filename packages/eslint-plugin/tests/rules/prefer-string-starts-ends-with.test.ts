@@ -322,8 +322,9 @@ function f(s: string) {
 }
     `,
     `
+const pattern = /^a/g;
 function f(s: string) {
-  /^a/g.test(s);
+  pattern.test(s);
 }
     `,
     `
@@ -483,6 +484,48 @@ function f(s: string) {
     `,
   ],
   invalid: [
+    {
+      code: `
+function f(s: string) {
+  /^a/g.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /a$/g.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.endsWith("a");
+}
+      `,
+    },
     {
       code: `
 function f(s: string) {

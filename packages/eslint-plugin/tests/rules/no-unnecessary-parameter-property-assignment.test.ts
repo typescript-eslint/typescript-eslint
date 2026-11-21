@@ -227,6 +227,26 @@ class Foo {
     `,
     `
 class Foo {
+  constructor(public foo: string) {
+    [1].forEach(() => {
+      this.foo += 'bar';
+    });
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    [1].forEach(() => {
+      this.foo++;
+    });
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
   bar = [1].map(() => {
     this.foo = 'bar';
   });
@@ -398,6 +418,27 @@ class Foo {
     `,
   ],
   invalid: [
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    [1].forEach(function () {
+      this.foo += 'bar';
+    });
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
     {
       code: `
 class Foo {

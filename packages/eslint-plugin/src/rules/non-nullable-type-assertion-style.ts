@@ -9,7 +9,9 @@ import {
   getOperatorPrecedence,
   getParserServices,
   isParenthesized,
+  isStartOfExpressionStatement,
   isTokenOnSameLine,
+  needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
   OperatorPrecedence,
@@ -194,7 +196,13 @@ export default createRule({
                 NullThrowsReasons.MissingToken('token', 'as'),
               );
               if (needsParens) {
-                yield fixer.insertTextBefore(node, '(');
+                yield fixer.insertTextBefore(
+                  node,
+                  isStartOfExpressionStatement(node) &&
+                    needsPrecedingSemicolon(context.sourceCode, node)
+                    ? ';('
+                    : '(',
+                );
               }
               yield fixer.replaceTextRange(
                 [tokenBeforeAs.range[1], node.range[1]],

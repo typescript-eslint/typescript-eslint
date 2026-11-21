@@ -700,8 +700,14 @@ export default createRule<Options, MessageIds>({
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parsed =
           callNode.arguments.length === 1
-            ? // `g` and `y` make `test` depend on and update `lastIndex`
-              parseRegExp(node.object, ['g', 'i', 'm', 'y'])
+            ? // `g` and `y` make `test` depend on and update `lastIndex`. A regex
+              // literal is a new object with `lastIndex` 0, but `y` still only matches at 0.
+              parseRegExp(node.object, [
+                'i',
+                'm',
+                'y',
+                ...(node.object.type === AST_NODE_TYPES.Literal ? [] : ['g']),
+              ])
             : null;
         if (parsed == null) {
           return;

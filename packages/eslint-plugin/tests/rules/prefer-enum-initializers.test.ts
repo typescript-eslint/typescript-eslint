@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-enum-initializers';
 
@@ -363,6 +363,100 @@ enum Direction {
           ],
         },
       ],
+    },
+    {
+      code: noFormat`
+enum Direction {
+  ['Up'],
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Up' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'defineInitializer',
+          suggestions: [
+            {
+              data: { name: "['Up']", suggested: '0' },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  ['Up'] = 0,
+}
+      `,
+            },
+            {
+              data: { name: "['Up']", suggested: '1' },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  ['Up'] = 1,
+}
+      `,
+            },
+            {
+              data: { name: "['Up']", suggested: "'Up'" },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  ['Up'] = 'Up',
+}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+    },
+    {
+      code: noFormat`
+enum Direction {
+  [\`Up\`],
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Up' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'defineInitializer',
+          suggestions: [
+            {
+              data: { name: '[`Up`]', suggested: '0' },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  [\`Up\`] = 0,
+}
+      `,
+            },
+            {
+              data: { name: '[`Up`]', suggested: '1' },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  [\`Up\`] = 1,
+}
+      `,
+            },
+            {
+              data: { name: '[`Up`]', suggested: '`Up`' },
+              messageId: 'defineInitializerSuggestion',
+              output: `
+enum Direction {
+  [\`Up\`] = \`Up\`,
+}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
     },
   ],
 });

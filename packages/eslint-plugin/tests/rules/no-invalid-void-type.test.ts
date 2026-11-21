@@ -306,6 +306,22 @@ export function f(x?: string): string | void {
   }
 }
     `,
+    `
+function f(): () => void;
+function f(): () => string;
+function f(): () => string | void {
+  return () => '';
+}
+    `,
+    `
+class SomeClass {
+  f(): () => void;
+  f(): () => string;
+  f(): () => string | void {
+    return () => '';
+  }
+}
+    `,
   ],
   invalid: [
     {

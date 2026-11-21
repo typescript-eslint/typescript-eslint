@@ -27,6 +27,23 @@ let x: string;
 x ?? '';
     `,
     `
+type x = string;
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
+interface x {}
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
+namespace x {
+  export type T = string;
+}
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
 let x!: string;
 x ?? '';
     `,
@@ -432,6 +449,32 @@ x! ?? '';
             {
               messageId: 'suggestRemovingNonNull',
               output: `
+declare let x: string | undefined;
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type x = string;
+declare let x: string | undefined;
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+type x = string;
 declare let x: string | undefined;
 x ?? '';
       `,

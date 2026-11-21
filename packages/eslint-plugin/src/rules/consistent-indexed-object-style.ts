@@ -188,8 +188,14 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
+      // Values, functions and namespaces can share a name with a type alias
       const [variable] = context.sourceCode.getDeclaredVariables(node);
-      return variable.defs.length > 1;
+      return variable.defs.some(
+        def =>
+          def.node !== node &&
+          (def.type === DefinitionType.Type ||
+            def.type === DefinitionType.ClassName),
+      );
     }
 
     return {

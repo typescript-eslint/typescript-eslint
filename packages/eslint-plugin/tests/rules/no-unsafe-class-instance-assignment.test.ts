@@ -15,6 +15,16 @@ declare const source: SourceOption;
 const target: TargetOption = source;
     `,
     `
+class Plugin {
+  name = 'plugin';
+}
+type SourceOption = Plugin | SourceOption[];
+type TargetOption = Plugin | OtherTargetOption[];
+type OtherTargetOption = Plugin | TargetOption[];
+declare const source: SourceOption;
+const target: TargetOption = source;
+    `,
+    `
 class Point {
   constructor(
     public x: number,

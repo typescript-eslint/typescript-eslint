@@ -172,6 +172,23 @@ export default createRule({
     }
 
     /**
+     * Whether a write in `node` may change the constructor's `this` before the
+     * statements after it run: like `findImmediateConstructor`, but an arrow
+     * passed as an argument (`list.forEach(() => ...)`) counts too.
+     */
+    function mayWriteBeforeConstructorContinues(node: TSESTree.Node): boolean {
+      let functionNode = findParentFunction(node);
+      if (
+        functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        functionNode.parent.type === AST_NODE_TYPES.CallExpression
+      ) {
+        functionNode = findParentFunction(functionNode.parent);
+      }
+
+      return isConstructorFunctionExpression(functionNode);
+    }
+
+    /**
      * Whether `node` is written by something other than an assignment
      * expression, such as `this.foo++` or `[this.foo] = values`.
      */
@@ -219,10 +236,9 @@ export default createRule({
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
       ): void {
-        const constructorNode = findImmediateConstructor(node);
         const leftName = getPropertyName(node.left);
 
-        if (!constructorNode || !leftName) {
+        if (!leftName || !mayWriteBeforeConstructorContinues(node)) {
           return;
         }
 
@@ -232,9 +248,11 @@ export default createRule({
             'The top of stack should exist',
           );
 
+        const constructorNode = findImmediateConstructor(node);
         const rightId = getIdentifier(node.right);
 
         if (
+          constructorNode &&
           UNNECESSARY_OPERATORS.has(node.operator) &&
           leftName === rightId?.name &&
           isUnchangedConstructorParameter(rightId, constructorNode, node) &&
@@ -261,7 +279,7 @@ export default createRule({
         if (
           name &&
           isNonAssignmentWriteTarget(node) &&
-          findImmediateConstructor(node)
+          mayWriteBeforeConstructorContinues(node)
         ) {
           nullThrows(
             reportInfoStack.at(-1),
