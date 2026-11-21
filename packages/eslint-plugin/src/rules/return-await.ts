@@ -12,6 +12,7 @@ import {
   isAwaitExpression,
   isAwaitKeyword,
   isStartOfArrowFunctionBodyNeedingParentheses,
+  LINEBREAK_MATCHER,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -262,6 +263,25 @@ export default createRule({
         context.sourceCode.getTokenAfter(awaitToken),
         NullThrowsReasons.MissingToken('operand', 'await expression'),
       );
+
+      // Removing `await` from `return await // comment\n value` would leave a
+      // line break after `return`, which ASI would end the statement at.
+      const tokenBeforeAwait = context.sourceCode.getTokenBefore(awaitToken);
+      if (
+        tokenBeforeAwait?.value === 'return' &&
+        LINEBREAK_MATCHER.test(
+          context.sourceCode.text.slice(
+            awaitTokenRemovalRange[1],
+            firstOperandToken.range[0],
+          ),
+        )
+      ) {
+        return [
+          fixer.replaceText(awaitToken, '('),
+          fixer.insertTextAfter(node, ')'),
+        ];
+      }
+
       if (
         isStartOfArrowFunctionBodyNeedingParentheses(
           node,

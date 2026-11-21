@@ -284,6 +284,40 @@ export {} from '_';
 
       `,
     },
+    {
+      code: `
+export const _ = {};
+export /* comment */ {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export const _ = {};
+export {
+  // comment
+};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 5,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: null,
+    },
     // Multiple errors
     /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {

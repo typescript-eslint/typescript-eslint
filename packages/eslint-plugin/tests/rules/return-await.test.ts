@@ -2358,5 +2358,167 @@ async function* test() {
 }
       `,
     },
+    {
+      code: noFormat`
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return await // comment
+      p;
+  } catch {}
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 8,
+          endLine: 6,
+          line: 5,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      output: `
+declare const p: Promise<number>;
+async function* test() {
+  try {
+    return ( // comment
+      p);
+  } catch {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const p: Promise<number>;
+async function test() {
+  return await // comment
+    p;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 5,
+          line: 4,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      options: ['in-try-catch'],
+      output: `
+declare const p: Promise<number>;
+async function test() {
+  return ( // comment
+    p);
+}
+      `,
+    },
+    {
+      code: noFormat`
+async function test() {
+  return await
+    // comment
+    1;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 5,
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+async function test() {
+  return (
+    // comment
+    1);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const p: Promise<number>;
+async function test() {
+  return await /* multi
+    line */ (p);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 5,
+          line: 4,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      options: ['in-try-catch'],
+      output: `
+declare const p: Promise<number>;
+async function test() {
+  return ( /* multi
+    line */ (p));
+}
+      `,
+    },
+    {
+      code: `
+declare const p: Promise<number>;
+async function test() {
+  return await /* comment */ p;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      options: ['in-try-catch'],
+      output: `
+declare const p: Promise<number>;
+async function test() {
+  return /* comment */ p;
+}
+      `,
+    },
+    {
+      code: `
+declare const p: Promise<number>;
+declare const cond: boolean;
+async function test() {
+  return cond
+    ? await // comment
+      p
+    : p;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 8,
+          endLine: 7,
+          line: 6,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      options: ['in-try-catch'],
+      output: `
+declare const p: Promise<number>;
+declare const cond: boolean;
+async function test() {
+  return cond
+    ? // comment
+      p
+    : p;
+}
+      `,
+    },
   ],
 });

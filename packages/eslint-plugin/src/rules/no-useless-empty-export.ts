@@ -74,7 +74,11 @@ export default createRule({
             context.report({
               node: emptyExport,
               messageId: 'uselessExport',
-              fix: fixer => fixer.remove(emptyExport),
+              fix: fixer =>
+                // removing the export would also remove any comments inside it
+                context.sourceCode.getCommentsInside(emptyExport).length
+                  ? null
+                  : fixer.remove(emptyExport),
             });
           }
         }

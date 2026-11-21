@@ -488,5 +488,19 @@ configValidator.addSchema(require('./a.json'));
       languageOptions: { parserOptions: { allowInvalidAST: true } },
       options: [{ allow: ['/package\\.json$'] }],
     },
+    {
+      code: noFormat`import pkg = require(\`./\${name}/package.json\`);`,
+      errors: [
+        {
+          column: 14,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      options: [{ allow: ['/package\\.json$'] }],
+    },
   ],
 });

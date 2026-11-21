@@ -1,7 +1,11 @@
 import type { ScopeVariable } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ReportFixFunction,
+  Scope,
+} from '@typescript-eslint/utils/ts-eslint';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
@@ -9,7 +13,6 @@ import {
   getFixOrSuggest,
   isNodeEqual,
   isParenthesized,
-  isReferenceToGlobalFunction,
   nullThrows,
 } from '../util';
 
@@ -67,6 +70,31 @@ export default createRule<Options, MessageIds>({
               comment.range[1] > target.range[1],
           ),
         );
+    }
+
+    /**
+     * Checks whether `Record` at the node is the global type. Values and
+     * namespaces named `Record` don't hide it.
+     */
+    function isGlobalRecord(node: TSESTree.Node): boolean {
+      for (
+        let scope: Scope.Scope | null = context.sourceCode.getScope(node);
+        scope;
+        scope = scope.upper
+      ) {
+        if (
+          scope.set
+            .get('Record')
+            ?.defs.some(
+              def =>
+                def.isTypeDefinition &&
+                def.type !== DefinitionType.TSModuleName,
+            )
+        ) {
+          return false;
+        }
+      }
+      return true;
     }
 
     function checkMembers(
@@ -176,9 +204,7 @@ export default createRule<Options, MessageIds>({
           }
 
           // Only the global `Record` utility type can become an index signature.
-          if (
-            !isReferenceToGlobalFunction('Record', typeName, context.sourceCode)
-          ) {
+          if (!isGlobalRecord(typeName)) {
             return;
           }
 

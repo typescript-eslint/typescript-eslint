@@ -298,6 +298,17 @@ type Foo = Record<string, number>;
       `,
       options: ['index-signature'],
     },
+    {
+      code: `
+export {};
+type Record<K, V> = Map<K, V>;
+namespace N {
+  namespace Record {}
+  type Foo = Record<string, number>;
+}
+      `,
+      options: ['index-signature'],
+    },
     "type Foo = { [K in 'a' | 'b' as 'c']: number };",
 
     {
@@ -776,6 +787,30 @@ type Foo = Record<string, any>;
       options: ['index-signature'],
       output: `
 const Record = 1;
+type Foo = { [key: string]: any };
+      `,
+    },
+    {
+      code: `
+namespace Record {
+  export const value = 1;
+}
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+namespace Record {
+  export const value = 1;
+}
 type Foo = { [key: string]: any };
       `,
     },

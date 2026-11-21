@@ -92,7 +92,7 @@ export default createRule<[], MessageId>({
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
                 const semicolon =
-                  /^[([]/.test(target) &&
+                  /^[([`]/.test(target) &&
                   isStartOfExpressionStatement(node) &&
                   needsPrecedingSemicolon(context.sourceCode, node)
                     ? ';'

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isParenthesized } from '../util';
@@ -152,9 +153,16 @@ export default createRule<Options, MessageIds>({
         scope.upper;
         scope = scope.upper
       ) {
-        // `declare global { interface Array<T> {} }` augments the global type
+        // `declare global { interface Array<T> {} }` augments the global type,
+        // and values and namespaces don't hide a global type
         if (
-          scope.set.get(name)?.isTypeVariable &&
+          scope.set
+            .get(name)
+            ?.defs.some(
+              def =>
+                def.isTypeDefinition &&
+                def.type !== DefinitionType.TSModuleName,
+            ) &&
           !(
             scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
             scope.block.kind === 'global'

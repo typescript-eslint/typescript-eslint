@@ -693,6 +693,99 @@ function data<
       ],
     },
     {
+      code: noFormat`
+function data<
+  T // a
+    extends /* b */ unknown,
+  U,
+>() {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 28,
+          endLine: 4,
+          line: 3,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: `
+function data<
+  T // a
+ /* b */,
+  U,
+>() {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function data<
+  T // a
+    /* b */ extends unknown,
+>() {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 28,
+          endLine: 4,
+          line: 3,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: `
+function data<
+  T // a
+ /* b */,
+>() {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const data = <
+  T // a
+    extends /* b */ unknown
+>() => {};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { constraint: 'unknown', name: 'T' },
+          endColumn: 28,
+          endLine: 4,
+          line: 3,
+          messageId: 'unnecessaryConstraint',
+          suggestions: [
+            {
+              data: { constraint: 'unknown' },
+              messageId: 'removeUnnecessaryConstraint',
+              output: `
+const data = <
+  T // a
+ /* b */,
+>() => {};
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'file.mts',
+    },
+    {
       code: 'function data<const /* a */ T extends any = /* b */ string>() {}',
       // `const` type parameters require TS 5.0
       dependencyConstraints: { typescript: '5.0' },

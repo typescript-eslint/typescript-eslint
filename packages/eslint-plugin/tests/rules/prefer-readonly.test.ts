@@ -1132,6 +1132,144 @@ class Test {
     },
     {
       code: `
+class Test {
+  private x = [0];
+
+  public mutate() {
+    for ([this.x[0]] of [[1]]) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = [0];
+
+  public mutate() {
+    for ([this.x[0]] of [[1]]) {
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = { a: 0 };
+
+  public mutate() {
+    for ([this.x.a] of [[1]]) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = { a: 0 };
+
+  public mutate() {
+    for ([this.x.a] of [[1]]) {
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 0;
+
+  public mutate(o: Record<number, number>) {
+    for ([o[this.x]] of [[1]]) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 0;
+
+  public mutate(o: Record<number, number>) {
+    for ([o[this.x]] of [[1]]) {
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  private x = 0;
+
+  public mutate() {
+    let a: number | undefined;
+    for ({ a = this.x } of [{} as { a?: number }]) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Test {
+  private readonly x = 0;
+
+  public mutate() {
+    let a: number | undefined;
+    for ({ a = this.x } of [{} as { a?: number }]) {
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
 class Test2 {
   // should report
   private [Symbol.iterator] = 7;

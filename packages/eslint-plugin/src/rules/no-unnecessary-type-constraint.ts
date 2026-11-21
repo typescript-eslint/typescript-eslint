@@ -123,15 +123,17 @@ export default createRule({
                       comment.range[0] >= removedRange[0] &&
                       comment.range[1] <= removedRange[1],
                   );
+                // a line comment would swallow whatever follows it on its line
                 const commentsText = comments
-                  .map(comment => ` ${sourceCode.getText(comment)}`)
+                  .map(
+                    comment =>
+                      ` ${sourceCode.getText(comment)}${comment.type === AST_TOKEN_TYPES.Line ? '\n' : ''}`,
+                  )
                   .join('');
-                const lineBreak =
-                  comments.at(-1)?.type === AST_TOKEN_TYPES.Line ? '\n' : '';
 
                 return fixer.replaceTextRange(
                   removedRange,
-                  `${commentsText}${lineBreak}${shouldAddTrailingComma() ? ',' : ''}`,
+                  `${commentsText}${shouldAddTrailingComma() ? ',' : ''}`,
                 );
               },
             },

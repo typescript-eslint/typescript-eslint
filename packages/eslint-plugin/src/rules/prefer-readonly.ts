@@ -123,6 +123,11 @@ export default createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
+      // `this.x.y`, `o[this.x]` and `{ a = this.x }` only read `this.x`
+      const isOwnTarget =
+        !ts.isPropertyAccessExpression(node.parent) &&
+        !ts.isElementAccessExpression(node.parent) &&
+        !ts.isShorthandPropertyAssignment(node.parent);
       let current = node.parent as ts.Node | undefined;
 
       while (current) {
@@ -144,11 +149,7 @@ export default createRule<Options, MessageIds>({
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
           );
-        } else if (
-          ts.isForOfStatement(parent) &&
-          !ts.isPropertyAccessExpression(current) &&
-          !ts.isElementAccessExpression(current)
-        ) {
+        } else if (ts.isForOfStatement(parent) && isOwnTarget) {
           return parent.initializer === current;
         } else {
           break;

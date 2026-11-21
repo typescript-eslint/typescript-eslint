@@ -769,6 +769,32 @@ a
     {
       code: noFormat`
 declare const a: number[];
+a
+delete \`1,2\`.split(',')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a
+;\`1,2\`.split(',').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
 declare const b: number[];
 declare const condition: boolean;
 condition

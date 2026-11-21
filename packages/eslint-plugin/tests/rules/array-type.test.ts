@@ -459,6 +459,15 @@ let a: string[];
     },
     {
       code: `
+export {};
+const Array = 1;
+type Array<T> = { value: T };
+let a: string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
 namespace N {
   interface Array<T> {
     value: T;
@@ -2337,6 +2346,60 @@ let a: string[];
 export {};
 const Array = 1;
 let a: Array<string>;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace Array {
+  export const value = 1;
+}
+let a: string[];
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+namespace Array {
+  export const value = 1;
+}
+let a: Array<string>;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace ReadonlyArray {}
+let a: ReadonlyArray<string>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+namespace ReadonlyArray {}
+let a: readonly string[];
       `,
     },
     {
