@@ -15,8 +15,10 @@ import {
   getContextualType,
   getDeclaration,
   getModifiers,
+  getOperatorPrecedenceForNode,
   getParserServices,
   isNullableType,
+  isParenthesized,
   isPropertyReadonlyInType,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
@@ -945,9 +947,12 @@ export default createRule<Options, MessageIds>({
             const originalExpr = getOriginalExpression(node);
             let text = context.sourceCode.getText(originalExpr);
             if (
-              originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
-              node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-              node.parent.body === node
+              !isParenthesized(node, context.sourceCode) &&
+              (getOperatorPrecedenceForNode(originalExpr) <
+                getOperatorPrecedenceForNode(node) ||
+                (originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
+                  node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+                  node.parent.body === node))
             ) {
               text = `(${text})`;
             }
@@ -1109,7 +1114,11 @@ export default createRule<Options, MessageIds>({
         // constrained type is `any` (nullable) but the actual type might be
         // a type parameter that TypeScript treats nominally.
         // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
-        const constrainedTypeIsNullable = isNullableType(constrainedType);
+        // Without a constraint, a type parameter may be `null` or `undefined`.
+        const isUnconstrainedTypeParameter =
+          tsutils.isTypeParameter(constrainedType);
+        const constrainedTypeIsNullable =
+          isUnconstrainedTypeParameter || isNullableType(constrainedType);
         const actualTypeIsNullable = isNullableType(actualType);
 
         if (!constrainedTypeIsNullable && !actualTypeIsNullable) {
@@ -1141,8 +1150,10 @@ export default createRule<Options, MessageIds>({
           const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
             if (
-              isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
-              !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
+              isUnconstrainedTypeParameter
+                ? !checker.isTypeAssignableTo(constrainedType, contextualType)
+                : isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
+                  !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
             ) {
               return;
             }

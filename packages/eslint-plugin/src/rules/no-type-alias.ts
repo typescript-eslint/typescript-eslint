@@ -143,12 +143,9 @@ export default createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const unions = ['always', 'in-unions', 'in-unions-and-intersections'];
-    const intersections = [
-      'always',
-      'in-intersections',
-      'in-unions-and-intersections',
-    ];
+    // only consulted for the `in-*` values, so `'always'` isn't needed here
+    const unions = ['in-unions', 'in-unions-and-intersections'];
+    const intersections = ['in-intersections', 'in-unions-and-intersections'];
     const compositions = [
       'in-unions',
       'in-intersections',

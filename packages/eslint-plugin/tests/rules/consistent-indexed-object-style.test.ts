@@ -284,6 +284,32 @@ interface Foo {
       code: 'type T = A.B;',
       options: ['index-signature'],
     },
+    {
+      code: `
+import { Record } from 'immutable';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+export {};
+type Record<K, V> = Map<K, V>;
+namespace N {
+  namespace Record {}
+  type Foo = Record<string, number>;
+}
+      `,
+      options: ['index-signature'],
+    },
+    "type Foo = { [K in 'a' | 'b' as 'c']: number };",
 
     {
       // mapped type that uses the key cannot be converted to record
@@ -428,6 +454,211 @@ export default interface Foo {
         },
       ],
       output: null,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: unknown;
+}
+interface Foo {
+  bar: string;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<Foo> {
+  [key: string]: number;
+}
+interface Foo<Foo> {
+  bar: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: number;
+}
+const Foo = 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, number>;
+const Foo = 1;
+      `,
+    },
+    {
+      code: `
+function Foo() {}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function Foo() {}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+namespace Foo {
+  export const value = 1;
+}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 7,
+          line: 5,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+namespace Foo {
+  export const value = 1;
+}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: number;
+}
+declare class Foo {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare global {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  export interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare namespace Bar {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+declare namespace Bar {
+  type Foo = Record<string, unknown>;
+}
+      `,
     },
     // Readonly interface with generic parameter
     {
@@ -623,6 +854,71 @@ type Foo<A, B> = Readonly<Record<A, B>>;
       ],
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+const Record = 1;
+type Foo = { [key: string]: any };
+      `,
+    },
+    {
+      code: `
+namespace Record {
+  export const value = 1;
+}
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+namespace Record {
+  export const value = 1;
+}
+type Foo = { [key: string]: any };
+      `,
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      options: ['index-signature'],
+      output: `
+const Record = 1;
+type Foo = { [key: string]: any };
+      `,
     },
 
     // Type literal with generic parameter

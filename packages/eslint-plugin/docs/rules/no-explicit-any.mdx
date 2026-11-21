@@ -208,7 +208,7 @@ First, `extends any` on its own does nothing: `<T extends any>` is equivalent to
 See [`@typescript-eslint/no-unnecessary-type-constraint`](./no-unnecessary-type-constraint.mdx) for more information.
 
 Within type parameters, `never` and `unknown` otherwise can generally be used instead.
-For example, the following code uses those two types in `AnyFunction` instead of `any`s to constrain `Callback` to any function type:
+For example, the following code uses those two types in `AnyFunction` instead of `any`s to constrain `Greeter` to any function type:
 
 ```ts
 type AnyFunction = (...args: never[]) => unknown;

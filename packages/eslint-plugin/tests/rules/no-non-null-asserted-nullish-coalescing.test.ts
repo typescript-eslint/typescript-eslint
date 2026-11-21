@@ -27,6 +27,33 @@ let x: string;
 x ?? '';
     `,
     `
+type x = string;
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
+interface x {}
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
+namespace x {
+  export type T = string;
+}
+let x: string | undefined;
+x! ?? '';
+    `,
+    `
+import type { x } from './foo';
+let x: string;
+x! ?? '';
+    `,
+    `
+import { type x } from './foo';
+var x: string;
+x! ?? '';
+    `,
+    `
 let x!: string;
 x ?? '';
     `,
@@ -360,6 +387,160 @@ let x!: string;
 function foo() {
   return x ?? '';
 }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x?: string) {
+  return x! ?? '';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+function foo(x?: string) {
+  return x ?? '';
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { x } from './foo';
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
+          line: 3,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+import { x } from './foo';
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import type { x } from './foo';
+declare let x: string | undefined;
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+import type { x } from './foo';
+declare let x: string | undefined;
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: string | undefined;
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
+          line: 3,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+declare let x: string | undefined;
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type x = string;
+declare let x: string | undefined;
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+type x = string;
+declare let x: string | undefined;
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  return x! ?? '';
+}
+let x!: string;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+function foo() {
+  return x ?? '';
+}
+let x!: string;
       `,
             },
           ],

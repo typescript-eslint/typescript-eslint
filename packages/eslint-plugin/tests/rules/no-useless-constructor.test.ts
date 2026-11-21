@@ -209,6 +209,21 @@ class A extends Object {
   }
 }
     `,
+    `
+class A extends B {
+  constructor(foo: string);
+  constructor(foo: number);
+  constructor(foo: string | number) {
+    super(foo);
+  }
+}
+    `,
+    `
+class A {
+  constructor();
+  constructor() {}
+}
+    `,
   ],
   invalid: [
     {
@@ -451,6 +466,36 @@ class A {
               messageId: 'removeConstructor',
               output: `
 class A {
+${'  '}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo();
+  foo() {}
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A {
+  foo();
+  foo() {}
 ${'  '}
 }
       `,

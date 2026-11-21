@@ -84,6 +84,11 @@ export {};
 const a: Uint8ClampedArray<ArrayBufferLike> = new Uint8ClampedArray();
 export {};
     `,
+    `
+const a: Int32Array<ArrayBufferLike> = new Int32Array();
+export {};
+    `,
+    'const a: Foo<string> | undefined = new Foo();',
     {
       code: `
 const foo: Foo<string> = new Foo();
@@ -447,6 +452,104 @@ function foo(a = new Foo<string>()) {}
     },
     {
       code: `
+const foo = (a: Foo<string> = new Foo()) => {};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const foo = (a = new Foo<string>()) => {};
+      `,
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = new (Foo)();
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new (Foo)<string>();
+      `,
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = new (Foo);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new (Foo)<string>();
+      `,
+    },
+    {
+      code: noFormat`const a: Foo<string> = new Foo`,
+      errors: [
+        {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: 'const a = new Foo<string>()',
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = (new Foo);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = (new Foo<string>());
+      `,
+    },
+    {
+      code: `
+const a: Foo</* comment */ string> = new Foo();
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new Foo</* comment */ string>();
+      `,
+    },
+    {
+      code: `
 function foo({ a }: Foo<string> = new Foo()) {}
       `,
       errors: [
@@ -697,6 +800,24 @@ function foo(a = new Foo<string>()) {}
       options: ['type-annotation'],
       output: `
 function foo(a: Foo<string> = new Foo()) {}
+      `,
+    },
+    {
+      code: `
+const foo = (a = new Foo<string>()) => {};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+const foo = (a: Foo<string> = new Foo()) => {};
       `,
     },
     {

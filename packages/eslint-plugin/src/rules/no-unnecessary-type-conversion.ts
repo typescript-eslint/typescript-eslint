@@ -17,18 +17,6 @@ type Options = [];
 type MessageIds =
   'suggestRemove' | 'suggestSatisfies' | 'unnecessaryTypeConversion';
 
-function isEnumType(type: ts.Type): boolean {
-  return (type.getFlags() & ts.TypeFlags.EnumLike) !== 0;
-}
-
-function isEnumMemberType(type: ts.Type): boolean {
-  const symbol = type.getSymbol();
-  if (!symbol) {
-    return false;
-  }
-  return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);
-}
-
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
   meta: {
@@ -52,13 +40,18 @@ export default createRule<Options, MessageIds>({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
+    // Enums are opaque, so converting one to a primitive is not unnecessary.
     function doesUnderlyingTypeMatchFlag(
       type: ts.Type,
       typeFlag: ts.TypeFlags,
     ): boolean {
       return tsutils
         .unionConstituents(type)
-        .every(t => isTypeFlagSet(t, typeFlag));
+        .every(
+          t =>
+            isTypeFlagSet(t, typeFlag) &&
+            !isTypeFlagSet(t, ts.TypeFlags.EnumLike),
+        );
     }
 
     const services = getParserServices(context);
@@ -256,6 +249,11 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const argument = node.arguments.at(0);
+        if (!argument || argument.type === AST_NODE_TYPES.SpreadElement) {
+          return;
+        }
+
         const typeFlag =
           builtInTypeFlags[nodeCallee.name as keyof typeof builtInTypeFlags];
         const scope = context.sourceCode.getScope(node);
@@ -263,7 +261,7 @@ export default createRule<Options, MessageIds>({
         if (
           !!variable?.defs.length ||
           !doesUnderlyingTypeMatchFlag(
-            getConstrainedTypeAtLocation(services, node.arguments[0]),
+            getConstrainedTypeAtLocation(services, argument),
             typeFlag,
           )
         ) {
@@ -272,7 +270,7 @@ export default createRule<Options, MessageIds>({
 
         const wrappingFixerParams = {
           node,
-          innerNode: [node.arguments[0]],
+          innerNode: [argument],
           sourceCode: context.sourceCode,
         };
         const typeString = nodeCallee.name.toLowerCase();
@@ -305,10 +303,6 @@ export default createRule<Options, MessageIds>({
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
-
-        if (isEnumType(type) || isEnumMemberType(type)) {
-          return;
-        }
 
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
           const wrappingFixerParams = {
@@ -374,6 +368,7 @@ export default createRule<Options, MessageIds>({
           tsutils.unionConstituents(type).every(t => {
             return (
               isTypeFlagSet(t, ts.TypeFlags.NumberLiteral) &&
+              !isTypeFlagSet(t, ts.TypeFlags.EnumLike) &&
               Number.isInteger((t as ts.NumberLiteralType).value)
             );
           })

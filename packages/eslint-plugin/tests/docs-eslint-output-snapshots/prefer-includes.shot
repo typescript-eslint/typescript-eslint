@@ -3,7 +3,7 @@ Incorrect
 const str: string;
 const array: any[];
 const readonlyArray: ReadonlyArray<any>;
-const typedArray: UInt8Array;
+const typedArray: Uint8Array;
 const maybe: string;
 const userDefined: {
   indexOf(x: any): number;
@@ -17,6 +17,7 @@ array.indexOf(value) !== -1;
 readonlyArray.indexOf(value) === -1;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
 typedArray.indexOf(value) > -1;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
 maybe?.indexOf('') !== -1;
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
 userDefined.indexOf(value) >= 0;
@@ -30,7 +31,7 @@ Correct
 const str: string;
 const array: any[];
 const readonlyArray: ReadonlyArray<any>;
-const typedArray: UInt8Array;
+const typedArray: Uint8Array;
 const maybe: string;
 const userDefined: {
   indexOf(x: any): number;

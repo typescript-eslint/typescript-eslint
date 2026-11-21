@@ -1,12 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
   getParserServices,
+  getStaticMemberAccessValue,
   isBuiltinSymbolLike,
   isReferenceToGlobalFunction,
 } from '../util';
@@ -53,15 +53,9 @@ export default createRule({
         node.object.type === AST_NODE_TYPES.Identifier &&
         GLOBAL_CANDIDATES.has(node.object.name)
       ) {
-        if (node.property.type === AST_NODE_TYPES.Identifier) {
-          return node.property.name;
-        }
-
-        if (
-          node.property.type === AST_NODE_TYPES.Literal &&
-          typeof node.property.value === 'string'
-        ) {
-          return node.property.value;
+        const propertyName = getStaticMemberAccessValue(node, context);
+        if (typeof propertyName === 'string') {
+          return propertyName;
         }
       }
 
@@ -70,17 +64,6 @@ export default createRule({
 
     function isFunctionType(node: TSESTree.Node): boolean {
       const type = services.getTypeAtLocation(node);
-      const symbol = type.getSymbol();
-
-      if (
-        symbol &&
-        tsutils.isSymbolFlagSet(
-          symbol,
-          ts.SymbolFlags.Function | ts.SymbolFlags.Method,
-        )
-      ) {
-        return true;
-      }
 
       if (isBuiltinSymbolLike(services.program, type, FUNCTION_CONSTRUCTOR)) {
         return true;

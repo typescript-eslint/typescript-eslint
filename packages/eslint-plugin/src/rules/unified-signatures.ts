@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
@@ -651,7 +651,7 @@ export default createRule<Options, MessageIds>({
       key?: string,
       containingNode?: ContainingNode,
     ): void {
-      key ??= getOverloadKey(signature);
+      key ??= getOverloadKey(signature, context.sourceCode);
       if ((containingNode ?? signature).parent === currentScope?.parent) {
         const overloads = currentScope.overloads.get(key);
         if (overloads != null) {
@@ -667,7 +667,9 @@ export default createRule<Options, MessageIds>({
     //----------------------------------------------------------------------
 
     return {
-      ClassDeclaration(node): void {
+      'ClassDeclaration, ClassExpression'(
+        node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
+      ): void {
         createScope(node.body, node.typeParameters);
       },
       Program: createScope,
@@ -701,7 +703,7 @@ export default createRule<Options, MessageIds>({
       },
 
       // validate scopes
-      'ClassDeclaration:exit': checkScope,
+      'ClassDeclaration, ClassExpression:exit': checkScope,
       'Program:exit': checkScope,
       'TSInterfaceDeclaration:exit': checkScope,
       'TSModuleBlock:exit': checkScope,
@@ -730,8 +732,11 @@ function getExportingNode(
     : undefined;
 }
 
-function getOverloadKey(node: OverloadNode): string {
-  const info = getOverloadInfo(node);
+function getOverloadKey(
+  node: OverloadNode,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): string {
+  const info = getOverloadInfo(node, sourceCode);
 
   return (
     ((node as MethodDefinition).computed ? '0' : '1') +
@@ -740,7 +745,10 @@ function getOverloadKey(node: OverloadNode): string {
   );
 }
 
-function getOverloadInfo(node: OverloadNode): string {
+function getOverloadInfo(
+  node: OverloadNode,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): string {
   switch (node.type) {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
@@ -749,15 +757,12 @@ function getOverloadInfo(node: OverloadNode): string {
     default: {
       const { key } = node as MethodDefinition;
 
-      if (isPrivateIdentifier(key)) {
-        return `private_identifier_${key.name}`;
-      }
-
       if (isIdentifier(key)) {
         return `identifier_${key.name}`;
       }
 
-      return (key as TSESTree.Literal).raw;
+      // e.g. `#private`, `'literal'`, or a computed `Symbol.iterator`
+      return sourceCode.getText(key);
     }
   }
 }
@@ -774,12 +779,6 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
-}
-
-function isPrivateIdentifier(
-  node: TSESTree.Node,
-): node is TSESTree.PrivateIdentifier {
-  return node.type === AST_NODE_TYPES.PrivateIdentifier;
 }
 
 function isGetterOrSetter(

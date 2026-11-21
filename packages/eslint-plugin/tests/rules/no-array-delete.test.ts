@@ -52,6 +52,14 @@ delete test[0];
     `
 delete console.log();
     `,
+    `
+declare const arr: number[] & { foo?: number };
+delete arr.foo;
+    `,
+    `
+declare const arrOrRecord: number[] | Record<number, number>;
+delete arrOrRecord[0];
+    `,
   ],
 
   invalid: [
@@ -644,6 +652,359 @@ delete arr[0];
               output: `
 declare const arr: string & Array<number>;
 arr.splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+delete (condition ? a : b)[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+(condition ? a : b).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: unknown;
+delete (value as number[])[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const value: unknown;
+(value as number[]).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+delete (condition ? a : b)[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+;(condition ? a : b).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+a
+delete [1, 2][0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a
+;[1, 2].splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+a
+delete \`1,2\`.split(',')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a
+;\`1,2\`.split(',').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+a
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a
+;/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+a;
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a;
+/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let i = 0;
+i++
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+let i = 0;
+i++
+;/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let i = 0;
+i--
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+let i = 0;
+i--
+;/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+let i = 0;
+i++
+delete (a)[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+let i = 0;
+i++
+(a).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+delete /* comment */ (condition ? a : b)[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 6,
+          line: 6,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+/* comment */
+;(condition ? a : b).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+void delete (condition ? a : b)[0]
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 35,
+          endLine: 6,
+          line: 6,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+declare const b: number[];
+declare const condition: boolean;
+condition
+void (condition ? a : b).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+a
+delete a[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a
+a.splice(0, 1)
       `,
             },
           ],

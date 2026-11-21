@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 Attempting to use a `void` type outside of a return type or generic type argument is often a sign of programmer error.
 `void` can also be misleading for other developers even if used correctly.
 
-> The `void` type means cannot be mixed with any other types, other than `never`, which accepts all types.
+> The `void` type cannot be mixed with any other types, other than `never`, which is assignable to all types.
 > If you think you need this then you probably want the `undefined` type instead.
 
 ## Examples
@@ -26,7 +26,6 @@ type PossibleValues = string | number | void;
 type MorePossibleValues = string | ((number & any) | (string | void));
 
 function logSomething(thing: void) {}
-function printArg<T = void>(arg: T) {}
 
 logAndReturn<void>(undefined);
 
@@ -51,6 +50,8 @@ function noop(): void {}
 let trulyUndefined = void 0;
 
 async function promiseMeSomething(): Promise<void> {}
+
+function printArg<T = void>(arg: T) {}
 
 type stillVoid = void | never;
 ```

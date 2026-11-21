@@ -87,6 +87,147 @@ class Foo extends Base {
   invalid: [
     {
       code: `
+class Foo {
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { name: "method 'foo'" },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              data: { name: "method 'foo'" },
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  foo() { /* empty */ }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allow: ['decoratedFunctions'] }],
+    },
+    {
+      code: `
+const foo = function () {};
+      `,
+      errors: [
+        {
+          column: 25,
+          data: { name: 'function' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              data: { name: 'function' },
+              messageId: 'suggestComment',
+              output: `
+const foo = function () { /* empty */ };
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allow: ['decoratedFunctions'] }],
+    },
+    {
+      code: `
+class Foo {
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'constructor' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              data: { name: 'constructor' },
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allow: ['protected-constructors'] }],
+    },
+    {
+      code: `
+class Foo {
+  protected constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { name: 'constructor' },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              data: { name: 'constructor' },
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  protected constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allow: ['private-constructors'] }],
+    },
+    {
+      code: `
+class Foo {
+  private foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: "method 'foo'" },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              data: { name: "method 'foo'" },
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  private foo() { /* empty */ }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allow: ['private-constructors'] }],
+    },
+    {
+      code: `
 class Person {
   constructor(name: string) {}
 }

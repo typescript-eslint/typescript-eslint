@@ -10,7 +10,7 @@ type Types = Record<
   | string
   | {
       fixWith?: string;
-      message: string;
+      message?: string;
       suggest?: readonly string[];
     }
   | null
@@ -54,6 +54,7 @@ function getCustomMessage(
 }
 
 const TYPE_KEYWORDS = {
+  any: AST_NODE_TYPES.TSAnyKeyword,
   bigint: AST_NODE_TYPES.TSBigIntKeyword,
   boolean: AST_NODE_TYPES.TSBooleanKeyword,
   never: AST_NODE_TYPES.TSNeverKeyword,

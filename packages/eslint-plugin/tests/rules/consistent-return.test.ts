@@ -436,5 +436,94 @@ function foo(flag: boolean) {
         },
       ],
     },
+    {
+      code: `
+function foo(flag: boolean) {
+  const callback = (): void => {};
+  if (flag) return;
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Function 'foo'" },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'unexpectedReturnValue',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(flag: boolean) {
+  const callback = function (): void {};
+  if (flag) return;
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Function 'foo'" },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'unexpectedReturnValue',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(flag: boolean) {
+  if (flag) return 1;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: "function 'foo'" },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturn',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = function (flag: boolean) {
+  if (flag) return 1;
+};
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { name: 'function' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturn',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (flag: boolean) => {
+  if (flag) return 1;
+};
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { name: 'arrow function' },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturn',
+        },
+      ],
+    },
   ],
 });

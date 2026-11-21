@@ -2767,5 +2767,86 @@ abstract class SomeClass {
       options: [{ accessibility: 'explicit' }],
       output: null,
     },
+    {
+      code: `
+class Base {
+  x = 1;
+}
+class Test extends Base {
+  constructor(public override x: number) {
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { name: 'x', type: 'parameter property' },
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Base {
+  x = 1;
+}
+class Test extends Base {
+  constructor(override x: number) {
+    super();
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  constructor(public readonly x = 1) {}
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { name: 'x', type: 'parameter property' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  constructor(readonly x = 1) {}
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  @Type(() => new Date())
+  public x: Date;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'x', type: 'class property' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  @Type(() => new Date())
+  x: Date;
+}
+      `,
+    },
   ],
 });

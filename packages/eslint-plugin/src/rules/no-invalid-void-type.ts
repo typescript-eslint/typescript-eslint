@@ -80,9 +80,12 @@ export default createRule<[Options], MessageIds>({
     ];
     const invalidGrandParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSPropertySignature,
+      AST_NODE_TYPES.TSIndexSignature,
       AST_NODE_TYPES.CallExpression,
       AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.TSAbstractPropertyDefinition,
       AST_NODE_TYPES.AccessorProperty,
+      AST_NODE_TYPES.TSAbstractAccessorProperty,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [
@@ -263,23 +266,33 @@ function getNotReturnOrGenericMessageId(
     : 'invalidVoidNotReturnOrGeneric';
 }
 
+/**
+ * Finds the function or method whose return type annotation contains the node,
+ * at any depth.
+ */
 function getParentFunctionDeclarationNode(
   node: TSESTree.Node,
 ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
-  let current = node.parent;
-  while (current) {
-    if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
-      return current;
+  let current: TSESTree.Node = node;
+  while (current.parent) {
+    const parent: TSESTree.Node = current.parent;
+
+    if (
+      parent.type === AST_NODE_TYPES.FunctionDeclaration &&
+      parent.returnType === current
+    ) {
+      return parent;
     }
 
     if (
-      current.type === AST_NODE_TYPES.MethodDefinition &&
-      current.value.body != null
+      parent.type === AST_NODE_TYPES.FunctionExpression &&
+      parent.returnType === current &&
+      parent.parent.type === AST_NODE_TYPES.MethodDefinition
     ) {
-      return current;
+      return parent.parent;
     }
 
-    current = current.parent;
+    current = parent;
   }
 
   return null;

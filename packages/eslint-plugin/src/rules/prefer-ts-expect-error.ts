@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_TOKEN_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
@@ -46,10 +45,6 @@ export default createRule<[], MessageIds>({
     }
 
     function getLastCommentLine(comment: TSESTree.Comment): string {
-      if (isLineComment(comment)) {
-        return comment.value;
-      }
-
       // For multiline comments - we look at only the last line.
       const commentlines = comment.value.split(ASTUtils.LINEBREAK_MATCHER);
       return commentlines[commentlines.length - 1];
@@ -67,27 +62,24 @@ export default createRule<[], MessageIds>({
         const comments = context.sourceCode.getAllComments();
         comments.forEach(comment => {
           if (isValidTsIgnorePresent(comment)) {
-            const lineCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
-              fixer.replaceText(
-                comment,
-                `//${comment.value.replace('@ts-ignore', '@ts-expect-error')}`,
-              );
-
-            const blockCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
-              fixer.replaceText(
-                comment,
-                `/*${comment.value.replace(
-                  '@ts-ignore',
-                  '@ts-expect-error',
-                )}*/`,
-              );
+            // The directive is the first `@ts-ignore` on the last line,
+            // and the comment's value starts after its two-character `//` or `/*`.
+            const lastLine = getLastCommentLine(comment);
+            const directiveStart =
+              comment.range[0] +
+              '//'.length +
+              comment.value.length -
+              lastLine.length +
+              lastLine.indexOf('@ts-ignore');
 
             context.report({
               node: comment,
               messageId: 'preferExpectErrorComment',
-              fix: isLineComment(comment)
-                ? lineCommentRuleFixer
-                : blockCommentRuleFixer,
+              fix: fixer =>
+                fixer.replaceTextRange(
+                  [directiveStart, directiveStart + '@ts-ignore'.length],
+                  '@ts-expect-error',
+                ),
             });
           }
         });

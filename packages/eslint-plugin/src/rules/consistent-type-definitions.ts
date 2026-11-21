@@ -30,8 +30,8 @@ export default createRule({
   defaultOptions: ['interface'],
   create(context, [option]) {
     /**
-     * Iterates from the highest parent to the currently traversed node
-     * to determine whether any node in tree is globally declared module declaration
+     * Whether the node is inside a global augmentation (`global {}`),
+     * where an interface may merge with an existing global interface
      */
     function isCurrentlyTraversedNodeWithinModuleDeclaration(
       node: TSESTree.Node,
@@ -41,7 +41,6 @@ export default createRule({
         .some(
           node =>
             node.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.declare &&
             node.kind === 'global',
         );
     }
@@ -106,16 +105,20 @@ export default createRule({
                 const typeNode = node.typeParameters ?? node.id;
                 const fixes: TSESLint.RuleFix[] = [];
 
-                const firstToken = context.sourceCode.getTokenBefore(node.id);
-                if (firstToken) {
-                  fixes.push(fixer.replaceText(firstToken, 'type'));
-                  fixes.push(
-                    fixer.replaceTextRange(
-                      [typeNode.range[1], node.body.range[0]],
-                      ' = ',
-                    ),
-                  );
-                }
+                const interfaceToken = nullThrows(
+                  context.sourceCode.getTokenBefore(node.id),
+                  NullThrowsReasons.MissingToken(
+                    'interface keyword',
+                    'interface',
+                  ),
+                );
+                fixes.push(
+                  fixer.replaceText(interfaceToken, 'type'),
+                  fixer.replaceTextRange(
+                    [typeNode.range[1], node.body.range[0]],
+                    ' = ',
+                  ),
+                );
 
                 node.extends.forEach(heritage => {
                   const typeIdentifier = context.sourceCode.getText(heritage);

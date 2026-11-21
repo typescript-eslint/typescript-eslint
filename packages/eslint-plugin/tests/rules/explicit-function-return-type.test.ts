@@ -524,6 +524,16 @@ const x = {
     },
     {
       code: `
+class Test {
+  accessor arrow = () => 'arrow';
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      options: [{ allowedNames: ['arrow'] }],
+    },
+    {
+      code: `
 type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
 const x: HigherOrderType = () => arg1 => arg2 => 'foo';
       `,
@@ -1727,6 +1737,36 @@ const log = (message: string) => {
         },
       ],
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
+    },
+    {
+      code: 'const log = (message: string) => !console.log(message);',
+      errors: [
+        {
+          column: 31,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
+    },
+    {
+      code: `
+foo(() => {
+  return 1;
+});
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowIIFEs: true, allowTypedFunctionExpressions: false }],
     },
     {
       code: 'const log = <A,>(a: A) => a;',

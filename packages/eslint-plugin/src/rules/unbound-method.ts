@@ -487,6 +487,7 @@ function isSafeUse(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSAsExpression:
+    case AST_NODE_TYPES.TSSatisfiesExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
       return isSafeUse(parent);
 

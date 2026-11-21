@@ -275,6 +275,24 @@ _unknown_ as any;
       },
       {
         code: `
+declare const _unknown_: unknown;
+_unknown_ as string;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'string',
+            },
+            endColumn: 20,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
 declare const _any_: any;
 _any_ as Function;
         `,

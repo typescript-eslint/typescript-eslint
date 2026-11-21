@@ -130,6 +130,127 @@ class Derived {}
       options: [{ allowInterfaces: 'never' }],
     },
     {
+      code: 'interface Base {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = unknown`,
+            },
+          ],
+        },
+      ],
+      options: [{ allowInterfaces: 'with-single-extends' }],
+    },
+    {
+      code: 'interface Base<T> {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base<T> = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base<T> = unknown`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+interface Base {
+  props: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+const Base = 1;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = object
+const Base = 1;
+      `,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = unknown
+const Base = 1;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base<T> {}
+class Base<T> {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [],
+        },
+      ],
+    },
+    {
       code: `
 interface Base {
   props: string;

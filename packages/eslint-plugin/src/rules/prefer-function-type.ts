@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -49,18 +50,39 @@ export default createRule({
     }
 
     /**
-     * @param parent The parent of the call signature causing the diagnostic
+     * Checks whether the interface is merged with other declarations of the same name
      */
-    function shouldWrapSuggestion(parent: TSESTree.Node | undefined): boolean {
-      if (!parent) {
-        return false;
-      }
+    function isMergedDeclaration(
+      node: TSESTree.TSInterfaceDeclaration,
+    ): boolean {
+      const [variable] = context.sourceCode.getDeclaredVariables(node);
 
+      return variable.defs.some(
+        def =>
+          def.node !== node &&
+          (def.type === DefinitionType.Type ||
+            def.type === DefinitionType.ClassName),
+      );
+    }
+
+    /**
+     * @param node The type literal or interface being replaced by a function type
+     */
+    function shouldWrapSuggestion(
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
+    ): boolean {
+      const { parent } = node;
       switch (parent.type) {
-        case AST_NODE_TYPES.TSUnionType:
-        case AST_NODE_TYPES.TSIntersectionType:
         case AST_NODE_TYPES.TSArrayType:
+        case AST_NODE_TYPES.TSIntersectionType:
+        case AST_NODE_TYPES.TSOptionalType:
+        case AST_NODE_TYPES.TSTypeOperator:
+        case AST_NODE_TYPES.TSUnionType:
           return true;
+        case AST_NODE_TYPES.TSConditionalType:
+          return parent.checkType === node;
+        case AST_NODE_TYPES.TSIndexedAccessType:
+          return parent.objectType === node;
         default:
           return false;
       }
@@ -96,10 +118,10 @@ export default createRule({
           return;
         }
 
-        const fixable =
+        const isDefaultExport =
           node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
-        const fix = fixable
+        const fix = isDefaultExport
           ? null
           : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
               const fixes: TSESLint.RuleFix[] = [];
@@ -118,10 +140,10 @@ export default createRule({
                 colonPos + 1,
               )}`;
               const lastChar = suggestion.endsWith(';') ? ';' : '';
-              if (lastChar) {
+              if (lastChar || suggestion.endsWith(',')) {
                 suggestion = suggestion.slice(0, -1);
               }
-              if (shouldWrapSuggestion(node.parent)) {
+              if (shouldWrapSuggestion(node)) {
                 suggestion = `(${suggestion})`;
               }
 
@@ -138,13 +160,7 @@ export default createRule({
                 }
               }
 
-              const isParentExported =
-                node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration;
-
-              if (
-                node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-                isParentExported
-              ) {
+              if (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) {
                 const commentsText = comments
                   .map(({ type, value }) =>
                     type === AST_TOKEN_TYPES.Line
@@ -155,20 +171,16 @@ export default createRule({
                 // comments should move before export and not between export and interface declaration
                 fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {
-                comments.forEach(comment => {
-                  let commentText =
-                    comment.type === AST_TOKEN_TYPES.Line
-                      ? `//${comment.value}`
-                      : `/*${comment.value}*/`;
-                  const isCommentOnTheSameLine =
-                    comment.loc.start.line === member.loc.start.line;
-                  if (!isCommentOnTheSameLine) {
-                    commentText += '\n';
-                  } else {
-                    commentText += ' ';
-                  }
-                  suggestion = commentText + suggestion;
-                });
+                const commentsText = comments
+                  .map(({ loc, type, value }) =>
+                    type === AST_TOKEN_TYPES.Line
+                      ? `//${value}\n`
+                      : `/*${value}*/${
+                          loc.start.line === member.loc.start.line ? ' ' : '\n'
+                        }`,
+                  )
+                  .join('');
+                suggestion = commentsText + suggestion;
               }
 
               const fixStart = node.range[0];
@@ -198,7 +210,11 @@ export default createRule({
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
       ): void {
-        if (!hasOneSupertype(node) && node.body.body.length === 1) {
+        if (
+          !hasOneSupertype(node) &&
+          node.body.body.length === 1 &&
+          !isMergedDeclaration(node)
+        ) {
           checkMember(node.body.body[0], node, tsThisTypes);
         }
         // on exit check member and reset the array to nothing.

@@ -22,7 +22,7 @@ A better solution is to pass the type in as a generic type argument to `Array#re
 This means that TypeScript doesn't have to try to infer the type, and avoids the common pitfalls that come with assertions.
 
 This rule looks for calls to `Array#reduce`, and reports if an initial value is being passed & asserted.
-It will suggest instead pass the asserted type to `Array#reduce` as a generic type argument.
+Its fixer instead passes the asserted type to `Array#reduce` as a generic type argument.
 
 ## Examples
 

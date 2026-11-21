@@ -10,7 +10,8 @@ function isEmptyExport(
   return (
     node.type === AST_NODE_TYPES.ExportNamedDeclaration &&
     node.specifiers.length === 0 &&
-    !node.declaration
+    !node.declaration &&
+    !node.source
   );
 }
 
@@ -18,11 +19,18 @@ const exportOrImportNodeTypes = new Set([
   AST_NODE_TYPES.ExportAllDeclaration,
   AST_NODE_TYPES.ExportDefaultDeclaration,
   AST_NODE_TYPES.ExportNamedDeclaration,
-  AST_NODE_TYPES.ExportSpecifier,
   AST_NODE_TYPES.ImportDeclaration,
   AST_NODE_TYPES.TSExportAssignment,
-  AST_NODE_TYPES.TSImportEqualsDeclaration,
 ]);
+
+function isExportOrImport(node: TSESTree.Node): boolean {
+  return (
+    exportOrImportNodeTypes.has(node.type) ||
+    // `import x = Foo.bar` doesn't make a file a module, but `import x = require('...')` does
+    (node.type === AST_NODE_TYPES.TSImportEqualsDeclaration &&
+      node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference)
+  );
+}
 
 export default createRule({
   name: 'no-useless-empty-export',
@@ -48,38 +56,33 @@ export default createRule({
     if (isDefinitionFile(context.filename)) {
       return {};
     }
-    function checkNode(
-      node: TSESTree.Program | TSESTree.TSModuleDeclaration,
-    ): void {
-      if (!Array.isArray(node.body)) {
-        return;
-      }
-
-      const emptyExports: TSESTree.ExportNamedDeclaration[] = [];
-      let foundOtherExport = false;
-
-      for (const statement of node.body) {
-        if (isEmptyExport(statement)) {
-          emptyExports.push(statement);
-        } else if (exportOrImportNodeTypes.has(statement.type)) {
-          foundOtherExport = true;
-        }
-      }
-
-      if (foundOtherExport) {
-        for (const emptyExport of emptyExports) {
-          context.report({
-            node: emptyExport,
-            messageId: 'uselessExport',
-            fix: fixer => fixer.remove(emptyExport),
-          });
-        }
-      }
-    }
-
     return {
-      Program: checkNode,
-      TSModuleDeclaration: checkNode,
+      Program(node): void {
+        const emptyExports: TSESTree.ExportNamedDeclaration[] = [];
+        let foundOtherExport = false;
+
+        for (const statement of node.body) {
+          if (isEmptyExport(statement)) {
+            emptyExports.push(statement);
+          } else if (isExportOrImport(statement)) {
+            foundOtherExport = true;
+          }
+        }
+
+        if (foundOtherExport) {
+          for (const emptyExport of emptyExports) {
+            context.report({
+              node: emptyExport,
+              messageId: 'uselessExport',
+              fix: fixer =>
+                // removing the export would also remove any comments inside it
+                context.sourceCode.getCommentsInside(emptyExport).length
+                  ? null
+                  : fixer.remove(emptyExport),
+            });
+          }
+        }
+      },
     };
   },
 });

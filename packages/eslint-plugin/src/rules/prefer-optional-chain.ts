@@ -181,6 +181,7 @@ export default createRule<
         if (
           !isRightNodeAnEmptyObjectLiteral ||
           parentNode.type !== AST_NODE_TYPES.MemberExpression ||
+          parentNode.object !== node ||
           parentNode.optional
         ) {
           return;

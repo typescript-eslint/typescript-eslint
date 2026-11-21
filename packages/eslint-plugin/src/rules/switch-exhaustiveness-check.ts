@@ -20,7 +20,6 @@ interface SwitchMetadata {
   readonly containsNonLiteralType: boolean;
   readonly defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined;
   readonly missingLiteralBranchTypes: ts.Type[];
-  readonly symbolName: string | undefined;
 }
 
 export type Options = [
@@ -161,9 +160,6 @@ export default createRule<Options, MessageIds>({
         node.discriminant,
       );
 
-      const symbolName = discriminantType.getSymbol()?.escapedName as
-        string | undefined;
-
       const containsNonLiteralType =
         doesTypeContainNonLiteralType(discriminantType);
 
@@ -179,7 +175,10 @@ export default createRule<Options, MessageIds>({
           services,
           switchCase.test,
         );
-        caseTypes.add(caseType);
+        // A branded case such as `'a' & Brand` matches the literal `'a'`.
+        for (const casePart of tsutils.intersectionConstituents(caseType)) {
+          caseTypes.add(casePart);
+        }
       }
 
       const missingLiteralBranchTypes: ts.Type[] = [];
@@ -214,7 +213,6 @@ export default createRule<Options, MessageIds>({
         missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
           typeToString(a).localeCompare(typeToString(b)),
         ),
-        symbolName,
       };
     }
 
@@ -222,8 +220,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       switchMetadata: SwitchMetadata,
     ): void {
-      const { defaultCase, missingLiteralBranchTypes, symbolName } =
-        switchMetadata;
+      const { defaultCase, missingLiteralBranchTypes } = switchMetadata;
 
       // If considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
@@ -253,7 +250,6 @@ export default createRule<Options, MessageIds>({
                   node,
                   missingLiteralBranchTypes,
                   defaultCase,
-                  symbolName?.toString(),
                 );
               },
             },
@@ -267,10 +263,8 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       missingBranchTypes: (ts.Type | null)[], // null means default branch
       defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined,
-      symbolName?: string,
     ): TSESLint.RuleFix {
-      const lastCase =
-        node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
+      const lastCase = node.cases.at(-1);
 
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)
@@ -285,7 +279,8 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        const missingBranchName = missingBranchType.getSymbol()?.escapedName;
+        const missingBranchSymbol = missingBranchType.getSymbol();
+        const missingBranchName = missingBranchSymbol?.escapedName;
         let caseTest = tsutils.isTypeFlagSet(
           missingBranchType,
           ts.TypeFlags.ESSymbolLike,
@@ -294,8 +289,10 @@ export default createRule<Options, MessageIds>({
             missingBranchName!
           : typeToString(missingBranchType);
 
+        const enumDeclaration = missingBranchSymbol?.valueDeclaration?.parent;
         if (
-          symbolName &&
+          enumDeclaration != null &&
+          ts.isEnumDeclaration(enumDeclaration) &&
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
@@ -304,7 +301,7 @@ export default createRule<Options, MessageIds>({
             .replaceAll('\n', '\\n')
             .replaceAll('\r', '\\r');
 
-          caseTest = `${symbolName}['${escapedBranchName}']`;
+          caseTest = `${enumDeclaration.name.text}['${escapedBranchName}']`;
         }
 
         missingCases.push(

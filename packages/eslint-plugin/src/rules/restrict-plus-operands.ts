@@ -8,7 +8,6 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
-  isTypeAnyType,
   isTypeFlagSet,
 } from '../util';
 
@@ -191,8 +190,7 @@ export default createRule<Options, MessageIds>({
             typeName === 'RegExp'
               ? !allowRegExp ||
                 tsutils.isTypeFlagSet(otherType, ts.TypeFlags.NumberLike)
-              : (!allowAny && isTypeAnyType(subBaseType)) ||
-                isDeeplyObjectType(subBaseType)
+              : isDeeplyObjectType(subBaseType)
           ) {
             context.report({
               node: baseNode,
@@ -203,7 +201,7 @@ export default createRule<Options, MessageIds>({
               },
             });
             hadIndividualComplaint = true;
-            continue;
+            break;
           }
         }
       }

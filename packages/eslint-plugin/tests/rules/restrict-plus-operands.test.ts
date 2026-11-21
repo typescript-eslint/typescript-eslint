@@ -1667,6 +1667,66 @@ const f = (a: number, b: RegExp) => a + b;
     },
     {
       code: `
+declare const a: boolean | number;
+a + 1n;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `any`, `null`, `RegExp`, `undefined`',
+            type: 'number | boolean',
+          },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalid',
+        },
+      ],
+      options: [{ allowBoolean: false }],
+    },
+    {
+      code: `
+let foo = 1n + 1;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            left: 'bigint',
+            right: 'number',
+          },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+          messageId: 'bigintAndNumber',
+        },
+      ],
+      options: [{ allowNumberAndString: false }],
+    },
+    {
+      code: `
+declare const a: { a: 1 } | { b: 2 };
+a + '';
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
+            type: '{ a: 1; }',
+          },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalid',
+        },
+      ],
+    },
+    {
+      code: `
 let foo: string | boolean;
 foo = foo + 'some data';
       `,

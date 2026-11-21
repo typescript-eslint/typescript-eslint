@@ -14,6 +14,7 @@ ruleTester.run('prefer-namespace-keyword', rule, {
     'namespace foo {}',
     'declare namespace foo {}',
     'declare global {}',
+    'namespace A.B {}',
   ],
   invalid: [
     {
@@ -83,6 +84,32 @@ declare namespace foo {
   declare namespace bar {}
 }
       `,
+    },
+    {
+      code: 'module A.B {}',
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'useNamespace',
+        },
+      ],
+      output: 'namespace A.B {}',
+    },
+    {
+      code: 'module /* comment */ foo {}',
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'useNamespace',
+        },
+      ],
+      output: 'namespace /* comment */ foo {}',
     },
   ],
 });

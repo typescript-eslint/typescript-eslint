@@ -105,6 +105,28 @@ type Example = {
   set value(newValue: number);
 };
     `,
+    `
+class Example {
+  static get value(): string {
+    return '';
+  }
+  set value(newValue: number) {}
+}
+    `,
+    `
+class Example {
+  get value(): string {
+    return '';
+  }
+  static set value(newValue: number) {}
+}
+    `,
+    `
+abstract class Example {
+  abstract get value(): string;
+  abstract set value(newValue: string);
+}
+    `,
   ],
 
   invalid: [
@@ -238,6 +260,42 @@ declare class Foo {
           endColumn: 19,
           endLine: 7,
           line: 7,
+          messageId: 'mismatch',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Example {
+  abstract get value(): number;
+  abstract set value(newValue: string);
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'mismatch',
+        },
+      ],
+    },
+    {
+      code: `
+class Example {
+  static get value(): number {
+    return 0;
+  }
+  static set value(newValue: string) {}
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'mismatch',
         },
       ],

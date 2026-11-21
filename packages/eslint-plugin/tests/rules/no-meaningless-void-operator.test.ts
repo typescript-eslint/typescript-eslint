@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-meaningless-void-operator';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -105,6 +107,17 @@ declare let x: number;
 declare let y: number;
 void ((x = 1), (y = 2));
     `,
+    `
+declare function tag(strings: TemplateStringsArray): string;
+void tag\`value\`;
+    `,
+    {
+      code: `
+declare function getValue(): string | undefined;
+void getValue();
+      `,
+      options: [{ checkNever: true }],
+    },
   ],
   invalid: [
     {
@@ -139,6 +152,349 @@ void foo();
       output: `
 function foo() {}
 foo();
+      `,
+    },
+    {
+      code: `
+declare function tag(strings: TemplateStringsArray): void;
+void tag\`value\`;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function tag(strings: TemplateStringsArray): void;
+tag\`value\`;
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+void /* comment */ foo();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+/* comment */ foo();
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+function bar() {
+  return void // comment
+    foo();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { type: 'void' },
+          endColumn: 10,
+          endLine: 5,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function bar() {
+  return foo();
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+function bar() {
+  throw void /*
+  */ foo();
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { type: 'void' },
+          endColumn: 11,
+          endLine: 5,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function bar() {
+  throw foo();
+}
+      `,
+    },
+    {
+      code: noFormat`
+void function () {}();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+(function () {}());
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void function () {}()
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;(function () {}())
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;({})
+      `,
+    },
+    {
+      code: `
+const fn = () => void { method() {} }.method();
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'void' },
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+const fn = () => ({ method() {} }.method());
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void (() => {})()
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;(() => {})()
+      `,
+    },
+    {
+      code: `
+const value = void (() => {})();
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'void' },
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+const value = (() => {})();
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1;
+void (() => {})()
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1;
+(() => {})()
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void [x]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+;[x]
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+void x
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x = 1
+x
+      `,
+    },
+    {
+      code: `
+void {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+({});
+      `,
+    },
+    {
+      code: `
+void async function () {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+(async function () {});
+      `,
+    },
+    {
+      code: `
+declare const async: number;
+void async;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare const async: number;
+async;
+      `,
+    },
+    {
+      code: noFormat`
+void (function () {});
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+(function () {});
       `,
     },
     {

@@ -92,13 +92,32 @@ export default createRule({
       );
     }
 
-    function isReferenceFromParameter(node: TSESTree.Identifier): boolean {
-      const scope = context.sourceCode.getScope(node);
-
-      const rightRef = scope.references.find(
-        ref => ref.identifier.name === node.name,
+    /**
+     * Whether `node` reads a parameter of `constructorNode` that has not been
+     * written to before `assignment`, so it still holds the value that the
+     * parameter property assigned.
+     */
+    function isUnchangedConstructorParameter(
+      node: TSESTree.Identifier,
+      constructorNode: TSESTree.FunctionExpression,
+      assignment: TSESTree.AssignmentExpression,
+    ): boolean {
+      const variable = ASTUtils.findVariable(
+        context.sourceCode.getScope(node),
+        node,
       );
-      return rightRef?.resolved?.defs.at(0)?.type === DefinitionType.Parameter;
+      const definition = variable?.defs.at(0);
+
+      return (
+        definition?.type === DefinitionType.Parameter &&
+        definition.node === constructorNode &&
+        !variable?.references.some(
+          reference =>
+            reference.isWrite() &&
+            !reference.init &&
+            reference.identifier.range[0] < assignment.range[0],
+        )
+      );
     }
 
     function isParameterPropertyWithName(
@@ -130,8 +149,71 @@ export default createRule({
     function isArrowIIFE(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        node.parent.type === AST_NODE_TYPES.CallExpression
+        node.parent.type === AST_NODE_TYPES.CallExpression &&
+        node.parent.callee === node
       );
+    }
+
+    /**
+     * Finds the constructor that runs `node` immediately: either directly or
+     * through arrow function IIFEs.
+     */
+    function findImmediateConstructor(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionExpression | undefined {
+      let functionNode = findParentFunction(node);
+      if (functionNode && isArrowIIFE(functionNode)) {
+        functionNode = findParentFunction(functionNode.parent);
+      }
+
+      return isConstructorFunctionExpression(functionNode)
+        ? functionNode
+        : undefined;
+    }
+
+    /**
+     * Finds the constructor whose `this` a write in `node` may change before
+     * the statements after it run: like `findImmediateConstructor`, but an
+     * arrow passed as an argument (`list.forEach(() => ...)`) counts too.
+     */
+    function findConstructorOfWrite(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionExpression | undefined {
+      let functionNode = findParentFunction(node);
+      if (
+        functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        functionNode.parent.type === AST_NODE_TYPES.CallExpression
+      ) {
+        functionNode = findParentFunction(functionNode.parent);
+      }
+
+      return isConstructorFunctionExpression(functionNode)
+        ? functionNode
+        : undefined;
+    }
+
+    /**
+     * Whether `node` is written by something other than an assignment
+     * expression, such as `this.foo++` or `[this.foo] = values`.
+     */
+    function isNonAssignmentWriteTarget(node: TSESTree.MemberExpression) {
+      const { parent } = node;
+      switch (parent.type) {
+        case AST_NODE_TYPES.ArrayPattern:
+        case AST_NODE_TYPES.RestElement:
+        case AST_NODE_TYPES.UpdateExpression:
+          return true;
+        case AST_NODE_TYPES.AssignmentPattern:
+        case AST_NODE_TYPES.ForInStatement:
+        case AST_NODE_TYPES.ForOfStatement:
+          return parent.left === node;
+        case AST_NODE_TYPES.Property:
+          return (
+            parent.value === node &&
+            parent.parent.type === AST_NODE_TYPES.ObjectPattern
+          );
+      }
+      return false;
     }
 
     return {
@@ -158,12 +240,10 @@ export default createRule({
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
       ): void {
-        let functionNode = findParentFunction(node);
-        if (functionNode && isArrowIIFE(functionNode)) {
-          functionNode = findParentFunction(functionNode.parent);
-        }
+        const leftName = getPropertyName(node.left);
+        const constructorNode = findConstructorOfWrite(node);
 
-        if (!isConstructorFunctionExpression(functionNode)) {
+        if (!leftName || !constructorNode) {
           return;
         }
 
@@ -173,41 +253,47 @@ export default createRule({
             'The top of stack should exist',
           );
 
-        // A prior write to the parameter binding means a later `this.x = x`
-        // may copy a different value than the parameter property initialized.
-        if (node.left.type === AST_NODE_TYPES.Identifier) {
-          if (isReferenceFromParameter(node.left)) {
-            assignedBeforeUnnecessary.add(node.left.name);
+        const rightId = getIdentifier(node.right);
+
+        if (
+          UNNECESSARY_OPERATORS.has(node.operator) &&
+          leftName === rightId?.name &&
+          isUnchangedConstructorParameter(rightId, constructorNode, node) &&
+          constructorNode.params.some(param =>
+            isParameterPropertyWithName(param, leftName),
+          )
+        ) {
+          // A copy in a callback such as `setTimeout` may run after the
+          // property changed, so only report copies that run immediately.
+          // Either way, it doesn't change the property's value.
+          if (
+            findImmediateConstructor(node) &&
+            !assignedBeforeUnnecessary.has(leftName)
+          ) {
+            unnecessaryAssignments.push({
+              name: leftName,
+              node,
+            });
           }
           return;
         }
 
-        const leftName = getPropertyName(node.left);
+        assignedBeforeUnnecessary.add(leftName);
+      },
+      "MethodDefinition[kind='constructor'] > FunctionExpression MemberExpression"(
+        node: TSESTree.MemberExpression,
+      ): void {
+        const name = getPropertyName(node);
 
-        if (!leftName) {
-          return;
-        }
-
-        if (!UNNECESSARY_OPERATORS.has(node.operator)) {
-          assignedBeforeUnnecessary.add(leftName);
-          return;
-        }
-
-        const rightId = getIdentifier(node.right);
-
-        if (leftName !== rightId?.name || !isReferenceFromParameter(rightId)) {
-          return;
-        }
-
-        const hasParameterProperty = functionNode.params.some(param =>
-          isParameterPropertyWithName(param, rightId.name),
-        );
-
-        if (hasParameterProperty && !assignedBeforeUnnecessary.has(leftName)) {
-          unnecessaryAssignments.push({
-            name: leftName,
-            node,
-          });
+        if (
+          name &&
+          isNonAssignmentWriteTarget(node) &&
+          findConstructorOfWrite(node)
+        ) {
+          nullThrows(
+            reportInfoStack.at(-1),
+            'The top of stack should exist',
+          ).assignedBeforeUnnecessary.add(name);
         }
       },
       'PropertyDefinition AssignmentExpression'(
@@ -220,10 +306,13 @@ export default createRule({
         }
 
         const functionNode = findParentFunction(node);
+        // An arrow passed as an argument (`bar = list.map(() => ...)`) counts
+        // too, since it may run before the constructor body.
         if (
           functionNode &&
           !(
-            isArrowIIFE(functionNode) &&
+            functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+            functionNode.parent.type === AST_NODE_TYPES.CallExpression &&
             findParentPropertyDefinition(node)?.value === functionNode.parent
           )
         ) {

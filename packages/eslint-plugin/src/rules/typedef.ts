@@ -239,7 +239,7 @@ export default createRule<Options, MessageIds>({
           ) {
             report(
               node,
-              node.key.type === AST_NODE_TYPES.Identifier
+              !node.computed && node.key.type === AST_NODE_TYPES.Identifier
                 ? node.key.name
                 : undefined,
             );
@@ -258,7 +258,8 @@ export default createRule<Options, MessageIds>({
           if (
             !node.typeAnnotation &&
             !isForOfStatementContext(node) &&
-            !isAncestorHasTypeAnnotation(node)
+            !isAncestorHasTypeAnnotation(node) &&
+            node.parent.type !== AST_NODE_TYPES.AssignmentExpression
           ) {
             report(node);
           }
@@ -271,7 +272,7 @@ export default createRule<Options, MessageIds>({
           if (!node.typeAnnotation) {
             report(
               node,
-              node.type === AST_NODE_TYPES.TSPropertySignature
+              node.type === AST_NODE_TYPES.TSPropertySignature && !node.computed
                 ? getNodeName(node.key)
                 : undefined,
             );
@@ -282,10 +283,8 @@ export default createRule<Options, MessageIds>({
         if (
           !variableDeclaration ||
           node.id.typeAnnotation ||
-          (node.id.type === AST_NODE_TYPES.ArrayPattern &&
-            !arrayDestructuring) ||
-          (node.id.type === AST_NODE_TYPES.ObjectPattern &&
-            !objectDestructuring) ||
+          // Destructuring is checked by the ArrayPattern and ObjectPattern listeners
+          node.id.type !== AST_NODE_TYPES.Identifier ||
           (node.init && isVariableDeclarationIgnoreFunction(node.init))
         ) {
           return;

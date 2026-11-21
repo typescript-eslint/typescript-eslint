@@ -43,6 +43,18 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
   );
 }
 
+/**
+ * Check if method is not useless due to implementing constructor overloads
+ */
+function checkOverloads(node: TSESTree.MethodDefinition): boolean {
+  return !node.parent.body.some(
+    member =>
+      member.type === AST_NODE_TYPES.MethodDefinition &&
+      member.kind === 'constructor' &&
+      member.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  );
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-useless-constructor',
   meta: {
@@ -66,7 +78,8 @@ export default createRule<Options, MessageIds>({
         if (
           node.value.type === AST_NODE_TYPES.FunctionExpression &&
           checkAccessibility(node) &&
-          checkParams(node)
+          checkParams(node) &&
+          checkOverloads(node)
         ) {
           rules.MethodDefinition(node);
         }

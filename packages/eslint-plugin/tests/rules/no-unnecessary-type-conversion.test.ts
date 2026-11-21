@@ -133,6 +133,68 @@ enum CustomIds {
 const customId = 'id1';
 const compareWithToString = customId === CustomIds.Id1.toString();
     `,
+    `
+enum CustomIds {
+  Id1 = 'id1',
+  Id2 = 'id2',
+}
+String(CustomIds.Id1);
+    `,
+    `
+enum CustomIds {
+  Id1 = 'id1',
+  Id2 = 'id2',
+}
+declare const customId: CustomIds;
+String(customId);
+    `,
+    `
+enum CustomIds {
+  Id1 = 'id1',
+}
+CustomIds.Id1 + '';
+    `,
+    `
+enum CustomIds {
+  Id1 = 'id1',
+}
+'' + CustomIds.Id1;
+    `,
+    `
+enum NumericIds {
+  Id1 = 1,
+}
+Number(NumericIds.Id1);
+    `,
+    `
+enum NumericIds {
+  Id1 = 1,
+}
++NumericIds.Id1;
+    `,
+    `
+enum NumericIds {
+  Id1 = 1,
+}
+~~NumericIds.Id1;
+    `,
+    'String();',
+    `
+declare const stringOrNumber: string | number;
+String(stringOrNumber);
+    `,
+    `
+let str = 'a';
+str += 'b';
+    `,
+    `
+declare const integerOrFraction: 1 | 1.5;
+~~integerOrFraction;
+    `,
+    `
+declare const strings: string[];
+String(...strings);
+    `,
   ],
 
   invalid: [

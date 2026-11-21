@@ -759,6 +759,17 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
       `,
       options: [{ allowMixedPromiseArrays: true }],
     },
+    `
+declare function takesNumbers(numbers: number[]): void;
+takesNumbers([1, 2, 3]);
+    `,
+    `
+Promise.all([, Promise.resolve(1)]);
+    `,
+    `
+declare const noPromises: [];
+Promise.all(noPromises);
+    `,
   ],
 
   invalid: [
@@ -775,6 +786,172 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
             {
               messageId: 'removeAwait',
               output: '0;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  return await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  throw await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  throw ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function* test() {
+  yield await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function* test() {
+  yield ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  return await /* comment */ 0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return /* comment */ 0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = // comment
+    0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = typeof await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = typeof // comment
+    0;
+}
+      `,
             },
           ],
         },

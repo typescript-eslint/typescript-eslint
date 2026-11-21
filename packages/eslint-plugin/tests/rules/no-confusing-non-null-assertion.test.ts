@@ -21,6 +21,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
     '(a + b!) = c;',
     '(a + b!) in c;',
     '(a || b!) instanceof c;',
+    '(a!) == b;',
+    'a() == b;',
+    'a + b! + c;',
   ],
   invalid: [
     {

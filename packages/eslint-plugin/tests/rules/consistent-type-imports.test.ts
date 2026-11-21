@@ -352,6 +352,22 @@ export type Y = {
 };
         `,
         `
+import type { key } from './constants';
+
+export type Y = {
+  [key](): void;
+  get [key](): string;
+};
+        `,
+        {
+          code: `
+import { A } from 'foo' with { type: 'json' };
+type T = A;
+          `,
+          // import attributes require TS 5.3
+          dependencyConstraints: { typescript: '5.3' },
+        },
+        `
 import A from 'foo';
 export = A;
         `,
@@ -385,6 +401,157 @@ const x = T;
         `,
       ],
       invalid: [
+        {
+          code: `
+import { constants } from './constants';
+
+export type Y = {
+  [constants.X]: string;
+};
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 41,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { constants } from './constants';
+
+export type Y = {
+  [constants.X]: string;
+};
+          `,
+        },
+        {
+          code: `
+import { key } from './constants';
+
+export type Y = {
+  [key]: string;
+};
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 35,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { key } from './constants';
+
+export type Y = {
+  [key]: string;
+};
+          `,
+        },
+        {
+          code: `
+import type A from 'foo';
+import { B, C } from 'foo';
+const c = C;
+type T = A | B;
+          `,
+          errors: [
+            {
+              column: 10,
+              data: { typeImports: '"B"' },
+              endColumn: 11,
+              endLine: 3,
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type A from 'foo';
+import type { B} from 'foo';
+import { C } from 'foo';
+const c = C;
+type T = A | B;
+          `,
+        },
+        {
+          code: `
+import type { A } from 'foo';
+import type { D } from 'foo';
+import { B, C } from 'foo';
+const c = C;
+type T = A | B | D;
+          `,
+          errors: [
+            {
+              column: 10,
+              data: { typeImports: '"B"' },
+              endColumn: 11,
+              endLine: 4,
+              line: 4,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type { A , B} from 'foo';
+import type { D } from 'foo';
+import { C } from 'foo';
+const c = C;
+type T = A | B | D;
+          `,
+        },
+        {
+          code: `
+import E, * as NS from 'foo';
+import D, { A } from 'foo';
+const e = [E, NS, D];
+type T = A;
+          `,
+          errors: [
+            {
+              column: 13,
+              data: { typeImports: '"A"' },
+              endColumn: 14,
+              endLine: 3,
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ fixStyle: 'inline-type-imports' }],
+          output: `
+import E, * as NS from 'foo';
+import D, { type A } from 'foo';
+const e = [E, NS, D];
+type T = A;
+          `,
+        },
+        {
+          code: `
+import { key } from './constants';
+
+export type Y = {
+  [key](): void;
+};
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 35,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { key } from './constants';
+
+export type Y = {
+  [key](): void;
+};
+          `,
+        },
         {
           code: `
 import Foo from 'foo';

@@ -4,7 +4,7 @@ import type {
 } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { TSESTree } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -18,6 +18,7 @@ import {
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
+  LINEBREAK_MATCHER,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -123,6 +124,30 @@ export default createRule<Options, MessageId>({
                       'await expression',
                     ),
                   );
+
+                  // Removing `await` from `return await // comment\n value`
+                  // would leave a line break after `return`, which ASI would
+                  // end the statement at.
+                  const tokenBeforeAwait =
+                    context.sourceCode.getTokenBefore(awaitKeyword);
+                  if (
+                    tokenBeforeAwait?.type === AST_TOKEN_TYPES.Keyword &&
+                    ['return', 'throw', 'yield'].includes(
+                      tokenBeforeAwait.value,
+                    ) &&
+                    LINEBREAK_MATCHER.test(
+                      context.sourceCode.text.slice(
+                        awaitTokenRemovalRange[1],
+                        firstOperandToken.range[0],
+                      ),
+                    )
+                  ) {
+                    return [
+                      fixer.replaceText(awaitKeyword, '('),
+                      fixer.insertTextAfter(node, ')'),
+                    ];
+                  }
+
                   if (
                     isStartOfArrowFunctionBodyNeedingParentheses(
                       node,

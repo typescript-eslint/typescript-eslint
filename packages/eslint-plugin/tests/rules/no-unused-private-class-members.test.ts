@@ -125,6 +125,74 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    return (this as Foo).prop;
+  }
+}
+    `,
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    return this!.prop;
+  }
+}
+    `,
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    return (<Foo>this).prop;
+  }
+}
+    `,
+    {
+      code: `
+class Foo {
+  private prop: number;
+
+  method() {
+    return (this satisfies Foo).prop;
+  }
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    return (this! as Foo).prop;
+  }
+}
+    `,
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    const self = this;
+    return (self as Foo).prop;
+  }
+}
+    `,
+    `
+class Foo {
+  private static staticProp: number;
+
+  method() {
+    return (Foo as typeof Foo).staticProp;
+  }
+}
+    `,
 
     `
 class Foo {

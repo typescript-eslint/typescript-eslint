@@ -182,9 +182,9 @@ const analyzeAndChainOperand: OperandAnalyzer = (
           ts.TypeFlags.Undefined,
         )
       ) {
-        // we know the next operand is not an `undefined` check and that this
-        // operand includes `undefined` - which means that making this an
-        // optional chain would change the runtime behavior of the expression
+        // we know the next operand is not an `undefined` check, and this
+        // operand doesn't include `undefined`, so `!== null` covers every
+        // nullish value and it can join the optional chain
         return [operand];
       }
       return null;
@@ -578,15 +578,12 @@ function getReportDescriptor(
         }
       }
 
-      let leftCode = sourceCode.getText(node);
+      let leftCode = sourceCode.text.slice(reportRange[1], node.range[1]);
       unmatchedCloseParens.reverse();
       for (const unmatchedParenIndex of unmatchedCloseParens) {
-        leftCode =
-          leftCode.slice(0, unmatchedParenIndex) +
-          leftCode.slice(unmatchedParenIndex + 1);
+        const index = unmatchedParenIndex - reportRange[1];
+        leftCode = leftCode.slice(0, index) + leftCode.slice(index + 1);
       }
-
-      leftCode = leftCode.slice(reportRange[1]);
 
       return fixer.replaceTextRange(node.range, newCode + leftCode);
     }
@@ -736,9 +733,26 @@ export function analyzeChain(
   let lastChain: LastChainOperandForReport | ValidOperand | undefined =
     undefined;
 
+  // When an earlier operand short-circuits the optional chain, the chain's
+  // last check compares `undefined` instead, so a lone `x !== null` (in `&&`)
+  // or `x === null` (in `||`) can't end the chain:
+  //     foo && foo.bar !== null
+  //     foo?.bar !== null      <-- true when `foo` is nullish
+  const nullOnlyComparisonType =
+    operator === '&&'
+      ? NullishComparisonType.NotStrictEqualNull
+      : NullishComparisonType.StrictEqualNull;
+
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
+    while (
+      !lastChain &&
+      subChain.flat().at(-1)?.comparisonType === nullOnlyComparisonType
+    ) {
+      subChain.pop();
+    }
+
     if (subChain.length + (lastChain ? 1 : 0) > 1) {
       const subChainFlat = subChain.flat();
       const maybeNullishNodes = lastChain

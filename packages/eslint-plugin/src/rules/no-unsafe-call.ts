@@ -50,6 +50,7 @@ export default createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -91,7 +92,11 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      if (isBuiltinSymbolLike(services.program, type, 'Function')) {
+      // Optional calls such as `f?.()` skip nullish values, so only the
+      // non-nullable part of the type is called.
+      const calledType = checker.getNonNullableType(type);
+
+      if (isBuiltinSymbolLike(services.program, calledType, 'Function')) {
         // this also matches subtypes of `Function`, like `interface Foo extends Function {}`.
         //
         // For weird TS reasons that I don't understand, these are
@@ -104,12 +109,12 @@ export default createRule<[], MessageIds>({
         // - they have at least one call signature
         // - OR they have at least one construct signature.
 
-        const constructSignatures = type.getConstructSignatures();
+        const constructSignatures = calledType.getConstructSignatures();
         if (constructSignatures.length > 0) {
           return;
         }
 
-        const callSignatures = type.getCallSignatures();
+        const callSignatures = calledType.getCallSignatures();
         if (unsafeMessageId === 'unsafeNew') {
           if (
             callSignatures.some(

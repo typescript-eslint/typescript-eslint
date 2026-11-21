@@ -1352,6 +1352,19 @@ declare const wrapper: Wrapper<0>;
 
 const widened: Wrapper<0 | 1> = wrapper;
     `,
+    `
+enum Fruit {
+  Apple,
+}
+const fruitOrOne: Fruit | 1 = 1;
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+declare const basket: { [Fruit.Apple]: string; [key: string]: string };
+basket[Fruit.Apple];
+    `,
   ],
   invalid: [
     {
@@ -4256,6 +4269,103 @@ const fruitConfig: { a: { b: { c: { d: { fruit: Fruit } } } } } = config;
           endColumn: 73,
           endLine: 8,
           line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+  Banana,
+}
+declare const condition: boolean;
+declare const numbers: number[];
+const fruits: (Fruit | undefined)[] = condition ? numbers : [, 1];
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 66,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+  Banana,
+}
+const fruits: (Fruit | undefined)[] = [, 1];
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 43,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1,
+  Write = 2,
+}
+const flags: Flags = 4 | Flags.Read;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 36,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1,
+  Write = 2,
+}
+const flags: Flags = Flags.Read | 4;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 36,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1,
+  Write = 2,
+}
+const flags: Flags = ~4;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
           messageId: 'unsafeEnumAssignment',
         },
       ],

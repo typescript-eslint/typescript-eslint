@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import * as parser from '@typescript-eslint/parser';
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-assertions';
 
@@ -722,6 +722,28 @@ const x = { key: 'value' } as any;
 const x = { key: 'value' } as unknown;
       `,
       options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: "const x = { key: 'value' } as const;",
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'const x = [1] as const;',
+      options: [{ arrayLiteralTypeAssertions: 'never', assertionStyle: 'as' }],
+    },
+    {
+      code: 'const x = [1] as any;',
+      options: [{ arrayLiteralTypeAssertions: 'never', assertionStyle: 'as' }],
+    },
+    {
+      code: 'const x = y as Foo;',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
     },
   ],
   invalid: [
@@ -2731,6 +2753,136 @@ function foo() {
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
           assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'const x: Foo = { bar: 5 } as Foo;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 16,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x: Foo = { bar: 5 } satisfies Foo;',
+            },
+          ],
+        },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'const x = `${{ bar: 5 } as Foo}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 14,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = `${{ bar: 5 } satisfies Foo}`;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: noFormat`({ bar: 5 } as Foo).tag\`\${x}\`;`,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 2,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: '({ bar: 5 } satisfies Foo).tag`${x}`;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'const x = () => <Foo>{ bar: 5 };',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = () => ({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: noFormat`const x = () => <Foo>({ bar: 5 });`,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = () => ({ bar: 5 }) satisfies Foo;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
         },
       ],
     },

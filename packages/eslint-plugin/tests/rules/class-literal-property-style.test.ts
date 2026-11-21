@@ -247,6 +247,52 @@ class A {
       code: `
 class A {
   private readonly foo: string = 'bar';
+  constructor(obj: { foo: string }) {
+    ({ foo: this.foo } = obj);
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foos: string[]) {
+    [this.foo = 'baz'] = foos;
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foos: string[]) {
+    for (this.foo of foos) {
+    }
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(obj: object) {
+    for (this.foo in obj) {
+    }
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
   constructor(foo: string) {
     const bar = new (class {
       private readonly foo: string = 'baz';
@@ -289,6 +335,27 @@ class ChildClass extends BaseClass {
       `,
       options: ['getters'],
     },
+    `
+class Mx {
+  p1() {
+    return 'hello world';
+  }
+}
+    `,
+    `
+class Mx {
+  get p1() {
+    return;
+  }
+}
+    `,
+    `
+class Mx {
+  get p1() {
+    throw 'hello world';
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -863,7 +930,7 @@ class A {
               messageId: 'preferGetterStyleSuggestion',
               output: `
 class A {
-  private get foo() { return 'bar'; }
+  private get foo(): string { return 'bar'; }
   constructor(foo: string) {
     const bar = new (class {
       private readonly foo: string = 'baz';
@@ -911,7 +978,7 @@ class A {
   private readonly ['foo']: string = 'bar';
   constructor(foo: string) {
     const bar = new (class {
-      private get foo() { return 'baz'; }
+      private get foo(): string { return 'baz'; }
       constructor() {}
     })();
 
@@ -950,11 +1017,74 @@ class A {
               messageId: 'preferGetterStyleSuggestion',
               output: `
 class A {
-  private get foo() { return 'bar'; }
+  private get foo(): string { return 'bar'; }
   constructor(foo: string) {
     function func() {
       this.foo = 'aa';
     }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['getters'],
+    },
+    {
+      code: `
+class Mx {
+  get p1() {
+    return 'hello world';
+  }
+  set p2(value: string) {}
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferFieldStyle',
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  readonly p1 = 'hello world';
+  set p2(value: string) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
+  readonly p1 = 'hello world';
+  constructor() {
+    console.log(this.p1);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferGetterStyle',
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  get p1() { return 'hello world'; }
+  constructor() {
+    console.log(this.p1);
   }
 }
       `,

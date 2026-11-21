@@ -7,6 +7,9 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isParenthesized,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
 } from '../util';
 
 export type MessageId = 'noArrayDelete' | 'useSplice';
@@ -55,7 +58,10 @@ export default createRule<[], MessageId>({
       ): void {
         const { argument } = node;
 
-        if (argument.type !== AST_NODE_TYPES.MemberExpression) {
+        if (
+          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          !argument.computed
+        ) {
           return;
         }
 
@@ -78,11 +84,26 @@ export default createRule<[], MessageId>({
                   property.type === AST_NODE_TYPES.SequenceExpression;
 
                 const nodeMap = services.esTreeNodeToTSNodeMap;
-                const target = nodeMap.get(object).getText();
+                const rawTarget = nodeMap.get(object).getText();
+                const target = isParenthesized(object, context.sourceCode)
+                  ? `(${rawTarget})`
+                  : rawTarget;
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
-                let suggestion = `${target}.splice(${key}, 1)`;
+                const tokenBefore = context.sourceCode.getTokenBefore(node);
+                const semicolon =
+                  /^[([`/]/.test(target) &&
+                  isStartOfExpressionStatement(node) &&
+                  (needsPrecedingSemicolon(context.sourceCode, node) ||
+                    // Unlike `(`, `[` and `` ` ``, a `/` after `x++` is a division.
+                    (target.startsWith('/') &&
+                      (tokenBefore?.value === '++' ||
+                        tokenBefore?.value === '--')))
+                    ? ';'
+                    : '';
+
+                let suggestion = `${semicolon}${target}.splice(${key}, 1)`;
 
                 const comments = context.sourceCode.getCommentsInside(node);
 

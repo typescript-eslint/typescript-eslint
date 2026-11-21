@@ -116,26 +116,7 @@ export default createRule<Options, MessageIds>({
 
       if (options.ignoreDeclarationMerge && identifiers.length > 1) {
         if (
-          // interfaces merging
-          identifiers.every(
-            ({ parent }) =>
-              parent.type === AST_NODE_TYPES.TSInterfaceDeclaration,
-          )
-        ) {
-          return;
-        }
-
-        if (
-          // namespace/module merging
-          identifiers.every(
-            ({ parent }) => parent.type === AST_NODE_TYPES.TSModuleDeclaration,
-          )
-        ) {
-          return;
-        }
-
-        if (
-          // class + interface/namespace merging
+          // interface/namespace merging, optionally with one class
           identifiers.every(({ parent }) =>
             CLASS_DECLARATION_MERGE_NODES.has(parent.type),
           )
@@ -156,7 +137,7 @@ export default createRule<Options, MessageIds>({
         }
 
         if (
-          // class + interface/namespace merging
+          // function + namespace merging
           identifiers.every(({ parent }) =>
             FUNCTION_DECLARATION_MERGE_NODES.has(parent.type),
           )
@@ -228,10 +209,9 @@ export default createRule<Options, MessageIds>({
           const messageId =
             type === declaration.type ? 'redeclared' : detailMessageId;
 
+          // Only a builtin declaration lacks a node, and it always comes first.
           if (node) {
             context.report({ loc, node, messageId, data });
-          } else if (loc) {
-            context.report({ loc, messageId, data });
           }
         }
       }
@@ -276,7 +256,9 @@ export default createRule<Options, MessageIds>({
           findVariablesInScope(scope.childScopes[0]);
         }
       },
+      StaticBlock: checkForBlock,
       SwitchStatement: checkForBlock,
+      TSModuleDeclaration: checkForBlock,
     };
   },
 });

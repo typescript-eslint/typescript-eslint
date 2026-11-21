@@ -93,12 +93,13 @@ export default createRule<Options, MessageIds>({
         | TSESTree.Identifier
         | TSESTree.ObjectPattern
         | TSESTree.RestElement,
+      typeAnnotation: TSESTree.TSTypeAnnotation | undefined,
     ): ts.Type {
-      if (actualParam.typeAnnotation?.typeAnnotation) {
+      if (typeAnnotation) {
         // Get type from annotation node to preserve aliasSymbol
         const checker = services.program.getTypeChecker();
         const tsTypeNode = services.esTreeNodeToTSNodeMap.get(
-          actualParam.typeAnnotation.typeAnnotation,
+          typeAnnotation.typeAnnotation,
         ) as ts.TypeNode;
         return checker.getTypeFromTypeNode(tsTypeNode);
       }
@@ -141,11 +142,17 @@ export default createRule<Options, MessageIds>({
               ? param.parameter
               : param;
 
-          if (ignoreInferredTypes && actualParam.typeAnnotation == null) {
+          // In `a: T = b`, the annotation is on the left side of the default
+          const typeAnnotation =
+            actualParam.type === AST_NODE_TYPES.AssignmentPattern
+              ? actualParam.left.typeAnnotation
+              : actualParam.typeAnnotation;
+
+          if (ignoreInferredTypes && typeAnnotation == null) {
             continue;
           }
 
-          const type = getParameterType(actualParam);
+          const type = getParameterType(actualParam, typeAnnotation);
           const isReadOnly = isTypeReadonly(services.program, type, {
             allow,
             treatMethodsAsReadonly: !!treatMethodsAsReadonly,

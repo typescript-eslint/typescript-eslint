@@ -66,6 +66,7 @@ export default util.createRule<Options, MessageId>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
+      AccessorProperty: checkClassPropertyNode,
       ArrayExpression: (node): void => {
         for (const elemNode of node.elements) {
           if (
@@ -299,7 +300,7 @@ export default util.createRule<Options, MessageId>({
      * and the implemented interfaces (when the class implements an interface).
      */
     function checkClassPropertyNode(
-      propNode: TSESTree.PropertyDefinition,
+      propNode: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
       if (propNode.value == null) {
         return;
@@ -401,23 +402,31 @@ export default util.createRule<Options, MessageId>({
         if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
           // This async function is an arrow function shorthand without braces.
 
+          const arrowNode = funcNode as TSESTree.ArrowFunctionExpression;
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: 'asyncFunc',
-            suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
-              ? // This function has side effects, e.g. `async () => doSomething()`.
-                // Suggest removing the async keyword and adding a void operator.
-                [
-                  {
-                    messageId: 'suggestAddVoidOp',
-                    fix: fixer =>
-                      addVoidToArrowFix(
-                        fixer,
-                        funcNode as TSESTree.ArrowFunctionExpression,
-                      ),
-                  },
-                ]
-              : [],
+            suggest: !ASTUtils.hasSideEffect(funcNode.body, sourceCode)
+              ? []
+              : containsAwait(
+                    parserServices.esTreeNodeToTSNodeMap.get(funcNode.body),
+                  )
+                ? // This function awaits, e.g. `async () => await doSomething()`.
+                  // `await` needs an async function, so suggest an async IIFE.
+                  [
+                    {
+                      messageId: 'suggestWrapInAsyncIIFE',
+                      fix: fixer => wrapInAsyncIIFEFix(fixer, arrowNode),
+                    },
+                  ]
+                : // This function has side effects, e.g. `async () => doSomething()`.
+                  // Suggest removing the async keyword and adding a void operator.
+                  [
+                    {
+                      messageId: 'suggestAddVoidOp',
+                      fix: fixer => addVoidToArrowFix(fixer, arrowNode),
+                    },
+                  ],
           });
         }
 
@@ -507,6 +516,16 @@ export default util.createRule<Options, MessageId>({
       }
 
       // No invalid returns found. The function is allowed.
+    }
+
+    /**
+     * Checks whether the node has an `await` that isn't inside a nested function.
+     */
+    function containsAwait(node: ts.Node): boolean {
+      return (
+        ts.isAwaitExpression(node) ||
+        (!ts.isFunctionLike(node) && !!ts.forEachChild(node, containsAwait))
+      );
     }
 
     /**

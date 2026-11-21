@@ -209,7 +209,7 @@ export default createRule<Options, MessageId>({
     const flagUnionsOption = normalizeFlagUnionsOption(checksConditionals);
 
     const conditionalChecks: TSESLint.RuleListener = {
-      'CallExpression > MemberExpression': checkArrayPredicates,
+      'CallExpression > MemberExpression.callee': checkArrayPredicates,
       ConditionalExpression: checkTestConditional,
       DoWhileStatement: checkTestConditional,
       ForStatement: checkTestConditional,
@@ -367,9 +367,6 @@ export default createRule<Options, MessageId>({
       }
 
       if (
-        // none -> Report `Promise` but not `Promise | ...`
-        (flagUnionsOption === 'none' && isAlwaysThenable(checker, tsNode)) ||
-        //
         // all -> Report `Promise` and `Promise | ...`
         (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) ||
         //
@@ -469,6 +466,7 @@ export default createRule<Options, MessageId>({
           node: node.init,
           messageId: 'voidReturnVariable',
         });
+        return;
       }
 
       if (node.id.typeAnnotation == null) {
@@ -582,9 +580,10 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
+        const propertyName = tsNode.name.text;
         const propertySymbol = tsutils
           .unionConstituents(objType)
-          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
+          .map(t => checker.getPropertyOfType(t, propertyName))
           .find(p => p);
         if (propertySymbol == null) {
           return;
@@ -685,14 +684,17 @@ export default createRule<Options, MessageId>({
       }
 
       for (const nodeMember of tsNode.members) {
-        const memberName = nodeMember.name?.getText();
-        if (memberName == null) {
-          // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
-          // and construct signatures can't be async.
+        if (
+          nodeMember.name == null ||
+          ts.isComputedPropertyName(nodeMember.name)
+        ) {
+          // Call/construct/index signatures don't have names, and computed names aren't resolved.
+          // TS allows call signatures to mismatch, and construct signatures can't be async.
           // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
           // signature here against its compatible index signatures in `heritageTypes`
           continue;
         }
+        const memberName = nodeMember.name.text;
         if (!returnsThenable(checker, nodeMember)) {
           continue;
         }
@@ -782,7 +784,7 @@ export default createRule<Options, MessageId>({
 
     return {
       ...(checksConditionals ? conditionalChecks : {}),
-      ...(checksVoidReturn ? voidReturnChecks : {}),
+      ...voidReturnChecks,
       ...(checksSpreads ? spreadChecks : {}),
     };
   },
@@ -881,12 +883,7 @@ function checkThenableOrVoidArgument(
 ): void {
   if (isThenableReturningFunctionType(checker, node.expression, type)) {
     thenableReturnIndices.add(index);
-  } else if (
-    isVoidReturningFunctionType(checker, node.expression, type) &&
-    // If a certain argument accepts both thenable and void returns,
-    // a promise-returning function is valid
-    !thenableReturnIndices.has(index)
-  ) {
+  } else if (isVoidReturningFunctionType(checker, node.expression, type)) {
     voidReturnIndices.add(index);
   }
   const contextualType = checker.getContextualTypeForArgumentAtIndex(
@@ -991,6 +988,8 @@ function voidFunctionArguments(
     }
   }
 
+  // If a certain argument accepts both thenable and void returns,
+  // a promise-returning function is valid
   for (const index of thenableReturnIndices) {
     voidReturnIndices.delete(index);
   }

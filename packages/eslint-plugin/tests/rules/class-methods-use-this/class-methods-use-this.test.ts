@@ -15,6 +15,47 @@ class Foo implements Bar {
   method() {}
 }
       `,
+      options: [{ ignoreClassesThatImplementAnInterface: 'public-fields' }],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  public method() {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: 'public-fields' }],
+    },
+    {
+      code: `
+class Foo {
+  accessor method = function () {};
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      options: [{ enforceForClassFields: false }],
+    },
+    {
+      code: `
+class Foo {
+  method() {
+    class Bar {
+      accessor property = 1;
+    }
+    return this;
+  }
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    'this.foo = 1;',
+    {
+      code: `
+class Foo implements Bar {
+  method() {}
+}
+      `,
       options: [{ ignoreClassesThatImplementAnInterface: true }],
     },
     {
@@ -403,6 +444,81 @@ class Foo {
           messageId: 'missingThis',
         },
       ],
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
+      options: [{ ignoreClassesThatImplementAnInterface: true }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
+      options: [{ ignoreClassesThatImplementAnInterface: 'public-fields' }],
+    },
+    {
+      code: `
+class Foo {
+  method() {
+    function bar() {
+      this;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
       options: [{}],
     },
     {
@@ -748,6 +864,50 @@ class Foo implements Bar {
         {
           // _interface_ cannot have `private`/`protected` modifier on members.
           // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  #method() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'private method #method' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  #property = () => {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'private method #property' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingThis',
+        },
+      ],
+      options: [
+        {
           ignoreClassesThatImplementAnInterface: 'public-fields',
         },
       ],

@@ -126,6 +126,15 @@ type Test = { set f(value: number): void };
       `,
       options: ['method'],
     },
+    {
+      code: `
+interface Test {
+  f: string;
+  g: new () => Test;
+}
+      `,
+      options: ['method'],
+    },
   ],
   invalid: [
     {
@@ -927,6 +936,33 @@ interface Foo {
       `,
     },
     {
+      code: `
+declare module 'foo' {
+  interface Test {
+    f(): void;
+    f(value: number): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorMethod',
+        },
+        {
+          column: 5,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
       code: noFormat`
         declare global {
           namespace jest {
@@ -1089,6 +1125,31 @@ interface Test {
         {
           column: 3,
           endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  foo(): void;
+  foo(value: number): this;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+        {
+          column: 3,
+          endColumn: 28,
           endLine: 4,
           line: 4,
           messageId: 'errorMethod',

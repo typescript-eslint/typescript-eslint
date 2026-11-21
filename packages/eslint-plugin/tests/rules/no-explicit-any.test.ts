@@ -364,6 +364,14 @@ interface Garply4 {
       code: 'declare function waldo4(...args: ReadonlyArray<any>): void;',
       options: [{ ignoreRestArgs: true }],
     },
+    {
+      code: `
+declare class Garply {
+  f(...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
   ],
   invalid: [
     {
@@ -2218,6 +2226,121 @@ const number: never = 1;
 // fixToUnknown: true
 const number: unknown = 1;
       `,
+    },
+    {
+      code: 'function foo(a: any[]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedAny',
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'function foo(a: unknown[]) {}',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'function foo(a: never[]) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo(...args: Foo<any>) {}',
+      errors: [
+        {
+          column: 27,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedAny',
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'function foo(...args: Foo<unknown>) {}',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'function foo(...args: Foo<never>) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo(...args: keyof any[]) {}',
+      errors: [
+        {
+          column: 29,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedAny',
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'function foo(...args: keyof unknown[]) {}',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'function foo(...args: keyof never[]) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const x: readonly any[] = [];',
+      errors: [
+        {
+          column: 19,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedAny',
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: 'const x: readonly unknown[] = [];',
+            },
+            {
+              messageId: 'suggestNever',
+              output: 'const x: readonly never[] = [];',
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: '[...(foo as any).bar] = [];',
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'unexpectedAny',
+          suggestions: [
+            {
+              messageId: 'suggestUnknown',
+              output: '[...(foo as unknown).bar] = [];',
+            },
+            {
+              messageId: 'suggestNever',
+              output: '[...(foo as never).bar] = [];',
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreRestArgs: true }],
     },
   ],
 });

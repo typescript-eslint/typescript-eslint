@@ -107,8 +107,14 @@ export default createRule<Options, MessageIds>({
         return cachedState;
       }
 
-      if (node.object.type === AST_NODE_TYPES.MemberExpression) {
-        const objectState = checkMemberExpression(node.object);
+      let object = node.object;
+      // `x.a!.b` is the same chain as `x.a.b`
+      while (object.type === AST_NODE_TYPES.TSNonNullExpression) {
+        object = object.expression;
+      }
+
+      if (object.type === AST_NODE_TYPES.MemberExpression) {
+        const objectState = checkMemberExpression(object);
         if (objectState === State.Unsafe) {
           // if the object is unsafe, we know this will be unsafe as well
           // we don't need to report, as we have already reported on the inner member expr

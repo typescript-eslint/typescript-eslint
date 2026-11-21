@@ -1,7 +1,11 @@
 import type { ScopeVariable } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ReportFixFunction,
+  Scope,
+} from '@typescript-eslint/utils/ts-eslint';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
@@ -66,6 +70,31 @@ export default createRule<Options, MessageIds>({
               comment.range[1] > target.range[1],
           ),
         );
+    }
+
+    /**
+     * Checks whether `Record` at the node is the global type. Values and
+     * namespaces named `Record` don't hide it.
+     */
+    function isGlobalRecord(node: TSESTree.Node): boolean {
+      for (
+        let scope: Scope.Scope | null = context.sourceCode.getScope(node);
+        scope;
+        scope = scope.upper
+      ) {
+        if (
+          scope.set
+            .get('Record')
+            ?.defs.some(
+              def =>
+                def.isTypeDefinition &&
+                def.type !== DefinitionType.TSModuleName,
+            )
+        ) {
+          return false;
+        }
+      }
+      return true;
     }
 
     function checkMembers(
@@ -142,6 +171,33 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    // A type alias can't merge with other declarations the way an interface
+    // can, so converting a merged or augmenting interface would break it.
+    function isMergeableInterface(
+      node: TSESTree.TSInterfaceDeclaration,
+    ): boolean {
+      const container =
+        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
+          ? node.parent.parent
+          : node.parent;
+      if (
+        container.type === AST_NODE_TYPES.TSModuleBlock &&
+        (container.parent.kind === 'global' ||
+          container.parent.id.type === AST_NODE_TYPES.Literal)
+      ) {
+        return true;
+      }
+
+      // Values, functions and namespaces can share a name with a type alias
+      const [variable] = context.sourceCode.getDeclaredVariables(node);
+      return variable.defs.some(
+        def =>
+          def.node !== node &&
+          (def.type === DefinitionType.Type ||
+            def.type === DefinitionType.ClassName),
+      );
+    }
+
     return {
       ...(mode === 'index-signature' && {
         TSTypeReference(node): void {
@@ -150,6 +206,11 @@ export default createRule<Options, MessageIds>({
             return;
           }
           if (typeName.name !== 'Record') {
+            return;
+          }
+
+          // Only the global `Record` utility type can become an index signature.
+          if (!isGlobalRecord(typeName)) {
             return;
           }
 
@@ -202,10 +263,17 @@ export default createRule<Options, MessageIds>({
             `type ${node.id.name}${genericTypes} = `,
             ';',
             !node.extends.length &&
-              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration,
+              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+              !isMergeableInterface(node),
           );
         },
         TSMappedType(node): void {
+          // A key remapping clause (`as`) changes the keys, which a Record
+          // can't express.
+          if (node.nameType) {
+            return;
+          }
+
           const key = node.key;
           const scope = context.sourceCode.getScope(key);
 

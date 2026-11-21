@@ -24,6 +24,14 @@ const [foo, bar] = this;
       code: 'const self = this;',
       options: [{ allowedNames: ['self'] }],
     },
+    {
+      code: 'foo.bar = this;',
+      options: [{ allowDestructuring: false }],
+    },
+    {
+      code: 'foo[bar] = this;',
+      options: [{ allowDestructuring: false }],
+    },
     // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
     `
 declare module 'foo' {
@@ -268,6 +276,22 @@ class TestClass {
           endColumn: 21,
           endLine: 4,
           line: 4,
+          messageId: 'thisDestructure',
+        },
+      ],
+      options: [{ allowDestructuring: false }],
+    },
+    {
+      code: `
+let a: unknown;
+(a as any) = this;
+      `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'thisDestructure',
         },
       ],

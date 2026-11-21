@@ -132,6 +132,10 @@ export default createRule<Options, MessageId>({
       ({ option }) => options[option],
     );
 
+    // Recursive types such as `type Nested = Nested[]` would otherwise recurse
+    // forever, so a type that is already being checked is treated as allowed.
+    const typesBeingChecked = new Set<Type>();
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
@@ -157,6 +161,18 @@ export default createRule<Options, MessageId>({
     };
 
     function recursivelyCheckType(innerType: Type): boolean {
+      if (typesBeingChecked.has(innerType)) {
+        return true;
+      }
+
+      typesBeingChecked.add(innerType);
+      const result = checkType(innerType);
+      typesBeingChecked.delete(innerType);
+
+      return result;
+    }
+
+    function checkType(innerType: Type): boolean {
       if (innerType.isUnion()) {
         return innerType.types.every(recursivelyCheckType);
       }

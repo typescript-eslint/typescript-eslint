@@ -427,8 +427,144 @@ function f(this: void, a: boolean): void;
 function f(this: {}, a: boolean): void;
 function f(this: void | {}, a: boolean): void {}
     `,
+    `
+function f(this: {}, a: boolean): void;
+function f(this: void, a: boolean): void;
+function f(this: void | {}, a: boolean): void {}
+    `,
+    `
+function f(this: void): void;
+function f(this: void, a: boolean): void;
+function f(this: void, a?: boolean): void {}
+    `,
+    `
+declare function f(...a: string[]): void;
+declare function f(a: string[]): void;
+    `,
+    {
+      code: `
+declare function f(...a: string[]): void;
+declare function f(...b: string[]): void;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    `
+class C {
+  f(): void;
+  f(x: string, y: number): void;
+  f(x?: string, y?: number): void {}
+}
+    `,
+    `
+interface I {
+  a(x: string): void;
+  b(x: number): void;
+}
+    `,
+    `
+declare const a: unique symbol;
+interface I {
+  a(x: string): void;
+  [a](x: number): void;
+}
+    `,
+    `
+interface I {
+  [Symbol.iterator](x: string): void;
+  [Symbol.asyncIterator](x: number): void;
+}
+    `,
+    `
+declare function f(a: string, b: number[], c?: string): void;
+declare function f(a: string, ...b: number[]): void;
+    `,
+    `
+interface I {
+  new (x: string): I;
+  constructor(x: number): I;
+}
+    `,
+    `
+class C {
+  #a(x: string): void;
+  #a(x: unknown) {}
+  a(x: number): void;
+  a(x: unknown) {}
+}
+    `,
+    {
+      code: noFormat`
+abstract class C {
+  abstract f(x: string): void;
+  abstract f(x: number): void {}
+}
+      `,
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+    },
   ],
   invalid: [
+    {
+      code: `
+declare function f(a: number): void;
+declare function f(): void;
+declare function f(a: string, b: string): void;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 3 can be combined into one signature',
+          },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(a: number): void;
+declare function f(): void;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+const C = class {
+  f(x: string): void;
+  f(x: number): void;
+  f(x: unknown) {}
+};
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'string | number',
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
     {
       code: `
 declare function f(a: number): void;

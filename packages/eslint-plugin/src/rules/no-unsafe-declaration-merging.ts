@@ -64,8 +64,16 @@ export default createRule({
         }
       },
       TSInterfaceDeclaration(node): void {
+        const scope = context.sourceCode.getScope(node);
+        // a generic interface's scope holds only its type parameters,
+        // so the interface itself is declared in the scope above it
+        const currentScope = scope.block === node ? scope.upper : scope;
+        if (currentScope == null) {
+          return;
+        }
+
         checkUnsafeDeclaration(
-          context.sourceCode.getScope(node),
+          currentScope,
           node.id,
           AST_NODE_TYPES.ClassDeclaration,
         );

@@ -52,6 +52,11 @@ const a = 0;
 const b = 0;
 b != null && a !== null && a !== undefined;
     `,
+    `
+declare const x: any;
+declare const foo: string | undefined;
+x[foo || {}];
+    `,
   ],
   invalid: [
     {

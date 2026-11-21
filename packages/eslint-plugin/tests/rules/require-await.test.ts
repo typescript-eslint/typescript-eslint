@@ -336,6 +336,56 @@ const numberOne = function (): number {
       ],
     },
     {
+      code: 'const fn = async (promise: Promise<void>) => 1;',
+      errors: [
+        {
+          column: 43,
+          data: {
+            name: "Async arrow function 'fn'",
+          },
+          endColumn: 45,
+          endLine: 1,
+          line: 1,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: 'const fn = (promise: Promise<void>) => 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const fn = async (promise = Promise.resolve()) => {
+  console.log(promise);
+};
+      `,
+      errors: [
+        {
+          column: 48,
+          data: {
+            name: "Async arrow function 'fn'",
+          },
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+const fn = (promise = Promise.resolve()) => {
+  console.log(promise);
+};
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       // Return type with nested type argument
       code: `
 async function values(): Promise<Array<number>> {
@@ -1353,6 +1403,314 @@ class A {
   [bar]() {
     baz;
   }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  async *b() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async generator method 'b'" },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  ;*b() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  static async *b() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Static async generator method 'b'" },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  static *b() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  static async [b]() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Static async method' },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  static [b]() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const dec: any;
+class A {
+  a = 0
+  @dec async *b() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: "Async generator method 'b'" },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const dec: any;
+class A {
+  a = 0
+  @dec *b() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  async b() {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'b'" },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  b() {
+    return 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type AsyncNumber<T> = Promise<T>;
+async function returnsNumber(): AsyncNumber<number> {
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: "Async function 'returnsNumber'" },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+type AsyncNumber<T> = Promise<T>;
+function returnsNumber(): AsyncNumber<number> {
+  return 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsNumber(): Promise {
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: "Async function 'returnsNumber'" },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function returnsNumber(): Promise {
+  return 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number;
+async function* yieldsNumber() {
+  yield value;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: "Async generator function 'yieldsNumber'" },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const value: number;
+function* yieldsNumber() {
+  yield value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function* yieldsNothing() {
+  yield;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: "Async generator function 'yieldsNothing'" },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* yieldsNothing() {
+  yield;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsNothing() {
+  doSomething();
+  return;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: "Async function 'returnsNothing'" },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function returnsNothing() {
+  doSomething();
+  return;
 }
       `,
             },

@@ -506,6 +506,25 @@ for (var i = 0; i < 5; i++) {
       code: `
 for (var i = 0; i < l; i++) {
   (function () {
+    i + i;
+  });
+}
+      `,
+      errors: [
+        {
+          column: 4,
+          data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'unsafeRefs',
+        },
+      ],
+    },
+    {
+      code: `
+for (var i = 0; i < l; i++) {
+  (function () {
     i;
   });
 }

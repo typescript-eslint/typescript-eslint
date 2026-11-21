@@ -1,3 +1,4 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import rule from '../../src/rules/non-nullable-type-assertion-style';
@@ -25,6 +26,10 @@ const cast = original as string | number | undefined;
     `
 declare const original: number | undefined;
 const cast = original as any;
+    `,
+    `
+declare const original: number | undefined;
+const cast = original as string | number;
     `,
     `
 declare const original: number | null | undefined;
@@ -253,6 +258,252 @@ const b = (a || undefined) as string;
 declare const a: string | null;
 
 const b = (a || undefined)!;
+      `,
+    },
+    {
+      code: noFormat`
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return await nullablePromise() as string;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise())!;
+}
+      `,
+    },
+    {
+      code: `
+declare const a: string | null;
+
+const b = a /* comment */ as string;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+const b = a /* comment */!;
+      `,
+    },
+    {
+      code: `
+declare const a: string | null;
+
+const b = <string>/* comment */ a;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+const b = /* comment */ a!;
+      `,
+    },
+    {
+      code: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return <string>await nullablePromise();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 41,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise())!;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const a: string | null;
+
+function fn(): string {
+  return <string>
+    a;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 6,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+function fn(): string {
+  return a!;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const a: string | null;
+
+function fn(): string {
+  return <string>/* comment
+  */ a;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 7,
+          endLine: 6,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+function fn(): string {
+  return a!;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function nullablePromise(): Promise<string | null>;
+declare const foo: unknown;
+
+async function fn() {
+  foo
+  await nullablePromise() as string === '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 36,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+declare const foo: unknown;
+
+async function fn() {
+  foo
+  ;(await nullablePromise())! === '';
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn() {
+  await nullablePromise() as string === '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 36,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn() {
+  (await nullablePromise())! === '';
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function nullablePromise(): Promise<string | null>;
+declare function take(value: string): void;
+
+async function fn() {
+  take(await nullablePromise() as string);
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 41,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+declare function take(value: string): void;
+
+async function fn() {
+  take((await nullablePromise())!);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare const a: string | null;
+
+const b = <(string)>a;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+const b = a!;
       `,
     },
   ],

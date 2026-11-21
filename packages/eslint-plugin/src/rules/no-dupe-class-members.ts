@@ -37,10 +37,6 @@ export default createRule<Options, MessageIds>({
       N extends TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
     >(coreListener: (node: N) => void): (node: N) => void {
       return (node: N): void => {
-        if (node.computed) {
-          return;
-        }
-
         if (node.value?.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
           return;
         }

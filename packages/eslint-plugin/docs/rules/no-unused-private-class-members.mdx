@@ -78,7 +78,7 @@ class Foo {
 
 const instance = new Foo();
 // ❌ NOT detected as a usage
-console.log(foo['prop']);
+console.log(instance['prop']);
 ```
 
 (3) Reassignments of `this` multiple times:

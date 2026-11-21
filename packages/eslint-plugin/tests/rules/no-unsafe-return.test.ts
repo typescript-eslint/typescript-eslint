@@ -58,6 +58,38 @@ foo((): any => 'foo' as any);
 declare function foo(arg: null | (() => any)): void;
 foo((): any => 'foo' as any);
     `,
+    `
+function foo(a: string): string;
+function foo(a: number): number;
+function foo(a: any): any {
+  return a;
+}
+    `,
+    `
+class Foo {
+  bar(a: string): string;
+  bar(a: number): number;
+  bar(a: any): any {
+    return a;
+  }
+}
+    `,
+    `
+declare const x: any;
+class Foo {
+  get bar(): any {
+    return x;
+  }
+}
+    `,
+    `
+declare const x: any;
+class Foo {
+  get bar(): unknown {
+    return x;
+  }
+}
+    `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
 function foo(): any[] {
@@ -206,6 +238,29 @@ class Foo {
 export {};
       `,
     },
+    `
+declare const x: any;
+const foo: () => Promise<unknown> = async () => x;
+    `,
+    `
+declare const x: any;
+const foo: () => Promise<unknown> = async () => {
+  return x;
+};
+    `,
+    `
+declare const x: any[];
+const foo: () => Promise<unknown[]> = async () => x;
+    `,
+    `
+declare const x: any[];
+const foo: () => unknown = () => x;
+    `,
+    `
+async function foo(): Promise<any[]> {
+  return [] as any[];
+}
+    `,
   ],
   invalid: [
     {
@@ -854,6 +909,94 @@ async function foo() {
           endColumn: 16,
           endLine: 8,
           line: 8,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+const foo: () => string = (): any => x;
+      `,
+      errors: [
+        {
+          column: 38,
+          data: { type: '`any`' },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+const foo: () => Promise<unknown> = () => x;
+      `,
+      errors: [
+        {
+          column: 43,
+          data: { type: '`any`' },
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+const foo: () => unknown[] = () => x;
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: '`any`' },
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  x: any;
+  bar() {
+    return this.x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { type: '`any`' },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+class Foo {
+  get bar(): string {
+    return x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { type: '`any`' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'unsafeReturn',
         },
       ],

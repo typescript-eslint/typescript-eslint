@@ -822,6 +822,62 @@ export class Test {
       `,
       options: [{ allowOverloadFunctions: true }],
     },
+    {
+      code: `
+export abstract class Test {
+  abstract method();
+}
+      `,
+      options: [{ allowedNames: ['method'] }],
+    },
+    {
+      code: `
+export declare class Test {
+  method();
+}
+      `,
+      options: [{ allowedNames: ['method'] }],
+    },
+    {
+      code: `
+export const foo = {
+  method: () => 1,
+};
+      `,
+      options: [{ allowedNames: ['method'] }],
+    },
+    {
+      code: `
+export class Test {
+  accessor method = () => 1;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      options: [{ allowedNames: ['method'] }],
+    },
+    'export let foo;',
+    `
+let foo: unknown;
+function setFoo(value: unknown) {
+  foo = value;
+}
+setFoo(1);
+export { foo };
+    `,
+    `
+let foo: unknown;
+const setFoo = (value: unknown) => {
+  foo = value;
+};
+setFoo(1);
+export { foo };
+    `,
+    `
+let foo: unknown[] = [];
+foo = [foo];
+export { foo };
+    `,
   ],
   invalid: [
     {
@@ -2303,6 +2359,76 @@ export class Test {
           messageId: 'missingReturnType',
         },
       ],
+    },
+    {
+      code: `
+export declare class Test {
+  method(): void;
+  other();
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  method() {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowOverloadFunctions: true }],
+    },
+    {
+      code: `
+export const method = function () {
+  return 1;
+};
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowOverloadFunctions: true }],
+    },
+    {
+      code: `
+export function method() {
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowOverloadFunctions: true }],
     },
   ],
 });

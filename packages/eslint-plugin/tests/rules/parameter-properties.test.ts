@@ -311,6 +311,126 @@ class Foo {
       `,
       options: [{ allow: ['private readonly'], prefer: 'parameter-property' }],
     },
+    {
+      code: `
+class Foo {
+  name: string;
+  nickname: string;
+  constructor(name: string) {
+    this.nickname = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  constructor(name: string) {
+    this[name] = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  constructor(name) {
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+declare const name: string;
+class Foo {
+  name: string;
+  constructor() {
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string = 'x';
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  constructor(name: string) {
+    const other = 1;
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  constructor(name: string) {
+    name = name.trim();
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+declare const other: { name: string };
+class Foo {
+  name: string;
+  constructor(name: string) {
+    other.name = name;
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  #name: string;
+  constructor(name: string) {
+    this.#name = name;
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  other: string;
+  constructor(name: string) {
+    this.other = String(name);
+    this.name = name;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
   ],
   invalid: [
     {
@@ -1131,6 +1251,90 @@ class Foo {
         {
           allow: ['protected', 'private', 'readonly'],
           prefer: 'parameter-property',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  name: string;
+  nickname: string;
+  constructor(name: string, nickname: string) {
+    this.nickname = name;
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { parameter: 'name' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferParameterProperty',
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  [key: string]: string;
+  name: string;
+  constructor(name: string, key: string) {
+    this[key] = key;
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { parameter: 'name' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferParameterProperty',
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  name;
+  constructor(name) {
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { parameter: 'name' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferParameterProperty',
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private name = 'x') {}
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { parameter: 'name' },
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferClassProperty',
         },
       ],
     },

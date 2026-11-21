@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isUnionType } from 'ts-api-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
@@ -67,6 +67,29 @@ export default createRule({
       );
     }
 
+    function getReturnedClassKind(
+      type: ts.Type,
+      classType: ts.InterfaceType,
+    ): 'class' | 'this' | undefined {
+      const typeParts = unionConstituents(type);
+      if (typeParts.includes(classType)) {
+        return 'class';
+      }
+
+      if (!typeParts.some(part => part === classType.thisType)) {
+        return undefined;
+      }
+
+      // `this | Subclass` can't be narrowed to `this | ...`
+      return typeParts.some(
+        part =>
+          part !== classType.thisType &&
+          checker.isTypeAssignableTo(part, classType),
+      )
+        ? 'class'
+        : 'this';
+    }
+
     function isFunctionReturningThis(
       originalFunc: FunctionLike,
       originalClass: ClassLikeDeclaration,
@@ -86,8 +109,12 @@ export default createRule({
       ) as ts.InterfaceType;
 
       if (func.body.kind !== ts.SyntaxKind.Block) {
-        const type = checker.getTypeAtLocation(func.body);
-        return classType.thisType === type;
+        return (
+          getReturnedClassKind(
+            checker.getTypeAtLocation(func.body),
+            classType,
+          ) === 'this'
+        );
       }
 
       let hasReturnThis = false;
@@ -105,23 +132,17 @@ export default createRule({
           return;
         }
 
-        const type = checker.getTypeAtLocation(expr);
-        if (classType === type) {
+        const kind = getReturnedClassKind(
+          checker.getTypeAtLocation(expr),
+          classType,
+        );
+        if (kind === 'class') {
           hasReturnClassType = true;
           return true;
         }
 
-        if (classType.thisType === type) {
+        if (kind === 'this') {
           hasReturnThis = true;
-          return;
-        }
-
-        if (
-          isUnionType(type) &&
-          type.types.some(typePart => typePart === classType)
-        ) {
-          hasReturnClassType = true;
-          return true;
         }
 
         return;

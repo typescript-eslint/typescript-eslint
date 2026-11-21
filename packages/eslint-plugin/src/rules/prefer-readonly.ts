@@ -75,7 +75,12 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (ts.isDeleteExpression(parent) || isDestructuringAssignment(node)) {
+      if (
+        ts.isDeleteExpression(parent) ||
+        ((ts.isForInStatement(parent) || ts.isForOfStatement(parent)) &&
+          parent.initializer === node) ||
+        isDestructuringAssignment(node)
+      ) {
         classScope.addVariableModification(node);
         return;
       }
@@ -118,6 +123,11 @@ export default createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
+      // `this.x.y`, `o[this.x]` and `{ a = this.x }` only read `this.x`
+      const isOwnTarget =
+        !ts.isPropertyAccessExpression(node.parent) &&
+        !ts.isElementAccessExpression(node.parent) &&
+        !ts.isShorthandPropertyAssignment(node.parent);
       let current = node.parent as ts.Node | undefined;
 
       while (current) {
@@ -139,6 +149,8 @@ export default createRule<Options, MessageIds>({
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
           );
+        } else if (ts.isForOfStatement(parent) && isOwnTarget) {
+          return parent.initializer === current;
         } else {
           break;
         }
@@ -310,7 +322,11 @@ export default createRule<Options, MessageIds>({
             ...reportNodeOrLoc,
             messageId: 'preferReadonly',
             data: {
-              name: context.sourceCode.getText(nameNode),
+              // A parameter property's name node also covers its type annotation
+              name:
+                nameNode.type === AST_NODE_TYPES.Identifier
+                  ? nameNode.name
+                  : context.sourceCode.getText(nameNode),
             },
             *fix(fixer) {
               const readonlyInsertionTarget =

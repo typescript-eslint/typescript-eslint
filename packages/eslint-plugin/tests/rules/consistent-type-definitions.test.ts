@@ -277,13 +277,29 @@ global {
         },
       ],
       options: ['type'],
-      output: `
-global {
-  type Array<T> = {
-    foo(x: (x: number) => T): T[];
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  global {
+    interface Window {
+      foo: string;
+    }
   }
 }
       `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
+      output: null,
     },
     {
       code: `

@@ -296,6 +296,24 @@ const a = {
 
   invalid: [
     {
+      code: `
+declare class Letters {
+  constructor(...letters: string[]);
+}
+declare const text: string;
+new Letters(...text);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
       code: "const a = [...'test'];",
       errors: [
         {

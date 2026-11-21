@@ -413,6 +413,110 @@ export { Used };
       },
       {
         code: `
+import Used, * as Unused from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 19,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 25,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import Used from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import Unused, * as Used from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 14,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import  * as Used from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import Unused, * as Unused2 from 'module';
+export {};
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 14,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+          {
+            column: 21,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused2',
+            },
+            endColumn: 28,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+export {};
+        `,
+      },
+      {
+        code: `
 import Used, { Used2, Unused } from 'module';
 export { Used, Used2 };
         `,

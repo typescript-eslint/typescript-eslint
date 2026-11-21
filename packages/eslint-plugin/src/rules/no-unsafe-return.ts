@@ -33,7 +33,7 @@ export default createRule({
       unsafeReturnAssignment:
         'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
       unsafeReturnThis: [
-        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
+        'Unsafe return of a value of type {{type}}. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
     },
@@ -81,17 +81,24 @@ export default createRule({
       // so we have to use the contextual typing in these cases, i.e.
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
-      let functionType =
+      const isFunctionExpression =
         ts.isFunctionExpression(functionTSNode) ||
-        ts.isArrowFunction(functionTSNode)
-          ? getContextualType(checker, functionTSNode)
-          : services.getTypeAtLocation(functionNode);
+        ts.isArrowFunction(functionTSNode);
+      let functionType = isFunctionExpression
+        ? getContextualType(checker, functionTSNode)
+        : services.getTypeAtLocation(functionNode);
       functionType ??= services.getTypeAtLocation(functionNode);
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
-        for (const signature of callSignatures) {
+        // for overloads and accessors, `callSignatures` doesn't include the function's own signature
+        const declaredSignature = isFunctionExpression
+          ? undefined
+          : checker.getSignatureFromDeclaration(functionTSNode);
+        for (const signature of declaredSignature
+          ? [declaredSignature, ...callSignatures]
+          : callSignatures) {
           const signatureReturnType = signature.getReturnType();
 
           if (
@@ -128,23 +135,18 @@ export default createRule({
         // and the function is returning any or any[].
         for (const signature of callSignatures) {
           const functionReturnType = signature.getReturnType();
-          if (
-            anyType === AnyType.Any &&
-            isTypeUnknownType(functionReturnType)
-          ) {
+          const awaitedType = checker.getAwaitedType(functionReturnType);
+          // an async function's returned value is awaited into its returned `Promise`
+          const returnedType =
+            functionNode.async && awaitedType
+              ? awaitedType
+              : functionReturnType;
+          if (isTypeUnknownType(returnedType)) {
             return;
           }
           if (
             anyType === AnyType.AnyArray &&
-            isTypeUnknownArrayType(functionReturnType, checker)
-          ) {
-            return;
-          }
-          const awaitedType = checker.getAwaitedType(functionReturnType);
-          if (
-            awaitedType &&
-            anyType === AnyType.PromiseAny &&
-            isTypeUnknownType(awaitedType)
+            isTypeUnknownArrayType(returnedType, checker)
           ) {
             return;
           }

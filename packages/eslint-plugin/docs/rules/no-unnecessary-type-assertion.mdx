@@ -89,7 +89,7 @@ With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnor
 
 ```ts option='{ "typesToIgnore": ["Foo"] }' showPlaygroundButton
 type Foo = 3;
-const foo: Foo = 3;
+const foo = 3 as Foo;
 ```
 
 ## When Not To Use It

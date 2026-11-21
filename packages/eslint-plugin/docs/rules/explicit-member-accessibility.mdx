@@ -103,11 +103,11 @@ class Animal {
     this.animalName = name;
   }
   private animalName: string; // Property
-  get name(): string {
+  public get name(): string {
     // get accessor
     return this.animalName;
   }
-  set name(value: string) {
+  public set name(value: string) {
     // set accessor
     this.animalName = value;
   }
@@ -291,7 +291,7 @@ e.g. `[{ overrides: { accessors : 'off' } } ]`
 
 As no checks on the overridden member type are performed all permutations of visibility are permitted for that member type
 
-The follow pattern is considered incorrect for the given configuration
+The following pattern is considered incorrect for the given configuration
 
 ```ts option='{ "overrides": { "accessors" : "off" } }' showPlaygroundButton
 class Animal {

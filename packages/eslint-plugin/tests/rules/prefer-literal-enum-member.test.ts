@@ -9,6 +9,24 @@ ruleTester.run('prefer-literal-enum-member', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: noFormat`
+enum Foo {
+  'A' = 1,
+  B = A | 2,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  B = Foo['A'] | 2,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
     `
 enum ValidRegex {
   A = /test/,
@@ -701,6 +719,96 @@ enum Foo {
           messageId: 'notLiteral',
         },
       ],
+    },
+    {
+      code: noFormat`
+const x = 1;
+enum Foo {
+  'A' = 1,
+  B = x | 2,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 5,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Other {
+  A = 1,
+}
+enum Foo {
+  A = 1,
+  B = Other.A | 2,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 7,
+          line: 7,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = ~1,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 | 2,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'notLiteral',
+        },
+      ],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = 1 | x,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
     },
   ],
 });

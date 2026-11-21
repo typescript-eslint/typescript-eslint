@@ -1,4 +1,3 @@
-import type { Definition } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import { DefinitionType } from '@typescript-eslint/scope-manager';
@@ -14,20 +13,26 @@ function hasAssignmentBeforeNode(
     variable.references.some(
       ref => ref.isWrite() && ref.identifier.range[1] < node.range[1],
     ) ||
-    variable.defs.some(
-      def =>
-        isDefinitionWithAssignment(def) && def.node.range[1] < node.range[1],
-    )
+    // Parameters, imports, functions, and the like always hold a value.
+    // Variable initializers are already counted as write references above.
+    variable.defs.some(def => {
+      switch (def.type) {
+        case DefinitionType.Variable:
+          return def.node.definite || def.parent.declare;
+        // Type-only declarations can merge with an unassigned `let`.
+        case DefinitionType.TSModuleName:
+        case DefinitionType.Type:
+          return false;
+        // Only a type-only import can merge with a `let` or `var`.
+        case DefinitionType.ImportBinding:
+          return !variable.defs.some(
+            other => other.type === DefinitionType.Variable,
+          );
+        default:
+          return true;
+      }
+    })
   );
-}
-
-function isDefinitionWithAssignment(definition: Definition): boolean {
-  if (definition.type !== DefinitionType.Variable) {
-    return false;
-  }
-
-  const variableDeclarator = definition.node;
-  return variableDeclarator.definite || variableDeclarator.init != null;
 }
 
 export default createRule({

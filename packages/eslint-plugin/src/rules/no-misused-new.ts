@@ -55,21 +55,10 @@ export default createRule({
       parent:
         | TSESTree.ClassDeclaration
         | TSESTree.ClassExpression
-        | TSESTree.Identifier
-        | TSESTree.TSInterfaceDeclaration
-        | undefined,
+        | TSESTree.TSInterfaceDeclaration,
       returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
-      if (
-        parent &&
-        (parent.type === AST_NODE_TYPES.ClassDeclaration ||
-          parent.type === AST_NODE_TYPES.ClassExpression ||
-          parent.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
-        parent.id
-      ) {
-        return getTypeReferenceName(returnType) === parent.id.name;
-      }
-      return false;
+      return getTypeReferenceName(returnType) === parent.id?.name;
     }
 
     return {
@@ -102,7 +91,7 @@ export default createRule({
           });
         }
       },
-      "TSMethodSignature[key.name='constructor']"(
+      "TSMethodSignature[computed=false][key.name='constructor']"(
         node: TSESTree.TSMethodSignature,
       ): void {
         context.report({

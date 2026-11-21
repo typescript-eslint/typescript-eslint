@@ -61,23 +61,23 @@ export default createRule<Options, MessageIds>({
       ): void {
         const id =
           node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node.left;
-        if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {
-          return;
-        }
 
-        const hasAllowedName =
-          id.type === AST_NODE_TYPES.Identifier
-            ? // https://github.com/typescript-eslint/typescript-eslint/issues/5439
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              allowedNames!.includes(id.name)
-            : false;
-        if (!hasAllowedName) {
+        if (id.type === AST_NODE_TYPES.Identifier) {
+          // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          if (!allowedNames!.includes(id.name)) {
+            context.report({
+              node: id,
+              messageId: 'thisAssignment',
+            });
+          }
+        } else if (
+          !allowDestructuring &&
+          id.type !== AST_NODE_TYPES.MemberExpression
+        ) {
           context.report({
             node: id,
-            messageId:
-              id.type === AST_NODE_TYPES.Identifier
-                ? 'thisAssignment'
-                : 'thisDestructure',
+            messageId: 'thisDestructure',
           });
         }
       },

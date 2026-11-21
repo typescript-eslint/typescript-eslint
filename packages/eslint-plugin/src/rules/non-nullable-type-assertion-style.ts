@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -8,6 +8,12 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  isParenthesized,
+  isStartOfExpressionStatement,
+  isTokenOnSameLine,
+  needsPrecedingSemicolon,
+  nullThrows,
+  NullThrowsReasons,
   OperatorPrecedence,
 } from '../util';
 
@@ -128,25 +134,79 @@ export default createRule({
         }
 
         if (sameTypeWithoutNullish(assertedTypes, originalTypes)) {
-          const expressionSourceCode = context.sourceCode.getText(
-            node.expression,
-          );
-
-          const higherPrecedenceThanUnary =
-            getOperatorPrecedence(
-              services.esTreeNodeToTSNodeMap.get(node.expression).kind,
-              ts.SyntaxKind.Unknown,
-            ) > OperatorPrecedence.Unary;
-
           context.report({
             node,
             messageId: 'preferNonNullAssertion',
-            fix(fixer) {
-              return fixer.replaceText(
-                node,
-                higherPrecedenceThanUnary
-                  ? `${expressionSourceCode}!`
-                  : `(${expressionSourceCode})!`,
+            *fix(fixer) {
+              const needsParens =
+                !isParenthesized(node.expression, context.sourceCode) &&
+                getOperatorPrecedence(
+                  services.esTreeNodeToTSNodeMap.get(node.expression).kind,
+                  ts.SyntaxKind.Unknown,
+                ) <= OperatorPrecedence.Unary;
+
+              // Only the assertion's own tokens are removed, so comments and
+              // parentheses around the expression are kept.
+              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+                const closingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '>',
+                  ),
+                  NullThrowsReasons.MissingToken('>', 'type annotation'),
+                );
+                const tokenAfterAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(closingAngleBracket),
+                  NullThrowsReasons.MissingToken('token', '>'),
+                );
+                // A line break after `>` would move the expression to its own
+                // line, which changes behavior after `return`, `throw`, and
+                // `yield`, so the code between them is removed in that case.
+                yield fixer.replaceTextRange(
+                  [
+                    node.range[0],
+                    isTokenOnSameLine(
+                      closingAngleBracket,
+                      tokenAfterAngleBracket,
+                    )
+                      ? closingAngleBracket.range[1]
+                      : tokenAfterAngleBracket.range[0],
+                  ],
+                  needsParens ? '(' : '',
+                );
+                yield fixer.insertTextAfter(node, needsParens ? ')!' : '!');
+                return;
+              }
+
+              const asToken = nullThrows(
+                context.sourceCode.getTokenAfter(
+                  node.expression,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Identifier &&
+                    token.value === 'as',
+                ),
+                NullThrowsReasons.MissingToken('as', 'expression'),
+              );
+              const tokenBeforeAs = nullThrows(
+                context.sourceCode.getTokenBefore(asToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('token', 'as'),
+              );
+              if (needsParens) {
+                yield fixer.insertTextBefore(
+                  node,
+                  isStartOfExpressionStatement(node) &&
+                    needsPrecedingSemicolon(context.sourceCode, node)
+                    ? ';('
+                    : '(',
+                );
+              }
+              yield fixer.replaceTextRange(
+                [tokenBeforeAs.range[1], node.range[1]],
+                needsParens ? ')!' : '!',
               );
             },
           });

@@ -12,6 +12,46 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const varString: string;
+varString === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const varNullOrUndefined: null | undefined;
+varNullOrUndefined === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const varBooleanOrStringOrUndefined: boolean | string | undefined;
+varBooleanOrStringOrUndefined === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    `
+declare const varBoolean: boolean;
+varBoolean === null;
+    `,
     `
 declare const varAny: any;
 varAny === true;
@@ -141,6 +181,42 @@ function test(a?: boolean): boolean {
   ],
 
   invalid: [
+    {
+      code: `
+declare const varBoolean: boolean;
+if (varBoolean /* comment */ === true) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const varBoolean: boolean;
+void (varBoolean === false);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: `
+declare const varBoolean: boolean;
+void (!varBoolean);
+      `,
+    },
     {
       code: 'true === true;',
       errors: [

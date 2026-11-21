@@ -963,6 +963,37 @@ beforeEach(() => {});
 beforeEach(async () => {});
       `,
     },
+    `
+class Foo {
+  cb = () => {};
+}
+class Bar extends Foo {
+  static cb = Math.random;
+}
+    `,
+    `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+  cb() {}
+  static cb() {
+    return 1;
+  }
+}
+    `,
+    {
+      code: `
+class Foo {
+  accessor cb = () => {};
+}
+class Bar extends Foo {
+  static accessor cb = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
   invalid: [
     {
@@ -3077,6 +3108,79 @@ class Bar extends Foo {
     },
     {
       code: `
+class Foo {
+  accessor cb = () => {};
+}
+class Bar extends Foo {
+  accessor cb = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          endColumn: 28,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
+interface B {
+  f: () => void;
+}
+class A implements B {
+  accessor f = async () => {};
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 25,
+          endColumn: 27,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface B {
+  f: () => void;
+}
+class A implements B {
+  accessor f =  () => void (async () => {})();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor cb: () => void = Math.random;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 29,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
 const foo = () =>
   class {
     cb = () => {};
@@ -4132,6 +4236,84 @@ async function* cb() {
           endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(): Promise<number>;
+takesCallback(async () => await getNumber());
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(): Promise<number>;
+takesCallback( () => void (async () => await getNumber())());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(cb?: () => Promise<number>): Promise<number>;
+takesCallback(async () => getNumber(async () => await getNumber()));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(cb?: () => Promise<number>): Promise<number>;
+takesCallback( () => void getNumber(async () => await getNumber()));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(value?: number): Promise<number>;
+takesCallback(async () => getNumber(await getNumber()));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function takesCallback(cb: () => void): void;
+declare function getNumber(value?: number): Promise<number>;
+takesCallback( () => void (async () => getNumber(await getNumber()))());
+      `,
+            },
+          ],
         },
       ],
     },

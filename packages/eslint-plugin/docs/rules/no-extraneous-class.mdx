@@ -177,8 +177,8 @@ sayHello();
 ### Notes on Mutating Variables
 
 One case you need to be careful of is exporting mutable variables.
-While class properties can be mutated externally, exported variables are always constant.
-This means that importers can only ever read the first value they are assigned and cannot write to the variables.
+While class properties can be mutated externally, imported variables are read-only.
+This means that importers can read the current value of an exported variable but cannot write to it.
 
 Needing to write to an exported variable is very rare and is generally considered a code smell.
 If you do need it you can accomplish it using getter and setter functions:

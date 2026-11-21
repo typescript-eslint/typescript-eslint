@@ -3352,5 +3352,86 @@ class Foo {
       ],
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+interface Foo {
+  b: string;
+  a(): void;
+  d(): void;
+  c(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a', rank: 'field' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: { name: 'd', rank: 'field' },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: { name: 'c', rank: 'field' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: { beforeMember: 'd', member: 'c' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['method', 'field'],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+interface Foo {
+  b: string;
+  method(): void;
+  a: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'b', member: 'a' },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['field'],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
   ],
 });

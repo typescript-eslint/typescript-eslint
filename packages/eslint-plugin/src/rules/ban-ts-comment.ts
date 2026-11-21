@@ -255,12 +255,9 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          if (
-            option === 'allow-with-description' ||
-            (typeof option === 'object' && option.descriptionFormat)
-          ) {
+          const format = descriptionFormats.get(fullDirective);
+          if (option === 'allow-with-description' || format) {
             const { minimumDescriptionLength } = options;
-            const format = descriptionFormats.get(fullDirective);
             if (
               getStringLength(description.trim()) <
               nullThrows(
