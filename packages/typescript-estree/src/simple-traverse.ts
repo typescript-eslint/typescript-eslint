@@ -24,10 +24,10 @@ function getVisitorKeysForNode(
 type SimpleTraverseOptions = Readonly<
   | {
       enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
-      visitorKeys?: Readonly<VisitorKeys>;
+      visitorKeys?: Readonly<VisitorKeys> | undefined;
     }
   | {
-      visitorKeys?: Readonly<VisitorKeys>;
+      visitorKeys?: Readonly<VisitorKeys> | undefined;
       visitors: Record<
         string,
         (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void
@@ -54,7 +54,7 @@ class SimpleTraverser {
     }
 
     if (this.setParentPointers) {
-      node.parent = parent;
+      (node as { parent?: TSESTree.Node | undefined }).parent = parent;
     }
 
     if ('enter' in this.selectors) {

@@ -253,13 +253,22 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   useEffect(() => {
     const closable = [
       system.watchFile('/tsconfig.json', filename => {
-        onChange({ tsconfig: system.readFile(filename) });
+        const value = system.readFile(filename);
+        if (value != null) {
+          onChange({ tsconfig: value });
+        }
       }),
       system.watchFile('/.eslintrc', filename => {
-        onChange({ eslintrc: system.readFile(filename) });
+        const value = system.readFile(filename);
+        if (value != null) {
+          onChange({ eslintrc: value });
+        }
       }),
       system.watchFile('/input.*', filename => {
-        onChange({ code: system.readFile(filename) });
+        const value = system.readFile(filename);
+        if (value != null) {
+          onChange({ code: value });
+        }
       }),
     ];
 

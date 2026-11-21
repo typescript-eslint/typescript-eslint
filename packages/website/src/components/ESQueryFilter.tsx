@@ -6,7 +6,7 @@ import styles from './ESQueryFilter.module.css';
 import Text from './inputs/Text';
 
 export interface ESQueryFilterProps {
-  defaultValue?: string;
+  defaultValue?: string | undefined;
   readonly onChange: (filter: string, selector: Selector) => void;
   readonly onError: (value?: Error) => void;
 }

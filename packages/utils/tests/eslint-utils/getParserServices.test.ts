@@ -18,6 +18,14 @@ const defaults = {
   },
 } as unknown as UnknownRuleContext;
 
+const createMockParserServices = (overrides: {
+  [Key in keyof ParserServices]?: ParserServices[Key] | undefined;
+}): Partial<ParserServices> =>
+  ({
+    ...defaults.sourceCode.parserServices,
+    ...overrides,
+  }) as Partial<ParserServices>;
+
 const createMockRuleContext = (
   overrides: Partial<UnknownRuleContext> = {},
 ): UnknownRuleContext => ({
@@ -41,10 +49,9 @@ describe(ESLintUtils.getParserServices, () => {
     const context = createMockRuleContext({
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           esTreeNodeToTSNodeMap: undefined,
-        },
+        }),
       },
     });
 
@@ -67,10 +74,9 @@ describe(ESLintUtils.getParserServices, () => {
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           esTreeNodeToTSNodeMap: undefined,
-        },
+        }),
       },
     });
 
@@ -86,10 +92,9 @@ describe(ESLintUtils.getParserServices, () => {
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           esTreeNodeToTSNodeMap: undefined,
-        },
+        }),
       },
     });
 
@@ -108,10 +113,9 @@ describe(ESLintUtils.getParserServices, () => {
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           esTreeNodeToTSNodeMap: undefined,
-        },
+        }),
       },
     });
 
@@ -126,10 +130,9 @@ describe(ESLintUtils.getParserServices, () => {
       parserPath: '@babel/parser.js',
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           esTreeNodeToTSNodeMap: undefined,
-        },
+        }),
       },
     });
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
@@ -141,10 +144,9 @@ describe(ESLintUtils.getParserServices, () => {
     const context = createMockRuleContext({
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           tsNodeToESTreeNodeMap: undefined,
-        },
+        }),
       },
     });
 
@@ -157,10 +159,9 @@ describe(ESLintUtils.getParserServices, () => {
     const context = createMockRuleContext({
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           program: undefined,
-        },
+        }),
       },
     });
 
@@ -173,10 +174,9 @@ describe(ESLintUtils.getParserServices, () => {
     const context = createMockRuleContext({
       sourceCode: {
         ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
+        parserServices: createMockParserServices({
           program: undefined,
-        },
+        }),
       },
     });
 

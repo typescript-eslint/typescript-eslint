@@ -6,6 +6,7 @@
     "declarationMap": false,
     "emitDeclarationOnly": true,
     "emitDecoratorMetadata": false,
+    "exactOptionalPropertyTypes": true,
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": false,

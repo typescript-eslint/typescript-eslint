@@ -9,9 +9,9 @@ export type SourceType = TSESLint.SourceType;
 export type RulesRecord = TSESLint.Linter.RulesRecord;
 
 export interface RuleDetails {
-  description?: string;
+  description?: string | undefined;
   name: string;
-  url?: string;
+  url?: string | undefined;
 }
 
 export type TabType = 'code' | 'eslintrc' | 'tsconfig';
@@ -23,15 +23,17 @@ export type ConfigShowAst = 'es' | 'scope' | 'ts' | 'types' | false;
 export interface ConfigModel {
   code: string;
   eslintrc: string;
-  esQuery?: {
-    filter?: string;
-    selector: ESQuery.Selector;
-  };
-  fileType?: ConfigFileType;
-  scroll?: boolean;
-  showAST?: ConfigShowAst;
-  showTokens?: boolean;
-  sourceType?: SourceType;
+  esQuery?:
+    | {
+        filter?: string;
+        selector: ESQuery.Selector;
+      }
+    | undefined;
+  fileType?: ConfigFileType | undefined;
+  scroll?: boolean | undefined;
+  showAST?: ConfigShowAst | undefined;
+  showTokens?: boolean | undefined;
+  sourceType?: SourceType | undefined;
   ts: string;
   tsconfig: string;
 }
@@ -39,7 +41,7 @@ export interface ConfigModel {
 export type SelectedRange = [number, number];
 
 export interface ErrorItem {
-  fixer?: { fix(): void; message: string };
+  fixer?: { fix(): void; message: string } | undefined;
   location?: string;
   message: string;
   severity: number;
@@ -49,7 +51,7 @@ export interface ErrorItem {
 export interface ErrorGroup {
   group: string;
   items: ErrorItem[];
-  uri?: string;
+  uri?: string | undefined;
 }
 
 export interface EslintRC {

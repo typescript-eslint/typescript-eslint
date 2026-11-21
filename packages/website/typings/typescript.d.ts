@@ -13,10 +13,10 @@ declare module 'typescript' {
     category?: { message: string };
     description?: { message: string };
     element?: {
-      type: unknown;
+      type: string | Map<string, unknown>;
     };
     name: string;
-    type?: unknown;
+    type?: string | Map<string, unknown>;
   }
 
   const optionDeclarations: OptionDeclarations[];

@@ -23,7 +23,7 @@ const enum Readonlyness {
 }
 
 export interface ReadonlynessOptions {
-  readonly allow?: TypeOrValueSpecifier[];
+  readonly allow?: TypeOrValueSpecifier[] | undefined;
   readonly treatMethodsAsReadonly?: boolean;
 }
 
@@ -38,7 +38,12 @@ export const readonlynessOptionsSchema = {
   type: 'object',
 } satisfies JSONSchema4;
 
-export const readonlynessOptionsDefaults: ReadonlynessOptions = {
+export const readonlynessOptionsDefaults: {
+  readonly [Key in keyof ReadonlynessOptions]-?: Exclude<
+    ReadonlynessOptions[Key],
+    undefined
+  >;
+} = {
   allow: [],
   treatMethodsAsReadonly: false,
 };

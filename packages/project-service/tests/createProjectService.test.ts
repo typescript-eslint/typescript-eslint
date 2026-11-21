@@ -246,6 +246,20 @@ describe(createProjectService, () => {
     expect(processStderrWriteSpy).not.toHaveBeenCalled();
   });
 
+  it('passes jsDocParsingMode to the project service when provided', () => {
+    const jsDocParsingMode = ts.JSDocParsingMode.ParseAll;
+
+    const { service } = createProjectService({ jsDocParsingMode });
+
+    expect(service.jsDocParsingMode).toBe(jsDocParsingMode);
+  });
+
+  it('does not pass jsDocParsingMode to the project service when not provided', () => {
+    const { service } = createProjectService();
+
+    assert.isUndefined(service.jsDocParsingMode);
+  });
+
   it('provides a stub require to the host system when loadTypeScriptPlugins is falsy', () => {
     const { service } = createProjectService({});
 

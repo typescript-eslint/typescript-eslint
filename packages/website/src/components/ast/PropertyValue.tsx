@@ -10,7 +10,7 @@ export interface PropertyValueProps {
 
 interface SimpleModel {
   readonly className: string;
-  readonly shortValue?: string;
+  readonly shortValue?: string | undefined;
   readonly value: string;
 }
 

@@ -6,7 +6,7 @@ import type { SponsorData } from '../FinancialContributors/types';
 import styles from './styles.module.css';
 
 interface SponsorProps {
-  includeName?: boolean;
+  includeName?: boolean | undefined;
   sponsor: SponsorData;
 }
 
