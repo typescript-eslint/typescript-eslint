@@ -1,4 +1,6 @@
 import type { FunctionExpression } from '../expression/FunctionExpression/spec';
+import type { Identifier } from '../expression/Identifier/spec';
+import type { StringLiteral } from '../expression/literal/StringLiteral/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
 import type { Decorator } from '../special/Decorator/spec';
 import type {
@@ -26,14 +28,24 @@ interface MethodDefinitionBase extends BaseNode {
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {
   computed: true;
   key: PropertyNameComputed;
+  kind: 'get' | 'method' | 'set';
 }
 
 export interface MethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
   computed: false;
   key: PropertyNameNonComputed;
+  kind: 'get' | 'method' | 'set';
 }
 
 export interface ClassMethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
   computed: false;
   key: ClassPropertyNameNonComputed;
+  kind: 'get' | 'method' | 'set';
+}
+
+export interface MethodDefinitionConstructorBase extends MethodDefinitionBase {
+  computed: false;
+  key: Identifier | StringLiteral;
+  kind: 'constructor';
+  static: false;
 }

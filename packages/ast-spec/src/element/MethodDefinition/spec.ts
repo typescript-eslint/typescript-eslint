@@ -2,6 +2,7 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type {
   ClassMethodDefinitionNonComputedNameBase,
   MethodDefinitionComputedNameBase,
+  MethodDefinitionConstructorBase,
 } from '../../base/MethodDefinitionBase';
 
 export interface MethodDefinitionComputedName extends MethodDefinitionComputedNameBase {
@@ -12,5 +13,11 @@ export interface MethodDefinitionNonComputedName extends ClassMethodDefinitionNo
   type: AST_NODE_TYPES.MethodDefinition;
 }
 
+export interface MethodDefinitionConstructor extends MethodDefinitionConstructorBase {
+  type: AST_NODE_TYPES.MethodDefinition;
+}
+
 export type MethodDefinition =
-  MethodDefinitionComputedName | MethodDefinitionNonComputedName;
+  | MethodDefinitionComputedName
+  | MethodDefinitionConstructor
+  | MethodDefinitionNonComputedName;
