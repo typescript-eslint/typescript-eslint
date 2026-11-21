@@ -23,6 +23,11 @@ function hasAssignmentBeforeNode(
         case DefinitionType.TSModuleName:
         case DefinitionType.Type:
           return false;
+        // Only a type-only import can merge with a `let` or `var`.
+        case DefinitionType.ImportBinding:
+          return !variable.defs.some(
+            other => other.type === DefinitionType.Variable,
+          );
         default:
           return true;
       }

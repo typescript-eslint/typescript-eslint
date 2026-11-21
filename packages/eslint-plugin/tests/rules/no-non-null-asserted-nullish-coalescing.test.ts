@@ -44,6 +44,16 @@ let x: string | undefined;
 x! ?? '';
     `,
     `
+import type { x } from './foo';
+let x: string;
+x! ?? '';
+    `,
+    `
+import { type x } from './foo';
+var x: string;
+x! ?? '';
+    `,
+    `
 let x!: string;
 x ?? '';
     `,
@@ -426,6 +436,32 @@ x! ?? '';
               messageId: 'suggestRemovingNonNull',
               output: `
 import { x } from './foo';
+x ?? '';
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import type { x } from './foo';
+declare let x: string | undefined;
+x! ?? '';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
+          messageId: 'noNonNullAssertedNullishCoalescing',
+          suggestions: [
+            {
+              messageId: 'suggestRemovingNonNull',
+              output: `
+import type { x } from './foo';
+declare let x: string | undefined;
 x ?? '';
       `,
             },

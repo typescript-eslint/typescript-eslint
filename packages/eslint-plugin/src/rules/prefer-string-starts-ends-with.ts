@@ -698,15 +698,31 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.MemberExpression,
       ): void {
         const callNode = getParent(node) as TSESTree.CallExpression;
+        let regExpNode = node.object;
+        while (
+          regExpNode.type === AST_NODE_TYPES.TSAsExpression ||
+          regExpNode.type === AST_NODE_TYPES.TSNonNullExpression ||
+          regExpNode.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+          regExpNode.type === AST_NODE_TYPES.TSTypeAssertion
+        ) {
+          regExpNode = regExpNode.expression;
+        }
+        const isNewRegExp =
+          regExpNode.type === AST_NODE_TYPES.Literal ||
+          regExpNode.type === AST_NODE_TYPES.NewExpression ||
+          // `RegExp(re)` returns `re` itself, but with flags it creates a new object
+          (regExpNode.type === AST_NODE_TYPES.CallExpression &&
+            regExpNode.arguments.length >= 2);
         const parsed =
           callNode.arguments.length === 1
             ? // `g` and `y` make `test` depend on and update `lastIndex`. A regex
-              // literal is a new object with `lastIndex` 0, but `y` still only matches at 0.
+              // literal or a constructed `RegExp` is a new object with `lastIndex` 0, but `y`
+              // still only matches at 0.
               parseRegExp(node.object, [
                 'i',
                 'm',
                 'y',
-                ...(node.object.type === AST_NODE_TYPES.Literal ? [] : ['g']),
+                ...(isNewRegExp ? [] : ['g']),
               ])
             : null;
         if (parsed == null) {

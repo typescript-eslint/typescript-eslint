@@ -172,11 +172,13 @@ export default createRule({
     }
 
     /**
-     * Whether a write in `node` may change the constructor's `this` before the
-     * statements after it run: like `findImmediateConstructor`, but an arrow
-     * passed as an argument (`list.forEach(() => ...)`) counts too.
+     * Finds the constructor whose `this` a write in `node` may change before
+     * the statements after it run: like `findImmediateConstructor`, but an
+     * arrow passed as an argument (`list.forEach(() => ...)`) counts too.
      */
-    function mayWriteBeforeConstructorContinues(node: TSESTree.Node): boolean {
+    function findConstructorOfWrite(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionExpression | undefined {
       let functionNode = findParentFunction(node);
       if (
         functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
@@ -185,7 +187,9 @@ export default createRule({
         functionNode = findParentFunction(functionNode.parent);
       }
 
-      return isConstructorFunctionExpression(functionNode);
+      return isConstructorFunctionExpression(functionNode)
+        ? functionNode
+        : undefined;
     }
 
     /**
@@ -237,8 +241,9 @@ export default createRule({
         node: TSESTree.AssignmentExpression,
       ): void {
         const leftName = getPropertyName(node.left);
+        const constructorNode = findConstructorOfWrite(node);
 
-        if (!leftName || !mayWriteBeforeConstructorContinues(node)) {
+        if (!leftName || !constructorNode) {
           return;
         }
 
@@ -248,11 +253,9 @@ export default createRule({
             'The top of stack should exist',
           );
 
-        const constructorNode = findImmediateConstructor(node);
         const rightId = getIdentifier(node.right);
 
         if (
-          constructorNode &&
           UNNECESSARY_OPERATORS.has(node.operator) &&
           leftName === rightId?.name &&
           isUnchangedConstructorParameter(rightId, constructorNode, node) &&
@@ -260,7 +263,13 @@ export default createRule({
             isParameterPropertyWithName(param, leftName),
           )
         ) {
-          if (!assignedBeforeUnnecessary.has(leftName)) {
+          // A copy in a callback such as `setTimeout` may run after the
+          // property changed, so only report copies that run immediately.
+          // Either way, it doesn't change the property's value.
+          if (
+            findImmediateConstructor(node) &&
+            !assignedBeforeUnnecessary.has(leftName)
+          ) {
             unnecessaryAssignments.push({
               name: leftName,
               node,
@@ -279,7 +288,7 @@ export default createRule({
         if (
           name &&
           isNonAssignmentWriteTarget(node) &&
-          mayWriteBeforeConstructorContinues(node)
+          findConstructorOfWrite(node)
         ) {
           nullThrows(
             reportInfoStack.at(-1),

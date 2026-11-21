@@ -328,6 +328,23 @@ function f(s: string) {
 }
     `,
     `
+const pattern = /^a/g;
+function f(s: string) {
+  (pattern as RegExp).test(s);
+}
+    `,
+    `
+function f(s: string) {
+  new RegExp('^a', 'y').test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern).test(s);
+}
+    `,
+    `
 function f(s: string) {
   s.match(/a$/y) === null;
 }
@@ -523,6 +540,112 @@ function f(s: string) {
       output: `
 function f(s: string) {
   s.endsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  new RegExp('^a', 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  RegExp('^a', 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (/^a/g as RegExp)!.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (<RegExp>/a$/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.endsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (/^a/g satisfies RegExp).test(s);
+}
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
 }
       `,
     },
