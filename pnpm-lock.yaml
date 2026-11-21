@@ -228,8 +228,8 @@ catalogs:
       specifier: ^3.0.0
       version: 3.0.0
     prettier:
-      specifier: 3.9.5
-      version: 3.9.5
+      specifier: 3.10.1
+      version: 3.10.1
     rimraf:
       specifier: ^5.0.10
       version: 5.0.10
@@ -390,7 +390,7 @@ importers:
         version: 23.3.0(@swc/core@1.16.1)
       prettier:
         specifier: 'catalog:'
-        version: 3.9.5
+        version: 3.10.1
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -541,7 +541,7 @@ importers:
         version: 3.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.9.5
+        version: 3.10.1
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -565,7 +565,7 @@ importers:
     dependencies:
       '@prettier/sync':
         specifier: ^0.6.1
-        version: 0.6.1(prettier@3.9.5)
+        version: 0.6.1(prettier@3.10.1)
       '@typescript-eslint/rule-tester':
         specifier: workspace:*
         version: link:../rule-tester
@@ -580,7 +580,7 @@ importers:
         version: link:../utils
       prettier:
         specifier: 'catalog:'
-        version: 3.9.5
+        version: 3.10.1
     devDependencies:
       '@typescript/native':
         specifier: 'catalog:'
@@ -1118,7 +1118,7 @@ importers:
         version: 4.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.9.5
+        version: 3.10.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -8733,8 +8733,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.9.5:
-    resolution: {integrity: sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==}
+  prettier@3.10.1:
+    resolution: {integrity: sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -13876,10 +13876,10 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@prettier/sync@0.6.1(prettier@3.9.5)':
+  '@prettier/sync@0.6.1(prettier@3.10.1)':
     dependencies:
       make-synchronized: 0.8.0
-      prettier: 3.9.5
+      prettier: 3.10.1
 
   '@resvg/resvg-wasm@2.6.2': {}
 
@@ -19631,7 +19631,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.9.5: {}
+  prettier@3.10.1: {}
 
   pretty-bytes@5.6.0: {}
 
