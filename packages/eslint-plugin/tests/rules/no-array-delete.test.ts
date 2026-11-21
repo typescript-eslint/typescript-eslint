@@ -821,6 +821,112 @@ a
     {
       code: noFormat`
 declare const a: number[];
+a;
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+a;
+/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let i = 0;
+i++
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+let i = 0;
+i++
+;/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let i = 0;
+i--
+delete /,/[Symbol.split]('1,2')[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+let i = 0;
+i--
+;/,/[Symbol.split]('1,2').splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+let i = 0;
+i++
+delete (a)[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const a: number[];
+let i = 0;
+i++
+(a).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: number[];
 declare const b: number[];
 declare const condition: boolean;
 condition

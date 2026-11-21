@@ -91,10 +91,15 @@ export default createRule<[], MessageId>({
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
+                const tokenBefore = context.sourceCode.getTokenBefore(node);
                 const semicolon =
                   /^[([`/]/.test(target) &&
                   isStartOfExpressionStatement(node) &&
-                  needsPrecedingSemicolon(context.sourceCode, node)
+                  (needsPrecedingSemicolon(context.sourceCode, node) ||
+                    // Unlike `(`, `[` and `` ` ``, a `/` after `x++` is a division.
+                    (target.startsWith('/') &&
+                      (tokenBefore?.value === '++' ||
+                        tokenBefore?.value === '--')))
                     ? ';'
                     : '';
 
