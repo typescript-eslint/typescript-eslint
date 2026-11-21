@@ -215,10 +215,9 @@ export default createRule({
             continue;
           case AST_NODE_TYPES.MemberExpression:
             if (
-              current.optional ||
-              (current.computed &&
-                current.property.type !== AST_NODE_TYPES.Identifier &&
-                current.property.type !== AST_NODE_TYPES.Literal)
+              current.computed &&
+              current.property.type !== AST_NODE_TYPES.Identifier &&
+              current.property.type !== AST_NODE_TYPES.Literal
             ) {
               return null;
             }

@@ -1511,6 +1511,40 @@ for (let i = 0; i < getArr().length; i++) {
     },
     {
       code: `
+for (let i = 0; i < arrs[k + 1].length; i++) {
+  console.log(arrs[k + 1][i]);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+          suggestions: null,
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < (obj?.arr).length; i++) {
+  console.log((obj?.arr)[i]);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+          suggestions: null,
+        },
+      ],
+    },
+    {
+      code: `
 for (let i = 0; i < arr.length; i++) {
   console.log(arr[/* index */ i]);
 }
