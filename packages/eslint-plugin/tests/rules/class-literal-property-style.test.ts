@@ -247,6 +247,28 @@ class A {
       code: `
 class A {
   private readonly foo: string = 'bar';
+  constructor(foos: string[]) {
+    for (this.foo of foos);
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(obj: { foo: string }) {
+    ({ foo: this.foo } = obj);
+  }
+}
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
   constructor(foo: string) {
     const bar = new (class {
       private readonly foo: string = 'baz';
