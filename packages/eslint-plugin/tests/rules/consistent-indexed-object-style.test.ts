@@ -309,6 +309,23 @@ namespace N {
       `,
       options: ['index-signature'],
     },
+    {
+      code: `
+class Record<K, V> {}
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+interface Record<K, V> {
+  key: K;
+  value: V;
+}
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
     "type Foo = { [K in 'a' | 'b' as 'c']: number };",
 
     {
@@ -1964,6 +1981,223 @@ type Test = Record<| 'a' // 3
         },
       ],
       options: ['index-signature'],
+    },
+
+    // record mode: the fix writes `Record<…>`, so it's only offered where
+    // `Record` is the global type.
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import { Record } from 'immutable';
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<Record> {
+  [key: string]: Record;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Record>(arg: { [key: string]: Record }) {}',
+      errors: [
+        {
+          column: 27,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Record {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Record = { [key: string]: number };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = { [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Foo<Record> = { [K in string]: Record };',
+      errors: [
+        {
+          column: 20,
+          endColumn: 45,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // the mapped type's key is out of scope where the Record is written
+      code: 'type Foo = { [Record in string]: number };',
+      errors: [
+        {
+          column: 12,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: 'type Foo = Record<string, number>;',
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+const Record = 1;
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+import * as Record from './foo';
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+import * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      // a namespace import has no type meaning, so it doesn't hide the global
+      code: `
+import * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+import * as Record from './foo';
+type Foo = { [key: string]: number };
+      `,
     },
   ],
 });

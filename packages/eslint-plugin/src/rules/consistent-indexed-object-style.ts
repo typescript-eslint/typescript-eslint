@@ -74,8 +74,9 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks whether `Record` at the node is the global type. Values and
-     * namespaces named `Record` don't hide it.
+     * Checks whether `Record` at the node is the global type. Only definitions
+     * that can give `Record` a type meaning hide it, so values, namespaces and
+     * namespace imports named `Record` don't.
      */
     function isGlobalRecord(node: TSESTree.Node): boolean {
       for (
@@ -89,7 +90,8 @@ export default createRule<Options, MessageIds>({
             ?.defs.some(
               def =>
                 def.isTypeDefinition &&
-                def.type !== DefinitionType.TSModuleName,
+                def.type !== DefinitionType.TSModuleName &&
+                def.node.type !== AST_NODE_TYPES.ImportNamespaceSpecifier,
             )
         ) {
           return false;
@@ -147,14 +149,18 @@ export default createRule<Options, MessageIds>({
         messageId: 'preferRecord',
         ...getFixOrSuggest({
           fixOrSuggest:
-            fixOrSuggest === 'fix' &&
-            hasUnpreservedComments(
-              node,
-              keyType.typeAnnotation,
-              valueType.typeAnnotation,
-            )
-              ? 'suggest'
-              : fixOrSuggest,
+            // The fix writes `Record<…>` in place of `node`, which means
+            // something else where `Record` isn't the global type.
+            fixOrSuggest === 'none' || !isGlobalRecord(node)
+              ? 'none'
+              : fixOrSuggest === 'fix' &&
+                  hasUnpreservedComments(
+                    node,
+                    keyType.typeAnnotation,
+                    valueType.typeAnnotation,
+                  )
+                ? 'suggest'
+                : fixOrSuggest,
           suggestion: {
             messageId: 'preferRecordSuggestion',
             fix: (fixer): TSESLint.RuleFix => {
@@ -323,8 +329,10 @@ export default createRule<Options, MessageIds>({
             ...getFixOrSuggest({
               // There's no builtin Mutable<T> type, so a `-readonly` mapped
               // type can't be represented as a Record and is left untouched.
+              // The fix also needs the global `Record` where the mapped type
+              // is, which is outside its own key's scope.
               fixOrSuggest:
-                node.readonly === '-'
+                node.readonly === '-' || !isGlobalRecord(node.parent)
                   ? 'none'
                   : hasUnpreservedComments(
                         node,

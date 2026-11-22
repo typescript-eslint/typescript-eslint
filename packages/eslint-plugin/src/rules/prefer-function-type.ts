@@ -119,10 +119,28 @@ export default createRule({
               const text = context.sourceCode
                 .getText()
                 .slice(start, member.range[1]);
-              const comments = [
-                ...context.sourceCode.getCommentsBefore(member),
-                ...context.sourceCode.getCommentsAfter(member),
-              ];
+              // The member's text, and the interface's type parameters with
+              // its name, are copied with their comments. Every other
+              // comment in the replaced node is moved before the result.
+              const copiedRanges = [member.range];
+              if (
+                node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
+                node.typeParameters != null
+              ) {
+                copiedRanges.push([
+                  node.id.range[0],
+                  node.typeParameters.range[1],
+                ]);
+              }
+              const comments = context.sourceCode
+                .getCommentsInside(node)
+                .filter(comment =>
+                  copiedRanges.every(
+                    ([copiedStart, copiedEnd]) =>
+                      comment.range[1] <= copiedStart ||
+                      comment.range[0] >= copiedEnd,
+                  ),
+                );
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;

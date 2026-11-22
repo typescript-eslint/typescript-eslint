@@ -815,6 +815,123 @@ type Foo = () => void;
     },
     {
       code: `
+export interface Foo /* keep */ {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+/* keep */
+export type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+interface /* a */ Foo /* b */ {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+/* a */
+/* b */
+type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+interface Foo</* c */ T> /* b */ {
+  (arg: T): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+/* b */
+type Foo</* c */ T> = (arg: T) => void;
+      `,
+    },
+    {
+      code: `
+interface Foo /* b */ extends Function {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+/* b */
+type Foo = () => void;
+      `,
+    },
+    {
+      code: noFormat`
+export interface Foo // keep
+{
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+// keep
+export type Foo = () => void;
+      `,
+    },
+    {
+      code: `
 export {};
 declare global {
   interface Window {
