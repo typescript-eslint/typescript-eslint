@@ -1390,7 +1390,8 @@ class Foo {
   }
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   f!: () => void;
   constructor(public foo: string) {
@@ -1401,7 +1402,10 @@ class Foo {
     this.foo = foo;
   }
 }
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class Foo {
   f!: () => void;
@@ -1668,6 +1672,30 @@ class Foo {
       this.foo = 'x';
     };
     o.f!();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = ((this as any).foo = 'x');
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const o = {
+      f: () => {
+        this.foo = 'x';
+      },
+      bind(_: unknown) {
+        this.f();
+        return this;
+      },
+    }.bind(0);
     this.foo = foo;
   }
 }
@@ -3460,6 +3488,106 @@ class Foo {
           endColumn: 27,
           endLine: 4,
           line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo = foo satisfies string;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this!.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static bar = ((this as any).foo = 'x');
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static foo = '';
+  static bar = (this.foo = 'x');
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    (this as Foo).f = () => {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
           messageId: 'unnecessaryAssign',
         },
       ],
