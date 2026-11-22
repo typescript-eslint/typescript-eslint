@@ -200,6 +200,7 @@ If you're using a library other than React (like `preact`), then you should chan
 This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
 
 If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
+When the compiler's `jsx` option is `react-jsx` or `react-jsxdev`, it is detected as `null`.
 
 ### `lib`
 

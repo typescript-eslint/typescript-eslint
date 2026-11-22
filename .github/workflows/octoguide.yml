@@ -40,7 +40,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: OctoGuide/bot@566236613d04a933e6f1a0d8c85039027a200ab2 # 0.32.0
+      - uses: OctoGuide/bot@8d29abce6793b35c6bfab51d4db6bfa62634b871 # 0.33.1
         with:
           config: recommended
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,109 @@
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          TSAbstractMethodDefinition {
+            type: "TSAbstractMethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Literal {
+              type: "Literal",
+              raw: "'constructor'",
+              value: "constructor",
+
+              range: [53, 66],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 24, line: 3 },
+              },
+            },
+            kind: "constructor",
+            optional: true,
+            override: false,
+            static: false,
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
+              async: false,
+              body: null,
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSVoidKeyword {
+                  type: "TSVoidKeyword",
+
+                  range: [71, 75],
+                  loc: {
+                    start: { column: 29, line: 3 },
+                    end: { column: 33, line: 3 },
+                  },
+                },
+
+                range: [69, 75],
+                loc: {
+                  start: { column: 27, line: 3 },
+                  end: { column: 33, line: 3 },
+                },
+              },
+
+              range: [67, 76],
+              loc: {
+                start: { column: 25, line: 3 },
+                end: { column: 34, line: 3 },
+              },
+            },
+
+            range: [44, 76],
+            loc: {
+              start: { column: 2, line: 3 },
+              end: { column: 34, line: 3 },
+            },
+          },
+        ],
+
+        range: [19, 78],
+        loc: {
+          start: { column: 19, line: 1 },
+          end: { column: 1, line: 4 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [15, 18],
+        loc: {
+          start: { column: 15, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [0, 78],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 79],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 5 },
+  },
+}
