@@ -1030,29 +1030,35 @@ export class RuleTester extends TestFramework {
         assert.fail("Invalid cases must have 'error' value greater than 0");
       }
 
-      assert.strictEqual(
-        messages.length,
-        item.errors,
-        util.format(
-          'Should have %d error%s but had %d: %s',
+      // Only format the messages when the assertion fails.
+      if (messages.length !== item.errors) {
+        assert.strictEqual(
+          messages.length,
           item.errors,
-          item.errors === 1 ? '' : 's',
-          messages.length,
-          util.inspect(messages),
-        ),
-      );
+          util.format(
+            'Should have %d error%s but had %d: %s',
+            item.errors,
+            item.errors === 1 ? '' : 's',
+            messages.length,
+            util.inspect(messages),
+          ),
+        );
+      }
     } else {
-      assert.strictEqual(
-        messages.length,
-        item.errors.length,
-        util.format(
-          'Should have %d error%s but had %d: %s',
-          item.errors.length,
-          item.errors.length === 1 ? '' : 's',
+      // Only format the messages when the assertion fails.
+      if (messages.length !== item.errors.length) {
+        assert.strictEqual(
           messages.length,
-          util.inspect(messages),
-        ),
-      );
+          item.errors.length,
+          util.format(
+            'Should have %d error%s but had %d: %s',
+            item.errors.length,
+            item.errors.length === 1 ? '' : 's',
+            messages.length,
+            util.inspect(messages),
+          ),
+        );
+      }
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
 
