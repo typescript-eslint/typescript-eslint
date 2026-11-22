@@ -107,7 +107,15 @@ const forbiddenMethodCalls = new Map(
 );
 
 /**
- * Function to replace forbidden `SourceCode` methods. Allows just one call per method.
+ * Whether the forbidden `SourceCode` methods are currently restricted.
+ * The methods are replaced once rather than for every verified test case, as
+ * changing `SourceCode.prototype` invalidates the engine's caches for every method lookup on it.
+ */
+let forbiddenMethodsAreRestricted = false;
+let forbiddenMethodsAreReplaced = false;
+
+/**
+ * Function to replace forbidden `SourceCode` methods. Allows just one call per method while restricted.
  * @param methodName The name of the method to forbid.
  * @param prototype The prototype with the original method to call.
  * @returns The function that throws the error.
@@ -119,6 +127,10 @@ function throwForbiddenMethodError<
   const original = prototype[methodName];
 
   return function (this: WeakKey, ...args: Parameters<Prototype[MethodName]>) {
+    if (!forbiddenMethodsAreRestricted) {
+      return original.apply(this, args);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const called = forbiddenMethodCalls.get(methodName)!;
 
@@ -809,21 +821,22 @@ export class RuleTester extends TestFramework {
     do {
       passNumber++;
 
-      const SourceCodePrototype = SourceCode.prototype as Record<
-        ForbiddenMethodName,
-        ForbiddenFunction
-      >;
-
-      const { applyInlineConfig, applyLanguageOptions, finalize } =
-        SourceCodePrototype;
-
-      try {
+      if (!forbiddenMethodsAreReplaced) {
+        const SourceCodePrototype = SourceCode.prototype as Record<
+          ForbiddenMethodName,
+          ForbiddenFunction
+        >;
         forbiddenMethods.forEach(methodName => {
           SourceCodePrototype[methodName] = throwForbiddenMethodError(
             methodName,
             SourceCodePrototype,
           );
         });
+        forbiddenMethodsAreReplaced = true;
+      }
+
+      try {
+        forbiddenMethodsAreRestricted = true;
 
         const actualConfig = merge(configWithoutCustomKeys, {
           languageOptions: {
@@ -841,9 +854,7 @@ export class RuleTester extends TestFramework {
         });
         messages = linter.verify(code, actualConfig, filename);
       } finally {
-        SourceCodePrototype.applyInlineConfig = applyInlineConfig;
-        SourceCodePrototype.applyLanguageOptions = applyLanguageOptions;
-        SourceCodePrototype.finalize = finalize;
+        forbiddenMethodsAreRestricted = false;
       }
 
       initialMessages ??= messages;
