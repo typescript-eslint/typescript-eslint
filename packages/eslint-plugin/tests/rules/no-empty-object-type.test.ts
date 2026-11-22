@@ -1058,5 +1058,31 @@ let value: unknown;
       ],
       options: [{ allowWithName: '.*Props$' }],
     },
+    {
+      // a global augmentation still gets the suggestions
+      code: 'interface Array<T> {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Array<T> = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Array<T> = unknown`,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

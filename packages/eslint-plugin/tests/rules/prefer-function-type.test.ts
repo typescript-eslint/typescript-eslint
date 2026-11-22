@@ -1239,5 +1239,145 @@ declare global {
 }
       `,
     },
+    // In a file without imports or exports, a top-level interface named after
+    // a lib type augments that global type, which a type alias can't do.
+    {
+      code: `
+interface Function {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+type Function = () => void;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Window {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+type Window = () => void;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { lib: ['esnext', 'dom'] } },
+      output: null,
+    },
+    {
+      code: `
+interface Function {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+type Function = () => void;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: null,
+    },
+    {
+      // in a module, the interface is local and doesn't merge with the global
+      code: `
+export {};
+interface Function {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+export {};
+type Function = () => void;
+      `,
+    },
+    {
+      // only a top-level interface is global
+      code: `
+function foo() {
+  interface Function {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+function foo() {
+  type Function = () => void;
+}
+      `,
+    },
   ],
 });

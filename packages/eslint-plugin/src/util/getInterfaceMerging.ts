@@ -1,8 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
+import {
+  DefinitionType,
+  ImplicitLibVariable,
+} from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
+import { isGlobalScript } from './isGlobalScript';
 import { isDefinitionFile } from './misc';
 
 /**
@@ -19,7 +23,9 @@ import { isDefinitionFile } from './misc';
  *   ambient namespace, for an interface exported from a namespace (which
  *   another declaration of the namespace can reopen), and in declaration
  *   files, whose top-level interfaces are either globals or exports that
- *   consumers can augment.
+ *   consumers can augment. It's also the case for a top-level interface named
+ *   after a lib type (such as `interface Window` or `interface Array<T>`) in
+ *   a file without imports or exports, which augments that global type.
  * - `undefined`: converting the interface doesn't affect merging.
  */
 export function getInterfaceMerging(
@@ -40,6 +46,18 @@ export function getInterfaceMerging(
   }
 
   if (isDefinitionFile(context.filename)) {
+    return 'mergeable';
+  }
+
+  // In a global script, a top-level interface merges with the lib type of the
+  // same name. Other global declarations aren't known, so only lib types count.
+  if (
+    node.parent.type === AST_NODE_TYPES.Program &&
+    isGlobalScript(context.sourceCode) &&
+    context.sourceCode.scopeManager?.globalScope?.set.get(
+      node.id.name,
+    ) instanceof ImplicitLibVariable
+  ) {
     return 'mergeable';
   }
 

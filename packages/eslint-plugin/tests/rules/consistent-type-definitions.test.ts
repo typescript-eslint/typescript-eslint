@@ -1045,5 +1045,116 @@ interface Foo {
 const bar = 1;
       `,
     },
+    // In a file without imports or exports, a top-level interface named after
+    // a lib type augments that global type, which a type alias can't do.
+    {
+      code: `
+interface Array<T> {
+  bar: T;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'typeOverInterface',
+          suggestions: [
+            {
+              messageId: 'replaceWithType',
+              output: `
+type Array<T> = {
+  bar: T;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['type'],
+      output: null,
+    },
+    {
+      code: `
+interface Window {
+  foo: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+          messageId: 'typeOverInterface',
+          suggestions: [
+            {
+              messageId: 'replaceWithType',
+              output: `
+type Window = {
+  foo: string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { lib: ['esnext', 'dom'] } },
+      options: ['type'],
+      output: null,
+    },
+    {
+      // in a module, the interface is local and doesn't merge with the global
+      code: `
+export {};
+interface Array<T> {
+  bar: T;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
+      output: `
+export {};
+type Array<T> = {
+  bar: T;
+}
+      `,
+    },
+    {
+      // only a top-level interface is global
+      code: `
+namespace Foo {
+  interface Array<T> {
+    bar: T;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
+      output: `
+namespace Foo {
+  type Array<T> = {
+    bar: T;
+  }
+}
+      `,
+    },
   ],
 });

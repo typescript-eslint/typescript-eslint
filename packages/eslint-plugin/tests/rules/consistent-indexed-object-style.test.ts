@@ -326,6 +326,22 @@ type Foo = Record<string, number>;
       `,
       options: ['index-signature'],
     },
+    {
+      // the module may be a type (`export =`), so a namespace import hides
+      // the global
+      code: `
+import * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+import type * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
     "type Foo = { [K in 'a' | 'b' as 'c']: number };",
 
     {
@@ -2158,6 +2174,8 @@ type Foo = Record<string, number>;
       `,
     },
     {
+      // the module may be a type (`export =`), so a namespace import hides
+      // the global
       code: `
 import * as Record from './foo';
 interface Foo {
@@ -2173,30 +2191,195 @@ interface Foo {
           messageId: 'preferRecord',
         },
       ],
-      output: `
-import * as Record from './foo';
-type Foo = Record<string, number>;
-      `,
+      output: null,
     },
     {
-      // a namespace import has no type meaning, so it doesn't hide the global
       code: `
-import * as Record from './foo';
-type Foo = Record<string, number>;
+import type * as Record from './foo';
+type Foo = { [key: string]: number };
       `,
       errors: [
         {
           column: 12,
-          endColumn: 34,
+          endColumn: 37,
           endLine: 3,
           line: 3,
-          messageId: 'preferIndexSignature',
+          messageId: 'preferRecord',
         },
       ],
-      options: ['index-signature'],
-      output: `
-import * as Record from './foo';
+      output: null,
+    },
+
+    // record mode: the fix also writes `Readonly<…>`, `Partial<…>` and
+    // `Required<…>`, which must be the global types as well.
+    {
+      code: `
+type Readonly<T> = { value: T };
+interface Foo {
+  readonly [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Readonly<T> = { value: T };
+type Foo = { readonly [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // a non-readonly index signature doesn't need `Readonly`
+      code: `
+type Readonly<T> = { value: T };
 type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Readonly<T> = { value: T };
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+type Readonly<T> = { value: T };
+type Foo = { readonly [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import * as Readonly from './foo';
+type Foo = { +readonly [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Partial<T> = { value: T };
+type Foo = { [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Partial>(arg: { [K in string]+?: number }) {}',
+      errors: [
+        {
+          column: 28,
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Required>(arg: { [K in string]-?: number }) {}',
+      errors: [
+        {
+          column: 29,
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // only the utility types the fix writes need to be the global ones
+      code: `
+type Partial<T> = { value: T };
+type Foo = { [K in string]-?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Partial<T> = { value: T };
+type Foo = Required<Record<string, number>>;
+      `,
+    },
+    {
+      // a value or a namespace doesn't hide a global type
+      code: `
+const Partial = 1;
+namespace Readonly {}
+type Foo = { readonly [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 47,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+const Partial = 1;
+namespace Readonly {}
+type Foo = Readonly<Partial<Record<string, number>>>;
       `,
     },
   ],

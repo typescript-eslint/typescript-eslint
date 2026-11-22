@@ -668,5 +668,62 @@ declare module FooBar {
       // output matches input because a suggestion was made
       output: null,
     },
+    // In a file without imports or exports, a top-level interface named after
+    // a lib type augments that global type, which a type alias can't do.
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+interface Array<T> extends Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+type Array<T> = Foo
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      // in a module, the interface is local and doesn't merge with the global
+      code: `
+export {};
+interface Foo {
+  props: string;
+}
+interface Array<T> extends Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+export {};
+interface Foo {
+  props: string;
+}
+type Array<T> = Foo
+      `,
+    },
   ],
 });

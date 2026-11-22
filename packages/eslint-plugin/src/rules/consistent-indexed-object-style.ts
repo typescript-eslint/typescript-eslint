@@ -1,15 +1,12 @@
 import type { ScopeVariable } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type {
-  ReportFixFunction,
-  Scope,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  findShadowingVariable,
   getFixOrSuggest,
   getInterfaceMerging,
   isNodeEqual,
@@ -74,30 +71,34 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks whether `Record` at the node is the global type. Only definitions
-     * that can give `Record` a type meaning hide it, so values, namespaces and
-     * namespace imports named `Record` don't.
+     * Checks whether each of the type names refers to the global type at the
+     * node. Values and namespaces don't hide a global type, but a namespace
+     * import can, since the module it imports may be a type (`export =`).
      */
-    function isGlobalRecord(node: TSESTree.Node): boolean {
-      for (
-        let scope: Scope.Scope | null = context.sourceCode.getScope(node);
-        scope;
-        scope = scope.upper
-      ) {
-        if (
-          scope.set
-            .get('Record')
-            ?.defs.some(
-              def =>
-                def.isTypeDefinition &&
-                def.type !== DefinitionType.TSModuleName &&
-                def.node.type !== AST_NODE_TYPES.ImportNamespaceSpecifier,
-            )
-        ) {
-          return false;
-        }
+    function areGlobalTypes(
+      node: TSESTree.Node,
+      ...names: (string | undefined)[]
+    ): boolean {
+      const scope = context.sourceCode.getScope(node);
+      return names.every(
+        name => name == null || !findShadowingVariable(name, scope, 'type'),
+      );
+    }
+
+    /**
+     * The utility type that the fixer wraps around `Record<…>` in a mapped
+     * type with an optional modifier, if any.
+     */
+    function getMappedTypeOptionalWrapper(
+      node: TSESTree.TSMappedType,
+    ): 'Partial' | 'Required' | undefined {
+      if (node.optional === '+' || node.optional === true) {
+        return 'Partial';
       }
-      return true;
+      if (node.optional === '-') {
+        return 'Required';
+      }
+      return undefined;
     }
 
     function checkMembers(
@@ -149,9 +150,15 @@ export default createRule<Options, MessageIds>({
         messageId: 'preferRecord',
         ...getFixOrSuggest({
           fixOrSuggest:
-            // The fix writes `Record<…>` in place of `node`, which means
-            // something else where `Record` isn't the global type.
-            fixOrSuggest === 'none' || !isGlobalRecord(node)
+            // The fix writes `Record<…>` (and `Readonly<…>`) in place of
+            // `node`, which means something else where they aren't the
+            // global types.
+            fixOrSuggest === 'none' ||
+            !areGlobalTypes(
+              node,
+              'Record',
+              member.readonly ? 'Readonly' : undefined,
+            )
               ? 'none'
               : fixOrSuggest === 'fix' &&
                   hasUnpreservedComments(
@@ -212,7 +219,7 @@ export default createRule<Options, MessageIds>({
           }
 
           // Only the global `Record` utility type can become an index signature.
-          if (!isGlobalRecord(typeName)) {
+          if (!areGlobalTypes(typeName, 'Record')) {
             return;
           }
 
@@ -329,10 +336,17 @@ export default createRule<Options, MessageIds>({
             ...getFixOrSuggest({
               // There's no builtin Mutable<T> type, so a `-readonly` mapped
               // type can't be represented as a Record and is left untouched.
-              // The fix also needs the global `Record` where the mapped type
-              // is, which is outside its own key's scope.
+              // The fix also needs the global `Record` and any utility types
+              // it wraps that in where the mapped type is, which is outside
+              // its own key's scope.
               fixOrSuggest:
-                node.readonly === '-' || !isGlobalRecord(node.parent)
+                node.readonly === '-' ||
+                !areGlobalTypes(
+                  node.parent,
+                  'Record',
+                  getMappedTypeOptionalWrapper(node),
+                  node.readonly ? 'Readonly' : undefined,
+                )
                   ? 'none'
                   : hasUnpreservedComments(
                         node,
@@ -351,10 +365,9 @@ export default createRule<Options, MessageIds>({
 
                   let recordText = `Record<${keyType}, ${valueType}>`;
 
-                  if (node.optional === '+' || node.optional === true) {
-                    recordText = `Partial<${recordText}>`;
-                  } else if (node.optional === '-') {
-                    recordText = `Required<${recordText}>`;
+                  const optionalWrapper = getMappedTypeOptionalWrapper(node);
+                  if (optionalWrapper) {
+                    recordText = `${optionalWrapper}<${recordText}>`;
                   }
 
                   if (node.readonly === '+' || node.readonly === true) {
