@@ -1339,7 +1339,9 @@ export class RuleTester extends TestFramework {
                     )
                       .verify(
                         codeWithAppliedSuggestion,
-                        omitCustomConfigProperties(result.config),
+                        getParseOnlyConfig(
+                          omitCustomConfigProperties(result.config),
+                        ),
                         result.filename,
                       )
                       .find(m => m.fatal);
@@ -1473,4 +1475,25 @@ function assertMessageMatches(actual: string, expected: string | RegExp): void {
   } else {
     assert.strictEqual(actual, expected);
   }
+}
+
+/**
+ * Checking code for parsing errors needs neither rules nor type information,
+ * and typed parsing of new code is costly: it updates the whole program.
+ */
+function getParseOnlyConfig(
+  config: Omit<RuleTesterConfig, 'defaultFilenames'>,
+): Omit<RuleTesterConfig, 'defaultFilenames'> {
+  const parserOptions = { ...config.languageOptions?.parserOptions };
+
+  delete parserOptions.errorOnTypeScriptSyntacticAndSemanticIssues;
+  delete parserOptions.programs;
+  delete parserOptions.project;
+  delete parserOptions.projectService;
+
+  return {
+    ...config,
+    languageOptions: { ...config.languageOptions, parserOptions },
+    rules: {},
+  };
 }
