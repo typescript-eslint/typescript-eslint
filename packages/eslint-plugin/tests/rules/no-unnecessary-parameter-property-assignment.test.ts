@@ -987,6 +987,251 @@ class Foo {
   }
 }
     `,
+    // The assignment's value also reaches the function.
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    (this.bar = () => {
+      this.foo = 'x';
+    })();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+declare function run(f: () => void): void;
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    run(
+      (this.bar = () => {
+        this.foo = 'x';
+      }),
+    );
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    const f = (this.bar = () => {
+      this.foo = 'x';
+    });
+    f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  handlers?: { a: () => void };
+  constructor(public foo: string) {
+    (this.handlers = {
+      a: () => {
+        this.foo = 'x';
+      },
+    }).a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  baz?: () => void;
+  constructor(public foo: string) {
+    this.bar = this.baz = () => {
+      this.foo = 'x';
+    };
+    this.baz();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    (this.bar = () => {
+      foo = 'x';
+    })();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = function (this: Foo) {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  handlers = {
+    a: () => {
+      this.foo = 'x';
+    },
+  };
+  constructor(public foo: string) {
+    this.handlers.a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  handlers = [
+    () => {
+      this.foo = 'x';
+    },
+  ];
+  constructor(public foo: string) {
+    this.handlers[0]();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    const { bar } = this;
+    bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+declare function register(foo: Foo): void;
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    register(this);
+    this.foo = foo;
+  }
+}
+    `,
+    // Field initializers run as part of the constructor.
+    `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  baz = this.bar();
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  #bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.#bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = () => {
+    const g = () => {
+      this.foo = 'x';
+    };
+    g();
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  a = () => this.b();
+  b = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = (foo: string) => {
+    this.foo = foo;
+  };
+  constructor(public foo: string) {
+    this.bar('x');
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this['bar']();
+    this.foo = foo;
+  }
+}
+    `,
+    {
+      code: `
+class Foo {
+  accessor bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+      `,
+      // `accessor` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(foo: number);
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -2095,6 +2340,99 @@ class Foo {
           endColumn: 19,
           endLine: 8,
           line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+    this.bar();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.foo = foo;
+    this.bar();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static foo = '';
+  static bar = () => {
+    this.foo = 'x';
+  };
+  constructor(public foo: string) {
+    Foo.bar();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  handlers = {
+    foo: '',
+    a() {
+      this.foo = 'x';
+    },
+  };
+  constructor(public foo: string) {
+    this.handlers.a();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 11,
+          line: 11,
           messageId: 'unnecessaryAssign',
         },
       ],
