@@ -113,7 +113,11 @@ export default createRule<
           const prefix =
             (needsParentheses || /^[-([`+/<]/.test(argumentToken.value)) &&
             isStartOfExpressionStatement(node) &&
-            needsPrecedingSemicolon(context.sourceCode, node)
+            needsPrecedingSemicolon(
+              context.sourceCode,
+              node,
+              needsParentheses ? '(' : argumentToken.value,
+            )
               ? ';'
               : '';
 

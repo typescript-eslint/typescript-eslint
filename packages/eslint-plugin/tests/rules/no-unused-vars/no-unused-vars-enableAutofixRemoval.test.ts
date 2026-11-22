@@ -444,6 +444,37 @@ export { Used };
       },
       {
         code: `
+import Used, /* keep */ * as Unused from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 30,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 36,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import Used /* keep */ from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
 import Unused, * as Used from 'module';
 export { Used };
         `,

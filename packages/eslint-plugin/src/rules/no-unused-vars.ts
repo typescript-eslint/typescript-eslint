@@ -550,6 +550,49 @@ export default createRule<Options, MessageIds>({
       return fixer.remove(node);
     }
 
+    /**
+     * Removes the tokens in `range`, but keeps any comments among them, e.g.
+     *
+     *     import Used, /* keep *\/ * as Unused from 'module';
+     *     import Used /* keep *\/ from 'module';
+     */
+    function removeRangeKeepingComments(
+      fixer: TSESLint.RuleFixer,
+      range: TSESTree.Range,
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      const sourceCode = context.sourceCode;
+      const fixes: TSESLint.RuleFix[] = [];
+      let hasComments = false;
+      let token: TSESTree.Token | null = nullThrows(
+        sourceCode.getTokenByRangeStart(range[0], { includeComments: true }),
+        NullThrowsReasons.MissingToken('token', 'range'),
+      );
+      let previous = sourceCode.getTokenBefore(token, {
+        includeComments: true,
+      });
+
+      while (token && token.range[1] <= range[1]) {
+        if (
+          token.type === AST_TOKEN_TYPES.Block ||
+          token.type === AST_TOKEN_TYPES.Line
+        ) {
+          hasComments = true;
+        } else {
+          // Remove the whitespace before each token too, unless it ends a line
+          // comment.
+          const start =
+            previous && previous.type !== AST_TOKEN_TYPES.Line
+              ? previous.range[1]
+              : token.range[0];
+          fixes.push(fixer.removeRange([start, token.range[1]]));
+        }
+        previous = token;
+        token = sourceCode.getTokenAfter(token, { includeComments: true });
+      }
+
+      return hasComments ? fixes : fixer.removeRange(range);
+    }
+
     function getImportFixer(def: ImportBindingDefinition): {
       fix: TSESLint.ReportFixFunction;
       messageId: MessageIds;
@@ -607,7 +650,7 @@ export default createRule<Options, MessageIds>({
               );
               assertToken(isCommaToken, comma);
 
-              return fixer.removeRange([
+              return removeRangeKeepingComments(fixer, [
                 Math.min(def.node.range[0], comma.range[0]),
                 Math.max(def.node.range[1], comma.range[1]),
               ]);
@@ -685,7 +728,7 @@ export default createRule<Options, MessageIds>({
                     isRightCurlyToken.predicate,
                   ),
                 );
-                return fixer.removeRange([
+                return removeRangeKeepingComments(fixer, [
                   leftToken.range[0],
                   rightToken.range[1],
                 ]);
@@ -728,7 +771,7 @@ export default createRule<Options, MessageIds>({
                       isCommaToken,
                       context.sourceCode.getTokenAfter(def.node),
                     );
-              return fixer.removeRange([
+              return removeRangeKeepingComments(fixer, [
                 Math.min(def.node.range[0], comma.range[0]),
                 Math.max(def.node.range[1], comma.range[1]),
               ]);
@@ -760,7 +803,10 @@ export default createRule<Options, MessageIds>({
                 isCommaToken,
                 context.sourceCode.getTokenBefore(def.node),
               );
-              return fixer.removeRange([comma.range[0], def.node.range[1]]);
+              return removeRangeKeepingComments(fixer, [
+                comma.range[0],
+                def.node.range[1],
+              ]);
             },
           };
         }

@@ -859,5 +859,597 @@ declare let x: number;
 x++;
       `,
     },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void (y)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;(y)
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void [y]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;[y]
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void \`a\`
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;\`a\`
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void +y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;+y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void /a/
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;/a/
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x = 1
+void <number>y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x = 1
+;<number>y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void (y)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+(y)
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void [y]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+[y]
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void \`a\`
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+\`a\`
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void +y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+;+y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void /a/
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+;/a/
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x++
+void <number>y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x++
+;<number>y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void (y)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+(y)
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void [y]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+[y]
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void \`a\`
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+\`a\`
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void +y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+;+y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void /a/
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+;/a/
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare let y: number;
+x--
+void <number>y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+declare let y: number;
+x--
+;<number>y
+      `,
+    },
+    {
+      code: noFormat`
+declare function f(): void;
+declare let y: number;
+f()
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare function f(): void;
+declare let y: number;
+f()
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare const a: number[];
+declare let y: number;
+a[0]
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare const a: number[];
+declare let y: number;
+a[0]
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let y: number;
+'s'
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let y: number;
+'s'
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let y: number;
+\`t\`
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let y: number;
+\`t\`
+;-y
+      `,
+    },
+    {
+      code: noFormat`
+declare let y: number;
+y
+void -y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let y: number;
+y
+;-y
+      `,
+    },
   ],
 });

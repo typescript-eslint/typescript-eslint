@@ -416,6 +416,189 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    (this.foo as number) = 1;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    (this.foo as number)++;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    (<number>this.foo) = 1;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    (this.foo satisfies number) = 1;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    this.foo! = 1;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    [this.foo!] = [1];
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    ({ foo: this.foo as number } = { foo: 1 });
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    for (this.foo! of [1]) {
+    }
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo?: number) {
+    delete this.foo;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo?: number) {
+    delete this['foo'];
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo?: number) {
+    delete this?.foo;
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo?: number) {
+    delete (this.foo as number | undefined);
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo = 1;
+    };
+    setFoo();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    let setFoo = () => {
+      this.foo = 1;
+    };
+    setFoo();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo++;
+    };
+    const run = () => setFoo();
+    run();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo = 1;
+    };
+    function run() {
+      setFoo();
+    }
+    run();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo?: number) {
+    const setFoo = () => {
+      delete this.foo;
+    };
+    register(setFoo);
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      const inner = () => {
+        this.foo = 1;
+      };
+      inner();
+    };
+    setFoo();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: number) {
+    const setters = {
+      foo: () => {
+        this.foo = 1;
+      },
+    };
+    setters.foo();
+    this.foo = foo;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -1060,6 +1243,114 @@ class Foo {
           endColumn: 19,
           endLine: 7,
           line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo = 1;
+    };
+    this.foo = foo;
+    setFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo = 1;
+      setFoo();
+    };
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: number) {
+    const setFoo = () => {
+      this.foo = 1;
+    };
+    function run() {
+      setFoo();
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo?: number) {
+    [1].forEach(function () {
+      delete this.foo;
+    });
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: number) {
+    this.foo = foo;
+    (this.foo as number) = 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],

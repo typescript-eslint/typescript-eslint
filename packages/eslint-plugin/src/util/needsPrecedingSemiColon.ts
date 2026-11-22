@@ -41,10 +41,15 @@ const NODE_TYPES_BY_KEYWORD: Record<string, TSESTree.AST_NODE_TYPES | null> = {
 };
 
 /*
- * Before an opening parenthesis, postfix `++` and `--` always trigger ASI;
- * the tokens `:`, `;`, `{` and `=>` don't expect a semicolon, as that would count as an empty statement.
+ * The tokens `:`, `;`, `{` and `=>` don't expect a semicolon, as that would count as an empty statement.
  */
-const PUNCTUATORS = new Set(['--', ';', ':', '{', '++', '=>']);
+const PUNCTUATORS = new Set([';', ':', '{', '=>']);
+
+/*
+ * Before an opening parenthesis, bracket or backtick, postfix `++` and `--` always trigger ASI, but a binary operator
+ * such as `+`, `-`, `/` or `<` continues the expression, as in `x++\n-y`.
+ */
+const UPDATE_OPERATORS = new Set(['--', '++']);
 
 /*
  * Statements that can contain an `ExpressionStatement` after a closing parenthesis.
@@ -61,16 +66,20 @@ const STATEMENTS = new Set([
 ]);
 
 /**
- * Determines whether an opening parenthesis `(`, bracket `[` or backtick ``` ` ``` needs to be preceded by a semicolon.
- * This opening parenthesis or bracket should be at the start of an `ExpressionStatement`, a `MethodDefinition` or at
- * the start of the body of an `ArrowFunctionExpression`.
+ * Determines whether a token that could continue the previous line, such as an opening parenthesis `(`, bracket `[`,
+ * backtick ``` ` ```, `+`, `-`, `/` or `<`, needs to be preceded by a semicolon.
+ * This token should be at the start of an `ExpressionStatement`, a `MethodDefinition` or at the start of the body of
+ * an `ArrowFunctionExpression`.
  * @param sourceCode The source code object.
- * @param node A node at the position where an opening parenthesis or bracket will be inserted.
- * @returns Whether a semicolon is required before the opening parenthesis or bracket.
+ * @param node A node at the position where the token will be inserted.
+ * @param nextTokenText The text that will start at `node`'s position. Defaults to an opening parenthesis; only its
+ * first character is checked.
+ * @returns Whether a semicolon is required before the token.
  */
 export function needsPrecedingSemicolon(
   sourceCode: SourceCode,
   node: TSESTree.Node,
+  nextTokenText = '(',
 ): boolean {
   const prevToken = sourceCode.getTokenBefore(node);
 
@@ -80,6 +89,13 @@ export function needsPrecedingSemicolon(
       PUNCTUATORS.has(prevToken.value))
   ) {
     return false;
+  }
+
+  if (
+    prevToken.type === AST_TOKEN_TYPES.Punctuator &&
+    UPDATE_OPERATORS.has(prevToken.value)
+  ) {
+    return !/^[(`[]/.test(nextTokenText);
   }
 
   const prevNode = sourceCode.getNodeByRangeIndex(prevToken.range[0]);

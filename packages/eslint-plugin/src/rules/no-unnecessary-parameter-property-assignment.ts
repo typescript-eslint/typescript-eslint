@@ -1,9 +1,15 @@
+import type { ScopeVariable } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule, getStaticStringValue, nullThrows } from '../util';
+import {
+  createRule,
+  getStaticStringValue,
+  isAssignee,
+  nullThrows,
+} from '../util';
 
 const UNNECESSARY_OPERATORS = new Set(['??=', '&&=', '=', '||=']);
 
@@ -26,7 +32,11 @@ export default createRule({
   create(context) {
     const reportInfoStack: {
       assignedBeforeConstructor: Set<string>;
-      assignedBeforeUnnecessary: Set<string>;
+      /**
+       * For each property written in the constructor, the earliest position
+       * in the code that a write to it may run at.
+       */
+      earliestWrites: Map<string, number>;
       unnecessaryAssignments: {
         name: string;
         node: TSESTree.AssignmentExpression;
@@ -172,18 +182,15 @@ export default createRule({
     }
 
     /**
-     * Finds the constructor whose `this` a write in `node` may change before
-     * the statements after it run: like `findImmediateConstructor`, but an
-     * arrow passed as an argument (`list.forEach(() => ...)`) counts too.
+     * Finds the constructor whose `this` a write in `node` changes: like
+     * `findImmediateConstructor`, but through any arrow function, as each one
+     * shares the constructor's `this`.
      */
     function findConstructorOfWrite(
       node: TSESTree.Node,
     ): TSESTree.FunctionExpression | undefined {
       let functionNode = findParentFunction(node);
-      if (
-        functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        functionNode.parent.type === AST_NODE_TYPES.CallExpression
-      ) {
+      while (functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
         functionNode = findParentFunction(functionNode.parent);
       }
 
@@ -193,42 +200,104 @@ export default createRule({
     }
 
     /**
-     * Whether `node` is written by something other than an assignment
-     * expression, such as `this.foo++` or `[this.foo] = values`.
+     * Finds the variable a function can only be called through, as in
+     * `function f() {}` or `const f = () => {}`.
      */
-    function isNonAssignmentWriteTarget(node: TSESTree.MemberExpression) {
-      const { parent } = node;
-      switch (parent.type) {
-        case AST_NODE_TYPES.ArrayPattern:
-        case AST_NODE_TYPES.RestElement:
-        case AST_NODE_TYPES.UpdateExpression:
-          return true;
-        case AST_NODE_TYPES.AssignmentPattern:
-        case AST_NODE_TYPES.ForInStatement:
-        case AST_NODE_TYPES.ForOfStatement:
-          return parent.left === node;
-        case AST_NODE_TYPES.Property:
-          return (
-            parent.value === node &&
-            parent.parent.type === AST_NODE_TYPES.ObjectPattern
-          );
+    function getFunctionVariable(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): ScopeVariable | undefined {
+      if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
+        return context.sourceCode.getDeclaredVariables(node).at(0);
       }
-      return false;
+      if (
+        node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        node.parent.init === node &&
+        node.parent.id.type === AST_NODE_TYPES.Identifier
+      ) {
+        return context.sourceCode.getDeclaredVariables(node.parent).at(0);
+      }
+      return undefined;
+    }
+
+    /**
+     * Finds the earliest position in the constructor that `node` may run at,
+     * or `undefined` if it never runs as part of the constructor.
+     *
+     * A function can't run before it's created, and one only reachable
+     * through a variable can't run before that variable is first read, so
+     * `const f = () => { this.foo = 1; };` doesn't run until `f` is used.
+     */
+    function getEarliestRunPosition(
+      node: TSESTree.Node,
+      visited = new Set<TSESTree.Node>(),
+    ): number | undefined {
+      const functionNode = findParentFunction(node);
+      if (!functionNode || visited.has(functionNode)) {
+        return undefined;
+      }
+      if (isConstructorFunctionExpression(functionNode)) {
+        return node.range[0];
+      }
+
+      visited.add(functionNode);
+
+      const variable = getFunctionVariable(functionNode);
+      if (!variable) {
+        return getEarliestRunPosition(functionNode.parent, visited);
+      }
+
+      let earliest: number | undefined;
+      for (const reference of variable.references) {
+        if (!reference.isRead()) {
+          continue;
+        }
+        const position = getEarliestRunPosition(reference.identifier, visited);
+        if (position != null && (earliest == null || position < earliest)) {
+          earliest = position;
+        }
+      }
+      return earliest;
+    }
+
+    function addWrite(name: string, node: TSESTree.Node): void {
+      const position = getEarliestRunPosition(node);
+      if (position == null) {
+        return;
+      }
+
+      const { earliestWrites } = nullThrows(
+        reportInfoStack.at(-1),
+        'The top of stack should exist',
+      );
+      const earliest = earliestWrites.get(name);
+      if (earliest == null || position < earliest) {
+        earliestWrites.set(name, position);
+      }
     }
 
     return {
       ClassBody(): void {
         reportInfoStack.push({
           assignedBeforeConstructor: new Set(),
-          assignedBeforeUnnecessary: new Set(),
+          earliestWrites: new Map(),
           unnecessaryAssignments: [],
         });
       },
       'ClassBody:exit'(): void {
-        const { assignedBeforeConstructor, unnecessaryAssignments } =
-          nullThrows(reportInfoStack.pop(), 'The top stack should exist');
+        const {
+          assignedBeforeConstructor,
+          earliestWrites,
+          unnecessaryAssignments,
+        } = nullThrows(reportInfoStack.pop(), 'The top stack should exist');
         unnecessaryAssignments.forEach(({ name, node }) => {
-          if (assignedBeforeConstructor.has(name)) {
+          const earliestWrite = earliestWrites.get(name);
+          if (
+            assignedBeforeConstructor.has(name) ||
+            (earliestWrite != null && earliestWrite < node.range[0])
+          ) {
             return;
           }
           context.report({
@@ -247,12 +316,6 @@ export default createRule({
           return;
         }
 
-        const { assignedBeforeUnnecessary, unnecessaryAssignments } =
-          nullThrows(
-            reportInfoStack.at(reportInfoStack.length - 1),
-            'The top of stack should exist',
-          );
-
         const rightId = getIdentifier(node.right);
 
         if (
@@ -266,11 +329,11 @@ export default createRule({
           // A copy in a callback such as `setTimeout` may run after the
           // property changed, so only report copies that run immediately.
           // Either way, it doesn't change the property's value.
-          if (
-            findImmediateConstructor(node) &&
-            !assignedBeforeUnnecessary.has(leftName)
-          ) {
-            unnecessaryAssignments.push({
+          if (findImmediateConstructor(node)) {
+            nullThrows(
+              reportInfoStack.at(-1),
+              'The top of stack should exist',
+            ).unnecessaryAssignments.push({
               name: leftName,
               node,
             });
@@ -278,22 +341,31 @@ export default createRule({
           return;
         }
 
-        assignedBeforeUnnecessary.add(leftName);
+        addWrite(leftName, node);
       },
       "MethodDefinition[kind='constructor'] > FunctionExpression MemberExpression"(
         node: TSESTree.MemberExpression,
       ): void {
         const name = getPropertyName(node);
 
+        // Writes such as `this.foo++`, `[this.foo] = values`,
+        // `(this.foo as number) = 1`, `delete this.foo` or
+        // `delete this?.foo`. A plain `this.foo = value` is handled by the
+        // AssignmentExpression listener.
         if (
           name &&
-          isNonAssignmentWriteTarget(node) &&
+          isAssignee(
+            node.parent.type === AST_NODE_TYPES.ChainExpression
+              ? node.parent
+              : node,
+          ) &&
+          !(
+            node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+            node.parent.left === node
+          ) &&
           findConstructorOfWrite(node)
         ) {
-          nullThrows(
-            reportInfoStack.at(-1),
-            'The top of stack should exist',
-          ).assignedBeforeUnnecessary.add(name);
+          addWrite(name, node);
         }
       },
       'PropertyDefinition AssignmentExpression'(

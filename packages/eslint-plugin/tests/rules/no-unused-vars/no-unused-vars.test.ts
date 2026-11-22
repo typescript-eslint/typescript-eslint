@@ -1463,6 +1463,294 @@ Used();
     },
     {
       code: `
+import Used, /* keep */ * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used /* keep */, * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+import Used, * /* keep */ as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, * as /* keep */ Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, * as Unused /* keep */ from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+import Used, // keep
+  * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used // keep
+   from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Unused /* keep */, { Used } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import /* keep */ { Used } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, { /* keep */ Unused } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, { Unused /* keep */ } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Used, /* keep */ Unused } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { Used /* keep */ } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Unused /* keep */, Used } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { /* keep */ Used } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 import { Foo, Bar } from 'foo';
 function baz<Foo>(): Foo {}
 baz<Bar>();
