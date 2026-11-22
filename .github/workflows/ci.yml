@@ -479,6 +479,11 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+      # Real-time scanning slows down extracting the pnpm store and linking node_modules on Windows runners.
+      - name: Disable Windows Defender real-time scanning
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Set-MpPreference -DisableRealtimeMonitoring $true
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -527,6 +532,11 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+      # Real-time scanning slows down extracting the pnpm store and linking node_modules on Windows runners.
+      - name: Disable Windows Defender real-time scanning
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Set-MpPreference -DisableRealtimeMonitoring $true
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
