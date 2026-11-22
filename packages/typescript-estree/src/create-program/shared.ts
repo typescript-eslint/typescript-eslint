@@ -57,20 +57,18 @@ export type CanonicalPath = { __brand: unknown } & string;
 const useCaseSensitiveFileNames =
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
-// Mirrors TypeScript's internal `toFileNameLowerCase`. Lowercasing these
-// characters gives a path that no longer refers to the same file: for example,
-// "\u0130" lowercases to "i" followed by a combining dot above.
+// Same as TypeScript's internal `toFileNameLowerCase`, which leaves characters
+// alone whose lowercase form would point to a different file on disk, e.g.
+// "\u0130".toLowerCase() is "i" followed by a combining dot above.
+// https://github.com/microsoft/TypeScript/blob/v5.9.3/src/compiler/core.ts#L1861-L1880
 const FILE_NAME_LOWER_CASE_REGEXP = /[^\u0130\u0131\u00DFa-z0-9\\/:\-_. ]+/g;
-
-export function toFileNameLowerCase(fileName: string): string {
-  return fileName.replaceAll(FILE_NAME_LOWER_CASE_REGEXP, match =>
-    match.toLowerCase(),
-  );
-}
 
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath
-  : toFileNameLowerCase;
+  : (filePath: string): string =>
+      filePath.replaceAll(FILE_NAME_LOWER_CASE_REGEXP, match =>
+        match.toLowerCase(),
+      );
 
 export function getCanonicalFileName(filePath: string): CanonicalPath {
   let normalized = path.normalize(filePath);

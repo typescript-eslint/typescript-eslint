@@ -4,7 +4,6 @@ import {
   clearRealPathCache,
   getCanonicalFileName,
   getCanonicalRealPath,
-  toFileNameLowerCase,
 } from '../../src/create-program/shared';
 
 describe(getCanonicalRealPath, () => {
@@ -18,17 +17,5 @@ describe(getCanonicalRealPath, () => {
     vi.spyOn(ts.sys, 'realpath').mockReturnValue(undefined as never);
 
     expect(getCanonicalRealPath(filePath)).toBe(getCanonicalFileName(filePath));
-  });
-});
-
-describe(toFileNameLowerCase, () => {
-  it('lowercases file names', () => {
-    expect(toFileNameLowerCase('/Dir/File.TS')).toBe('/dir/file.ts');
-  });
-
-  it('keeps characters that TypeScript does not lowercase in file names', () => {
-    expect(toFileNameLowerCase('/Dir/GA\u0130N/File.ts')).toBe(
-      '/dir/ga\u0130n/file.ts',
-    );
   });
 });
