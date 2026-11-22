@@ -824,32 +824,35 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
   return node.parent.kind === SyntaxKind.TypeQuery;
 }
 
-export function isValidAssignmentTarget(node: ts.Node): boolean {
+export function unwrapAssignmentTarget(node: ts.Node): ts.Node {
   switch (node.kind) {
-    case SyntaxKind.Identifier:
-      return true;
-    case SyntaxKind.PropertyAccessExpression:
-    case SyntaxKind.ElementAccessExpression:
-      if (node.flags & ts.NodeFlags.OptionalChain) {
-        return false;
-      }
-      return true;
     case SyntaxKind.ParenthesizedExpression:
     case SyntaxKind.TypeAssertionExpression:
     case SyntaxKind.AsExpression:
     case SyntaxKind.SatisfiesExpression:
-    case SyntaxKind.ExpressionWithTypeArguments:
     case SyntaxKind.NonNullExpression:
-      return isValidAssignmentTarget(
+      return unwrapAssignmentTarget(
         (
           node as
             | ts.AssertionExpression
-            | ts.ExpressionWithTypeArguments
             | ts.NonNullExpression
             | ts.ParenthesizedExpression
             | ts.SatisfiesExpression
         ).expression,
       );
+    default:
+      return node;
+  }
+}
+
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  const target = unwrapAssignmentTarget(node);
+  switch (target.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      return !(target.flags & ts.NodeFlags.OptionalChain);
     default:
       return false;
   }
