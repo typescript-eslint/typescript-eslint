@@ -10,8 +10,8 @@ import {
   getMovedNodeCode,
   getParserServices,
   isNodeOfType,
-  isReferenceToGlobalFunction,
   isStringLike,
+  isSymbolFromDefaultLibrary,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -82,7 +82,23 @@ export default createRule<[], MessageId>({
       return (
         node.type === AST_NODE_TYPES.Identifier &&
         FIXABLE_IDENTIFIER_NAMES.has(node.name) &&
-        isReferenceToGlobalFunction(node.name, node, context.sourceCode)
+        isGlobalValue(node)
+      );
+    }
+
+    /**
+     * Whether the identifier's value is the global `Infinity`, `NaN`, or
+     * `undefined`. Asks the type checker rather than the scope manager, since
+     * declarations without a value (types, interfaces, and namespaces that
+     * hold only types) don't shadow the global value.
+     */
+    function isGlobalValue(node: TSESTree.Identifier): boolean {
+      const symbol = services.getSymbolAtLocation(node);
+
+      // The global `undefined` symbol has no declarations.
+      return (
+        !symbol?.declarations?.length ||
+        isSymbolFromDefaultLibrary(services.program, symbol)
       );
     }
 

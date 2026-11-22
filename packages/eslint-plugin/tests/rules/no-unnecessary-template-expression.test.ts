@@ -27,6 +27,146 @@ function foo(undefined: string) {
     `,
     'const string = `globalThis: ${globalThis}`;',
     `
+export {};
+namespace NaN {
+  export const x = 1;
+}
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+namespace Infinity {
+  const x = 1;
+}
+const s = \`\${Infinity}\`;
+    `,
+    `
+export {};
+declare namespace undefined {
+  const x: number;
+}
+const s = \`\${undefined}\`;
+    `,
+    `
+export {};
+namespace NaN.Inner {
+  export const x = 1;
+}
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+function NaN() {}
+namespace NaN {}
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+const NaN = 1;
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+declare const Infinity: number;
+const s = \`\${Infinity}\`;
+    `,
+    `
+export {};
+class NaN {}
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+enum Infinity {
+  A,
+}
+const s = \`\${Infinity}\`;
+    `,
+    `
+import * as NaN from 'node:fs';
+const s = \`\${NaN}\`;
+    `,
+    `
+export {};
+namespace Values {
+  export const x = 1;
+}
+import NaN = Values;
+const s = \`\${NaN}\`;
+    `,
+    `
+function foo(NaN: number) {
+  return \`\${NaN}\`;
+}
+    `,
+    `
+function foo(undefined: number) {
+  return \`\${undefined}\`;
+}
+    `,
+    `
+{
+  const Infinity = 1;
+  const s = \`\${Infinity}\`;
+}
+    `,
+    `
+try {
+} catch (NaN) {
+  const s = \`\${NaN}\`;
+}
+    `,
+    `
+function foo() {
+  enum NaN {
+    A,
+  }
+  return \`\${NaN}\`;
+}
+    `,
+    `
+{
+  class Infinity {}
+  const s = \`\${Infinity}\`;
+}
+    `,
+    `
+namespace Outer {
+  namespace NaN {
+    export const x = 1;
+  }
+  const s = \`\${NaN}\`;
+}
+    `,
+    {
+      code: `
+function foo(NaN: number) {
+  return \`\${NaN}\`;
+}
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+function foo() {
+  const Infinity = 1;
+  return \`\${Infinity}\`;
+}
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+namespace Outer {
+  namespace NaN {
+    export const x = 1;
+  }
+  const s = \`\${NaN}\`;
+}
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    `
 declare const string: 'a';
 \`\${string}b\`;
     `,
@@ -589,6 +729,494 @@ function foo<T extends string>() {
         },
       ],
       output: '`NaN`;',
+    },
+
+    {
+      code: `
+export {};
+namespace NaN {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace NaN {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace Infinity {
+  export type T = 1;
+}
+const s = \`\${Infinity}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace Infinity {
+  export type T = 1;
+}
+const s = \`Infinity\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace NaN {
+  export interface I {}
+}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace NaN {
+  export interface I {}
+}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace NaN {
+  namespace Inner {}
+}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace NaN {
+  namespace Inner {}
+}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+declare namespace Infinity {}
+const s = \`\${Infinity}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+declare namespace Infinity {}
+const s = \`Infinity\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace NaN.Inner {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace NaN.Inner {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace undefined {
+  export type T = 1;
+}
+const s = \`\${undefined}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace undefined {
+  export type T = 1;
+}
+const s = \`undefined\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+interface NaN {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+interface NaN {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+type Infinity = 1;
+const s = \`\${Infinity}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+type Infinity = 1;
+const s = \`Infinity\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+interface NaN {}
+namespace NaN {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+interface NaN {}
+namespace NaN {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+import type { PathLike as NaN } from 'node:fs';
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+import type { PathLike as NaN } from 'node:fs';
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+export {};
+namespace Types {
+  export type T = 1;
+}
+import NaN = Types;
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+export {};
+namespace Types {
+  export type T = 1;
+}
+import NaN = Types;
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+function foo<NaN>() {
+  const s = \`\${NaN}\`;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+function foo<NaN>() {
+  const s = \`NaN\`;
+}
+      `,
+    },
+
+    {
+      code: `
+{
+  interface Infinity {}
+  const s = \`\${Infinity}\`;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+{
+  interface Infinity {}
+  const s = \`Infinity\`;
+}
+      `,
+    },
+
+    {
+      code: `
+namespace Outer {
+  namespace NaN {}
+  const s = \`\${NaN}\`;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+namespace Outer {
+  namespace NaN {}
+  const s = \`NaN\`;
+}
+      `,
+    },
+
+    {
+      code: `
+namespace NaN {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+namespace NaN {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+interface NaN {}
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+interface NaN {}
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+type Infinity = 1;
+const s = \`\${Infinity}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+type Infinity = 1;
+const s = \`Infinity\`;
+      `,
+    },
+
+    {
+      code: `
+var NaN = 1;
+const s = \`\${NaN}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+var NaN = 1;
+const s = \`NaN\`;
+      `,
+    },
+
+    {
+      code: `
+function foo<NaN>() {
+  const s = \`\${NaN}\`;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+function foo<NaN>() {
+  const s = \`NaN\`;
+}
+      `,
+    },
+
+    {
+      code: `
+namespace Outer {
+  namespace NaN {}
+  const s = \`\${NaN}\`;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+namespace Outer {
+  namespace NaN {}
+  const s = \`NaN\`;
+}
+      `,
     },
 
     {
