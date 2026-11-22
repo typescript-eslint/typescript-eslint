@@ -1147,7 +1147,14 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const contextualType = getContextualType(checker, originalNode);
+          // The shared helper leaves out positions such as `return` and arrow
+          // bodies. For a type parameter, any position whose type accepts it
+          // makes the `!` unnecessary.
+          const contextualType =
+            getContextualType(checker, originalNode) ??
+            (isUnconstrainedTypeParameter
+              ? checker.getContextualType(originalNode)
+              : undefined);
           if (contextualType) {
             if (
               isUnconstrainedTypeParameter

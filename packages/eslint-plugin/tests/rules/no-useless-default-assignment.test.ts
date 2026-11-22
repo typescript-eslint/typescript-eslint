@@ -408,6 +408,14 @@ f((a = 1) => {});
         { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
     },
+    `
+function g(a = 1) {}
+const h: typeof g = (a = 2) => {};
+    `,
+    `
+function g(a = 1, b: number) {}
+const h: typeof g = (a = 2, b) => {};
+    `,
   ],
   invalid: [
     {
@@ -533,6 +541,123 @@ function f(a: number | undefined = undefined, b: number) {}
               messageId: 'removeDefaultAssignment',
               output: `
 function f(a: number | undefined, b: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b = 1, c: number) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'parameter' },
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(a: number | undefined, b = 1, c: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, a: number | undefined = undefined, b: number) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          data: { type: 'parameter' },
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(this: void, a: number | undefined, b: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b = 1) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(a?: number | undefined, b = 1) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b?: number, ...c: number[]) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(a?: number | undefined, b?: number, ...c: number[]) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, a: number | undefined = undefined) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(this: void, a?: number | undefined) {}
       `,
             },
           ],

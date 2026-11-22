@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import { typescriptVersionIsAtLeast } from '@typescript-eslint/type-utils';
 
 import rule from '../../src/rules/prefer-string-starts-ends-with';
 import { createRuleTesterWithTypes } from '../RuleTester';
@@ -737,7 +738,9 @@ function f(s: string) {
   (/^a/g satisfies RegExp).test(s);
 }
       `,
-      dependencyConstraints: { typescript: '4.9' },
+      // `satisfies` needs TypeScript 4.9. `dependencyConstraints` would make
+      // RuleTester overwrite every case's `skip`, including the Node one below.
+      skip: !typescriptVersionIsAtLeast['4.9'],
       errors: [
         {
           column: 3,

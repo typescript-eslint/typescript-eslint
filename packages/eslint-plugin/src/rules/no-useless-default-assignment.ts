@@ -131,8 +131,7 @@ export default createRule<Options, MessageId>({
           ts.isParameter(tsNode) &&
           tsNode.type &&
           canBeUndefined(checker.getTypeFromTypeNode(tsNode.type)) &&
-          // A parameter followed by required ones can't use `?`
-          checker.isOptionalParameter(tsNode)
+          canUseOptionalSyntax(tsNode)
         ) {
           reportPreferOptionalSyntax(node, node.left);
           return;
@@ -185,8 +184,7 @@ export default createRule<Options, MessageId>({
           if (
             declaration &&
             ts.isParameter(declaration) &&
-            (declaration.dotDotDotToken != null ||
-              checker.isOptionalParameter(declaration))
+            canOmitParameter(declaration)
           ) {
             return true;
           }
@@ -448,3 +446,26 @@ export default createRule<Options, MessageId>({
     };
   },
 });
+
+/**
+ * Whether callers can leave out a parameter or pass `undefined` for it,
+ * even when its type doesn't include `undefined`
+ */
+function canOmitParameter(param: ts.ParameterDeclaration): boolean {
+  return (
+    param.questionToken != null ||
+    param.initializer != null ||
+    param.dotDotDotToken != null
+  );
+}
+
+/**
+ * Whether a parameter can be marked with `?`, which a required parameter after
+ * it doesn't allow. Like `checker.isOptionalParameter`, which tsgo lacks.
+ */
+function canUseOptionalSyntax(param: ts.ParameterDeclaration): boolean {
+  const { parameters } = param.parent;
+  return parameters
+    .slice(parameters.indexOf(param) + 1)
+    .every(canOmitParameter);
+}
