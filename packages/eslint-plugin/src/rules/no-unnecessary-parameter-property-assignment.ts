@@ -40,20 +40,32 @@ export default createRule({
       {
         assignedBeforeConstructor: Set<string>;
         /**
-         * For each property written in the constructor, the earliest position
-         * in the code that a write to it may run at.
+         * Assignments such as `this.foo = foo` that are unnecessary if `foo`
+         * still holds the parameter's value. Whether it does depends on code
+         * after them, so they're checked once the class body is done.
          */
-        earliestWrites: Map<string, number>;
-        unnecessaryAssignments: {
+        possibleCopies: {
+          constructorNode: TSESTree.FunctionExpression;
           name: string;
           node: TSESTree.AssignmentExpression;
-          /**
-           * The latest position in the code that this assignment may run
-           * after: the end of its outermost loop, or else its start.
-           */
-          position: number;
+          rightId: TSESTree.Identifier;
+        }[];
+        /** Nodes that write to a property of the constructor's `this`. */
+        writes: {
+          constructorNode: TSESTree.FunctionExpression;
+          name: string;
+          node: TSESTree.Node;
         }[];
       }
+    >();
+
+    /**
+     * Each constructor's `this` expressions, including the ones in arrow
+     * functions in it, which share its `this`.
+     */
+    const constructorThisExpressions = new Map<
+      TSESTree.FunctionExpression,
+      TSESTree.ThisExpression[]
     >();
 
     function getReportInfo(classBody: TSESTree.Node | undefined) {
@@ -224,9 +236,14 @@ export default createRule({
       return null;
     }
 
-    function isArrowIIFE(node: TSESTree.Node): boolean {
+    /**
+     * Whether `node` is an arrow function IIFE that runs all of its body
+     * immediately. An async one may stop at an `await` and run the rest later.
+     */
+    function isSyncArrowIIFE(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        !node.async &&
         node.parent.type === AST_NODE_TYPES.CallExpression &&
         node.parent.callee === node
       );
@@ -234,13 +251,13 @@ export default createRule({
 
     /**
      * Finds the constructor that runs `node` immediately: either directly or
-     * through arrow function IIFEs.
+     * through non-async arrow function IIFEs.
      */
     function findImmediateConstructor(
       node: TSESTree.Node,
     ): TSESTree.FunctionExpression | undefined {
       let functionNode = findThisFunction(node);
-      while (functionNode && isArrowIIFE(functionNode)) {
+      while (functionNode && isSyncArrowIIFE(functionNode)) {
         functionNode = findThisFunction(functionNode.parent);
       }
 
@@ -267,26 +284,98 @@ export default createRule({
         : undefined;
     }
 
+    function getVariableReads(variable: ScopeVariable | undefined) {
+      return variable?.references
+        .filter(reference => reference.isRead())
+        .map(reference => reference.identifier);
+    }
+
     /**
-     * Finds the variable a function can only be called through, as in
-     * `function f() {}` or `const f = () => {}`.
+     * Finds the `this` expressions in `constructorNode` that may read the
+     * property `name`: `this.name` other than as the target of `=`, and any
+     * `this` not used for a known property, as in `const { name } = this`.
      */
-    function getFunctionVariable(
+    function getThisPropertyReads(
+      constructorNode: TSESTree.FunctionExpression,
+      name: string,
+    ): TSESTree.ThisExpression[] {
+      return (constructorThisExpressions.get(constructorNode) ?? []).filter(
+        thisExpression => {
+          const { parent } = thisExpression;
+          if (
+            parent.type !== AST_NODE_TYPES.MemberExpression ||
+            parent.object !== thisExpression
+          ) {
+            return true;
+          }
+          const propertyName = getPropertyName(parent);
+          if (propertyName == null) {
+            return true;
+          }
+          return (
+            propertyName === name &&
+            !(
+              parent.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+              parent.parent.operator === '=' &&
+              parent.parent.left === parent
+            )
+          );
+        },
+      );
+    }
+
+    /**
+     * Finds the nodes a function can only be called through, as in
+     * `function f() {}`, `const f = () => {}`, `const o = { f: () => {} }` or
+     * `this.f = () => {}`. Calls from other methods, as in `this.init()`, aren't
+     * counted, as with writes in other methods.
+     */
+    function getFunctionAccesses(
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
-    ): ScopeVariable | undefined {
+      constructorNode: TSESTree.FunctionExpression,
+    ): TSESTree.Node[] | undefined {
       if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
-        return context.sourceCode.getDeclaredVariables(node).at(0);
+        return getVariableReads(
+          context.sourceCode.getDeclaredVariables(node).at(0),
+        );
       }
-      if (
-        node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
-        node.parent.init === node &&
-        node.parent.id.type === AST_NODE_TYPES.Identifier
+
+      // The object literals the function is a property value of, if any.
+      let holder: TSESTree.Node = node;
+      while (
+        holder.parent.type === AST_NODE_TYPES.Property &&
+        holder.parent.value === holder &&
+        holder.parent.parent.type === AST_NODE_TYPES.ObjectExpression
       ) {
-        return context.sourceCode.getDeclaredVariables(node.parent).at(0);
+        holder = holder.parent.parent;
       }
+
+      const { parent } = holder;
+      if (
+        parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        parent.init === holder &&
+        parent.id.type === AST_NODE_TYPES.Identifier
+      ) {
+        return getVariableReads(
+          context.sourceCode.getDeclaredVariables(parent).at(0),
+        );
+      }
+
+      if (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.operator === '=' &&
+        parent.right === holder &&
+        findConstructorOfWrite(parent.left) === constructorNode
+      ) {
+        const name = getPropertyName(parent.left);
+        if (name != null) {
+          return getThisPropertyReads(constructorNode, name);
+        }
+      }
+
       return undefined;
     }
 
@@ -295,7 +384,7 @@ export default createRule({
      * at, or `undefined` if it never runs as part of the constructor.
      *
      * A function can't run before it's created, and one only reachable
-     * through a variable can't run before that variable is first read, so
+     * through a variable or property can't run before that is first read, so
      * `const f = () => { this.foo = 1; };` doesn't run until `f` is used.
      */
     function getEarliestRunPosition(
@@ -313,8 +402,8 @@ export default createRule({
 
       visited.add(functionNode);
 
-      const variable = getFunctionVariable(functionNode);
-      if (!variable) {
+      const accesses = getFunctionAccesses(functionNode, constructorNode);
+      if (!accesses) {
         return getEarliestRunPosition(
           functionNode.parent,
           constructorNode,
@@ -323,12 +412,9 @@ export default createRule({
       }
 
       let earliest: number | undefined;
-      for (const reference of variable.references) {
-        if (!reference.isRead()) {
-          continue;
-        }
+      for (const access of accesses) {
         const position = getEarliestRunPosition(
-          reference.identifier,
+          access,
           constructorNode,
           visited,
         );
@@ -367,46 +453,83 @@ export default createRule({
       node: TSESTree.Node,
       constructorNode: TSESTree.FunctionExpression,
     ): void {
-      const position = getEarliestRunPosition(node, constructorNode);
-      if (position == null) {
-        return;
-      }
-
-      const { earliestWrites } = getReportInfo(constructorNode.parent.parent);
-      const earliest = earliestWrites.get(name);
-      if (earliest == null || position < earliest) {
-        earliestWrites.set(name, position);
-      }
+      getReportInfo(constructorNode.parent.parent).writes.push({
+        name,
+        node,
+        constructorNode,
+      });
     }
 
     return {
       ClassBody(node): void {
         reportInfos.set(node, {
           assignedBeforeConstructor: new Set(),
-          earliestWrites: new Map(),
-          unnecessaryAssignments: [],
+          possibleCopies: [],
+          writes: [],
         });
       },
       'ClassBody:exit'(node): void {
-        const {
-          assignedBeforeConstructor,
-          earliestWrites,
-          unnecessaryAssignments,
-        } = getReportInfo(node);
+        const { assignedBeforeConstructor, possibleCopies, writes } =
+          getReportInfo(node);
         reportInfos.delete(node);
-        unnecessaryAssignments.forEach(({ name, node, position }) => {
+
+        const unnecessaryAssignments: {
+          name: string;
+          node: TSESTree.AssignmentExpression;
+          /**
+           * The latest position in the code that this assignment may run
+           * after: the end of its outermost loop, or else its start.
+           */
+          position: number;
+        }[] = [];
+        for (const copy of possibleCopies) {
+          const position = getCopyPosition(copy.node, copy.constructorNode);
+          if (
+            !isUnchangedConstructorParameter(
+              copy.rightId,
+              copy.constructorNode,
+              position,
+            )
+          ) {
+            writes.push(copy);
+          } else if (findImmediateConstructor(copy.node)) {
+            // A copy in a callback such as `setTimeout` may run after the
+            // property changed, so only report copies that run immediately.
+            unnecessaryAssignments.push({
+              name: copy.name,
+              node: copy.node,
+              position,
+            });
+          }
+        }
+
+        // For each property written in the constructor, the earliest position
+        // in the code that a write to it may run at.
+        const earliestWrites = new Map<string, number>();
+        for (const write of writes) {
+          const position = getEarliestRunPosition(
+            write.node,
+            write.constructorNode,
+          );
+          const earliest = earliestWrites.get(write.name);
+          if (position != null && (earliest == null || position < earliest)) {
+            earliestWrites.set(write.name, position);
+          }
+        }
+
+        for (const { name, node, position } of unnecessaryAssignments) {
           const earliestWrite = earliestWrites.get(name);
           if (
             assignedBeforeConstructor.has(name) ||
             (earliestWrite != null && earliestWrite < position)
           ) {
-            return;
+            continue;
           }
           context.report({
             node,
             messageId: 'unnecessaryAssign',
           });
-        });
+        }
       },
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
@@ -419,27 +542,20 @@ export default createRule({
         }
 
         const rightId = getIdentifier(node.right);
-        const position = getCopyPosition(node, constructorNode);
 
         if (
           UNNECESSARY_OPERATORS.has(node.operator) &&
           leftName === rightId?.name &&
-          isUnchangedConstructorParameter(rightId, constructorNode, position) &&
           constructorNode.params.some(param =>
             isParameterPropertyWithName(param, leftName),
           )
         ) {
-          // A copy in a callback such as `setTimeout` may run after the
-          // property changed, so only report copies that run immediately.
-          if (findImmediateConstructor(node)) {
-            getReportInfo(
-              constructorNode.parent.parent,
-            ).unnecessaryAssignments.push({
-              name: leftName,
-              node,
-              position,
-            });
-          }
+          getReportInfo(constructorNode.parent.parent).possibleCopies.push({
+            name: leftName,
+            node,
+            constructorNode,
+            rightId,
+          });
           return;
         }
 
@@ -469,6 +585,20 @@ export default createRule({
           constructorNode
         ) {
           addWrite(name, node, constructorNode);
+        }
+      },
+      "MethodDefinition[kind='constructor'] > FunctionExpression ThisExpression"(
+        node: TSESTree.ThisExpression,
+      ): void {
+        const constructorNode = findConstructorOfWrite(node);
+        if (!constructorNode) {
+          return;
+        }
+        const thisExpressions = constructorThisExpressions.get(constructorNode);
+        if (thisExpressions) {
+          thisExpressions.push(node);
+        } else {
+          constructorThisExpressions.set(constructorNode, [node]);
         }
       },
       'PropertyDefinition AssignmentExpression'(

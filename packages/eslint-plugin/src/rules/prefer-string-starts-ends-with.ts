@@ -5,7 +5,7 @@ import type {
 } from '@typescript-eslint/utils';
 
 import { RegExpParser } from '@eslint-community/regexpp';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
   createRule,
@@ -277,6 +277,15 @@ export default createRule<Options, MessageIds>({
         return null;
       }
 
+      // With `u` or `v`, a lone surrogate doesn't match half of a surrogate
+      // pair, as in `/^\ud83d/u.test('😀')`, but `startsWith` does
+      if (
+        (flags.includes('u') || flags.includes('v')) &&
+        chars.some(c => c.value >= 0xd800 && c.value <= 0xdfff)
+      ) {
+        return null;
+      }
+
       // To string.
       return String.fromCodePoint(...chars.map(c => c.value));
     }
@@ -354,6 +363,37 @@ export default createRule<Options, MessageIds>({
         (flags != null && getStaticValue(flags, globalScope)?.value != null) ||
         isNewRegExpObject(pattern)
       );
+    }
+
+    /**
+     * Whether evaluating `node`, which the fix removes, may do more than create
+     * or read a `RegExp`, as `f()` does in `(f(), /^a/)`.
+     */
+    function hasSideEffectBesidesRegExp(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+        case AST_NODE_TYPES.TSSatisfiesExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          return hasSideEffectBesidesRegExp(node.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return node.expressions.some((expression, index) =>
+            index === node.expressions.length - 1
+              ? hasSideEffectBesidesRegExp(expression)
+              : ASTUtils.hasSideEffect(expression, context.sourceCode),
+          );
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          if (
+            node.callee.type === AST_NODE_TYPES.Identifier &&
+            node.callee.name === 'RegExp'
+          ) {
+            return node.arguments.some(argument =>
+              ASTUtils.hasSideEffect(argument, context.sourceCode),
+            );
+          }
+      }
+      return ASTUtils.hasSideEffect(node, context.sourceCode);
     }
 
     /**
@@ -625,6 +665,10 @@ export default createRule<Options, MessageIds>({
           node: callNode,
           messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           *fix(fixer) {
+            // replacing the regex would drop a side effect, as `f()` in `(f(), /^a/)`
+            if (hasSideEffectBesidesRegExp(callNode.arguments[0])) {
+              return;
+            }
             if (!parentNode.operator.startsWith('!')) {
               yield fixer.insertTextBefore(parentNode, '!');
             }
@@ -716,6 +760,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // `foo.slice(-''.length)` is all of `foo`, but `foo.endsWith('')` is always true
+        if (
+          isEndsWith &&
+          isNegativeStart &&
+          getStaticValue(parentNode.right, globalScope)?.value === ''
+        ) {
+          return;
+        }
+
         const eqNode = parentNode;
         context.report({
           node: parentNode,
@@ -729,16 +782,14 @@ export default createRule<Options, MessageIds>({
             ) {
               return null;
             }
-            // `foo.slice(-bar.length)` is all of `foo` when `bar` is empty, but
-            // `foo.endsWith('')` is always true
-            if (isEndsWith && isNegativeStart) {
-              const searchValue = getStaticValue(eqNode.right, globalScope);
-              if (
-                typeof searchValue?.value !== 'string' ||
-                searchValue.value === ''
-              ) {
-                return null;
-              }
+            // `foo.slice(-bar.length)` is all of `foo` when `bar` may be empty
+            if (
+              isEndsWith &&
+              isNegativeStart &&
+              typeof getStaticValue(eqNode.right, globalScope)?.value !==
+                'string'
+            ) {
+              return null;
             }
 
             return fixWithRightOperand(
@@ -781,6 +832,10 @@ export default createRule<Options, MessageIds>({
           node: callNode,
           messageId,
           *fix(fixer) {
+            // removing the regex would drop a side effect, as `f()` in `(f(), /^a/)`
+            if (hasSideEffectBesidesRegExp(node.object)) {
+              return;
+            }
             const argNode = callNode.arguments[0];
             const needsParen =
               argNode.type !== AST_NODE_TYPES.Literal &&

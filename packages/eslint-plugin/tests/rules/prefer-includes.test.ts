@@ -120,6 +120,17 @@ function f(a: string): void {
   (0, pattern).test(a);
 }
     `,
+    // with `u` or `v`, a lone surrogate doesn't match half of a surrogate pair
+    `
+function f(a: string): void {
+  /\\ud83d/u.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  /\\ude00/v.test(a);
+}
+    `,
     `
 function f(a: string): void {
   a.lastIndexOf(b) !== -1;
@@ -320,6 +331,121 @@ function f(a: string): void {
       output: `
 function f(a: string): void {
   a.includes('😀');
+}
+      `,
+    },
+    // the fix would drop `g()`
+    {
+      code: `
+declare function g(): void;
+function f(a: string): void {
+  (g(), /bar/g).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+declare function g(): void;
+function f(a: string): void {
+  (g(), /bar/).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+declare function g(): string;
+function f(a: string): void {
+  new RegExp((g(), 'bar')).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: string): void {
+  (0, /bar/).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud83d\\ude00/u.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('😀');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud83d/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\ud83d');
 }
       `,
     },

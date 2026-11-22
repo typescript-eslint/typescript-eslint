@@ -440,14 +440,18 @@ class Foo {
   }
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   constructor(public foo: number) {
     (this.foo satisfies number) = 1;
     this.foo = foo;
   }
 }
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class Foo {
   constructor(public foo: number) {
@@ -764,6 +768,222 @@ class Foo {
         this.foo = foo;
       });
     })();
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this['bar'] = () => {
+      this.foo = 'x';
+    };
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      foo = 'x';
+    };
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    const { bar } = this;
+    bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+declare function register(foo: Foo): void;
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    register(this);
+    this.foo = foo;
+  }
+}
+    `,
+    `
+declare const key: string;
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    this[key]();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    const setBar = () => {
+      this.bar = () => {
+        this.foo = 'x';
+      };
+    };
+    setBar();
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    for (const _ of [1, 2]) {
+      this.foo = foo;
+      this.bar = () => {
+        this.foo = 'x';
+      };
+      this.bar();
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  handlers: { a: () => void };
+  constructor(public foo: string) {
+    this.handlers = {
+      a: () => {
+        this.foo = 'x';
+      },
+    };
+    this.handlers.a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const handlers = {
+      a: () => {
+        this.foo = 'x';
+      },
+    };
+    handlers.a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const handlers = {
+      inner: {
+        a: () => {
+          foo = 'x';
+        },
+      },
+    };
+    handlers.inner.a();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+declare function register(handlers: object): void;
+class Foo {
+  constructor(public foo: string) {
+    register({
+      a: () => {
+        this.foo = 'x';
+      },
+    });
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const handlers = [
+      () => {
+        this.foo = 'x';
+      },
+    ];
+    handlers[0]();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (async () => {
+      await 0;
+      this.foo = foo;
+    })();
+    this.foo = 'x';
+  }
+}
+    `,
+    // The part of an async IIFE before its first `await` runs immediately,
+    // but this rule doesn't tell it apart from the rest.
+    `
+class Foo {
+  constructor(public foo: string) {
+    (async () => {
+      this.foo = foo;
+    })();
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (async () => {
+      (() => {
+        this.foo = foo;
+      })();
+    })();
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (async () => {
+      await 0;
+      this.foo = 'x';
+    })();
+    this.foo = foo;
   }
 }
     `,
@@ -1708,6 +1928,173 @@ class Foo {
           endColumn: 19,
           endLine: 6,
           line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar?: () => void;
+  constructor(public foo: string) {
+    this.bar = () => {
+      foo = 'x';
+    };
+    this.foo = foo;
+    this.bar();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      // Like writes in other methods, calls from them are not tracked.
+      code: `
+class Foo {
+  bar?: () => void;
+  init(): void {}
+  constructor(public foo: string) {
+    this.bar = () => {
+      this.foo = 'x';
+    };
+    this.init();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  handlers: { a: () => void };
+  constructor(public foo: string) {
+    this.handlers = {
+      a: () => {
+        this.foo = 'x';
+      },
+    };
+    this.foo = foo;
+    this.handlers.a();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const handlers = {
+      a: () => {
+        this.foo = 'x';
+      },
+    };
+    this.foo = foo;
+    handlers.a();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const handlers = {
+      inner: {
+        a: () => {
+          foo = 'x';
+        },
+      },
+    };
+    this.foo = foo;
+    handlers.inner.a();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 11,
+          line: 11,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    (async () => {
+      await 0;
+      this.foo = foo;
+    })();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
           messageId: 'unnecessaryAssign',
         },
       ],

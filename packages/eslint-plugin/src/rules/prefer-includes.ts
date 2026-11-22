@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import {
@@ -141,6 +141,37 @@ export default createRule({
     }
 
     /**
+     * Whether evaluating `node`, which the fix removes, may do more than create
+     * or read a `RegExp`, as `f()` does in `(f(), /bar/)`.
+     */
+    function hasSideEffectBesidesRegExp(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+        case AST_NODE_TYPES.TSSatisfiesExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          return hasSideEffectBesidesRegExp(node.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return node.expressions.some((expression, index) =>
+            index === node.expressions.length - 1
+              ? hasSideEffectBesidesRegExp(expression)
+              : ASTUtils.hasSideEffect(expression, context.sourceCode),
+          );
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          if (
+            node.callee.type === AST_NODE_TYPES.Identifier &&
+            node.callee.name === 'RegExp'
+          ) {
+            return node.arguments.some(argument =>
+              ASTUtils.hasSideEffect(argument, context.sourceCode),
+            );
+          }
+      }
+      return ASTUtils.hasSideEffect(node, context.sourceCode);
+    }
+
+    /**
      * Parse a given node if it's a `RegExp` instance.
      * @param node The node to parse.
      * @param allowGlobal Whether the `g` flag can't change the result, as on a new object.
@@ -169,6 +200,15 @@ export default createRule({
       // Check if it can determine a unique string.
       const chars = pattern.alternatives[0].elements;
       if (!chars.every(c => c.type === 'Character')) {
+        return null;
+      }
+
+      // With `u` or `v`, a lone surrogate doesn't match half of a surrogate
+      // pair, as in `/\ud83d/u.test('😀')`, but `includes` does
+      if (
+        (flags.unicode || flags.unicodeSets) &&
+        chars.some(c => c.value >= 0xd800 && c.value <= 0xdfff)
+      ) {
         return null;
       }
 
@@ -320,6 +360,10 @@ export default createRule({
           node: callNode,
           messageId: 'preferStringIncludes',
           *fix(fixer) {
+            // removing the regex would drop a side effect, as `f()` in `(f(), /bar/)`
+            if (hasSideEffectBesidesRegExp(node.object)) {
+              return;
+            }
             const argNode = callNode.arguments[0];
             const needsParen =
               argNode.type !== AST_NODE_TYPES.Literal &&

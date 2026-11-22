@@ -559,6 +559,49 @@ function f(s: string) {
   s.match(/^bar/m) === null;
 }
     `,
+    // `s.slice(-0)` is all of `s`, but `s.endsWith('')` is always true
+    `
+function f(s: string) {
+  s.slice(-''.length) === '';
+}
+    `,
+    `
+const e = '';
+function f(s: string) {
+  s.slice(-e.length) === e;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-0) === '';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-''.length, s.length) === '';
+}
+    `,
+    // with `u` or `v`, a lone surrogate doesn't match half of a surrogate pair
+    `
+function f(s: string) {
+  /^\\ud83d/u.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  /\\ude00$/u.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  /^\\ud83d/v.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/^\\ud83d/u) === null;
+}
+    `,
   ],
   invalid: [
     {
@@ -709,6 +752,163 @@ function f(s: string) {
       output: `
 function f(s: string) {
   s.startsWith("a");
+}
+      `,
+    },
+    // the fix would drop `g()`
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  (g(), /^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  (g(), /^a/).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): string;
+function f(s: string) {
+  new RegExp((g(), '^a')).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  s.match((g(), /^a/)) === null;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(s: string) {
+  (0, /^a/).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\ud83d\\ude00/u.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("😀");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\ud83d/.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("\\ud83d");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  s.match(/\\ude00$/) === null;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  !s.endsWith("\\ude00");
 }
       `,
     },
@@ -2122,23 +2322,6 @@ function f(s: string, t: string) {
         {
           column: 3,
           endColumn: 37,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferEndsWith',
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-function f(s: string) {
-  s.slice(-''.length) === '';
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          endColumn: 29,
           endLine: 3,
           line: 3,
           messageId: 'preferEndsWith',
