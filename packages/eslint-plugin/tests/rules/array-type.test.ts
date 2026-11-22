@@ -520,6 +520,46 @@ declare global {
     {
       code: `
 export {};
+interface Array<T> {
+  custom: T;
+}
+export let a: Array<number> = { custom: 1 };
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+import type { Foo } from './foo';
+interface Array<T> {
+  custom: T;
+}
+let a: Array<Foo>;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+import foo = require('foo');
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number>;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number>;
+export = a;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+export {};
 type Array<T> = { value: T };
 namespace N {
   namespace Array {}
@@ -2638,6 +2678,58 @@ interface Array<T> {
 interface Array<T> {
   custom(): Array<T>;
 }
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number> = { custom: 1 };
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringArray',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+interface Array<T> {
+  custom: T;
+}
+let a: number[] = { custom: 1 };
+      `,
+    },
+    {
+      code: `
+import Foo = N.Foo;
+interface Array<T> {
+  custom: T;
+}
+let a: Array<Foo>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'Foo' },
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'errorStringArray',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+import Foo = N.Foo;
+interface Array<T> {
+  custom: T;
+}
+let a: Foo[];
       `,
     },
     {

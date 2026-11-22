@@ -5,6 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   findShadowingVariable,
+  isGlobalScript,
   isGlobalScriptDeclarationFile,
   isParenthesized,
 } from '../util';
@@ -154,9 +155,12 @@ export default createRule<Options, MessageIds>({
     // In a script, top-level declarations such as `interface Array<T> {}`
     // augment the global type instead of hiding it. Outside declaration files,
     // a file with no import or export may still be a module (for example, with
-    // `moduleDetection: "force"`), where reporting would point at a local type.
+    // `moduleDetection: "force"`), where reporting would point at a local type,
+    // so only trust that when the file is also parsed as a script. A file with
+    // an import or export is a module to TypeScript whatever its `sourceType`.
     const topLevelIsGlobal =
-      context.sourceCode.ast.sourceType === 'script' ||
+      (context.sourceCode.ast.sourceType === 'script' &&
+        isGlobalScript(context.sourceCode)) ||
       isGlobalScriptDeclarationFile(context.filename, context.sourceCode);
 
     /**
