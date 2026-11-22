@@ -450,7 +450,7 @@ s.match(/a/)!.length;
 declare let x: number;
 declare const s: string;
 x = 1
-;(/a/.exec(s))!.length;
+;/a/.exec(s)!.length;
       `,
     },
     {
@@ -497,6 +497,124 @@ declare let x: number;
 declare const s: string;
 x = 1;
 /a/.exec(s);
+      `,
+    },
+    // a call needs no parentheses before a non-null assertion
+    {
+      code: `
+declare const s: string;
+const m = s.match(/a/)!;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+const m = /a/.exec(s)!;
+      `,
+    },
+    {
+      code: `
+declare const s: string;
+const m = s.match(/a/)![0];
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+const m = /a/.exec(s)![0];
+      `,
+    },
+    {
+      code: `
+declare const s: string;
+const m = s.match('a')!;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+const m = /a/.exec(s)!;
+      `,
+    },
+    {
+      code: `
+declare const s: string;
+const r = /a/;
+const m = s.match(r)!;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+const r = /a/;
+const m = r.exec(s)!;
+      `,
+    },
+    {
+      code: noFormat`
+declare const s: string;
+const m = (s.match(/a/))!;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+const m = (/a/.exec(s))!;
+      `,
+    },
+    // the regex mustn't start a block
+    {
+      code: `
+declare const s: string;
+s.match({ r: /a/ }.r);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare const s: string;
+({ r: /a/ }.r.exec(s));
       `,
     },
   ],

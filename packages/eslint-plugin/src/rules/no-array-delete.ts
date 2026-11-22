@@ -8,9 +8,12 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isExpressionStartNeedingParentheses,
   isParenthesized,
   isStartOfExpressionStatement,
   needsPrecedingSemicolon,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export type MessageId = 'noArrayDelete' | 'useSplice';
@@ -103,9 +106,21 @@ export default createRule<[], MessageId>({
 
                 const nodeMap = services.esTreeNodeToTSNodeMap;
                 const rawTarget = nodeMap.get(object).getText();
-                const target = isParenthesized(object, context.sourceCode)
-                  ? `(${rawTarget})`
-                  : rawTarget;
+                const objectFirstToken = nullThrows(
+                  context.sourceCode.getFirstToken(object),
+                  NullThrowsReasons.MissingToken('first token', object.type),
+                );
+                // Without `delete`, a leading `{`, `function` or `class` could
+                // start a block or a declaration instead of an expression.
+                const target =
+                  isParenthesized(object, context.sourceCode) ||
+                  isExpressionStartNeedingParentheses(
+                    node,
+                    objectFirstToken,
+                    context.sourceCode,
+                  )
+                    ? `(${rawTarget})`
+                    : rawTarget;
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 

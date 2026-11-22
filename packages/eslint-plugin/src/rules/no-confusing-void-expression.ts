@@ -14,6 +14,8 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isFunctionOrClassStartToken,
+  isOpeningBraceToken,
   needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
@@ -174,14 +176,17 @@ export default createRule<Options, MessageId>({
                   'before arrow function body',
                 ),
               );
+              const needsParentheses = wouldStartBlockOrDeclaration(
+                arrowFunction.body,
+              );
               return [
                 fixer.replaceTextRange(
                   [arrowToken.range[1], arrowFunction.body.range[0]],
-                  ' { ',
+                  needsParentheses ? ' { (' : ' { ',
                 ),
                 fixer.replaceTextRange(
                   [arrowFunction.body.range[1], arrowFunction.range[1]],
-                  '; }',
+                  needsParentheses ? '); }' : '; }',
                 ),
               ];
             },
@@ -221,8 +226,9 @@ export default createRule<Options, MessageId>({
                 if (!canFix(invalidAncestor)) {
                   return null;
                 }
-                const returnValue = invalidAncestor.argument;
-                const returnValueText = context.sourceCode.getText(returnValue);
+                const returnValueText = getStatementText(
+                  invalidAncestor.argument,
+                );
                 let newReturnStmtText = `${returnValueText};`;
                 if (isPreventingASI(invalidAncestor, returnValueText)) {
                   // put a semicolon at the beginning of the line
@@ -241,8 +247,9 @@ export default createRule<Options, MessageId>({
               if (!canFix(invalidAncestor)) {
                 return null;
               }
-              const returnValue = invalidAncestor.argument;
-              const returnValueText = context.sourceCode.getText(returnValue);
+              const returnValueText = getStatementText(
+                invalidAncestor.argument,
+              );
               let newReturnStmtText = `${returnValueText}; return;`;
               if (
                 invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
@@ -402,6 +409,32 @@ export default createRule<Options, MessageId>({
         /^[-(+/<[`]/.test(text) &&
         needsPrecedingSemicolon(context.sourceCode, statement, text)
       );
+    }
+
+    /**
+     * Whether the expression, as the start of a statement, would be read as a
+     * block or a declaration, as in `function () {}.call(null)`.
+     */
+    function wouldStartBlockOrDeclaration(node: TSESTree.Node): boolean {
+      const firstToken = nullThrows(
+        context.sourceCode.getFirstToken(node),
+        NullThrowsReasons.MissingToken('first token', node.type),
+      );
+
+      return (
+        isOpeningBraceToken(firstToken) ||
+        isFunctionOrClassStartToken(firstToken, context.sourceCode)
+      );
+    }
+
+    /**
+     * Gets the expression's text to use as an expression statement,
+     * parenthesized if it would otherwise start a block or a declaration.
+     */
+    function getStatementText(node: TSESTree.Expression): string {
+      const text = context.sourceCode.getText(node);
+
+      return wouldStartBlockOrDeclaration(node) ? `(${text})` : text;
     }
 
     function canFix(

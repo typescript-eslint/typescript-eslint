@@ -969,7 +969,8 @@ async function test() {
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: "'value';",
+              // a bare string would become a directive
+              output: "('value');",
             },
           ],
         },
@@ -1240,6 +1241,234 @@ async function test() {
               output: `
 async function test() {
   (async function () {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await function () {
+  return 1;
+}.call(null);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 13,
+          endLine: 4,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (function () {
+  return 1;
+}.call(null));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await class {}.name;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (class {}.name);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await async function () {}.name;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (async function () {}.name);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await { a: 1 }.a;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default { a: 1 }.a;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test(a = 1) {
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test(a = 1) {
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  'use asm';
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  'use asm';
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  await ('use strict');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(): void;
+async function test() {
+  f();
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare function f(): void;
+async function test() {
+  f();
+  'use strict';
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await 'use strict'.length;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  'use strict'.length;
 }
       `,
             },

@@ -15,15 +15,15 @@ import {
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
-  isStartOfArrowFunctionBodyNeedingParentheses,
+  isExpressionStartNeedingParentheses,
   isStartOfExpressionStatement,
-  isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
   LINEBREAK_MATCHER,
   needsPrecedingSemicolon,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
+  wouldBecomeDirective,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 import { isPromiseAggregatorMethod } from '../util/isPromiseAggregatorMethod';
@@ -150,15 +150,19 @@ export default createRule<Options, MessageId>({
                     ];
                   }
 
+                  // Without `await`, a leading `{`, `function`,
+                  // `async function` or `class` could start a block or
+                  // declaration instead of an expression, and a string could
+                  // start a directive.
                   const needsParentheses =
-                    isStartOfArrowFunctionBodyNeedingParentheses(
+                    isExpressionStartNeedingParentheses(
                       node,
                       firstOperandToken,
                       context.sourceCode,
                     ) ||
-                    isStartOfExpressionStatementNeedingParentheses(
+                    wouldBecomeDirective(
                       node,
-                      firstOperandToken,
+                      awaitArgumentEsNode,
                       context.sourceCode,
                     );
                   const nextTokenText = needsParentheses

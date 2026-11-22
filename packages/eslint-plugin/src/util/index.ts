@@ -4,6 +4,7 @@ export * from './astUtils';
 export * from './baseTypeUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
+export * from './expressionStartUtils';
 export * from './FunctionSignature';
 export * from './getAwaitTokenRemovalRange';
 export * from './getBaseTypesOfClassMember';

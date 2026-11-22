@@ -1481,5 +1481,171 @@ declare const arr: number[];
         },
       ],
     },
+    {
+      code: `
+delete { a: [1] }.a[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+({ a: [1] }.a).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+delete class {
+  static a = [1];
+}.a[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          endLine: 4,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+(class {
+  static a = [1];
+}.a).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const f = () => delete { a: [1] }.a[0];
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+const f = () => ({ a: [1] }.a).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default delete class {
+  static a = [1];
+}.a[0];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 7,
+          endLine: 4,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+export default (class {
+  static a = [1];
+}.a).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+delete { a: [1] }.a[0]
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare let x: number;
+x = 1
+;({ a: [1] }.a).splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const b = delete { a: [1] }.a[0];
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+const b = { a: [1] }.a.splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default delete { a: [1] }.a[0];
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 38,
+          endLine: 2,
+          line: 2,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+export default { a: [1] }.a.splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

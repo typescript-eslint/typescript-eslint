@@ -20,9 +20,28 @@ export function isStartOfExpressionStatementNeedingParentheses(
   sourceCode?: Readonly<TSESLint.SourceCode>,
 ): boolean {
   return (
-    (['{', 'class', 'function'].includes(firstToken.value) ||
-      (sourceCode != null && isAsyncFunctionStart(sourceCode, firstToken))) &&
+    (firstToken.value === '{' ||
+      isFunctionOrClassStartToken(firstToken, sourceCode)) &&
     isStartOfExpressionStatement(node)
+  );
+}
+
+/**
+ * Whether `firstToken` starts a function or class expression: `class`,
+ * `function`, or, when `sourceCode` is given, `async function`. At the start of
+ * a statement or an `export default`, these would make a declaration.
+ * @param firstToken The token that will start the expression.
+ * @param sourceCode Pass it to also detect `async function`, which needs the
+ * token after `firstToken`.
+ */
+export function isFunctionOrClassStartToken(
+  firstToken: TSESTree.Token,
+  sourceCode?: Readonly<TSESLint.SourceCode>,
+): boolean {
+  return (
+    firstToken.value === 'class' ||
+    firstToken.value === 'function' ||
+    (sourceCode != null && isAsyncFunctionStart(sourceCode, firstToken))
   );
 }
 

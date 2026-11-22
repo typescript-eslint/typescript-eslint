@@ -215,7 +215,8 @@ String(...strings);
           suggestions: [
             {
               messageId: 'suggestRemove',
-              output: "'asdf';",
+              // a bare string would become a directive
+              output: "('asdf');",
             },
             {
               data: { type: 'string' },
@@ -244,7 +245,8 @@ String(...strings);
           suggestions: [
             {
               messageId: 'suggestRemove',
-              output: "'asdf';",
+              // a bare string would become a directive
+              output: "('asdf');",
             },
             {
               data: { type: 'string' },
@@ -270,7 +272,8 @@ String(...strings);
           suggestions: [
             {
               messageId: 'suggestRemove',
-              output: "'asdf';",
+              // a bare string would become a directive
+              output: "('asdf');",
             },
             {
               data: { type: 'string' },
@@ -296,7 +299,8 @@ String(...strings);
           suggestions: [
             {
               messageId: 'suggestRemove',
-              output: "'asdf';",
+              // a bare string would become a directive
+              output: "('asdf');",
             },
             {
               data: { type: 'string' },
@@ -1430,6 +1434,502 @@ s!.length;
               output: `
 declare const s: string;
 (s satisfies string)!.length;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string;
+String({ a: s }.a);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const s: string;
+({ a: s }.a);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const s: string;
+({ a: s }.a satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string;
+String({ a: s }.a).length;
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const s: string;
+({ a: s }.a).length;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const s: string;
+({ a: s }.a satisfies string).length;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+String(function () {}.name);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+(function () {}.name);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+(function () {}.name satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+String(class {}.name);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+(class {}.name);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+(class {}.name satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+String(async function () {}.name);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+(async function () {}.name);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+(async function () {}.name satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string;
+const f = () => String({ a: s }.a);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const s: string;
+const f = () => ({ a: s }.a);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const s: string;
+const f = () => ({ a: s }.a satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default String(class {}.name);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 16,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+export default (class {}.name);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+export default (class {}.name satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const s: string;
+x = 1
+String({ a: s }.a)
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const s: string;
+x = 1
+;({ a: s }.a)
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const s: string;
+x = 1
+;({ a: s }.a satisfies string)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f(a = 1) {
+  String('use strict');
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 3,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f(a = 1) {
+  ('use strict');
+}
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f(a = 1) {
+  'use strict' satisfies string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f() {
+  'use asm';
+  String('use strict');
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 3,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f() {
+  'use asm';
+  ('use strict');
+}
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f() {
+  'use asm';
+  'use strict' satisfies string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string;
+const a = String({ a: s }.a);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 11,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const s: string;
+const a = { a: s }.a;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const s: string;
+const a = { a: s }.a satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const f = () => String(function () {}.name);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+const f = () => function () {}.name;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+const f = () => function () {}.name satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default String({ a: 'a' }.a);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 16,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+export default { a: 'a' }.a;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+export default { a: 'a' }.a satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(): void;
+function g() {
+  f();
+  String('use strict');
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 3,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare function f(): void;
+function g() {
+  f();
+  'use strict';
+}
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare function f(): void;
+function g() {
+  f();
+  'use strict' satisfies string;
+}
       `,
             },
           ],

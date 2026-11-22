@@ -2625,5 +2625,246 @@ function test(arg?: string): any | void {
 }
       `,
     },
+    {
+      code: `
+declare function f(): void;
+function g(): void {
+  return function () {
+    f();
+  }.call(null);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 15,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(): void {
+  (function () {
+    f();
+  }.call(null));
+}
+      `,
+    },
+    {
+      code: `
+function g(): void {
+  return { m(): void {} }.m();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  ({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+function g(): void {
+  return ({ m(): void {} }.m());
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  ({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: `
+function g(): void {
+  return class {
+    static m(): void {}
+  }.m();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 8,
+          endLine: 5,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  (class {
+    static m(): void {}
+  }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+function g(): void {
+  x = 1
+  return { m(): void {} }.m()
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+function g(): void {
+  x = 1
+  ;({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function f(): void;
+function g(): void {
+  return (function () {
+    f();
+  }).call(null);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(): void {
+  (function () {
+    f();
+  }).call(null);
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) {
+    return { m(): void {} }.m();
+  }
+  f();
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) {
+    ({ m(): void {} }.m()); return;
+  }
+  f();
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) return { m(): void {} }.m();
+  f();
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) { ({ m(): void {} }.m()); return; }
+  f();
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+const a = () =>
+  function () {
+    f();
+  }.call(null);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+declare function f(): void;
+const a = () => { (function () {
+    f();
+  }.call(null)); };
+      `,
+    },
+    {
+      code: noFormat`
+const a = () => ({ m(): void {} }.m());
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 38,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+const a = () => { ({ m(): void {} }.m()); };
+      `,
+    },
   ],
 });
