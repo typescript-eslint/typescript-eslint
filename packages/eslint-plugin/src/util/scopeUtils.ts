@@ -25,9 +25,10 @@ export interface ShadowLookupOptions extends GlobalLookupOptions {
   /**
    * The node where the name is, or where a fix would write it. TypeScript
    * makes an `infer` type parameter visible only in the true branch of its
-   * conditional type, but `sourceCode.getScope` gives the conditional type's
-   * scope for any node in it, including in its false branch. Without this, an
-   * `infer` type parameter shadows the name anywhere in its conditional type.
+   * conditional type and in its own constraint, but `sourceCode.getScope`
+   * gives the conditional type's scope for any node in it, including in its
+   * false branch. Without this, an `infer` type parameter shadows the name
+   * anywhere in its conditional type.
    */
   node?: TSESTree.Node;
 }
@@ -99,9 +100,16 @@ function givesMeaning(
   );
 }
 
+function isNodeWithin(node: TSESTree.Node, container: TSESTree.Node): boolean {
+  return (
+    node.range[0] >= container.range[0] && node.range[1] <= container.range[1]
+  );
+}
+
 /**
  * Whether a definition is an `infer` type parameter that isn't visible at
- * `node`, because `node` is outside its conditional type's true branch.
+ * `node`, because `node` is outside both its conditional type's true branch
+ * and its own `infer` type, which holds its constraint.
  */
 function isInferTypeParameterOutOfScope(
   definition: Scope.Definition,
@@ -114,6 +122,12 @@ function isInferTypeParameterOutOfScope(
     return false;
   }
 
+  // In `infer T extends C`, TypeScript makes `T` visible in `C` but not in
+  // the constraints of other `infer` type parameters.
+  if (isNodeWithin(node, definition.node.parent)) {
+    return false;
+  }
+
   let child: TSESTree.Node = definition.node.parent;
   let parent: TSESTree.Node | undefined = child.parent;
   while (parent) {
@@ -121,10 +135,7 @@ function isInferTypeParameterOutOfScope(
       parent.type === AST_NODE_TYPES.TSConditionalType &&
       parent.extendsType === child
     ) {
-      return (
-        node.range[0] < parent.trueType.range[0] ||
-        node.range[1] > parent.trueType.range[1]
-      );
+      return !isNodeWithin(node, parent.trueType);
     }
     child = parent;
     parent = parent.parent;
@@ -148,7 +159,7 @@ function isTopLevelScope(scope: Scope.Scope): boolean {
  * - A declaration inside `declare global` declares or augments the global.
  * - With `topLevelIsGlobal`, so does a declaration at the top level.
  * - With `node`, an `infer` type parameter is only visible in its conditional
- *   type's true branch.
+ *   type's true branch and in its own constraint.
  */
 export function findShadowingVariable(
   name: string,

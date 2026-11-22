@@ -577,6 +577,19 @@ namespace N {
       code: 'type T<U> = U extends [infer Array] ? Array<string> : 1;',
       options: [{ default: 'array' }],
     },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Array extends string[]] ? Array : 0;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer ReadonlyArray extends readonly 1[]] ? 1 : 0;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer Array extends (U extends 1 ? 1 : 1[])] ? 1 : 0;',
+      options: [{ default: 'generic' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2913,6 +2926,39 @@ declare global {
       ],
       options: [{ default: 'array' }],
       output: 'type T<U> = U extends [infer Array, string[]] ? 1 : 0;',
+    },
+    // nor in the constraint of another `infer` type parameter
+    {
+      code: 'type T<U> = U extends [infer V extends string[], infer Array] ? V : 0;',
+      errors: [
+        {
+          column: 40,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer V extends Array<string>, infer Array] ? V : 0;',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array, infer V extends string[]] ? V : 0;',
+      errors: [
+        {
+          column: 53,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer Array, infer V extends Array<string>] ? V : 0;',
     },
   ],
 });

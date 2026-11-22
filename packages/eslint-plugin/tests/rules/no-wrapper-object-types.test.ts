@@ -63,6 +63,8 @@ let value: Bigint;
 type T<Symbol> = Symbol;
 type U<UU> = UU extends T<infer Function> ? Function : never;
     `,
+    // an `infer` type parameter is visible in its own constraint
+    'type T<U> = U extends [infer String extends String] ? 1 : 0;',
     `
 export {};
 class Boolean {}
@@ -98,6 +100,37 @@ declare let value: String;
     },
   ],
   invalid: [
+    // an `infer` type parameter isn't visible in another one's constraint
+    {
+      code: 'type T<U> = U extends [infer V extends String, infer String] ? V : 0;',
+      errors: [
+        {
+          column: 40,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 46,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output:
+        'type T<U> = U extends [infer V extends string, infer String] ? V : 0;',
+    },
+    {
+      code: 'type T<U> = U extends [infer String, infer V extends String] ? V : 0;',
+      errors: [
+        {
+          column: 54,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 60,
+          endLine: 1,
+          line: 1,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output:
+        'type T<U> = U extends [infer String, infer V extends string] ? V : 0;',
+    },
     {
       code: 'let value: BigInt;',
       errors: [

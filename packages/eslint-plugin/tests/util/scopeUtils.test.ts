@@ -149,6 +149,15 @@ type T<U> = U extends [infer String]
       `,
       errors: global,
     },
+    // nor in the constraint of another `infer` type parameter
+    {
+      code: 'type T<U> = U extends [infer V extends String, infer String] ? V : 0;',
+      errors: global,
+    },
+    {
+      code: 'type T<U> = U extends [infer String, infer V extends String] ? V : 0;',
+      errors: global,
+    },
   ],
   valid: [
     // a namespace with values shadows a global value
@@ -234,6 +243,8 @@ function f() {
     'type T<U> = U extends [infer String] ? String : 0;',
     'type T<U> = U extends [infer String] ? (U extends 1 ? 1 : String) : 0;',
     'type T<U> = U extends { a: infer String } ? { b: String } : 0;',
+    // an `infer` type parameter is visible in its own constraint
+    'type T<U> = U extends [infer String extends String] ? 1 : 0;',
   ],
 });
 
@@ -303,6 +314,15 @@ type T<U> = U extends [infer Record]
       `,
       errors: global,
     },
+    // nor in the constraint of another `infer` type parameter
+    {
+      code: 'type T<U> = U extends [infer V extends string, infer Record] ? V : 0;',
+      errors: global,
+    },
+    {
+      code: 'type T<U> = U extends [infer Record, infer V extends string] ? V : 0;',
+      errors: global,
+    },
     // past the `infer` type parameter, `declare global` augments the global
     {
       code: `
@@ -322,6 +342,10 @@ declare global {
     // the false branch of a conditional type in the true branch sees it
     'type T<U> = U extends [infer Record] ? (U extends 1 ? 1 : string) : 0;',
     'type T<U> = U extends [infer Record] ? (U extends string ? 1 : 0) : 0;',
+    // an `infer` type parameter is visible in its own constraint
+    'type T<U> = U extends [infer Record extends string] ? 1 : 0;',
+    'type T<U> = U extends [infer Record extends { [K in string]: 1 }] ? 1 : 0;',
+    'type T<U> = U extends [infer Record extends (U extends 1 ? 1 : string)] ? 1 : 0;',
     // an outer `Record` is still found past the `infer` type parameter
     `
 type T<Record, U> = U extends [infer Record] ? 1 : string;

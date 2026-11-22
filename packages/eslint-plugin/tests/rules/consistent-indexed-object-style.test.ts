@@ -358,6 +358,11 @@ type Foo<T> = T extends [infer Record]
       `,
       options: ['index-signature'],
     },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Record extends Record<string, 1>] ? 1 : 0;',
+      options: ['index-signature'],
+    },
 
     {
       // mapped type that uses the key cannot be converted to record
@@ -2512,6 +2517,107 @@ type Foo<T> = T extends [infer Record]
       options: ['index-signature'],
       output:
         'type Foo<T> = T extends [infer Record, { [key: string]: number }] ? 1 : 0;',
+    },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Record extends { [k: string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 45,
+          endColumn: 63,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type T<U> = U extends [infer Record extends { [K in string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 45,
+          endColumn: 65,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type T<U> = U extends [infer Partial extends { [K in string]?: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 46,
+          endColumn: 67,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type T<U> = U extends [infer Readonly extends { readonly [K in string]: 1 }]
+  ? 1
+  : 0;
+      `,
+      errors: [
+        {
+          column: 47,
+          endColumn: 76,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    // but not in the constraint of another `infer` type parameter
+    {
+      code: 'type T = 1 extends [infer V extends { [k: string]: 1 }, infer Record] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type T = 1 extends [infer V extends Record<string, 1>, infer Record] ? 1 : 0;',
+    },
+    {
+      code: 'type T = 1 extends [infer Record, infer V extends { [K in string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 51,
+          endColumn: 71,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type T = 1 extends [infer Record, infer V extends Record<string, 1>] ? 1 : 0;',
+    },
+    {
+      code: 'type T = 1 extends [infer V extends Record<string, 1>, infer Record] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type T = 1 extends [infer V extends { [key: string]: 1 }, infer Record] ? 1 : 0;',
     },
   ],
 });
