@@ -451,11 +451,6 @@ function bar<T>(value: T, other: T): T {
 }
     `,
     `
-function bar<T>(value: T, other: string): T | string {
-  return value! && other;
-}
-    `,
-    `
 function bar<T>(value: T) {
   const pick = <U,>(input: U | T): U => input as U;
   return pick(value!);
@@ -494,6 +489,80 @@ function bar<T>(value: T) {
   return tag\`\${value!}\`;
 }
     `,
+    `
+function bar<T>(value: T, pick?: <U>(input: U | T) => U) {
+  return pick?.(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const tag = <U,>(strings: TemplateStringsArray, input: (U | T)[]): U =>
+    input[0] as U;
+  return tag\`\${[value!]}\`;
+}
+    `,
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return (
+    <Comp
+      v={value!}
+      f={u => {
+        const x: NonNullable<T> = u;
+      }}
+    />
+  );
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { children: U | T; f: (u: U) => void }) => null;
+  return (
+    <Comp
+      f={u => {
+        const x: NonNullable<T> = u;
+      }}
+    >
+      {value!}
+    </Comp>
+  );
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: (U | T)[] }) => null;
+  return <Comp v={[value!]} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  class Comp<U> extends React.Component<{ v: U | T }> {}
+  return <Comp v={value!} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const components = {
+    Comp: <U,>(props: { v: U | T }) => null,
+  };
+  return <components.Comp v={value!} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
     `
 function bar<T>(value: T) {
   let target: { a: T };
@@ -4213,6 +4282,146 @@ function bar<T>(value: T) {
 function bar<T>(value: T) {
   const tag = (strings: TemplateStringsArray, input: T): T => input;
   return tag\`\${value}\`;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T[]): T => input[0];
+  return tag\`\${[value!]}\`;
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T[]): T => input[0];
+  return tag\`\${[value]}\`;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, pick?: (input: T) => T) {
+  return pick?.(value!);
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, pick?: (input: T) => T) {
+  return pick?.(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return <Comp<T> v={value!} f={u => {}} />;
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return <Comp<T> v={value} f={u => {}} />;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T }) => null;
+  return <Comp v={value!} />;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T }) => null;
+  return <Comp v={value} />;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { children: T }) => null;
+  return <Comp>{value!}</Comp>;
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { children: T }) => null;
+  return <Comp>{value}</Comp>;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T[] }) => null;
+  return <Comp v={[value!]} />;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T[] }) => null;
+  return <Comp v={[value]} />;
 }
       `,
     },

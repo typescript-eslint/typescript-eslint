@@ -613,19 +613,30 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Whether a call infers its type arguments from its arguments: it has no
-     * explicit type arguments and its callee has a generic signature.
+     * explicit type arguments and its callee has a generic signature. A JSX
+     * element is a call of its tag, with its attributes and children as the
+     * props argument, and TypeScript resolves the tag's call signatures or,
+     * for a class component, its construct signatures.
      */
     function isCallInferringTypeArguments(
       node:
         | TSESTree.CallExpression
+        | TSESTree.JSXOpeningElement
         | TSESTree.NewExpression
         | TSESTree.TaggedTemplateExpression,
     ): boolean {
       if (node.typeArguments != null) {
         return false;
       }
-      // An optional-chained callee (`foo?.(...)`) types as
-      // `<function> | undefined`, and a union exposes no signatures.
+      if (node.type === AST_NODE_TYPES.JSXOpeningElement) {
+        const tagType = services.getTypeAtLocation(node.name);
+        return [
+          ...tagType.getCallSignatures(),
+          ...tagType.getConstructSignatures(),
+        ].some(hasTypeParams);
+      }
+      // An optional callee (`foo?.(...)`, with `foo` possibly undefined)
+      // types as `<function> | undefined`, and a union exposes no signatures.
       const calleeType = services
         .getTypeAtLocation(
           node.type === AST_NODE_TYPES.TaggedTemplateExpression
@@ -641,10 +652,11 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Whether an expression is an argument, or a tagged template's
-     * substitution, of a call that infers its type arguments from it. Its
-     * contextual type then comes from the inferred signature, so changing the
-     * expression's type can change what's inferred, and so the call's type.
+     * Whether an expression is an argument, a tagged template's substitution,
+     * or a JSX attribute's or child's value, of a call that infers its type
+     * arguments from it. Its contextual type then comes from the inferred
+     * signature, so changing the expression's type can change what's
+     * inferred, and so the call's type.
      */
     function isArgumentToCallInferringTypeArguments(
       node: TSESTree.Node,
@@ -658,6 +670,15 @@ export default createRule<Options, MessageIds>({
               node as TSESTree.CallExpressionArgument,
             ) && isCallInferringTypeArguments(parent)
           );
+        case AST_NODE_TYPES.JSXExpressionContainer:
+          switch (parent.parent.type) {
+            case AST_NODE_TYPES.JSXAttribute:
+              return isCallInferringTypeArguments(parent.parent.parent);
+            case AST_NODE_TYPES.JSXElement:
+              return isCallInferringTypeArguments(parent.parent.openingElement);
+            default:
+              return false;
+          }
         case AST_NODE_TYPES.TemplateLiteral:
           return (
             parent.parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
@@ -674,10 +695,10 @@ export default createRule<Options, MessageIds>({
      * a function with a declared return type, so its own type doesn't flow on
      * into the type of another expression or declaration. Positions whose type
      * flows out aren't declared, even when they have a contextual type: the
-     * operand of `satisfies`, the left operand of `??` or `&&` (`a! ?? b` is
-     * typed as `a!`, without `b`), an argument to a generic call that infers
-     * its type arguments, and the return of a function without a declared
-     * return type.
+     * operand of `satisfies`, the left operand of `??` (`a! ?? b` is typed as
+     * `a!`, without `b`), an argument to a generic call or JSX element that
+     * infers its type arguments, and the return of a function without a
+     * declared return type.
      *
      * A variable declared with a union type is still a declared destination,
      * even though TypeScript narrows the variable to the part of its union
@@ -693,11 +714,12 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.ChainExpression:
           return isInDeclaredDestination(parent);
         case AST_NODE_TYPES.LogicalExpression:
-          // `??` and `&&` use their right operand depending on the left one's
-          // value, so the left one's type decides whether the right one's type
-          // is part of the result.
+          // `??` uses its right operand only when the left one may be
+          // nullish, so the left one's type decides whether the right one's
+          // type is part of the result. (The left of `&&` has no contextual
+          // type, so it's never checked against one.)
           return (
-            (parent.right === node || parent.operator === '||') &&
+            (parent.right === node || parent.operator !== '??') &&
             isInDeclaredDestination(parent)
           );
         case AST_NODE_TYPES.ConditionalExpression:
@@ -742,10 +764,9 @@ export default createRule<Options, MessageIds>({
               node as TSESTree.CallExpressionArgument,
             ) && !isArgumentToCallInferringTypeArguments(node)
           );
+        case AST_NODE_TYPES.JSXExpressionContainer:
         case AST_NODE_TYPES.TemplateLiteral:
           return !isArgumentToCallInferringTypeArguments(node);
-        case AST_NODE_TYPES.JSXExpressionContainer:
-          return true;
         case AST_NODE_TYPES.AccessorProperty:
         case AST_NODE_TYPES.PropertyDefinition:
           return parent.value === node && parent.typeAnnotation != null;
