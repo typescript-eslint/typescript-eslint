@@ -388,13 +388,11 @@ jobs:
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
         env:
           CI: true
-          NX_SKIP_NX_CACHE: true # TEMP: measure real test time
       - name: Run unit tests for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
-          NX_SKIP_NX_CACHE: true # TEMP: measure real test time
 
       - name: Upload coverage to Codecov
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
@@ -568,7 +566,6 @@ jobs:
         run: pnpm exec nx test eslint-plugin -- --shard=${{ matrix.shard }} --coverage --coverage.provider=v8 --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
-          NX_SKIP_NX_CACHE: true # TEMP: measure real test time
           TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
