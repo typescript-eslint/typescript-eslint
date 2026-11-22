@@ -9,6 +9,8 @@ import {
   getStaticMemberAccessValue,
   getStaticStringValue,
   isAssignee,
+  isStaticMemberAccessOfValue,
+  isTypeAssertion,
   nullThrows,
 } from '../util';
 
@@ -298,15 +300,105 @@ export default createRule({
       return undefined;
     }
 
+    function skipTypeWrappers(node: TSESTree.Node): TSESTree.Node {
+      let current = node;
+      while (
+        isTypeAssertion(current) ||
+        current.type === AST_NODE_TYPES.TSNonNullExpression ||
+        current.type === AST_NODE_TYPES.TSSatisfiesExpression
+      ) {
+        current = current.expression;
+      }
+      return current;
+    }
+
+    /**
+     * Whether `node` is a property of `this`, as in `this.bar`, `this[key]`
+     * or `(this as any).bar`.
+     */
+    function isThisMemberTarget(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        skipTypeWrappers(node.object).type === AST_NODE_TYPES.ThisExpression
+      );
+    }
+
+    /**
+     * Goes up from `node` through the expressions whose value may be `node`'s
+     * value, as in `cond ? node : other`, `other || node`, `(other, node)`,
+     * `node as Type` or `o.bar = node`, stopping at an assignment to a
+     * property of `this`, which is the target that `node` reaches.
+     */
+    function getValueContext(node: TSESTree.Node): TSESTree.Node {
+      let current = node;
+      while (true) {
+        const { parent } = current;
+        if (
+          !parent ||
+          !(
+            (parent.type === AST_NODE_TYPES.AssignmentExpression &&
+              parent.right === current &&
+              !isThisMemberTarget(parent.left)) ||
+            (parent.type === AST_NODE_TYPES.ConditionalExpression &&
+              parent.test !== current) ||
+            parent.type === AST_NODE_TYPES.LogicalExpression ||
+            (parent.type === AST_NODE_TYPES.SequenceExpression &&
+              parent.expressions.at(-1) === current) ||
+            isTypeAssertion(parent) ||
+            parent.type === AST_NODE_TYPES.TSNonNullExpression ||
+            parent.type === AST_NODE_TYPES.TSSatisfiesExpression
+          )
+        ) {
+          return current;
+        }
+        current = parent;
+      }
+    }
+
+    /**
+     * Finds the `this` that a function expression is known to be called
+     * with: the object of `this.bar = function () {}`, as `this.bar()` calls
+     * it with the instance as `this`, or the first argument of
+     * `function () {}.call(this)`, `.apply(this)` or `.bind(this)`.
+     */
+    function findThisOfFunctionExpression(
+      node: TSESTree.FunctionExpression,
+    ): TSESTree.Node | undefined {
+      const value = getValueContext(node);
+      const { parent } = value;
+      if (
+        parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.right === value &&
+        isThisMemberTarget(parent.left)
+      ) {
+        return parent.left;
+      }
+      if (
+        parent?.type === AST_NODE_TYPES.MemberExpression &&
+        parent.object === value &&
+        isStaticMemberAccessOfValue(parent, context, 'apply', 'bind', 'call') &&
+        parent.parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.parent.callee === parent
+      ) {
+        const thisArgument = parent.parent.arguments.at(0);
+        if (
+          thisArgument &&
+          skipTypeWrappers(thisArgument).type === AST_NODE_TYPES.ThisExpression
+        ) {
+          return thisArgument;
+        }
+      }
+      return undefined;
+    }
+
     /**
      * Finds the constructor whose `this` a write in `node` changes: like
      * `findImmediateConstructor`, but through any arrow function, as each one
      * shares the constructor's `this`. That includes the instance fields of
      * its class, as in `bar = () => { this.foo = 1; }`, and a function
      * expression that is a field's value, as in `bar = function () {}`, or
-     * that is assigned to a property of `this`, as in
-     * `this.bar = function () {}`, since `this.bar()` calls it with the
-     * instance as `this`.
+     * that is called with the constructor's `this`, as in
+     * `this.bar = function () {}` or `function () {}.call(this)`.
      */
     function findConstructorOfWrite(
       node: TSESTree.Node,
@@ -320,18 +412,17 @@ export default createRule({
         if (ASTUtils.isConstructor(container.parent)) {
           return container;
         }
-        if (
-          container.parent.type === AST_NODE_TYPES.AssignmentExpression &&
-          isThisMemberExpression(container.parent.left)
-        ) {
-          return findConstructorOfWrite(container.parent.left);
+        const thisNode = findThisOfFunctionExpression(container);
+        if (thisNode) {
+          return findConstructorOfWrite(thisNode);
         }
+        const value = getValueContext(container);
         if (
-          (container.parent.type === AST_NODE_TYPES.AccessorProperty ||
-            container.parent.type === AST_NODE_TYPES.PropertyDefinition) &&
-          container.parent.value === container
+          (value.parent?.type === AST_NODE_TYPES.AccessorProperty ||
+            value.parent?.type === AST_NODE_TYPES.PropertyDefinition) &&
+          value.parent.value === value
         ) {
-          container = container.parent;
+          container = value.parent;
         }
       }
 
@@ -387,11 +478,49 @@ export default createRule({
     }
 
     /**
+     * Whether `this.name = value` in `constructorNode` may call a setter,
+     * which may call `value` right away: one the class has, or one a base
+     * class may have if the class doesn't declare `name` itself, as
+     * TypeScript reports a property that overrides an accessor.
+     */
+    function mayCallSetter(
+      name: string,
+      constructorNode: TSESTree.FunctionExpression,
+    ): boolean {
+      const classBody = constructorNode.parent.parent as TSESTree.ClassBody;
+      let declared = constructorNode.params.some(param =>
+        isParameterPropertyWithName(param, name),
+      );
+      for (const member of classBody.body) {
+        // Skipping an abstract accessor only treats its name as undeclared.
+        if (
+          member.type === AST_NODE_TYPES.StaticBlock ||
+          member.type === AST_NODE_TYPES.TSAbstractAccessorProperty ||
+          member.type === AST_NODE_TYPES.TSIndexSignature ||
+          member.static ||
+          member.key.type === AST_NODE_TYPES.PrivateIdentifier ||
+          getStaticMemberAccessValue(member, context) !== name
+        ) {
+          continue;
+        }
+        if (
+          (member.type === AST_NODE_TYPES.MethodDefinition ||
+            member.type === AST_NODE_TYPES.TSAbstractMethodDefinition) &&
+          member.kind === 'set'
+        ) {
+          return true;
+        }
+        declared = true;
+      }
+      return !declared && classBody.parent.superClass != null;
+    }
+
+    /**
      * Finds the nodes a function can only be called through, as in
      * `function f() {}`, `const f = () => {}`, `const o = { f: () => {} }`,
      * `this.f = () => {};` or a field such as `f = () => {}`. Calls from
      * other methods, as in `this.init()`, aren't counted, as with writes in
-     * other methods.
+     * other methods, but a setter that `this.f = () => {};` may call is.
      */
     function getFunctionAccesses(
       node:
@@ -436,8 +565,9 @@ export default createRule({
       // The properties of `this` that the function is assigned to, as in
       // `this.g = this.f = () => {}`. Only when the assignments are a whole
       // statement: their value, as in `(this.f = () => {})()`, also reaches
-      // the function.
-      const names: string[] = [];
+      // the function. An assignment that may call a setter is an access too,
+      // as the setter may call the function.
+      const assignmentAccesses: TSESTree.Node[] = [];
       let assigned: TSESTree.Node = holder;
       while (
         assigned.parent.type === AST_NODE_TYPES.AssignmentExpression &&
@@ -449,16 +579,17 @@ export default createRule({
         if (name == null) {
           break;
         }
-        names.push(name);
+        assignmentAccesses.push(...getThisPropertyReads(constructorNode, name));
+        if (mayCallSetter(name, constructorNode)) {
+          assignmentAccesses.push(assigned.parent);
+        }
         assigned = assigned.parent;
       }
       if (
-        names.length &&
+        assigned !== holder &&
         assigned.parent.type === AST_NODE_TYPES.ExpressionStatement
       ) {
-        return names.flatMap(name =>
-          getThisPropertyReads(constructorNode, name),
-        );
+        return assignmentAccesses;
       }
 
       if (
