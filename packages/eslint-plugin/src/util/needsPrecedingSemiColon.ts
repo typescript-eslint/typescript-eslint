@@ -57,7 +57,7 @@ const UPDATE_OPERATORS = new Set(['--', '++']);
  */
 function startsWithBinaryOperator(text: string): boolean {
   return (
-    /^(?:[-%&*+/<>^|]|in(?:stanceof)?(?![$\p{ID_Continue}]))/u.test(text) &&
+    /^(?:[-%&*+/<>^|]|(?:instanceof|in)(?![$\p{ID_Continue}]))/u.test(text) &&
     !/^(?:\+\+|--)/.test(text)
   );
 }

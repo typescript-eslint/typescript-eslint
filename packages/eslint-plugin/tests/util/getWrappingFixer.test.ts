@@ -921,6 +921,8 @@ ruleTester.run('getWrappingFixer - satisfiesRule', satisfiesRule, {
     // should add outer parens before a non-null assertion when the code is looser than a call
     {
       code: 'check(a)!;',
+      // Fix output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [{ messageId: 'useSatisfies' }],
       output: '(a satisfies string)!;',
     },
@@ -928,16 +930,22 @@ ruleTester.run('getWrappingFixer - satisfiesRule', satisfiesRule, {
     // should add parens when the code would start a block or a declaration
     {
       code: 'check({ a: 1 }.a);',
+      // Fix output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [{ messageId: 'useSatisfies' }],
       output: '({ a: 1 }.a satisfies string);',
     },
     {
       code: 'check(function () {}.name);',
+      // Fix output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [{ messageId: 'useSatisfies' }],
       output: '(function () {}.name satisfies string);',
     },
     {
       code: 'const f = () => check({ a: 1 }.a);',
+      // Fix output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [{ messageId: 'useSatisfies' }],
       output: 'const f = () => ({ a: 1 }.a satisfies string);',
     },
@@ -945,6 +953,8 @@ ruleTester.run('getWrappingFixer - satisfiesRule', satisfiesRule, {
     // shouldn't add parens when the string isn't alone, so it isn't a directive
     {
       code: "function f(a = 1) { check('use strict'); }",
+      // Fix output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [{ messageId: 'useSatisfies' }],
       output: "function f(a = 1) { 'use strict' satisfies string; }",
     },
