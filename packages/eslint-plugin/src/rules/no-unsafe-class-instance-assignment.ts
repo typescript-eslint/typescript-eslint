@@ -126,7 +126,18 @@ export default createRule({
       source: ts.Type,
       target: ts.Type,
       shallow: boolean,
+      seen: Map<ts.Type, Set<ts.Type>> = new Map<ts.Type, Set<ts.Type>>(),
     ): ts.Type | undefined {
+      const seenTargets = seen.get(source);
+      if (seenTargets?.has(target)) {
+        return undefined;
+      }
+      if (seenTargets) {
+        seenTargets.add(target);
+      } else {
+        seen.set(source, new Set([target]));
+      }
+
       const resolvedSource = resolveConstraint(source);
       const resolvedTarget = resolveConstraint(target);
 
@@ -148,7 +159,7 @@ export default createRule({
           resolvedSource.types.filter(part =>
             checker.isTypeAssignableTo(part, resolvedTarget),
           ),
-          part => findViolation(part, resolvedTarget, shallow),
+          part => findViolation(part, resolvedTarget, shallow, seen),
         );
       }
 
@@ -174,14 +185,14 @@ export default createRule({
         }
 
         const violations = candidates.map(candidate =>
-          findViolation(resolvedSource, candidate, shallow),
+          findViolation(resolvedSource, candidate, shallow, seen),
         );
         return violations.every(Boolean) ? violations[0] : undefined;
       }
 
       if (resolvedTarget.isIntersection()) {
         return findFirstViolation(resolvedTarget.types, part =>
-          findViolation(resolvedSource, part, shallow),
+          findViolation(resolvedSource, part, shallow, seen),
         );
       }
 
@@ -205,7 +216,7 @@ export default createRule({
             .getTypeArguments(resolvedTarget)
             .slice(0, sourceArguments.length),
           (targetArgument, i) =>
-            findViolation(sourceArguments[i], targetArgument, false),
+            findViolation(sourceArguments[i], targetArgument, false, seen),
         );
       }
 
@@ -223,7 +234,7 @@ export default createRule({
           return (
             sourceIndexType &&
             targetIndexType &&
-            findViolation(sourceIndexType, targetIndexType, false)
+            findViolation(sourceIndexType, targetIndexType, false, seen)
           );
         },
       );

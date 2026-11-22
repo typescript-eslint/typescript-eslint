@@ -553,6 +553,16 @@ const marker = <Marker>{/* empty */}</Marker>;
       `,
       filename: 'react.tsx',
     },
+    `
+class Plugin {
+  name = 'plugin';
+}
+
+type SourceOption = Plugin | SourceOption[];
+type TargetOption = Plugin | TargetOption[];
+declare const source: SourceOption;
+const target: TargetOption = source;
+    `,
   ],
   invalid: [
     {
