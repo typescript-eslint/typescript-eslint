@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > UpdateExpression > _error_ > instantiation-expression-target > TSESTree - Error`]
+TSError
+> 1 | (fn<T>)++;
+    | ^^^^^^^ Invalid left-hand side expression in unary operation
+  2 |
