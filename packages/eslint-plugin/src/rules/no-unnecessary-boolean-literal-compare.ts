@@ -300,8 +300,12 @@ export default createRule<Options, MessageIds>({
               comparison.expression,
             );
 
+            // Only comparisons against `true` treat nullish values like
+            // `false`; against `false` they act like `true` (see below).
             const fixWouldReturnExpressionDirectly =
-              !isOverallNegated && comparison.expressionIsNullableBoolean;
+              !isOverallNegated &&
+              comparison.expressionIsNullableBoolean &&
+              comparison.booleanLiteral === 'true';
 
             if (
               fixWouldReturnExpressionDirectly &&
