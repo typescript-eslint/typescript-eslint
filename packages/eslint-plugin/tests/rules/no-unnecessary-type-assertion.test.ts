@@ -342,6 +342,137 @@ function bar<T>(value: T | string) {
   return take(value!);
 }
     `,
+    {
+      code: `
+function bar<T>(value: T) {
+  return value! satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return { a: value! } satisfies { a: T };
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return [value!] satisfies T[];
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result = value! satisfies T;
+  return result;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: noFormat`
+function bar<T>(value: T) {
+  return (value!) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T, flag: boolean) {
+  return (flag ? value! : value) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T) {
+  return (value! ?? other) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return (() => value!) satisfies () => T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return {
+    get a() {
+      return value!;
+    },
+  } satisfies { a: T };
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+declare function run<R>(callback: () => R): R;
+function bar<T>(value: T) {
+  return run(() => value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  let target: { a: T };
+  const result = (target = { a: value! });
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  let target: T | undefined;
+  target ??= value!;
+  return target;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const { a = value! }: { a?: T } = {};
+  return a;
+}
+    `,
+    `
+function bar<T>(value: T | undefined) {
+  const result: {} | undefined = value!;
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T | null) {
+  const result: {} | null = value!;
+  return result;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value = obj[key] as T[K] | undefined;
+  const result: {} | undefined = value!;
+  return result;
+}
+    `,
     `
 declare function nonNull(s: string);
 let s: string | null = null;
@@ -3632,6 +3763,171 @@ function bar<T>(value: T | string) {
     {
       code: `
 function bar<T>(value: T) {
+  const result: { a: T } = { a: value! };
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: { a: T } = { a: value };
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result: T[] = [value!];
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: T[] = [value];
+  return result;
+}
+      `,
+    },
+    {
+      code: noFormat`
+function bar<T>(value: T, flag: boolean): T {
+  return flag ? (value!) : value;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, flag: boolean): T {
+  return flag ? (value) : value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const callback: () => T = () => value!;
+  return callback;
+}
+      `,
+      errors: [
+        {
+          column: 35,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const callback: () => T = () => value;
+  return callback;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result: { get(): T } = {
+    get() {
+      return value!;
+    },
+  };
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: { get(): T } = {
+    get() {
+      return value;
+    },
+  };
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): readonly [T] {
+  return [value!] as const;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): readonly [T] {
+  return [value] as const;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T | undefined) {
+  const result: T | undefined = value!;
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T | undefined) {
+  const result: T | undefined = value;
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
   return value!;
 }
       `,
@@ -3780,6 +4076,63 @@ function bar(value: string | undefined) {
       ],
       output: `
 (async function () {});
+      `,
+    },
+    {
+      code: noFormat`
+function f() {}
+export default (function f() {}) as unknown as () => void;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 58,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function f() {}
+export default (function f() {});
+      `,
+    },
+    {
+      code: noFormat`
+async function f() {}
+export default (async function f() {}) as unknown as () => Promise<void>;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 73,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+async function f() {}
+export default (async function f() {});
+      `,
+    },
+    {
+      code: noFormat`
+const K = class C {};
+export default (class C {}) as unknown as typeof K;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const K = class C {};
+export default (class C {});
       `,
     },
     {
@@ -4675,6 +5028,128 @@ fn1(() => {
         },
       ],
       output: '(class Clazz {}.length);',
+    },
+    {
+      code: noFormat`
+<Promise<number>>async function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(async function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <number>function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <Promise<number>>async function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (async function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: `
+export default <number>class {
+  static v = 1;
+}.v;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (class {
+  static v = 1;
+}.v);
+      `,
+    },
+    {
+      code: noFormat`
+export default (<number>function () {
+  return 1;
+}());
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <() => void><unknown>function f() {};
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function f() {});
+      `,
     },
     {
       code: 'const foo = () => <number>{ lol: 123 as number }.lol + 54321;',

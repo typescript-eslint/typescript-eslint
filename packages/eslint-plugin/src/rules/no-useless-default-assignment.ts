@@ -106,6 +106,11 @@ export default createRule<Options, MessageId>({
         if (isTypeFlagSet(part, ts.TypeFlags.Undefined)) {
           return true;
         }
+        // `undefined` fits an intersection only if it fits every member, as
+        // in `T & U`, but not in `T & {}`
+        if (tsutils.isIntersectionType(part)) {
+          return part.types.every(canBeUndefined);
+        }
         if (!isTypeFlagSet(part, possiblyUndefinedTypeVariableFlags)) {
           return false;
         }

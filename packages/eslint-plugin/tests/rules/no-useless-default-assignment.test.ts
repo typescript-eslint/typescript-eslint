@@ -477,6 +477,18 @@ function f<T>(o: { a: T | string }) {
 }
     `,
     `
+function f<T, U>(o: { a: T & U }) {
+  const { a = 1 as T & U } = o;
+  return a;
+}
+    `,
+    `
+function f<T, U extends string | undefined>(o: { a: T & U }) {
+  const { a = '' as T & U } = o;
+  return a;
+}
+    `,
+    `
 declare const obj: { x: string; y?: string };
 const { ['y']: a = '' } = obj;
     `,
@@ -1831,6 +1843,96 @@ function f<T>() {
 function f<T>() {
   const cb: (x: string) => void = (x) => {};
   return cb;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T>(o: { a: T & {} }) {
+  const { a = 1 as T & {} } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T>(o: { a: T & {} }) {
+  const { a } = o;
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T>(o: { a: T & string }) {
+  const { a = '' as T & string } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T>(o: { a: T & string }) {
+  const { a } = o;
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(o: { a: { x: 1 } & { y: 2 } }) {
+  const { a = { x: 1, y: 2 } as const } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(o: { a: { x: 1 } & { y: 2 } }) {
+  const { a } = o;
+  return a;
 }
       `,
             },
