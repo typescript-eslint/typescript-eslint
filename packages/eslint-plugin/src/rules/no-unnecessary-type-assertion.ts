@@ -945,14 +945,41 @@ export default createRule<Options, MessageIds>({
           messageId: doubleAssertionResult,
           fix(fixer) {
             const originalExpr = getOriginalExpression(node);
+            // Only the original expression's text is kept, so comments
+            // elsewhere in the assertions would be dropped.
+            if (
+              context.sourceCode
+                .getCommentsInside(node)
+                .some(
+                  comment =>
+                    comment.range[1] <= originalExpr.range[0] ||
+                    comment.range[0] >= originalExpr.range[1],
+                )
+            ) {
+              return null;
+            }
+
+            // The original expression takes the assertion's position, so its
+            // first token leads whatever the assertion led.
+            const firstToken = nullThrows(
+              context.sourceCode.getFirstToken(originalExpr),
+              NullThrowsReasons.MissingToken('first token', 'expression'),
+            );
             let text = context.sourceCode.getText(originalExpr);
             if (
               !isParenthesized(node, context.sourceCode) &&
               (getOperatorPrecedenceForNode(originalExpr) <
                 getOperatorPrecedenceForNode(node) ||
-                (originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
-                  node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-                  node.parent.body === node))
+                isStartOfExpressionStatementNeedingParentheses(
+                  node,
+                  firstToken,
+                  context.sourceCode,
+                ) ||
+                isStartOfArrowFunctionBodyNeedingParentheses(
+                  node,
+                  firstToken,
+                  context.sourceCode,
+                ))
             ) {
               text = `(${text})`;
             }
@@ -1114,12 +1141,17 @@ export default createRule<Options, MessageIds>({
         // constrained type is `any` (nullable) but the actual type might be
         // a type parameter that TypeScript treats nominally.
         // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
-        // Without a constraint, a type parameter may be `null` or `undefined`.
-        const isUnconstrainedTypeParameter =
-          tsutils.isTypeParameter(constrainedType);
-        const constrainedTypeIsNullable =
-          isUnconstrainedTypeParameter || isNullableType(constrainedType);
         const actualTypeIsNullable = isNullableType(actualType);
+        // A type that may be `null` or `undefined` only through a type
+        // variable, such as an unconstrained `T`, `T | string`, or `T[K]`, has
+        // no nullish flags, but the `!` still changes it (to `NonNullable<T>`).
+        // Without `strictNullChecks`, the `!` never changes the type.
+        const isNullishTypeVariable =
+          !actualTypeIsNullable &&
+          !isNullableType(constrainedType) &&
+          checker.getNonNullableType(actualType) !== actualType;
+        const constrainedTypeIsNullable =
+          isNullishTypeVariable || isNullableType(constrainedType);
 
         if (!constrainedTypeIsNullable && !actualTypeIsNullable) {
           if (
@@ -1143,22 +1175,24 @@ export default createRule<Options, MessageIds>({
           // as contextually unnecessary. TypeScript may still require the assertion
           // even if the constraint is nullable (like `any`).
           // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
-          if (constrainedType !== actualType) {
+          // A nullish type variable has a constraint that isn't nullable, and
+          // is checked below against the receiver's type as written.
+          if (!isNullishTypeVariable && constrainedType !== actualType) {
             return;
           }
 
           // The shared helper leaves out positions such as `return` and arrow
-          // bodies. For a type parameter, any position whose type accepts it
+          // bodies. For a type variable, any position whose type accepts it
           // makes the `!` unnecessary.
           const contextualType =
             getContextualType(checker, originalNode) ??
-            (isUnconstrainedTypeParameter
+            (isNullishTypeVariable
               ? checker.getContextualType(originalNode)
               : undefined);
           if (contextualType) {
             if (
-              isUnconstrainedTypeParameter
-                ? !checker.isTypeAssignableTo(constrainedType, contextualType)
+              isNullishTypeVariable
+                ? !checker.isTypeAssignableTo(actualType, contextualType)
                 : isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
                   !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
             ) {

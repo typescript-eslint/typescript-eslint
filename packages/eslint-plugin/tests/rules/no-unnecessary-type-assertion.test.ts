@@ -299,6 +299,50 @@ function bar<T>() {
 }
     `,
     `
+function bar<T>(value: T | string): {} {
+  return value!;
+}
+    `,
+    `
+function bar<T>(value: T | string) {
+  return value!;
+}
+    `,
+    `
+function bar<T>(value: T | number): T | string {
+  return value!;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K): {} {
+  return obj[key]!;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: {} = obj[key]!;
+  return value;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: NonNullable<T[K]> = obj[key]!;
+  return value;
+}
+    `,
+    `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): {} {
+  return value!;
+}
+    `,
+    `
+declare function take<U extends {}>(value: U): U;
+function bar<T>(value: T | string) {
+  return take(value!);
+}
+    `,
+    `
 declare function nonNull(s: string);
 let s: string | null = null;
 nonNull(s!);
@@ -3472,6 +3516,389 @@ const bar = <T,>(value: T & {}) => value!;
       ],
       output: `
 const bar = <T,>(value: T & {}) => value;
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T | string): T | string {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T | string): T | string {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+      `,
+    },
+    {
+      code: `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: T[K] = obj[key]!;
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: T[K] = obj[key];
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): MaybeUndefined<T> {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): MaybeUndefined<T> {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+declare function log(value: unknown): void;
+function bar<T>(value: T | string) {
+  log(value!);
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function log(value: unknown): void;
+function bar<T>(value: T | string) {
+  log(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      output: `
+function bar<T>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T | string): {} {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      output: `
+function bar<T>(value: T | string): {} {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+class Bar {
+  get self() {
+    return this!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class Bar {
+  get self() {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(key: keyof T) {
+  return key!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T>(key: keyof T) {
+  return key;
+}
+      `,
+    },
+    {
+      code: `
+function bar(value: string | undefined) {
+  if (value) {
+    return value!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar(value: string | undefined) {
+  if (value) {
+    return value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+(function () {}) as unknown as () => void;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(function () {});
+      `,
+    },
+    {
+      code: `
+(async function () {}) as unknown as () => Promise<void>;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(async function () {});
+      `,
+    },
+    {
+      code: `
+({ a: 1, b: 2 }) as unknown as { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 56,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+({ a: 1, b: 2 });
+      `,
+    },
+    {
+      code: noFormat`
+<{ a: number; b: number }><unknown>{ a: 1, b: 2 };
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+({ a: 1, b: 2 });
+      `,
+    },
+    {
+      code: `
+const fn = () => ({ a: 1 }) as unknown as { a: number } satisfies { a: number };
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 18,
+          endColumn: 56,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const fn = () => ({ a: 1 }) satisfies { a: number };
+      `,
+    },
+    {
+      code: `
+declare const a: number;
+const x = a /* keep */ as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const a: number;
+const x = a as /* keep */ unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare const a: number;
+const x = (/* keep */ a) as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare const a: number;
+const x = a as unknown as number /* keep */;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: number;
+const x = a /* keep */;
       `,
     },
     {
