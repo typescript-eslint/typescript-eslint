@@ -303,8 +303,10 @@ export default createRule({
      * `findImmediateConstructor`, but through any arrow function, as each one
      * shares the constructor's `this`. That includes the instance fields of
      * its class, as in `bar = () => { this.foo = 1; }`, and a function
-     * expression that is a field's value, as in `bar = function () {}`,
-     * since `this.bar()` calls it with the instance as `this`.
+     * expression that is a field's value, as in `bar = function () {}`, or
+     * that is assigned to a property of `this`, as in
+     * `this.bar = function () {}`, since `this.bar()` calls it with the
+     * instance as `this`.
      */
     function findConstructorOfWrite(
       node: TSESTree.Node,
@@ -317,6 +319,12 @@ export default createRule({
       if (container?.type === AST_NODE_TYPES.FunctionExpression) {
         if (ASTUtils.isConstructor(container.parent)) {
           return container;
+        }
+        if (
+          container.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+          isThisMemberExpression(container.parent.left)
+        ) {
+          return findConstructorOfWrite(container.parent.left);
         }
         if (
           (container.parent.type === AST_NODE_TYPES.AccessorProperty ||
@@ -425,19 +433,32 @@ export default createRule({
         );
       }
 
-      // Only when the assignment is a whole statement: its value, as in
-      // `(this.f = () => {})()`, also reaches the function.
-      if (
-        parent.type === AST_NODE_TYPES.AssignmentExpression &&
-        parent.operator === '=' &&
-        parent.right === holder &&
-        parent.parent.type === AST_NODE_TYPES.ExpressionStatement &&
-        findConstructorOfWrite(parent.left) === constructorNode
+      // The properties of `this` that the function is assigned to, as in
+      // `this.g = this.f = () => {}`. Only when the assignments are a whole
+      // statement: their value, as in `(this.f = () => {})()`, also reaches
+      // the function.
+      const names: string[] = [];
+      let assigned: TSESTree.Node = holder;
+      while (
+        assigned.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        assigned.parent.operator === '=' &&
+        assigned.parent.right === assigned &&
+        findConstructorOfWrite(assigned.parent.left) === constructorNode
       ) {
-        const name = getPropertyName(parent.left);
-        if (name != null) {
-          return getThisPropertyReads(constructorNode, name);
+        const name = getPropertyName(assigned.parent.left);
+        if (name == null) {
+          break;
         }
+        names.push(name);
+        assigned = assigned.parent;
+      }
+      if (
+        names.length &&
+        assigned.parent.type === AST_NODE_TYPES.ExpressionStatement
+      ) {
+        return names.flatMap(name =>
+          getThisPropertyReads(constructorNode, name),
+        );
       }
 
       if (

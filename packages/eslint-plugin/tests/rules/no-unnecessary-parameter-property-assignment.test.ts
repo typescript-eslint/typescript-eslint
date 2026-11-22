@@ -1232,6 +1232,152 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this.f = function (this: Foo) {
+      this.foo = 'x';
+    };
+    this.f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f?: () => void;
+  constructor(public foo: string) {
+    this.f ??= function (this: Foo) {
+      this.foo = 'x';
+    };
+    this.f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this['f'] = function (this: Foo) {
+      this.foo = 'x';
+    };
+    this['f']();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this.f = function (this: Foo) {
+      (() => {
+        this.foo = 'x';
+      })();
+    };
+    this.f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    this.g = function (this: Foo) {
+      this.f = function (this: Foo) {
+        this.foo = 'x';
+      };
+      this.f();
+    };
+    this.g();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  bar = () => {
+    this.f = function (this: Foo) {
+      this.foo = 'x';
+    };
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    this.g = this.f = function (this: Foo) {
+      this.foo = 'x';
+    };
+    this.g();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    this.g = this.f = () => {
+      this.foo = 'x';
+    };
+    this.g();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    let g: () => void;
+    g = this.f = () => {
+      this.foo = 'x';
+    };
+    g();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  o: { f?: () => void } = {};
+  constructor(public foo: string) {
+    this.o.f = this.f = () => {
+      this.foo = 'x';
+    };
+    this.o.f();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    (this.g = this.f =
+      () => {
+        this.foo = 'x';
+      })();
+    this.foo = foo;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -2433,6 +2579,225 @@ class Foo {
           endColumn: 19,
           endLine: 11,
           line: 11,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this.f = function (this: Foo) {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this.f = function (this: Foo) {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const o: { f?: () => void; foo?: string } = {};
+    o.f = function (this: { foo?: string }) {
+      this.foo = 'x';
+    };
+    o.f();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    this.g = this.f = () => {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  g!: () => void;
+  constructor(public foo: string) {
+    this.g = this.f = () => {
+      this.foo = 'x';
+    };
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static bar = () => {
+    (this as any).foo = 'x';
+  };
+  static baz = () => {
+    this.prototype;
+  };
+  constructor(public foo: string) {
+    Foo.bar();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 11,
+          line: 11,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo = foo;
+    class Inner {
+      x = (foo = 'x');
+    }
+    new Inner();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static foo: string;
+  static f: () => void;
+  static s = () => {
+    this.f = () => {
+      this.foo = 'x';
+    };
+  };
+  f = () => {};
+  constructor(public foo: string) {
+    Foo.s();
+    this.f();
+    Foo.f();
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 15,
+          line: 15,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f = () => {};
+  constructor(public foo: string) {
+    this.f();
+    this.foo = foo;
+    class Inner {
+      f: () => void;
+      constructor() {
+        this.f = () => {
+          foo = 'x';
+        };
+      }
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
       ],
