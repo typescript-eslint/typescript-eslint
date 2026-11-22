@@ -1,22 +1,19 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithOnUncheckedIndexedAccess = {
-  project: './tsconfig.noUncheckedIndexedAccess.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
 };
 
 const optionsWithExactOptionalPropertyTypes = {
-  project: './tsconfig.exactOptionalPropertyTypes.json',
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'exactOptionalPropertyTypes'),
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
@@ -24,6 +21,16 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const source: { a: number };
+const value = { ...source } as const;
+export const mutable = value as { a: number };
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -983,6 +990,115 @@ enum E {
   A = 1,
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
+    `
+interface Obj {
+  id: number;
+}
+type Optional<T> = { [K in keyof T]?: T[K] };
+type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
+declare const obj: ReadonlyOptional<Obj>;
+const obj2 = obj as Optional<Obj>;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+values[+valueStr as Color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+const color = +valueStr as Color;
+values[color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const color = <Color>value;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const value = color as number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const color = value as Color;
+    `,
+    `
+enum Direction {
+  Up = 1,
+  Down,
+}
+
+declare const value: number | undefined;
+const direction = value as Direction | undefined;
+    `,
+    `
+enum Computed {
+  Length = 'abc'.length,
+}
+
+declare const value: number;
+const computed = value as Computed;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as Color | number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | 5;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as number;
     `,
   ],
 
@@ -1998,6 +2114,130 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color as Color;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 29,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
       `,
     },
     {

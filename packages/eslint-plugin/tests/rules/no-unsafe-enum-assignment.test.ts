@@ -223,6 +223,25 @@ enum Fruit {
   Apple,
 }
 
+declare const foo: { [Fruit.Apple]: string; ['a']: string };
+
+foo['a'];
+    `,
+    `
+function get(foo: { ['a']: string; ['b']: string }, key: 'a' | 'b') {
+  return foo[key];
+}
+    `,
+    `
+declare const foo: { [key in 'a' | 'b']: string };
+
+foo[0];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
 declare const something: any;
 
 const fruit: Fruit = something;

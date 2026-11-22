@@ -92,7 +92,14 @@ export default createRule<Options, MessageIds>({
           : undefined;
       }
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+      // A circular alias (e.g. `export { x } from './self'`) never reaches a
+      // non-alias symbol, so stop once the chain comes back to a seen symbol.
+      const visitedSymbols = new Set<ts.Symbol>();
+      while (
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias) &&
+        !visitedSymbols.has(symbol)
+      ) {
+        visitedSymbols.add(symbol);
         const reason = getJsDocDeprecation(symbol);
         if (reason != null) {
           return reason;
@@ -218,6 +225,23 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
+    function getPropertyDeprecation(
+      type: ts.Type,
+      propertyName: string,
+    ): { reason: string; type: ts.Type } | undefined {
+      for (const constituent of tsutils.unionConstituents(type)) {
+        const reason = getJsDocDeprecation(
+          constituent.getProperty(propertyName),
+        );
+
+        if (reason != null) {
+          return { type: constituent, reason };
+        }
+      }
+
+      return undefined;
+    }
+
     type CallLikeNode =
       | TSESTree.CallExpression
       | TSESTree.JSXOpeningElement
@@ -330,9 +354,7 @@ export default createRule<Options, MessageIds>({
         'Expected JSX opening element name to have contextualType',
       );
 
-      const symbol = contextualType.getProperty(propertyName);
-
-      return getJsDocDeprecation(symbol);
+      return getPropertyDeprecation(contextualType, propertyName)?.reason;
     }
 
     function getDeprecationReason(node: IdentifierLike): string | undefined {
@@ -448,14 +470,13 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const reason = getJsDocDeprecation(
-        contextualType.getProperty(propertyName),
-      );
-      if (reason == null) {
+      const deprecation = getPropertyDeprecation(contextualType, propertyName);
+      if (!deprecation) {
         return;
       }
 
-      if (typeMatchesSomeSpecifier(contextualType, allow, services.program)) {
+      const { type, reason } = deprecation;
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
         return;
       }
 
@@ -488,14 +509,13 @@ export default createRule<Options, MessageIds>({
           : // eslint-disable-next-line @typescript-eslint/no-base-to-string
             String(propertyType.value);
 
-        const property = objectType.getProperty(propertyName);
-
-        const reason = getJsDocDeprecation(property);
-        if (reason == null) {
+        const deprecation = getPropertyDeprecation(objectType, propertyName);
+        if (!deprecation) {
           return;
         }
 
-        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+        const { type, reason } = deprecation;
+        if (typeMatchesSomeSpecifier(type, allow, services.program)) {
           return;
         }
 

@@ -94,6 +94,38 @@ export function foo(sn: string | number): void;
 </TabItem>
 </Tabs>
 
+## Options
+
+### `ignoreAccessors`
+
+{/* insert option description */}
+
+Getters and setters can't be overloaded, but by default this rule treats them as signatures of the same member, so a getter and setter with the same name must be adjacent.
+Enabling this option ignores accessors entirely.
+
+Examples of correct code with `{ "ignoreAccessors": true }`:
+
+<Tabs>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreAccessors": true }'
+class Foo {
+  get a(): number {
+    return 1;
+  }
+
+  get b(): number {
+    return 2;
+  }
+
+  set a(value: number) {}
+  set b(value: number) {}
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 It can sometimes be useful to place overload signatures alongside other meaningful parts of a type.
@@ -103,3 +135,4 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 ## Related To
 
 - [`unified-signatures`](./unified-signatures.mdx)
+- ESLint: [`grouped-accessor-pairs`](https://eslint.org/docs/latest/rules/grouped-accessor-pairs) - enforces getter and setter pairs being adjacent.
