@@ -397,6 +397,28 @@ function f(s: string) {
   s.substring(s.length - 3, 0) === 'bar';
 }
     `,
+    // `substring` treats a negative start as 0, so these compare all of `s`
+    `
+function f(s: string) {
+  s.substring(-3) === 'bar';
+}
+    `,
+    `
+function f(s: string, t: string) {
+  s.substring(-t.length) === t;
+}
+    `,
+    `
+function f(s: string) {
+  s.substring(-3, s.length) === 'bar';
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  (0, pattern).test(s);
+}
+    `,
     `
 function f(s: string) {
   s[0] === undefined;
@@ -679,6 +701,27 @@ function f(s: string) {
         {
           column: 3,
           endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (0, /^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferStartsWith',
@@ -2066,9 +2109,130 @@ function f(s: string) {
           messageId: 'preferEndsWith',
         },
       ],
+      // `s.slice(-0)` is all of `s`, but `s.endsWith('')` is always true
+      output: null,
+    },
+    {
+      code: `
+function f(s: string, t: string) {
+  s.slice(-t.length, s.length) === t;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(s: string) {
+  s.slice(-''.length) === '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(s: string) {
+  s.slice(-'bar'.length) === 'bar';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
-  s.endsWith(needle);
+  s.endsWith('bar');
+}
+      `,
+    },
+    {
+      code: `
+const t = 'bar';
+function f(s: string) {
+  s.slice(-t.length) === t;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+const t = 'bar';
+function f(s: string) {
+  s.endsWith(t);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: number;
+function f(s: string) {
+  s.slice(0, 3) === (x, 'bar');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+declare const x: number;
+function f(s: string) {
+  s.startsWith((x, 'bar'));
+}
+      `,
+    },
+    {
+      code: `
+declare const x: number;
+function f(s: string) {
+  s[0] === (x, 'a');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+declare const x: number;
+function f(s: string) {
+  s.startsWith((x, 'a'));
 }
       `,
     },
@@ -2113,23 +2277,6 @@ function f(s: string) {
   s.startsWith('bar');
 }
       `,
-    },
-    {
-      code: `
-function f(s: string) {
-  s.substring(-3) === 'bar'; // the code is probably mistake.
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          endColumn: 28,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferEndsWith',
-        },
-      ],
-      output: null,
     },
     {
       code: `

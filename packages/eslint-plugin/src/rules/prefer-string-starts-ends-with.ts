@@ -318,12 +318,17 @@ export default createRule<Options, MessageIds>({
      */
     function isNewRegExpObject(node: TSESTree.Node): boolean {
       while (
+        node.type === AST_NODE_TYPES.SequenceExpression ||
         node.type === AST_NODE_TYPES.TSAsExpression ||
         node.type === AST_NODE_TYPES.TSNonNullExpression ||
         node.type === AST_NODE_TYPES.TSSatisfiesExpression ||
         node.type === AST_NODE_TYPES.TSTypeAssertion
       ) {
-        node = node.expression;
+        // `(0, /^a/g)` evaluates to its last expression
+        node =
+          node.type === AST_NODE_TYPES.SequenceExpression
+            ? node.expressions[node.expressions.length - 1]
+            : node.expression;
       }
       if (node.type === AST_NODE_TYPES.Literal) {
         return true;
@@ -402,9 +407,14 @@ export default createRule<Options, MessageIds>({
       if (isNegative) {
         yield fixer.insertTextBefore(node, '!');
       }
+      // `(x, 'bar')` needs its parentheses to stay one argument
+      const searchText =
+        node.right.type === AST_NODE_TYPES.SequenceExpression
+          ? `(${context.sourceCode.getText(node.right)})`
+          : context.sourceCode.getText(node.right);
       yield fixer.replaceTextRange(
         [propertyRange[0], node.left.range[1]],
-        `${isOptional ? '?.' : '.'}${kind}sWith(${context.sourceCode.getText(node.right)})`,
+        `${isOptional ? '?.' : '.'}${kind}sWith(${searchText})`,
       );
       yield fixer.removeRange([getLeftOperandEnd(node), node.range[1]]);
     }
@@ -695,9 +705,18 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // `substring` treats a negative start as 0, so `foo.substring(-3)` is all of `foo`
+        const isNegativeStart =
+          callNode.arguments[0].type === AST_NODE_TYPES.UnaryExpression;
+        if (
+          isEndsWith &&
+          isNegativeStart &&
+          (node.property as TSESTree.Identifier).name === 'substring'
+        ) {
+          return;
+        }
+
         const eqNode = parentNode;
-        const negativeIndexSupported =
-          (node.property as TSESTree.Identifier).name === 'slice';
         context.report({
           node: parentNode,
           messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
@@ -710,13 +729,16 @@ export default createRule<Options, MessageIds>({
             ) {
               return null;
             }
-            // `substring` treats a negative start as 0, so `foo.substring(-3)` isn't `endsWith`
-            if (
-              isEndsWith &&
-              !negativeIndexSupported &&
-              callNode.arguments[0].type === AST_NODE_TYPES.UnaryExpression
-            ) {
-              return null;
+            // `foo.slice(-bar.length)` is all of `foo` when `bar` is empty, but
+            // `foo.endsWith('')` is always true
+            if (isEndsWith && isNegativeStart) {
+              const searchValue = getStaticValue(eqNode.right, globalScope);
+              if (
+                typeof searchValue?.value !== 'string' ||
+                searchValue.value === ''
+              ) {
+                return null;
+              }
             }
 
             return fixWithRightOperand(

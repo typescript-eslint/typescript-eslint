@@ -99,20 +99,68 @@ export default createRule({
     }
 
     /**
+     * Whether `node` creates a new `RegExp` object, so its `lastIndex` is 0.
+     */
+    function isNewRegExpObject(node: TSESTree.Node): boolean {
+      while (
+        node.type === AST_NODE_TYPES.SequenceExpression ||
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSNonNullExpression ||
+        node.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        node =
+          node.type === AST_NODE_TYPES.SequenceExpression
+            ? node.expressions[node.expressions.length - 1]
+            : node.expression;
+      }
+      if (node.type === AST_NODE_TYPES.Literal) {
+        return true;
+      }
+      if (
+        (node.type !== AST_NODE_TYPES.CallExpression &&
+          node.type !== AST_NODE_TYPES.NewExpression) ||
+        node.callee.type !== AST_NODE_TYPES.Identifier ||
+        node.callee.name !== 'RegExp'
+      ) {
+        return false;
+      }
+      if (node.type === AST_NODE_TYPES.NewExpression) {
+        return true;
+      }
+      // `RegExp(re)` and `RegExp(re, undefined)` return `re` itself
+      const pattern = node.arguments.at(0);
+      const flags = node.arguments.at(1);
+      if (pattern == null || pattern.type === AST_NODE_TYPES.SpreadElement) {
+        return false;
+      }
+      return (
+        (flags != null && getStaticValue(flags, globalScope)?.value != null) ||
+        isNewRegExpObject(pattern)
+      );
+    }
+
+    /**
      * Parse a given node if it's a `RegExp` instance.
      * @param node The node to parse.
+     * @param allowGlobal Whether the `g` flag can't change the result, as on a new object.
      */
-    function parseRegExp(node: TSESTree.Node): string | null {
+    function parseRegExp(
+      node: TSESTree.Node,
+      allowGlobal: boolean,
+    ): string | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
         return null;
       }
 
+      // `g` and `y` make `test` start at `lastIndex`, which is 0 on a new object,
+      // but `y` still only matches at that index
       const { flags, pattern } = parseRegExpLiteral(evaluated.value);
       if (
         pattern.alternatives.length !== 1 ||
         flags.ignoreCase ||
-        flags.global ||
+        (flags.global && !allowGlobal) ||
         flags.sticky
       ) {
         return null;
@@ -143,11 +191,19 @@ export default createRule({
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replaceAll(replaceRegex, (char, offset: number) =>
-        // `\0` followed by a digit would be a (disallowed) legacy octal escape
-        char === '\0' && /\d/.test(str.charAt(offset + 1))
-          ? '\\x00'
-          : EscapeMap[char as keyof typeof EscapeMap],
+      return (
+        str
+          .replaceAll(replaceRegex, (char, offset: number) =>
+            // `\0` followed by a digit would be a (disallowed) legacy octal escape
+            char === '\0' && /\d/.test(str.charAt(offset + 1))
+              ? '\\x00'
+              : EscapeMap[char as keyof typeof EscapeMap],
+          )
+          // a lone surrogate can't be written as UTF-8, so keep it as an escape
+          .replaceAll(
+            /\p{Surrogate}/gu,
+            char => `\\u${char.charCodeAt(0).toString(16)}`,
+          )
       );
     }
 
@@ -244,7 +300,7 @@ export default createRule({
         node: { parent: TSESTree.CallExpression } & TSESTree.MemberExpression,
       ): void {
         const callNode = node.parent;
-        const text = parseRegExp(node.object);
+        const text = parseRegExp(node.object, isNewRegExpObject(node.object));
         if (text == null) {
           return;
         }
