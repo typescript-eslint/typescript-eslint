@@ -60,6 +60,39 @@ delete arr.foo;
 declare const arrOrRecord: number[] | Record<number, number>;
 delete arrOrRecord[0];
     `,
+    `
+declare const arr: number[] & { foo?: number };
+delete arr['foo'];
+    `,
+    `
+declare const arr: number[] & { foo?: number };
+delete arr[\`foo\`];
+    `,
+    `
+declare const s: unique symbol;
+declare const arr: number[] & { [s]?: number };
+delete arr[s];
+    `,
+    `
+declare const s: symbol;
+declare const arr: number[];
+delete arr[s];
+    `,
+    `
+declare const k: 'bar' | 'foo';
+declare const arr: number[] & { bar?: number; foo?: number };
+delete arr[k];
+    `,
+    `
+declare const arr: number[] & { '01'?: number; '-0'?: number };
+delete arr['01'];
+delete arr['-0'];
+    `,
+    `
+function f<K extends 'foo'>(arr: number[] & { foo?: number }, k: K) {
+  delete arr[k];
+}
+    `,
   ],
 
   invalid: [
@@ -1243,6 +1276,205 @@ delete a[0]
 declare const a: number[];
 a
 a.splice(0, 1)
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+delete arr['0'];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+arr.splice('0', 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+delete arr[\`0\`];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+arr.splice(\`0\`, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+declare const k: string;
+delete arr[k];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+declare const k: string;
+arr.splice(k, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+declare const k: string | symbol;
+delete arr[k];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+declare const k: string | symbol;
+arr.splice(k, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[] & { foo?: number };
+declare const k: '0' | 'foo';
+delete arr[k];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[] & { foo?: number };
+declare const k: '0' | 'foo';
+arr.splice(k, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+delete (arr as /* d */ number[])[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+(arr as /* d */ number[]).splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+delete arr[0 /* k */ + 1];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+arr.splice(0 /* k */ + 1, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const arr: number[];
+delete (/* c */ arr)[0];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+declare const arr: number[];
+/* c */
+(arr).splice(0, 1);
       `,
             },
           ],

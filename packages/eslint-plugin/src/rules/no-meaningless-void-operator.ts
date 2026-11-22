@@ -8,6 +8,7 @@ import {
   createRule,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatement,
+  isParenthesized,
   isStartOfExpressionStatementNeedingParentheses,
   isTokenOnSameLine,
   needsPrecedingSemicolon,
@@ -75,38 +76,49 @@ export default createRule<
             context.sourceCode.getTokenAfter(voidToken),
             NullThrowsReasons.MissingToken('argument', 'void expression'),
           );
+          // Keeping a comment that spans a line break would end a `return`,
+          // `throw` or `yield` before the argument, so only there are the
+          // comments dropped.
+          const tokenBeforeVoid = context.sourceCode.getTokenBefore(voidToken);
+          const isRestrictedPosition =
+            tokenBeforeVoid != null &&
+            ['return', 'throw', 'yield'].includes(tokenBeforeVoid.value);
           const voidRange: TSESTree.Range = [
             voidToken.range[0],
-            // Keeping a comment that spans a line break would end a
-            // `return`, `throw` or `yield` before the argument.
-            (isTokenOnSameLine(voidToken, argumentToken)
-              ? nullThrows(
-                  context.sourceCode.getTokenAfter(voidToken, {
-                    includeComments: true,
-                  }),
-                  NullThrowsReasons.MissingToken('argument', 'void expression'),
-                )
-              : argumentToken
+            nullThrows(
+              context.sourceCode.getTokenAfter(voidToken, {
+                includeComments:
+                  !isRestrictedPosition ||
+                  isTokenOnSameLine(voidToken, argumentToken),
+              }),
+              NullThrowsReasons.MissingToken('argument', 'void expression'),
             ).range[0],
           ];
 
+          const startsFunctionOrClass =
+            argumentToken.value === 'function' ||
+            argumentToken.value === 'class' ||
+            (argumentToken.value === 'async' &&
+              context.sourceCode.getTokenAfter(argumentToken)?.value ===
+                'function');
+
           // Without `void`, a leading `{`, `function`, `async function` or
           // `class` would start a block or declaration instead of an
-          // expression.
+          // expression, and a string would start a directive.
           const needsParentheses =
             isStartOfExpressionStatementNeedingParentheses(
               node,
               argumentToken,
             ) ||
-            // Not a call, so only fixed as a whole statement
-            (argumentToken.value === 'async' &&
-              context.sourceCode.getTokenAfter(argumentToken)?.value ===
-                'function') ||
+            (startsFunctionOrClass &&
+              (isStartOfExpressionStatement(node) ||
+                isStartOfExportDefaultDeclaration(node, context.sourceCode))) ||
             isStartOfArrowFunctionBodyNeedingParentheses(
               node,
               argumentToken,
               context.sourceCode,
-            );
+            ) ||
+            wouldBecomeDirective(node, context.sourceCode);
 
           // Without `void`, a statement relying on ASI could continue the
           // previous line, as in `a = b\n(c)`.
@@ -225,4 +237,74 @@ function unwrapVoidArgument(node: TSESTree.Expression): TSESTree.Expression {
         return current;
     }
   }
+}
+
+/**
+ * Whether the node starts the declaration of an `export default`, where a
+ * leading `function` or `class` would make a declaration.
+ */
+function isStartOfExportDefaultDeclaration(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  let current = node;
+  while (!isParenthesized(current, sourceCode)) {
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
+      return true;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    current = parent;
+  }
+  return false;
+}
+
+/**
+ * Whether removing `void` from `void 'use strict';` would leave a string
+ * statement in a directive prologue, where it becomes a directive.
+ */
+function wouldBecomeDirective(
+  node: TSESTree.UnaryExpression,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  const statement = node.parent;
+  if (
+    statement.type !== AST_NODE_TYPES.ExpressionStatement ||
+    node.argument.type !== AST_NODE_TYPES.Literal ||
+    typeof node.argument.value !== 'string' ||
+    isParenthesized(node.argument, sourceCode) ||
+    isParenthesized(node, sourceCode)
+  ) {
+    return false;
+  }
+
+  // The parser also marks directives in these blocks.
+  const block = statement.parent;
+  if (
+    block.type !== AST_NODE_TYPES.Program &&
+    block.type !== AST_NODE_TYPES.StaticBlock &&
+    block.type !== AST_NODE_TYPES.TSModuleBlock &&
+    !(
+      block.type === AST_NODE_TYPES.BlockStatement &&
+      (block.parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        block.parent.type === AST_NODE_TYPES.FunctionDeclaration ||
+        block.parent.type === AST_NODE_TYPES.FunctionExpression)
+    )
+  ) {
+    return false;
+  }
+
+  const body: readonly TSESTree.Node[] = block.body;
+  return body
+    .slice(0, body.indexOf(statement))
+    .every(
+      sibling =>
+        sibling.type === AST_NODE_TYPES.ExpressionStatement &&
+        sibling.directive != null,
+    );
 }

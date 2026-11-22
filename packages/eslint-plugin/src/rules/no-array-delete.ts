@@ -1,7 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -52,6 +53,22 @@ export default createRule<[], MessageId>({
       return predicate(type);
     }
 
+    /**
+     * Whether the key can't name an array element: a symbol, or a string
+     * literal such as `'foo'` that isn't an array index like `'0'`.
+     */
+    function isNonIndexKey(property: TSESTree.Expression): boolean {
+      const type = getConstrainedTypeAtLocation(services, property);
+
+      return tsutils
+        .unionConstituents(type)
+        .every(
+          part =>
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.ESSymbolLike) ||
+            (part.isStringLiteral() && !isArrayIndex(part.value)),
+        );
+    }
+
     return {
       'UnaryExpression[operator="delete"]'(
         node: TSESTree.UnaryExpression,
@@ -60,7 +77,8 @@ export default createRule<[], MessageId>({
 
         if (
           argument.type !== AST_NODE_TYPES.MemberExpression ||
-          !argument.computed
+          !argument.computed ||
+          isNonIndexKey(argument.property)
         ) {
           return;
         }
@@ -100,7 +118,14 @@ export default createRule<[], MessageId>({
 
                 let suggestion = `${semicolon}${target}.splice(${key}, 1)`;
 
-                const comments = context.sourceCode.getCommentsInside(node);
+                // Comments inside the target or key are already in their text.
+                const comments = context.sourceCode
+                  .getCommentsInside(node)
+                  .filter(
+                    comment =>
+                      !isInside(comment, object) &&
+                      !isInside(comment, property),
+                  );
 
                 if (comments.length > 0) {
                   const indentationCount = node.loc.start.column;
@@ -126,3 +151,15 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+// 2 ** 32 - 1, the maximum array length
+const MAX_ARRAY_LENGTH = 4_294_967_295;
+
+// Array indices are canonical integers below the maximum array length.
+function isArrayIndex(key: string): boolean {
+  return /^(?:0|[1-9]\d*)$/.test(key) && Number(key) < MAX_ARRAY_LENGTH;
+}
+
+function isInside(comment: TSESTree.Comment, node: TSESTree.Node): boolean {
+  return comment.range[0] >= node.range[0] && comment.range[1] <= node.range[1];
+}

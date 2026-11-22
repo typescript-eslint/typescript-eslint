@@ -784,7 +784,8 @@ fail();
           messageId: 'meaninglessVoidOnNonCall',
         },
       ],
-      output: "'0';",
+      // `'0';` would be a directive
+      output: "('0');",
     },
     {
       code: `
@@ -1449,6 +1450,410 @@ void -y
 declare let y: number;
 y
 ;-y
+      `,
+    },
+    {
+      code: noFormat`
+export default void function () {}();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { type: 'void' },
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+export default (function () {}());
+      `,
+    },
+    {
+      code: `
+export default void class {
+  static m(): void {}
+}.m();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { type: 'void' },
+          endColumn: 6,
+          endLine: 4,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+export default (class {
+  static m(): void {}
+}.m());
+      `,
+    },
+    {
+      code: `
+export default void (function () {})();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { type: 'void' },
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+export default (function () {})();
+      `,
+    },
+    {
+      code: `
+export default void {
+  m(): void {},
+}.m();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { type: 'void' },
+          endColumn: 6,
+          endLine: 4,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+export default {
+  m(): void {},
+}.m();
+      `,
+    },
+    {
+      code: noFormat`
+export const value = void function () {}();
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { type: 'void' },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+export const value = function () {}();
+      `,
+    },
+    {
+      code: `
+function f() {
+  void 'use strict';
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+function f() {
+  ('use strict');
+  return 1;
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f() {
+  'use strict'
+  void 'a';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+function f() {
+  'use strict'
+  ;('a');
+}
+      `,
+    },
+    {
+      code: `
+class C {
+  m() {
+    void 'use strict';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+class C {
+  m() {
+    ('use strict');
+  }
+}
+      `,
+    },
+    {
+      code: `
+const f = () => {
+  void 'use strict';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+const f = () => {
+  ('use strict');
+};
+      `,
+    },
+    {
+      code: `
+declare function g(): void;
+function f() {
+  g();
+  void 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare function g(): void;
+function f() {
+  g();
+  'use strict';
+}
+      `,
+    },
+    {
+      code: `
+declare const c: boolean;
+if (c) {
+  void 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare const c: boolean;
+if (c) {
+  'use strict';
+}
+      `,
+    },
+    {
+      code: noFormat`
+void ('use strict');
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+('use strict');
+      `,
+    },
+    {
+      code: `
+void 'use strict'.length;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+'use strict'.length;
+      `,
+    },
+    {
+      code: `
+void \`use strict\`;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+\`use strict\`;
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(x: number): void;
+export const a = void /* keep
+  me */ foo(1);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'void' },
+          endColumn: 15,
+          endLine: 4,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(x: number): void;
+export const a = /* keep
+  me */ foo(1);
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(x: number): void;
+export const b = void // keep
+  foo(2);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'void' },
+          endColumn: 9,
+          endLine: 4,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(x: number): void;
+export const b = // keep
+  foo(2);
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+void // keep
+  foo();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'void' },
+          endColumn: 8,
+          endLine: 4,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+// keep
+  foo();
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+function* g() {
+  yield void // dropped
+    foo();
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { type: 'void' },
+          endColumn: 10,
+          endLine: 5,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function* g() {
+  yield foo();
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function foo(): void;
+function bar() {
+  return void /* kept */ foo();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { type: 'void' },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function foo(): void;
+function bar() {
+  return /* kept */ foo();
+}
       `,
     },
   ],
