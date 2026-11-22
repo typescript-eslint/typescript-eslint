@@ -1,0 +1,327 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "specialized",
+            optional: false,
+
+            range: [6, 17],
+            loc: {
+              start: { column: 6, line: 1 },
+              end: { column: 17, line: 1 },
+            },
+          },
+          init: TSInstantiationExpression {
+            type: "TSInstantiationExpression",
+            expression: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "fn",
+              optional: false,
+
+              range: [20, 22],
+              loc: {
+                start: { column: 20, line: 1 },
+                end: { column: 22, line: 1 },
+              },
+            },
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "T",
+                    optional: false,
+
+                    range: [23, 24],
+                    loc: {
+                      start: { column: 23, line: 1 },
+                      end: { column: 24, line: 1 },
+                    },
+                  },
+
+                  range: [23, 24],
+                  loc: {
+                    start: { column: 23, line: 1 },
+                    end: { column: 24, line: 1 },
+                  },
+                },
+              ],
+
+              range: [22, 25],
+              loc: {
+                start: { column: 22, line: 1 },
+                end: { column: 25, line: 1 },
+              },
+            },
+
+            range: [20, 25],
+            loc: {
+              start: { column: 20, line: 1 },
+              end: { column: 25, line: 1 },
+            },
+          },
+
+          range: [6, 25],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 25, line: 1 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "const",
+
+      range: [0, 26],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 26, line: 1 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ArrayPattern {
+          type: "ArrayPattern",
+          decorators: [],
+          elements: [
+            AssignmentPattern {
+              type: "AssignmentPattern",
+              decorators: [],
+              left: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "value",
+                optional: false,
+
+                range: [28, 33],
+                loc: {
+                  start: { column: 1, line: 2 },
+                  end: { column: 6, line: 2 },
+                },
+              },
+              optional: false,
+              right: TSInstantiationExpression {
+                type: "TSInstantiationExpression",
+                expression: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "fn",
+                  optional: false,
+
+                  range: [36, 38],
+                  loc: {
+                    start: { column: 9, line: 2 },
+                    end: { column: 11, line: 2 },
+                  },
+                },
+                typeArguments: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: [
+                    TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "T",
+                        optional: false,
+
+                        range: [39, 40],
+                        loc: {
+                          start: { column: 12, line: 2 },
+                          end: { column: 13, line: 2 },
+                        },
+                      },
+
+                      range: [39, 40],
+                      loc: {
+                        start: { column: 12, line: 2 },
+                        end: { column: 13, line: 2 },
+                      },
+                    },
+                  ],
+
+                  range: [38, 41],
+                  loc: {
+                    start: { column: 11, line: 2 },
+                    end: { column: 14, line: 2 },
+                  },
+                },
+
+                range: [36, 41],
+                loc: {
+                  start: { column: 9, line: 2 },
+                  end: { column: 14, line: 2 },
+                },
+              },
+
+              range: [28, 41],
+              loc: {
+                start: { column: 1, line: 2 },
+                end: { column: 14, line: 2 },
+              },
+            },
+          ],
+          optional: false,
+
+          range: [27, 42],
+          loc: {
+            start: { column: 0, line: 2 },
+            end: { column: 15, line: 2 },
+          },
+        },
+        operator: "=",
+        right: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "source",
+          optional: false,
+
+          range: [45, 51],
+          loc: {
+            start: { column: 18, line: 2 },
+            end: { column: 24, line: 2 },
+          },
+        },
+
+        range: [27, 51],
+        loc: {
+          start: { column: 0, line: 2 },
+          end: { column: 24, line: 2 },
+        },
+      },
+
+      range: [27, 52],
+      loc: {
+        start: { column: 0, line: 2 },
+        end: { column: 25, line: 2 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: MemberExpression {
+          type: "MemberExpression",
+          computed: false,
+          object: TSInstantiationExpression {
+            type: "TSInstantiationExpression",
+            expression: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "fn",
+              optional: false,
+
+              range: [54, 56],
+              loc: {
+                start: { column: 1, line: 3 },
+                end: { column: 3, line: 3 },
+              },
+            },
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "T",
+                    optional: false,
+
+                    range: [57, 58],
+                    loc: {
+                      start: { column: 4, line: 3 },
+                      end: { column: 5, line: 3 },
+                    },
+                  },
+
+                  range: [57, 58],
+                  loc: {
+                    start: { column: 4, line: 3 },
+                    end: { column: 5, line: 3 },
+                  },
+                },
+              ],
+
+              range: [56, 59],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 6, line: 3 },
+              },
+            },
+
+            range: [54, 59],
+            loc: {
+              start: { column: 1, line: 3 },
+              end: { column: 6, line: 3 },
+            },
+          },
+          optional: false,
+          property: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "property",
+            optional: false,
+
+            range: [61, 69],
+            loc: {
+              start: { column: 8, line: 3 },
+              end: { column: 16, line: 3 },
+            },
+          },
+
+          range: [53, 69],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 16, line: 3 },
+          },
+        },
+        operator: "=",
+        right: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "value",
+          optional: false,
+
+          range: [72, 77],
+          loc: {
+            start: { column: 19, line: 3 },
+            end: { column: 24, line: 3 },
+          },
+        },
+
+        range: [53, 77],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 24, line: 3 },
+        },
+      },
+
+      range: [53, 78],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 25, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 79],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}

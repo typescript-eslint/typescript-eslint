@@ -1,0 +1,1 @@
+({ value: fn<T> } = source);

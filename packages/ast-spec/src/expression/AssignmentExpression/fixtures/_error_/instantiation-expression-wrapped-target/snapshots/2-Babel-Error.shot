@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > AssignmentExpression > _error_ > instantiation-expression-wrapped-target > Babel - Error`]
+BabelError
+> 1 | [(fn<T> as unknown) = fallback] = source;
+    |   ^ Invalid left-hand side in assignment expression. (1:2)
+  2 |
+  

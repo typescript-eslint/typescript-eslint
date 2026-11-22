@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > AssignmentExpression > _error_ > instantiation-expression-object-target > Babel - Error`]
+BabelError
+> 1 | ({ value: fn<T> } = source);
+    |           ^ Invalid left-hand side in object destructuring pattern. (1:10)
+  2 |
+  
