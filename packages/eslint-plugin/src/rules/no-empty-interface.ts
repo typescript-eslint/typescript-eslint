@@ -1,9 +1,8 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getInterfaceMerging } from '../util';
 
 export type Options = [
   {
@@ -91,44 +90,21 @@ export default createRule<Options, MessageIds>({
               )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
             );
           };
-          const ownScope = context.sourceCode.getScope(node);
-          // generic interfaces create their own nested scope for their type parameters
-          const scope = node.typeParameters ? ownScope.upper : ownScope;
-
-          const mergedWithOtherDeclaration = scope?.set
-            .get(node.id.name)
-            ?.defs.some(
-              def =>
-                def.node !== node &&
-                (def.node.type === AST_NODE_TYPES.ClassDeclaration ||
-                  def.node.type === AST_NODE_TYPES.TSInterfaceDeclaration),
-            );
+          const merging = getInterfaceMerging(context, node);
 
           // `export default type` is not valid syntax
           const cannotFix =
-            mergedWithOtherDeclaration ||
+            merging === 'merged' ||
             node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
-
-          const isInAmbientDeclaration =
-            scope?.type === ScopeType.tsModule && scope.block.declare;
-
-          const useAutoFix = !(isInAmbientDeclaration || cannotFix);
 
           context.report({
             node: node.id,
             messageId: 'noEmptyWithSuper',
-            ...(useAutoFix
-              ? { fix }
-              : !cannotFix
-                ? {
-                    suggest: [
-                      {
-                        messageId: 'noEmptyWithSuper',
-                        fix,
-                      },
-                    ],
-                  }
-                : null),
+            ...(cannotFix
+              ? null
+              : merging === 'mergeable'
+                ? { suggest: [{ messageId: 'noEmptyWithSuper', fix }] }
+                : { fix }),
           });
         }
       },

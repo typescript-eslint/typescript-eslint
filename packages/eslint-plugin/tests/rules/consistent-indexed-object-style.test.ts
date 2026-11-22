@@ -595,6 +595,49 @@ declare global {
           endLine: 5,
           line: 3,
           messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare global {
+  type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare global {
+  namespace NodeJS {
+    interface Dict {
+      [key: string]: unknown;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 6,
+          line: 4,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare global {
+  namespace NodeJS {
+    type Dict = Record<string, unknown>;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
       output: null,
@@ -614,6 +657,16 @@ declare module 'foo' {
           endLine: 5,
           line: 3,
           messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare module 'foo' {
+  type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
         },
       ],
       output: null,
@@ -633,6 +686,16 @@ declare module 'foo' {
           endLine: 5,
           line: 3,
           messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare module 'foo' {
+  export type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
         },
       ],
       output: null,
@@ -652,13 +715,107 @@ declare namespace Bar {
           endLine: 5,
           line: 3,
           messageId: 'preferRecord',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
 declare namespace Bar {
   type Foo = Record<string, unknown>;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Bar {
+  export interface Foo {
+    [key: string]: unknown;
+  }
+}
+namespace Bar {
+  export interface Foo {
+    other: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+namespace Bar {
+  export type Foo = Record<string, unknown>;
+}
+namespace Bar {
+  export interface Foo {
+    other: unknown;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Bar {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+namespace Bar {
+  type Foo = Record<string, unknown>;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: unknown;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<string, unknown>;
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'test.d.ts',
+      output: null,
     },
     // Readonly interface with generic parameter
     {

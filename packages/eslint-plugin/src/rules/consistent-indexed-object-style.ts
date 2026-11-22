@@ -11,6 +11,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import {
   createRule,
   getFixOrSuggest,
+  getInterfaceMerging,
   isNodeEqual,
   isParenthesized,
   nullThrows,
@@ -103,7 +104,7 @@ export default createRule<Options, MessageIds>({
       parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
-      safeFix = true,
+      fixOrSuggest: 'fix' | 'none' | 'suggest' = 'fix',
     ): void {
       if (members.length !== 1) {
         return;
@@ -145,15 +146,15 @@ export default createRule<Options, MessageIds>({
         node,
         messageId: 'preferRecord',
         ...getFixOrSuggest({
-          fixOrSuggest: !safeFix
-            ? 'none'
-            : hasUnpreservedComments(
-                  node,
-                  keyType.typeAnnotation,
-                  valueType.typeAnnotation,
-                )
+          fixOrSuggest:
+            fixOrSuggest === 'fix' &&
+            hasUnpreservedComments(
+              node,
+              keyType.typeAnnotation,
+              valueType.typeAnnotation,
+            )
               ? 'suggest'
-              : 'fix',
+              : fixOrSuggest,
           suggestion: {
             messageId: 'preferRecordSuggestion',
             fix: (fixer): TSESLint.RuleFix => {
@@ -172,30 +173,25 @@ export default createRule<Options, MessageIds>({
     }
 
     // A type alias can't merge with other declarations the way an interface
-    // can, so converting a merged or augmenting interface would break it.
-    function isMergeableInterface(
+    // can, so converting a merged or augmenting interface could break it.
+    function getInterfaceFixOrSuggest(
       node: TSESTree.TSInterfaceDeclaration,
-    ): boolean {
-      const container =
-        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
-          ? node.parent.parent
-          : node.parent;
+    ): 'fix' | 'none' | 'suggest' {
       if (
-        container.type === AST_NODE_TYPES.TSModuleBlock &&
-        (container.parent.kind === 'global' ||
-          container.parent.id.type === AST_NODE_TYPES.Literal)
+        node.extends.length ||
+        node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
       ) {
-        return true;
+        return 'none';
       }
 
-      // Values, functions and namespaces can share a name with a type alias
-      const [variable] = context.sourceCode.getDeclaredVariables(node);
-      return variable.defs.some(
-        def =>
-          def.node !== node &&
-          (def.type === DefinitionType.Type ||
-            def.type === DefinitionType.ClassName),
-      );
+      switch (getInterfaceMerging(context, node)) {
+        case 'merged':
+          return 'none';
+        case 'mergeable':
+          return 'suggest';
+        case undefined:
+          return 'fix';
+      }
     }
 
     return {
@@ -262,9 +258,7 @@ export default createRule<Options, MessageIds>({
             node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
-            !node.extends.length &&
-              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-              !isMergeableInterface(node),
+            getInterfaceFixOrSuggest(node),
           );
         },
         TSMappedType(node): void {

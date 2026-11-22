@@ -1,9 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getInterfaceMerging } from '../util';
 
 export const phrases = {
   [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
@@ -20,9 +19,11 @@ export default createRule({
       recommended: 'stylistic',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       functionTypeOverCallableType:
         '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
+      replaceWithFunctionType: 'Replace with a function type.',
       unexpectedThisOnFunctionOnlyInterface:
         "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
     },
@@ -46,22 +47,6 @@ export default createRule({
 
       return (
         expr.type !== AST_NODE_TYPES.Identifier || expr.name !== 'Function'
-      );
-    }
-
-    /**
-     * Checks whether the interface is merged with other declarations of the same name
-     */
-    function isMergedDeclaration(
-      node: TSESTree.TSInterfaceDeclaration,
-    ): boolean {
-      const [variable] = context.sourceCode.getDeclaredVariables(node);
-
-      return variable.defs.some(
-        def =>
-          def.node !== node &&
-          (def.type === DefinitionType.Type ||
-            def.type === DefinitionType.ClassName),
       );
     }
 
@@ -91,11 +76,13 @@ export default createRule({
     /**
      * @param member The TypeElement being checked
      * @param node The parent of member being checked
+     * @param mayMerge Whether other declarations can merge with the interface
      */
     function checkMember(
       member: TSESTree.TypeElement,
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       tsThisTypes: TSESTree.TSThisType[] | null = null,
+      mayMerge = false,
     ): void {
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
@@ -196,7 +183,10 @@ export default createRule({
           data: {
             literalOrInterface: phrases[node.type],
           },
-          fix,
+          // A type alias can't merge with other declarations
+          ...(mayMerge && fix
+            ? { suggest: [{ messageId: 'replaceWithFunctionType', fix }] }
+            : { fix }),
         });
       }
     }
@@ -210,12 +200,17 @@ export default createRule({
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
       ): void {
-        if (
-          !hasOneSupertype(node) &&
-          node.body.body.length === 1 &&
-          !isMergedDeclaration(node)
-        ) {
-          checkMember(node.body.body[0], node, tsThisTypes);
+        if (!hasOneSupertype(node) && node.body.body.length === 1) {
+          const merging = getInterfaceMerging(context, node);
+          // The merged interface has more than this call signature
+          if (merging !== 'merged') {
+            checkMember(
+              node.body.body[0],
+              node,
+              tsThisTypes,
+              merging === 'mergeable',
+            );
+          }
         }
         // on exit check member and reset the array to nothing.
         tsThisTypes = null;

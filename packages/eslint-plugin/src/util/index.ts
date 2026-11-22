@@ -9,6 +9,7 @@ export * from './getAwaitTokenRemovalRange';
 export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
+export * from './getInterfaceMerging';
 export * from './getOperatorPrecedence';
 export * from './getStaticStringValue';
 export * from './getStringLength';

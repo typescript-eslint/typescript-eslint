@@ -2,7 +2,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getInterfaceMerging } from '../util';
 
 export type AllowInterfaces = 'always' | 'never' | 'with-single-extends';
 
@@ -104,19 +104,14 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const mergedWithOtherDeclaration = context.sourceCode
-            .getDeclaredVariables(node)[0]
-            ?.defs.some(
-              def =>
-                def.node !== node &&
-                (def.node.type === AST_NODE_TYPES.ClassDeclaration ||
-                  def.node.type === AST_NODE_TYPES.TSInterfaceDeclaration),
-            );
-
           const isDefaultExport =
             node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
-          const shouldSuggest = !mergedWithOtherDeclaration && !isDefaultExport;
+          // The fixes are only suggestions, so an interface that merges with
+          // declarations elsewhere still gets them, but one that merges with
+          // another declaration in this scope can't become a type alias.
+          const shouldSuggest =
+            getInterfaceMerging(context, node) !== 'merged' && !isDefaultExport;
 
           if (extend.length === 0) {
             context.report({

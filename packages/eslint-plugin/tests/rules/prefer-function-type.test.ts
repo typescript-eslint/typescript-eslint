@@ -67,6 +67,30 @@ interface Foo {
 }
 class Foo {}
     `,
+    `
+interface Foo {
+  (): void;
+}
+declare class Foo {}
+    `,
+    `
+interface Foo<T> {
+  (): T;
+}
+interface Foo<T> {
+  bar: T;
+}
+    `,
+    `
+declare global {
+  interface Foo {
+    (): void;
+  }
+  interface Foo {
+    bar: string;
+  }
+}
+    `,
   ],
 
   invalid: [
@@ -787,6 +811,315 @@ interface Foo {
       output: `
 /* comment */
 type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface Window {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+export {};
+declare global {
+  type Window = () => void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export {};
+declare global {
+  namespace NodeJS {
+    interface Callback {
+      (): void;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+export {};
+declare global {
+  namespace NodeJS {
+    type Callback = () => void;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  interface Foo {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+declare module 'foo' {
+  type Foo = () => void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  export interface Foo {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+declare module 'foo' {
+  export type Foo = () => void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare namespace Space {
+  interface Foo {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+declare namespace Space {
+  type Foo = () => void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Space {
+  export interface Foo {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+namespace Space {
+  export type Foo = () => void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Space {
+  interface Foo {
+    (): void;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+namespace Space {
+  type Foo = () => void;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'functionTypeOverCallableType',
+          suggestions: [
+            {
+              messageId: 'replaceWithFunctionType',
+              output: `
+type Foo = () => void;
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'test.d.ts',
+      output: null,
+    },
+    {
+      code: `
+namespace Foo {
+  export const value = 1;
+}
+interface Foo {
+  (): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+namespace Foo {
+  export const value = 1;
+}
+type Foo = () => void;
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  type Foo = { (): void };
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'functionTypeOverCallableType',
+        },
+      ],
+      output: `
+export {};
+declare global {
+  type Foo = () => void;
+}
       `,
     },
   ],
