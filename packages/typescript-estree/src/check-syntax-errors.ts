@@ -12,6 +12,7 @@ import {
   getTextForTokenKind,
   isEntityNameExpression,
   declarationNameToString,
+  unwrapAssignmentTarget,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -22,6 +23,17 @@ export function checkSyntaxError(
   allowPattern: boolean,
 ): void {
   checkModifiers(tsNode);
+
+  if (
+    allowPattern &&
+    unwrapAssignmentTarget(tsNode).kind ===
+      SyntaxKind.ExpressionWithTypeArguments
+  ) {
+    throw createError(
+      tsNode,
+      'The left-hand side of an assignment expression must be a variable or a property access.',
+    );
+  }
 
   const node = tsNode as TSNode;
 
