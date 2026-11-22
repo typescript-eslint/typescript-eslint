@@ -4,7 +4,7 @@ import type { TestSpecification } from 'vitest/node';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import ts from 'typescript';
-import { defineProject, mergeConfig, configDefaults } from 'vitest/config';
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
 import { BaseSequencer } from 'vitest/node';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
@@ -58,7 +58,8 @@ class FileSizeShardSequencer extends BaseSequencer {
 const vitestConfig: ViteUserConfig = mergeConfig(
   vitestBaseConfig,
 
-  defineProject({
+  // `defineConfig` rather than `defineProject`: `sequence.sequencer` is a root-only option.
+  defineConfig({
     root: import.meta.dirname,
 
     test: {
