@@ -72,6 +72,31 @@ export function sanitize(text: string): string {
   );
 }
 
+/**
+ * Descriptors defining `start`/`end` properties as throwing error.
+ * Created once so that all nodes share the same getters (and hidden classes).
+ */
+function startEndAsErrorDescriptors(objName: string): PropertyDescriptorMap {
+  return {
+    end: {
+      configurable: true,
+      enumerable: false,
+      get() {
+        throw new Error(`Use ${objName}.range[1] instead of ${objName}.end`);
+      },
+    },
+    start: {
+      configurable: true,
+      enumerable: false,
+      get() {
+        throw new Error(`Use ${objName}.range[0] instead of ${objName}.start`);
+      },
+    },
+  };
+}
+const NODE_START_END_AS_ERROR = startEndAsErrorDescriptors('node');
+const TOKEN_START_END_AS_ERROR = startEndAsErrorDescriptors('token');
+
 // this symbol is used internally by ESLint to unwrap the wrapped parser
 // https://github.com/eslint/eslint/blob/129e252132c7c476d7de17f40b54a333ddb2e6bb/lib/linter/linter.js#L139-L146
 const parserSymbol = Symbol.for('eslint.RuleTester.parser');
@@ -89,38 +114,16 @@ export function wrapParser(
     ast: TSESTree.Program,
     visitorKeys?: Readonly<SourceCode.VisitorKeys>,
   ): void {
-    /**
-     * Define `start`/`end` properties as throwing error.
-     */
-    function defineStartEndAsError(objName: string, node: unknown): void {
-      Object.defineProperties(node, {
-        end: {
-          configurable: true,
-          enumerable: false,
-          get() {
-            throw new Error(
-              `Use ${objName}.range[1] instead of ${objName}.end`,
-            );
-          },
-        },
-        start: {
-          configurable: true,
-          enumerable: false,
-          get() {
-            throw new Error(
-              `Use ${objName}.range[0] instead of ${objName}.start`,
-            );
-          },
-        },
-      });
-    }
-
     simpleTraverse(ast, {
-      enter: node => defineStartEndAsError('node', node),
+      enter: node => Object.defineProperties(node, NODE_START_END_AS_ERROR),
       visitorKeys,
     });
-    ast.tokens?.forEach(token => defineStartEndAsError('token', token));
-    ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
+    ast.tokens?.forEach(token =>
+      Object.defineProperties(token, TOKEN_START_END_AS_ERROR),
+    );
+    ast.comments?.forEach(comment =>
+      Object.defineProperties(comment, TOKEN_START_END_AS_ERROR),
+    );
   }
 
   if ('parseForESLint' in parser) {
