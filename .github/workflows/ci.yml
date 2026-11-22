@@ -542,7 +542,7 @@ jobs:
 
       - name: Run eslint-plugin unit tests with tsgo backend coverage
         if: matrix.plugin
-        run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
+        run: pnpm exec nx test eslint-plugin --coverage --coverage.provider=v8 --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
           TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo

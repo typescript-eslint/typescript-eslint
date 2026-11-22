@@ -8,6 +8,10 @@ export const vitestBaseConfig = {
       exclude: [...coverageConfigDefaults.exclude, '**/fixtures/'],
       include: ['src/**/*.{ts,tsx,js,jsx}'],
 
+      // v8 coverage slows down all code, including the TypeScript compiler the tests drive (~2-3x here).
+      // Istanbul only instruments the included files, so the rest runs at full speed.
+      provider: 'istanbul',
+
       reporter: process.env.GITHUB_ACTIONS
         ? [['lcov'], ['text'], ['text-summary']]
         : [['lcov']],
