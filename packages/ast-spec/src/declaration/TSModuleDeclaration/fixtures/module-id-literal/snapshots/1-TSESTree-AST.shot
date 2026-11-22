@@ -3,6 +3,7 @@ Program {
   body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
+      attributes: [],
       body: TSModuleBlock {
         type: "TSModuleBlock",
         body: [],

@@ -3,6 +3,7 @@ Program {
   body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
+      attributes: [],
       declare: true,
       global: false,
       id: Literal {

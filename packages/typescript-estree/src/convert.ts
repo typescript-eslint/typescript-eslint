@@ -563,6 +563,32 @@ export class Converter {
     return this.convertJSXIdentifier(node);
   }
 
+  private convertModuleDeclarationAttributes(
+    attributes: ts.TypeLiteralNode | undefined,
+  ): TSESTree.ImportAttribute[] {
+    return (
+      attributes?.members.flatMap(member => {
+        // Unless `allowInvalidAST` is set, check-syntax-errors.ts rejects other members
+        if (
+          !ts.isPropertySignature(member) ||
+          !member.type ||
+          !ts.isLiteralTypeNode(member.type)
+        ) {
+          return [];
+        }
+
+        const result = this.createNode<TSESTree.ImportAttribute>(member, {
+          type: AST_NODE_TYPES.ImportAttribute,
+          range: [member.name.getStart(this.ast), member.type.end],
+          key: this.convertChild(member.name),
+          value: this.convertChild(member.type.literal),
+        });
+        this.registerTSNodeInNodeMap(member, result);
+        return [result];
+      }) ?? []
+    );
+  }
+
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
@@ -2626,7 +2652,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSModuleDeclaration,
           ...((): TSESTree.OptionalRangeAndLoc<
             Omit<TSESTree.TSModuleDeclaration, 'parent' | 'type'>
-          > => {
+          > & { attributes?: TSESTree.ImportAttribute[] } => {
             if (node.flags & ts.NodeFlags.GlobalAugmentation) {
               return {
                 body: this.convertChild(node.body) as TSESTree.TSModuleBlock,
@@ -2645,6 +2671,9 @@ export class Converter {
               return {
                 kind: 'module',
                 ...(body != null ? { body } : {}),
+                attributes: this.convertModuleDeclarationAttributes(
+                  node.attributes,
+                ),
                 declare: false,
                 // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
                 global: false,

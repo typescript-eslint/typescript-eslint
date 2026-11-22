@@ -76,11 +76,13 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.IfStatement]: ts.IfStatement;
   [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.PropertyDefinition]: ts.PropertyDeclaration;
-  // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-  [AST_NODE_TYPES.ImportAttribute]: 'ImportAttribute' extends keyof typeof ts
-    ? ts.ImportAttribute
-    : // eslint-disable-next-line @typescript-eslint/no-deprecated
-      ts.AssertEntry;
+  [AST_NODE_TYPES.ImportAttribute]:
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    | ('ImportAttribute' extends keyof typeof ts
+        ? ts.ImportAttribute
+        : // eslint-disable-next-line @typescript-eslint/no-deprecated
+          ts.AssertEntry)
+    | ts.PropertySignature;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
   [AST_NODE_TYPES.ImportExpression]: ts.CallExpression;
