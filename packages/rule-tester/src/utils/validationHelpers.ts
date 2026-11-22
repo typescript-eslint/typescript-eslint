@@ -100,11 +100,28 @@ const TOKEN_START_END_AS_ERROR = startEndAsErrorDescriptors('token');
 // this symbol is used internally by ESLint to unwrap the wrapped parser
 // https://github.com/eslint/eslint/blob/129e252132c7c476d7de17f40b54a333ddb2e6bb/lib/linter/linter.js#L139-L146
 const parserSymbol = Symbol.for('eslint.RuleTester.parser');
+const wrappedParsers = new WeakMap<
+  Parser.LooseParserModule,
+  Parser.LooseParserModule
+>();
+
 /**
  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
  */
 export function wrapParser(
+  parser: Parser.LooseParserModule,
+): Parser.LooseParserModule {
+  // Reuse the wrapper so configs using the same parser stay deeply equal across test cases.
+  let wrapped = wrappedParsers.get(parser);
+  if (!wrapped) {
+    wrapped = createWrappedParser(parser);
+    wrappedParsers.set(parser, wrapped);
+  }
+  return wrapped;
+}
+
+function createWrappedParser(
   parser: Parser.LooseParserModule,
 ): Parser.LooseParserModule {
   /**
