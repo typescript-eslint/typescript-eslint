@@ -3,5 +3,10 @@
   "compilerOptions": {
     "outDir": "./dist"
   },
-  "include": ["package.json", "vitest.config.base.mts", "vitest.config.mts"]
+  "include": [
+    "package.json",
+    "vitest.config.base.mts",
+    "vitest.config.mts",
+    "vitest.setup.base.mts"
+  ]
 }
