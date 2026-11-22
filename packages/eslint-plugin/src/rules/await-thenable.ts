@@ -16,9 +16,11 @@ import {
   getParserServices,
   isAwaitKeyword,
   isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatement,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
   LINEBREAK_MATCHER,
+  needsPrecedingSemicolon,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -148,7 +150,7 @@ export default createRule<Options, MessageId>({
                     ];
                   }
 
-                  if (
+                  const needsParentheses =
                     isStartOfArrowFunctionBodyNeedingParentheses(
                       node,
                       firstOperandToken,
@@ -157,16 +159,34 @@ export default createRule<Options, MessageId>({
                     isStartOfExpressionStatementNeedingParentheses(
                       node,
                       firstOperandToken,
+                      context.sourceCode,
+                    );
+                  const nextTokenText = needsParentheses
+                    ? '('
+                    : firstOperandToken.value;
+
+                  // Without `await`, a statement relying on ASI could
+                  // continue the previous line, as in `x = 1\n-1`.
+                  const fixes = [
+                    /^[-([`+/<]/.test(nextTokenText) &&
+                    isStartOfExpressionStatement(node) &&
+                    needsPrecedingSemicolon(
+                      context.sourceCode,
+                      node,
+                      nextTokenText,
                     )
-                  ) {
-                    return [
-                      awaitRemovalFix,
+                      ? fixer.replaceTextRange(awaitTokenRemovalRange, ';')
+                      : awaitRemovalFix,
+                  ];
+
+                  if (needsParentheses) {
+                    fixes.push(
                       fixer.insertTextBefore(awaitArgumentEsNode, '('),
                       fixer.insertTextAfter(awaitArgumentEsNode, ')'),
-                    ];
+                    );
                   }
 
-                  return awaitRemovalFix;
+                  return fixes;
                 },
               },
             ],

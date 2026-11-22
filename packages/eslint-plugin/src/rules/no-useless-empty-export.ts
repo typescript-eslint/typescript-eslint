@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isDefinitionFile } from '../util';
+import { createRule, isDefinitionFile, needsPrecedingSemicolon } from '../util';
 
 function isEmptyExport(
   node: TSESTree.Node,
@@ -56,16 +56,32 @@ export default createRule({
     if (isDefinitionFile(context.filename)) {
       return {};
     }
+
+    function hasCommentsInside(node: TSESTree.Node): boolean {
+      return context.sourceCode.getCommentsInside(node).length > 0;
+    }
+
     return {
       Program(node): void {
         const emptyExports: TSESTree.ExportNamedDeclaration[] = [];
         let foundOtherExport = false;
+        // The first statement of each run of removable empty exports, so that
+        // removing all of them is checked against the statement before the run.
+        const removalRunStarts = new Map<TSESTree.Node, TSESTree.Node>();
+        let removalRunStart: TSESTree.Node | undefined;
 
         for (const statement of node.body) {
           if (isEmptyExport(statement)) {
             emptyExports.push(statement);
           } else if (isExportOrImport(statement)) {
             foundOtherExport = true;
+          }
+
+          if (isEmptyExport(statement) && !hasCommentsInside(statement)) {
+            removalRunStart ??= statement;
+            removalRunStarts.set(statement, removalRunStart);
+          } else {
+            removalRunStart = undefined;
           }
         }
 
@@ -74,11 +90,29 @@ export default createRule({
             context.report({
               node: emptyExport,
               messageId: 'uselessExport',
-              fix: fixer =>
+              fix(fixer) {
                 // removing the export would also remove any comments inside it
-                context.sourceCode.getCommentsInside(emptyExport).length
-                  ? null
-                  : fixer.remove(emptyExport),
+                if (hasCommentsInside(emptyExport)) {
+                  return null;
+                }
+
+                // Without the export, a next statement relying on ASI could
+                // continue the previous line, as in `x = 1\n(f)()`.
+                const nextToken = context.sourceCode.getTokenAfter(emptyExport);
+                if (
+                  nextToken &&
+                  /^[-([`+/<]/.test(nextToken.value) &&
+                  needsPrecedingSemicolon(
+                    context.sourceCode,
+                    removalRunStarts.get(emptyExport) ?? emptyExport,
+                    nextToken.value,
+                  )
+                ) {
+                  return fixer.replaceText(emptyExport, ';');
+                }
+
+                return fixer.remove(emptyExport);
+              },
             });
           }
         }
