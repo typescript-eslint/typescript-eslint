@@ -1751,6 +1751,220 @@ Used();
     },
     {
       code: `
+import * as _Used from 'foo';
+_Used.x();
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used, * as Unused from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 20,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import _Used from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used, { Unused } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import _Used from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import { _Used, Unused } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { _Used } from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import Unused, { _Used } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import  { _Used } from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+        {
+          column: 18,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
 import { Foo, Bar } from 'foo';
 function baz<Foo>(): Foo {}
 baz<Bar>();

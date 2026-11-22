@@ -30,18 +30,38 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
-    const reportInfoStack: {
-      assignedBeforeConstructor: Set<string>;
-      /**
-       * For each property written in the constructor, the earliest position
-       * in the code that a write to it may run at.
-       */
-      earliestWrites: Map<string, number>;
-      unnecessaryAssignments: {
-        name: string;
-        node: TSESTree.AssignmentExpression;
-      }[];
-    }[] = [];
+    /**
+     * The report info of each class body being visited. Nested classes have
+     * their own, and code in a nested class can still use the outer `this`,
+     * as in a computed key, so each lookup goes by class body.
+     */
+    const reportInfos = new Map<
+      TSESTree.Node,
+      {
+        assignedBeforeConstructor: Set<string>;
+        /**
+         * For each property written in the constructor, the earliest position
+         * in the code that a write to it may run at.
+         */
+        earliestWrites: Map<string, number>;
+        unnecessaryAssignments: {
+          name: string;
+          node: TSESTree.AssignmentExpression;
+          /**
+           * The latest position in the code that this assignment may run
+           * after: the end of its outermost loop, or else its start.
+           */
+          position: number;
+        }[];
+      }
+    >();
+
+    function getReportInfo(classBody: TSESTree.Node | undefined) {
+      return nullThrows(
+        classBody && reportInfos.get(classBody),
+        'The class body should have report info',
+      );
+    }
 
     function isThisMemberExpression(
       node: TSESTree.Node,
@@ -84,13 +104,52 @@ export default createRule({
       return findParentFunction(node.parent);
     }
 
-    function findParentPropertyDefinition(
+    /**
+     * Like `findParentFunction`, but also stops at a class's static block or
+     * at the class field whose initializer has `node`, as their `this` is
+     * that class rather than anything outside it.
+     */
+    function findThisContainer(
       node: TSESTree.Node | undefined,
-    ): TSESTree.PropertyDefinition | undefined {
-      if (!node || node.type === AST_NODE_TYPES.PropertyDefinition) {
-        return node;
+    ):
+      | TSESTree.AccessorProperty
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
+      | TSESTree.PropertyDefinition
+      | TSESTree.StaticBlock
+      | undefined {
+      for (let current = node; current; current = current.parent) {
+        if (
+          current.type === AST_NODE_TYPES.FunctionDeclaration ||
+          current.type === AST_NODE_TYPES.FunctionExpression ||
+          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          current.type === AST_NODE_TYPES.StaticBlock
+        ) {
+          return current;
+        }
+        if (
+          (current.parent?.type === AST_NODE_TYPES.AccessorProperty ||
+            current.parent?.type === AST_NODE_TYPES.PropertyDefinition) &&
+          current.parent.value === current
+        ) {
+          return current.parent;
+        }
       }
-      return findParentPropertyDefinition(node.parent);
+      return undefined;
+    }
+
+    function findThisFunction(
+      node: TSESTree.Node | undefined,
+    ):
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
+      | undefined {
+      const container = findThisContainer(node);
+      return container && ASTUtils.isFunction(container)
+        ? container
+        : undefined;
     }
 
     function isConstructorFunctionExpression(
@@ -103,14 +162,14 @@ export default createRule({
     }
 
     /**
-     * Whether `node` reads a parameter of `constructorNode` that has not been
-     * written to before `assignment`, so it still holds the value that the
+     * Whether `node` reads a parameter of `constructorNode` that may not have
+     * been written to before `position`, so it still holds the value that the
      * parameter property assigned.
      */
     function isUnchangedConstructorParameter(
       node: TSESTree.Identifier,
       constructorNode: TSESTree.FunctionExpression,
-      assignment: TSESTree.AssignmentExpression,
+      position: number,
     ): boolean {
       const variable = ASTUtils.findVariable(
         context.sourceCode.getScope(node),
@@ -118,16 +177,25 @@ export default createRule({
       );
       const definition = variable?.defs.at(0);
 
-      return (
-        definition?.type === DefinitionType.Parameter &&
-        definition.node === constructorNode &&
-        !variable?.references.some(
-          reference =>
-            reference.isWrite() &&
-            !reference.init &&
-            reference.identifier.range[0] < assignment.range[0],
-        )
-      );
+      if (
+        definition?.type !== DefinitionType.Parameter ||
+        definition.node !== constructorNode
+      ) {
+        return false;
+      }
+
+      // Any write other than the parameter's own default value, including
+      // `var foo = 'bar'` or `for (var foo of values)` redeclaring it.
+      return !variable?.references.some(reference => {
+        if (!reference.isWrite() || reference.identifier === definition.name) {
+          return false;
+        }
+        const writePosition = getEarliestRunPosition(
+          reference.identifier,
+          constructorNode,
+        );
+        return writePosition != null && writePosition < position;
+      });
     }
 
     function isParameterPropertyWithName(
@@ -171,9 +239,9 @@ export default createRule({
     function findImmediateConstructor(
       node: TSESTree.Node,
     ): TSESTree.FunctionExpression | undefined {
-      let functionNode = findParentFunction(node);
-      if (functionNode && isArrowIIFE(functionNode)) {
-        functionNode = findParentFunction(functionNode.parent);
+      let functionNode = findThisFunction(node);
+      while (functionNode && isArrowIIFE(functionNode)) {
+        functionNode = findThisFunction(functionNode.parent);
       }
 
       return isConstructorFunctionExpression(functionNode)
@@ -189,9 +257,9 @@ export default createRule({
     function findConstructorOfWrite(
       node: TSESTree.Node,
     ): TSESTree.FunctionExpression | undefined {
-      let functionNode = findParentFunction(node);
+      let functionNode = findThisFunction(node);
       while (functionNode?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-        functionNode = findParentFunction(functionNode.parent);
+        functionNode = findThisFunction(functionNode.parent);
       }
 
       return isConstructorFunctionExpression(functionNode)
@@ -223,8 +291,8 @@ export default createRule({
     }
 
     /**
-     * Finds the earliest position in the constructor that `node` may run at,
-     * or `undefined` if it never runs as part of the constructor.
+     * Finds the earliest position in `constructorNode` that `node` may run
+     * at, or `undefined` if it never runs as part of the constructor.
      *
      * A function can't run before it's created, and one only reachable
      * through a variable can't run before that variable is first read, so
@@ -232,13 +300,14 @@ export default createRule({
      */
     function getEarliestRunPosition(
       node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
       visited = new Set<TSESTree.Node>(),
     ): number | undefined {
       const functionNode = findParentFunction(node);
       if (!functionNode || visited.has(functionNode)) {
         return undefined;
       }
-      if (isConstructorFunctionExpression(functionNode)) {
+      if (functionNode === constructorNode) {
         return node.range[0];
       }
 
@@ -246,7 +315,11 @@ export default createRule({
 
       const variable = getFunctionVariable(functionNode);
       if (!variable) {
-        return getEarliestRunPosition(functionNode.parent, visited);
+        return getEarliestRunPosition(
+          functionNode.parent,
+          constructorNode,
+          visited,
+        );
       }
 
       let earliest: number | undefined;
@@ -254,7 +327,11 @@ export default createRule({
         if (!reference.isRead()) {
           continue;
         }
-        const position = getEarliestRunPosition(reference.identifier, visited);
+        const position = getEarliestRunPosition(
+          reference.identifier,
+          constructorNode,
+          visited,
+        );
         if (position != null && (earliest == null || position < earliest)) {
           earliest = position;
         }
@@ -262,16 +339,40 @@ export default createRule({
       return earliest;
     }
 
-    function addWrite(name: string, node: TSESTree.Node): void {
-      const position = getEarliestRunPosition(node);
+    /**
+     * Finds the latest position that writes before `node` may run at. In a
+     * loop, a write later in the loop runs before the next iteration's
+     * `node`, so that's the end of `node`'s outermost loop in the
+     * constructor.
+     */
+    function getCopyPosition(
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+    ): number {
+      let position = node.range[0];
+      for (
+        let current: TSESTree.Node | undefined = node;
+        current && current !== constructorNode;
+        current = current.parent
+      ) {
+        if (ASTUtils.isLoop(current)) {
+          position = current.range[1];
+        }
+      }
+      return position;
+    }
+
+    function addWrite(
+      name: string,
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+    ): void {
+      const position = getEarliestRunPosition(node, constructorNode);
       if (position == null) {
         return;
       }
 
-      const { earliestWrites } = nullThrows(
-        reportInfoStack.at(-1),
-        'The top of stack should exist',
-      );
+      const { earliestWrites } = getReportInfo(constructorNode.parent.parent);
       const earliest = earliestWrites.get(name);
       if (earliest == null || position < earliest) {
         earliestWrites.set(name, position);
@@ -279,24 +380,25 @@ export default createRule({
     }
 
     return {
-      ClassBody(): void {
-        reportInfoStack.push({
+      ClassBody(node): void {
+        reportInfos.set(node, {
           assignedBeforeConstructor: new Set(),
           earliestWrites: new Map(),
           unnecessaryAssignments: [],
         });
       },
-      'ClassBody:exit'(): void {
+      'ClassBody:exit'(node): void {
         const {
           assignedBeforeConstructor,
           earliestWrites,
           unnecessaryAssignments,
-        } = nullThrows(reportInfoStack.pop(), 'The top stack should exist');
-        unnecessaryAssignments.forEach(({ name, node }) => {
+        } = getReportInfo(node);
+        reportInfos.delete(node);
+        unnecessaryAssignments.forEach(({ name, node, position }) => {
           const earliestWrite = earliestWrites.get(name);
           if (
             assignedBeforeConstructor.has(name) ||
-            (earliestWrite != null && earliestWrite < node.range[0])
+            (earliestWrite != null && earliestWrite < position)
           ) {
             return;
           }
@@ -317,36 +419,37 @@ export default createRule({
         }
 
         const rightId = getIdentifier(node.right);
+        const position = getCopyPosition(node, constructorNode);
 
         if (
           UNNECESSARY_OPERATORS.has(node.operator) &&
           leftName === rightId?.name &&
-          isUnchangedConstructorParameter(rightId, constructorNode, node) &&
+          isUnchangedConstructorParameter(rightId, constructorNode, position) &&
           constructorNode.params.some(param =>
             isParameterPropertyWithName(param, leftName),
           )
         ) {
           // A copy in a callback such as `setTimeout` may run after the
           // property changed, so only report copies that run immediately.
-          // Either way, it doesn't change the property's value.
           if (findImmediateConstructor(node)) {
-            nullThrows(
-              reportInfoStack.at(-1),
-              'The top of stack should exist',
+            getReportInfo(
+              constructorNode.parent.parent,
             ).unnecessaryAssignments.push({
               name: leftName,
               node,
+              position,
             });
           }
           return;
         }
 
-        addWrite(leftName, node);
+        addWrite(leftName, node, constructorNode);
       },
       "MethodDefinition[kind='constructor'] > FunctionExpression MemberExpression"(
         node: TSESTree.MemberExpression,
       ): void {
         const name = getPropertyName(node);
+        const constructorNode = findConstructorOfWrite(node);
 
         // Writes such as `this.foo++`, `[this.foo] = values`,
         // `(this.foo as number) = 1`, `delete this.foo` or
@@ -363,9 +466,9 @@ export default createRule({
             node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
             node.parent.left === node
           ) &&
-          findConstructorOfWrite(node)
+          constructorNode
         ) {
-          addWrite(name, node);
+          addWrite(name, node, constructorNode);
         }
       },
       'PropertyDefinition AssignmentExpression'(
@@ -377,25 +480,27 @@ export default createRule({
           return;
         }
 
-        const functionNode = findParentFunction(node);
+        let container = findThisContainer(node);
         // An arrow passed as an argument (`bar = list.map(() => ...)`) counts
         // too, since it may run before the constructor body.
         if (
-          functionNode &&
-          !(
-            functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-            functionNode.parent.type === AST_NODE_TYPES.CallExpression &&
-            findParentPropertyDefinition(node)?.value === functionNode.parent
-          )
+          container?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+          container.parent.type === AST_NODE_TYPES.CallExpression
         ) {
+          const outer = findThisContainer(container.parent);
+          if (
+            outer?.type === AST_NODE_TYPES.PropertyDefinition &&
+            outer.value === container.parent
+          ) {
+            container = outer;
+          }
+        }
+
+        if (container?.type !== AST_NODE_TYPES.PropertyDefinition) {
           return;
         }
 
-        const { assignedBeforeConstructor } = nullThrows(
-          reportInfoStack.at(-1),
-          'The top stack should exist',
-        );
-        assignedBeforeConstructor.add(name);
+        getReportInfo(container.parent).assignedBeforeConstructor.add(name);
       },
     };
   },

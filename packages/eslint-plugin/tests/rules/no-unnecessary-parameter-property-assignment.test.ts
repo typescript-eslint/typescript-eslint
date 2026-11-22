@@ -599,6 +599,174 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    var foo = 'bar';
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    for (var foo of ['bar']) {
+    }
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    for (let i = 0; i < 2; i++) {
+      this.foo = foo;
+      foo = 'bar';
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    for (const x of [1, 2]) {
+      this.foo = foo;
+      this.foo = 'bar';
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (() => {
+      while (Math.random()) {
+        this.foo = foo;
+        foo = 'bar';
+      }
+    })();
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    do {
+      this.foo = foo;
+      foo = 'bar';
+    } while (Math.random());
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const change = () => {
+      this.foo = 'bar';
+    };
+    for (let i = 0; i < 2; i++) {
+      this.foo = foo;
+      change();
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    for (let i = 0; i < 2; foo = 'bar') {
+      this.foo = foo;
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    change();
+    this.foo = foo;
+    function change() {
+      foo = 'bar';
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    const change = () => {
+      foo = 'bar';
+    };
+    [1].forEach(change);
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      static {
+        this.foo = foo;
+      }
+      static foo: string;
+    }
+  }
+}
+    `,
+    `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      foo = (this.foo = foo);
+    }
+  }
+}
+    `,
+    `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      foo = () => {
+        this.foo = foo;
+      };
+    }
+  }
+}
+    `,
+    `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      [(this.foo = 'bar')] = 1;
+    }
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      static {
+        foo = 'bar';
+      }
+    }
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (() => {
+      setTimeout(() => {
+        this.foo = foo;
+      });
+    })();
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -1351,6 +1519,195 @@ class Foo {
           endColumn: 19,
           endLine: 4,
           line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    for (const x of [1, 2]) {
+      this.foo = foo;
+    }
+    foo = 'bar';
+    this.foo = 'baz';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    (() => {
+      (() => {
+        this.foo = foo;
+      })();
+    })();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Outer {
+  constructor(public foo: string) {
+    class Inner {
+      static {
+        this.foo = 'bar';
+      }
+      static foo: string;
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    var foo: string;
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo = foo;
+    var foo = 'bar';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    function change() {
+      foo = 'bar';
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const change = () => {
+      foo = 'bar';
+    };
+    this.foo = foo;
+    change();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string[]) {
+    let copy;
+    [copy = this.foo] = [];
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string[]) {
+    for (const x of this.foo) {
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
       ],

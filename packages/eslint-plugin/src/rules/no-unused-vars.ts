@@ -314,7 +314,13 @@ export default createRule<Options, MessageIds>({
         node?: TSESTree.Node;
       },
     ) => {
-      reportedUnusedVariables.add(unusedVar);
+      // A used variable whose name matches an ignore pattern is reported only
+      // to rename it, so it must not be removed, and other specifiers of its
+      // import must not treat it as unused.
+      const isUsed = opts.messageId === 'usedIgnoredVar';
+      if (!isUsed) {
+        reportedUnusedVariables.add(unusedVar);
+      }
 
       const writeReferences = unusedVar.references.filter(
         ref =>
@@ -343,7 +349,7 @@ export default createRule<Options, MessageIds>({
           messageId?: MessageIds;
           useAutofix?: boolean;
         } => {
-          if (unusedVar.defs.length !== 1) {
+          if (isUsed || unusedVar.defs.length !== 1) {
             // If there's multiple definitions then we'd have to clean them all
             // up! That's complicated and messy so for now let's just ignore it.
             return {};
@@ -792,7 +798,7 @@ export default createRule<Options, MessageIds>({
           }
 
           // a namespace specifier can only follow a default specifier, and in
-          // this branch we know that default specifier is used
+          // this branch we know that default specifier isn't reported as unused
           //
           //     import Used, * as Unused from 'module';
           //                ^^^^^^^^^^^^^ remove this
