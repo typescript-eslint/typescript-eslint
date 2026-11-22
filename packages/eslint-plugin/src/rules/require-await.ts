@@ -128,7 +128,11 @@ export default createRule({
             asyncToken &&
           (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
             isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
-          needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+          needsPrecedingSemicolon(
+            context.sourceCode,
+            nodeWithAsyncKeyword,
+            nextToken.value,
+          );
 
         const changes = [
           { range: asyncRange, replacement: addSemiColon ? ';' : undefined },

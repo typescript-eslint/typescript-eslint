@@ -14,6 +14,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -223,7 +224,7 @@ export default createRule<Options, MessageId>({
                 const returnValue = invalidAncestor.argument;
                 const returnValueText = context.sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
-                if (isPreventingASI(returnValue)) {
+                if (isPreventingASI(invalidAncestor, returnValueText)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
@@ -243,16 +244,15 @@ export default createRule<Options, MessageId>({
               const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
-              if (isPreventingASI(returnValue)) {
-                // put a semicolon at the beginning of the line
-                newReturnStmtText = `;${newReturnStmtText}`;
-              }
               if (
                 invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
               ) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
+              } else if (isPreventingASI(invalidAncestor, returnValueText)) {
+                // put a semicolon at the beginning of the line
+                newReturnStmtText = `;${newReturnStmtText}`;
               }
               return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
@@ -388,19 +388,20 @@ export default createRule<Options, MessageId>({
     }
 
     /**
-     * Checks whether the given node, if placed on its own line,
-     * would prevent automatic semicolon insertion on the line before.
+     * Checks whether the given text, if it replaced the given statement,
+     * would continue the line before instead of starting a new statement.
      *
-     * This happens if the line begins with `(`, `[` or `` ` ``
+     * This can happen if the text begins with `(`, `[`, `` ` ``, `/`, `+`, `-` or `<`,
+     * as in `<boolean>cond ? a() : b()` or `-x ? a() : b()`.
      */
-    function isPreventingASI(node: TSESTree.Expression): boolean {
-      const startToken = nullThrows(
-        context.sourceCode.getFirstToken(node),
-        NullThrowsReasons.MissingToken('first token', node.type),
+    function isPreventingASI(
+      statement: TSESTree.Statement,
+      text: string,
+    ): boolean {
+      return (
+        /^[-(+/<[`]/.test(text) &&
+        needsPrecedingSemicolon(context.sourceCode, statement, text)
       );
-
-      // a template token's value is the whole template, such as `` `foo` ``
-      return /^[([`]/.test(startToken.value);
     }
 
     function canFix(

@@ -1578,6 +1578,363 @@ class A {
       ],
     },
     {
+      code: noFormat`
+declare let x: number;
+x = 1
+async (a: number) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { name: 'Async arrow function' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x = 1
+;(a: number) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x++
+async (a: number) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { name: 'Async arrow function' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x++
+(a: number) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x--
+async (a: number) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { name: 'Async arrow function' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x--
+(a: number) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x = 1
+async <T,>(a: T) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: 'Async arrow function' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x = 1
+;<T,>(a: T) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x++
+async <T,>(a: T) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: 'Async arrow function' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x++
+;<T,>(a: T) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x--
+async <T,>(a: T) => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: 'Async arrow function' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x--
+;<T,>(a: T) => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+x++
+async a => {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { name: 'Async arrow function' },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let x: number;
+x++
+a => {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let b: number;
+class A {
+  a = b++
+  async [c]() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Async method' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let b: number;
+class A {
+  a = b++
+  [c]() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let b: number;
+class A {
+  a = b--
+  async [c]() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Async method' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let b: number;
+class A {
+  a = b--
+  [c]() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let b: number;
+class A {
+  a = b++
+  async *c() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async generator method 'c'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let b: number;
+class A {
+  a = b++
+  ;*c() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let b: number;
+class A {
+  a = b--
+  async *c() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async generator method 'c'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let b: number;
+class A {
+  a = b--
+  ;*c() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 type AsyncNumber<T> = Promise<T>;
 async function returnsNumber(): AsyncNumber<number> {
