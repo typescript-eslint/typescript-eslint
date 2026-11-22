@@ -21,6 +21,17 @@ export interface GlobalLookupOptions {
   topLevelIsGlobal?: boolean;
 }
 
+export interface ShadowLookupOptions extends GlobalLookupOptions {
+  /**
+   * The node where the name is, or where a fix would write it. TypeScript
+   * makes an `infer` type parameter visible only in the true branch of its
+   * conditional type, but `sourceCode.getScope` gives the conditional type's
+   * scope for any node in it, including in its false branch. Without this, an
+   * `infer` type parameter shadows the name anywhere in its conditional type.
+   */
+  node?: TSESTree.Node;
+}
+
 /**
  * Whether the file is a declaration file that TypeScript treats as a global
  * script. Unlike for other files, `isGlobalScript` is exact here, because
@@ -88,6 +99,41 @@ function givesMeaning(
   );
 }
 
+/**
+ * Whether a definition is an `infer` type parameter that isn't visible at
+ * `node`, because `node` is outside its conditional type's true branch.
+ */
+function isInferTypeParameterOutOfScope(
+  definition: Scope.Definition,
+  node: TSESTree.Node,
+): boolean {
+  if (
+    definition.node.type !== AST_NODE_TYPES.TSTypeParameter ||
+    definition.node.parent.type !== AST_NODE_TYPES.TSInferType
+  ) {
+    return false;
+  }
+
+  let child: TSESTree.Node = definition.node.parent;
+  let parent: TSESTree.Node | undefined = child.parent;
+  while (parent) {
+    if (
+      parent.type === AST_NODE_TYPES.TSConditionalType &&
+      parent.extendsType === child
+    ) {
+      return (
+        node.range[0] < parent.trueType.range[0] ||
+        node.range[1] > parent.trueType.range[1]
+      );
+    }
+    child = parent;
+    parent = parent.parent;
+  }
+
+  // `infer` outside of an `extends` clause is an error
+  return false;
+}
+
 function isTopLevelScope(scope: Scope.Scope): boolean {
   return scope.type === ScopeType.global || scope.type === ScopeType.module;
 }
@@ -101,20 +147,27 @@ function isTopLevelScope(scope: Scope.Scope): boolean {
  *   if it contains values (`namespace setTimeout { export const x = 1 }`).
  * - A declaration inside `declare global` declares or augments the global.
  * - With `topLevelIsGlobal`, so does a declaration at the top level.
+ * - With `node`, an `infer` type parameter is only visible in its conditional
+ *   type's true branch.
  */
 export function findShadowingVariable(
   name: string,
   scope: Scope.Scope,
   meaning: 'type' | 'value',
-  options: GlobalLookupOptions = {},
+  options: ShadowLookupOptions = {},
 ): Scope.Variable | undefined {
+  const { node } = options;
+
   for (
     let current: Scope.Scope | null = scope;
     current;
     current = current.upper
   ) {
     const variable = current.set.get(name);
-    if (!variable?.defs.length) {
+    const definitions = node
+      ? variable?.defs.filter(def => !isInferTypeParameterOutOfScope(def, node))
+      : variable?.defs;
+    if (!variable || !definitions?.length) {
       continue;
     }
 
@@ -126,7 +179,7 @@ export function findShadowingVariable(
       return undefined;
     }
 
-    if (variable.defs.some(def => givesMeaning(def, meaning))) {
+    if (definitions.some(def => givesMeaning(def, meaning))) {
       return variable;
     }
   }
@@ -167,6 +220,6 @@ export function isReferenceToGlobalFunction(
     calleeName,
     ref.resolved.scope,
     ref.isValueReference ? 'value' : 'type',
-    options,
+    { ...options, node: ref.identifier },
   );
 }

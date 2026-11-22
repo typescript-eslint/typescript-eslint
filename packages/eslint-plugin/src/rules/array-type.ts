@@ -172,7 +172,7 @@ export default createRule<Options, MessageIds>({
         name,
         context.sourceCode.getScope(node),
         'type',
-        { topLevelIsGlobal },
+        { node, topLevelIsGlobal },
       );
     }
 

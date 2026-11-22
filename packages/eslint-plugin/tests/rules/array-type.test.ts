@@ -568,6 +568,15 @@ namespace N {
       `,
       options: [{ default: 'generic' }],
     },
+    // an `infer` type parameter hides the global in the true branch
+    {
+      code: 'type T<U> = U extends [infer Array] ? string[] : 1;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer Array] ? Array<string> : 1;',
+      options: [{ default: 'array' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2838,6 +2847,72 @@ declare global {
       ],
       options: [{ default: 'array' }],
       output: 'type T = [...readonly string[]];',
+    },
+    // an `infer` type parameter is only visible in the true branch
+    {
+      code: 'type T<U> = U extends [infer Array] ? Array : string[];',
+      errors: [
+        {
+          column: 47,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: 'type T<U> = U extends [infer Array] ? Array : Array<string>;',
+    },
+    {
+      code: 'type T<U> = U extends [infer ReadonlyArray] ? 1 : readonly string[];',
+      errors: [
+        {
+          column: 51,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 68,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer ReadonlyArray] ? 1 : ReadonlyArray<string>;',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array] ? 1 : Array<string>;',
+      errors: [
+        {
+          column: 43,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T<U> = U extends [infer Array] ? 1 : string[];',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array, Array<string>] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 50,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T<U> = U extends [infer Array, string[]] ? 1 : 0;',
     },
   ],
 });

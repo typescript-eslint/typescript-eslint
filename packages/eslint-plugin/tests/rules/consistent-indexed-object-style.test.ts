@@ -343,6 +343,21 @@ type Foo = Record<string, number>;
       options: ['index-signature'],
     },
     "type Foo = { [K in 'a' | 'b' as 'c']: number };",
+    // an `infer` type parameter hides the global in the true branch
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? Record<string, number> : 1;',
+      options: ['index-signature'],
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Record]
+  ? T extends 1
+    ? 1
+    : Record<string, number>
+  : 1;
+      `,
+      options: ['index-signature'],
+    },
 
     {
       // mapped type that uses the key cannot be converted to record
@@ -2381,6 +2396,122 @@ const Partial = 1;
 namespace Readonly {}
 type Foo = Readonly<Partial<Record<string, number>>>;
       `,
+    },
+    // an `infer` type parameter is only visible in the true branch
+    {
+      code: 'type Foo<T> = T extends [infer Partial] ? Partial : { [K in string]?: number };',
+      errors: [
+        {
+          column: 53,
+          endColumn: 79,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type Foo<T> = T extends [infer Partial] ? Partial : Partial<Record<string, number>>;',
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Partial]
+  ? 1
+  : T extends [infer Readonly]
+    ? Readonly
+    : { readonly [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 42,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo<T> = T extends [infer Partial]
+  ? 1
+  : T extends [infer Readonly]
+    ? Readonly
+    : Readonly<Partial<Record<string, number>>>;
+      `,
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? 1 : { [k: string]: number };',
+      errors: [
+        {
+          column: 46,
+          endColumn: 69,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type Foo<T> = T extends [infer Record] ? 1 : Record<string, number>;',
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Partial] ? { [K in string]?: number } : 1;',
+      errors: [
+        {
+          column: 43,
+          endColumn: 69,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Record]
+  ? T extends 1
+    ? 1
+    : { [k: string]: number }
+  : 1;
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? 1 : Record<string, number>;',
+      errors: [
+        {
+          column: 46,
+          endColumn: 68,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type Foo<T> = T extends [infer Record] ? 1 : { [key: string]: number };',
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record, Record<string, number>] ? 1 : 0;',
+      errors: [
+        {
+          column: 40,
+          endColumn: 62,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type Foo<T> = T extends [infer Record, { [key: string]: number }] ? 1 : 0;',
     },
   ],
 });

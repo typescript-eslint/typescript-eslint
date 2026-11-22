@@ -79,9 +79,14 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.Node,
       ...names: (string | undefined)[]
     ): boolean {
-      const scope = context.sourceCode.getScope(node);
+      // A mapped type's own scope holds its key, which can't be seen where
+      // the fix writes the names in place of the mapped type.
+      const scope = context.sourceCode.getScope(
+        node.type === AST_NODE_TYPES.TSMappedType ? node.parent : node,
+      );
       return names.every(
-        name => name == null || !findShadowingVariable(name, scope, 'type'),
+        name =>
+          name == null || !findShadowingVariable(name, scope, 'type', { node }),
       );
     }
 
@@ -342,7 +347,7 @@ export default createRule<Options, MessageIds>({
               fixOrSuggest:
                 node.readonly === '-' ||
                 !areGlobalTypes(
-                  node.parent,
+                  node,
                   'Record',
                   getMappedTypeOptionalWrapper(node),
                   node.readonly ? 'Readonly' : undefined,
