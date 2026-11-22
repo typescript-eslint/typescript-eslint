@@ -60,92 +60,6 @@ function hasTypeVariableConstituent(type: ts.Type): boolean {
 }
 
 /**
- * Whether an expression's value goes only into a declared type, such as an
- * annotated variable, an argument, or the return of a function with a
- * declared return type, so changing the expression's type changes no
- * inferred type. Positions whose type flows out, such as the operand of
- * `satisfies` or the return of a function without a declared return type,
- * aren't declared, even when they have a contextual type.
- */
-function isInDeclaredDestination(node: TSESTree.Node): boolean {
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
-  switch (parent.type) {
-    // These pass their operand's type on to their own position.
-    case AST_NODE_TYPES.ArrayExpression:
-    case AST_NODE_TYPES.ChainExpression:
-    case AST_NODE_TYPES.LogicalExpression:
-      return isInDeclaredDestination(parent);
-    case AST_NODE_TYPES.ConditionalExpression:
-      return parent.test !== node && isInDeclaredDestination(parent);
-    case AST_NODE_TYPES.SequenceExpression:
-      return (
-        parent.expressions.at(-1) === node && isInDeclaredDestination(parent)
-      );
-    case AST_NODE_TYPES.Property:
-      return (
-        parent.value === node &&
-        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
-        isInDeclaredDestination(parent.parent)
-      );
-    case AST_NODE_TYPES.SpreadElement:
-      return (
-        (parent.parent.type === AST_NODE_TYPES.ArrayExpression ||
-          parent.parent.type === AST_NODE_TYPES.ObjectExpression) &&
-        isInDeclaredDestination(parent.parent)
-      );
-    case AST_NODE_TYPES.TSAsExpression:
-    case AST_NODE_TYPES.TSTypeAssertion:
-      // `as const` keeps its operand's type; other assertions replace it.
-      return (
-        !isConstAssertion(parent.typeAnnotation) ||
-        isInDeclaredDestination(parent)
-      );
-
-    case AST_NODE_TYPES.ArrowFunctionExpression:
-      return parent.body === node && isReturnTypeDeclared(parent);
-    case AST_NODE_TYPES.ReturnStatement:
-    case AST_NODE_TYPES.YieldExpression: {
-      const functionNode = getParentFunctionNode(parent);
-      return functionNode != null && isReturnTypeDeclared(functionNode);
-    }
-
-    case AST_NODE_TYPES.CallExpression:
-    case AST_NODE_TYPES.NewExpression:
-      // A generic call's contextual type comes from its inferred signature.
-      return parent.arguments.includes(node as TSESTree.CallExpressionArgument);
-    case AST_NODE_TYPES.JSXExpressionContainer:
-    case AST_NODE_TYPES.TemplateLiteral:
-      return true;
-    case AST_NODE_TYPES.AccessorProperty:
-    case AST_NODE_TYPES.PropertyDefinition:
-      return parent.value === node && parent.typeAnnotation != null;
-    case AST_NODE_TYPES.AssignmentPattern:
-      return parent.right === node && parent.left.typeAnnotation != null;
-    case AST_NODE_TYPES.VariableDeclarator:
-      return parent.init === node && parent.id.typeAnnotation != null;
-    default:
-      return false;
-  }
-}
-
-/**
- * Whether a function's return type is declared, either by its own annotation
- * or by a declared type the function itself goes into.
- */
-function isReturnTypeDeclared(
-  node:
-    | TSESTree.ArrowFunctionExpression
-    | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression,
-): boolean {
-  return (
-    node.returnType != null ||
-    (node.type !== AST_NODE_TYPES.FunctionDeclaration &&
-      isInDeclaredDestination(node))
-  );
-}
-
-/**
  * Whether an expression whose first token is `firstToken`, placed at `node`'s
  * position, would start an `export default` and so be parsed as a function or
  * class declaration: a leading `function`, `class`, or `async function`.
@@ -695,6 +609,170 @@ export default createRule<Options, MessageIds>({
 
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    /**
+     * Whether a call infers its type arguments from its arguments: it has no
+     * explicit type arguments and its callee has a generic signature.
+     */
+    function isCallInferringTypeArguments(
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.NewExpression
+        | TSESTree.TaggedTemplateExpression,
+    ): boolean {
+      if (node.typeArguments != null) {
+        return false;
+      }
+      // An optional-chained callee (`foo?.(...)`) types as
+      // `<function> | undefined`, and a union exposes no signatures.
+      const calleeType = services
+        .getTypeAtLocation(
+          node.type === AST_NODE_TYPES.TaggedTemplateExpression
+            ? node.tag
+            : node.callee,
+        )
+        .getNonNullableType();
+      return (
+        node.type === AST_NODE_TYPES.NewExpression
+          ? calleeType.getConstructSignatures()
+          : calleeType.getCallSignatures()
+      ).some(hasTypeParams);
+    }
+
+    /**
+     * Whether an expression is an argument, or a tagged template's
+     * substitution, of a call that infers its type arguments from it. Its
+     * contextual type then comes from the inferred signature, so changing the
+     * expression's type can change what's inferred, and so the call's type.
+     */
+    function isArgumentToCallInferringTypeArguments(
+      node: TSESTree.Node,
+    ): boolean {
+      const { parent } = node;
+      switch (parent?.type) {
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          return (
+            parent.arguments.includes(
+              node as TSESTree.CallExpressionArgument,
+            ) && isCallInferringTypeArguments(parent)
+          );
+        case AST_NODE_TYPES.TemplateLiteral:
+          return (
+            parent.parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+            isCallInferringTypeArguments(parent.parent)
+          );
+        default:
+          return false;
+      }
+    }
+
+    /**
+     * Whether an expression's value goes only into a declared type, such as an
+     * annotated variable, an argument to a non-generic call, or the return of
+     * a function with a declared return type, so its own type doesn't flow on
+     * into the type of another expression or declaration. Positions whose type
+     * flows out aren't declared, even when they have a contextual type: the
+     * operand of `satisfies`, the left operand of `??` or `&&` (`a! ?? b` is
+     * typed as `a!`, without `b`), an argument to a generic call that infers
+     * its type arguments, and the return of a function without a declared
+     * return type.
+     *
+     * A variable declared with a union type is still a declared destination,
+     * even though TypeScript narrows the variable to the part of its union
+     * that its initializer's type can be assigned to, so removing a `!` can
+     * widen the variable's narrowed type, as it can for a concrete type such
+     * as `string | undefined`.
+     */
+    function isInDeclaredDestination(node: TSESTree.Node): boolean {
+      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+      switch (parent.type) {
+        // These pass their operand's type on to their own position.
+        case AST_NODE_TYPES.ArrayExpression:
+        case AST_NODE_TYPES.ChainExpression:
+          return isInDeclaredDestination(parent);
+        case AST_NODE_TYPES.LogicalExpression:
+          // `??` and `&&` use their right operand depending on the left one's
+          // value, so the left one's type decides whether the right one's type
+          // is part of the result.
+          return (
+            (parent.right === node || parent.operator === '||') &&
+            isInDeclaredDestination(parent)
+          );
+        case AST_NODE_TYPES.ConditionalExpression:
+          return parent.test !== node && isInDeclaredDestination(parent);
+        case AST_NODE_TYPES.SequenceExpression:
+          return (
+            parent.expressions.at(-1) === node &&
+            isInDeclaredDestination(parent)
+          );
+        case AST_NODE_TYPES.Property:
+          return (
+            parent.value === node &&
+            parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+            isInDeclaredDestination(parent.parent)
+          );
+        case AST_NODE_TYPES.SpreadElement:
+          return (
+            (parent.parent.type === AST_NODE_TYPES.ArrayExpression ||
+              parent.parent.type === AST_NODE_TYPES.ObjectExpression) &&
+            isInDeclaredDestination(parent.parent)
+          );
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          // `as const` keeps its operand's type; other assertions replace it.
+          return (
+            !isConstAssertion(parent.typeAnnotation) ||
+            isInDeclaredDestination(parent)
+          );
+
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+          return parent.body === node && isReturnTypeDeclared(parent);
+        case AST_NODE_TYPES.ReturnStatement:
+        case AST_NODE_TYPES.YieldExpression: {
+          const functionNode = getParentFunctionNode(parent);
+          return functionNode != null && isReturnTypeDeclared(functionNode);
+        }
+
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          return (
+            parent.arguments.includes(
+              node as TSESTree.CallExpressionArgument,
+            ) && !isArgumentToCallInferringTypeArguments(node)
+          );
+        case AST_NODE_TYPES.TemplateLiteral:
+          return !isArgumentToCallInferringTypeArguments(node);
+        case AST_NODE_TYPES.JSXExpressionContainer:
+          return true;
+        case AST_NODE_TYPES.AccessorProperty:
+        case AST_NODE_TYPES.PropertyDefinition:
+          return parent.value === node && parent.typeAnnotation != null;
+        case AST_NODE_TYPES.AssignmentPattern:
+          return parent.right === node && parent.left.typeAnnotation != null;
+        case AST_NODE_TYPES.VariableDeclarator:
+          return parent.init === node && parent.id.typeAnnotation != null;
+        default:
+          return false;
+      }
+    }
+
+    /**
+     * Whether a function's return type is declared, either by its own annotation
+     * or by a declared type the function itself goes into.
+     */
+    function isReturnTypeDeclared(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      return (
+        node.returnType != null ||
+        (node.type !== AST_NODE_TYPES.FunctionDeclaration &&
+          isInDeclaredDestination(node))
+      );
     }
 
     function getInnermostCall(
@@ -1349,11 +1427,17 @@ export default createRule<Options, MessageIds>({
           // unnecessary when their type accepts it, but only if they're
           // declared: elsewhere, such as under `satisfies` or in an inferred
           // return, the `!` also changes the type that flows out.
+          // For an argument to a generic call, the contextual type comes from
+          // the signature inferred with the `!`, so it can't show the `!` is
+          // unnecessary for a type variable.
           const contextualType =
-            getContextualType(checker, originalNode) ??
-            (isNullishTypeVariable && isInDeclaredDestination(node)
-              ? checker.getContextualType(originalNode)
-              : undefined);
+            isNullishTypeVariable &&
+            isArgumentToCallInferringTypeArguments(node)
+              ? undefined
+              : (getContextualType(checker, originalNode) ??
+                (isNullishTypeVariable && isInDeclaredDestination(node)
+                  ? checker.getContextualType(originalNode)
+                  : undefined));
           if (contextualType) {
             // Nullish flags say nothing about a type variable in the type,
             // as in `T | undefined`, so the receiver must accept the whole

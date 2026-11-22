@@ -435,6 +435,66 @@ function bar<T>(value: T) {
 }
     `,
     `
+function bar<T>(value: T, other: string): T {
+  return value! ?? other;
+}
+    `,
+    `
+function bar<T>(value: T, other: string) {
+  const result: T = value! ?? other;
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T, other: T): T {
+  return value! ?? other;
+}
+    `,
+    `
+function bar<T>(value: T, other: string): T | string {
+  return value! && other;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick?.(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: { a: U | T }): U => input.a as U;
+  return pick({ a: value! });
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run(() => value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  class Box<U> {
+    constructor(public value: U | T) {}
+  }
+  return new Box(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const tag = <U,>(strings: TemplateStringsArray, input: U | T): U =>
+    input as U;
+  return tag\`\${value!}\`;
+}
+    `,
+    `
 function bar<T>(value: T) {
   let target: { a: T };
   const result = (target = { a: value! });
@@ -3903,6 +3963,9 @@ function bar<T>(value: T): readonly [T] {
       `,
     },
     {
+      // TypeScript narrows `result` to its initializer's type, so removing the
+      // `!` widens the function's return type, as it does for a concrete type
+      // such as `string | undefined`.
       code: `
 function bar<T>(value: T | undefined) {
   const result: T | undefined = value!;
@@ -3922,6 +3985,234 @@ function bar<T>(value: T | undefined) {
 function bar<T>(value: T | undefined) {
   const result: T | undefined = value;
   return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T): T {
+  return value! || other;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: T): T {
+  return value || other;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T | null): T | null {
+  return other ?? value!;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: T | null): T | null {
+  return other ?? value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: string): T | string {
+  return other && value!;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: string): T | string {
+  return other && value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick<T>(value!);
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick<T>(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run<T>(() => value!);
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run<T>(() => value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const pick = (input: T): T => input;
+  return pick(value!);
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const pick = (input: T): T => input;
+  return pick(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const run = (callback: () => T): T => callback();
+  return run(() => value!);
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const run = (callback: () => T): T => callback();
+  return run(() => value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, list: T[]) {
+  list.push(value!);
+  return list;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, list: T[]) {
+  list.push(value);
+  return list;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  class Box {
+    constructor(public value: T) {}
+  }
+  return new Box(value!);
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  class Box {
+    constructor(public value: T) {}
+  }
+  return new Box(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T): T => input;
+  return tag\`\${value!}\`;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T): T => input;
+  return tag\`\${value}\`;
 }
       `,
     },
