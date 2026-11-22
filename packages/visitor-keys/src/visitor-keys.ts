@@ -4,8 +4,10 @@ import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 export type VisitorKeys = Record<string, readonly string[] | undefined>;
 
+type KeysOfUnion<T> = T extends unknown ? keyof T : never;
+
 type GetNodeTypeKeys<T extends AST_NODE_TYPES> = Exclude<
-  keyof Extract<TSESTree.Node, { type: T }>,
+  KeysOfUnion<Extract<TSESTree.Node, { type: T }>>,
   'loc' | 'parent' | 'range' | 'type'
 >;
 
@@ -228,7 +230,7 @@ const additionalKeys: AdditionalKeys = {
   TSMappedType: ['key', 'constraint', 'nameType', 'typeAnnotation'],
   TSMethodSignature: ['key', 'typeParameters', 'params', 'returnType'],
   TSModuleBlock: ['body'],
-  TSModuleDeclaration: ['id', 'body'],
+  TSModuleDeclaration: ['id', 'attributes', 'body'],
   TSNamedTupleMember: ['label', 'elementType'],
   TSNamespaceExportDeclaration: ['id'],
   TSNeverKeyword: [],

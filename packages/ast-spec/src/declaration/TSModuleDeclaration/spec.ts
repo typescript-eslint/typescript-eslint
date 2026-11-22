@@ -2,6 +2,7 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { Identifier } from '../../expression/Identifier/spec';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
+import type { ImportAttribute } from '../../special/ImportAttribute/spec';
 import type { TSModuleBlock } from '../../special/TSModuleBlock/spec';
 import type { TSQualifiedName } from '../../type/spec';
 import type { Literal } from '../../unions/Literal';
@@ -80,16 +81,28 @@ interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
   kind: 'module';
 }
 
+interface TSModuleDeclarationModuleWithStringIdBase extends TSModuleDeclarationModuleBase {
+  /**
+   * The import attributes that an import must have to resolve to the module.
+   * This is an empty array if the declaration has no `with` clause.
+   * @example
+   * ```ts
+   * declare module '*.css' with \{ type: 'css' \} {}
+   * ```
+   */
+  attributes: ImportAttribute[];
+  id: StringLiteral;
+}
+
 /**
  * A string module declaration that is not declared:
  * ```
  * module 'foo' {}
  * ```
  */
-export interface TSModuleDeclarationModuleWithStringIdNotDeclared extends TSModuleDeclarationModuleBase {
+export interface TSModuleDeclarationModuleWithStringIdNotDeclared extends TSModuleDeclarationModuleWithStringIdBase {
   body: TSModuleBlock;
   declare: false;
-  id: StringLiteral;
   kind: 'module';
 }
 /**
@@ -99,10 +112,9 @@ export interface TSModuleDeclarationModuleWithStringIdNotDeclared extends TSModu
  * declare module 'foo';
  * ```
  */
-export interface TSModuleDeclarationModuleWithStringIdDeclared extends TSModuleDeclarationModuleBase {
+export interface TSModuleDeclarationModuleWithStringIdDeclared extends TSModuleDeclarationModuleWithStringIdBase {
   body?: TSModuleBlock;
   declare: true;
-  id: StringLiteral;
   kind: 'module';
 }
 /**

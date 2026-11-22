@@ -55,7 +55,8 @@ declare module './generated/ast-spec' {
       | TSESTree.ExportAllDeclaration
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ImportDeclaration
-      | TSESTree.TSImportType;
+      | TSESTree.TSImportType
+      | TSESTree.TSModuleDeclarationModuleWithStringId;
   }
 
   interface ImportDefaultSpecifier {

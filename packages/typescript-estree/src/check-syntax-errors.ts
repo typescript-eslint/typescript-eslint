@@ -683,6 +683,9 @@ export function checkSyntaxError(
       }
 
       if (ts.isStringLiteral(node.name)) {
+        if (node.attributes) {
+          checkImportAttributesType(node.attributes);
+        }
         return;
       }
 
@@ -705,6 +708,69 @@ export function checkSyntaxError(
     }
 
     // No default
+  }
+}
+
+// `checkGrammarImportAttributesType` in TypeScript
+function checkImportAttributesType(attributes: ts.TypeLiteralNode): void {
+  for (const member of attributes.members) {
+    if (!ts.isPropertySignature(member)) {
+      throw createError(
+        member,
+        'An import attributes type may only contain property signatures.',
+      );
+    }
+
+    const readonlyModifier = member.modifiers?.find(
+      modifier => modifier.kind === SyntaxKind.ReadonlyKeyword,
+    );
+    if (readonlyModifier) {
+      throw createError(
+        readonlyModifier,
+        "An import attributes property cannot have a 'readonly' modifier.",
+      );
+    }
+
+    if (!member.type) {
+      throw createError(
+        member,
+        'An import attributes property must have a type annotation.',
+      );
+    }
+
+    if (member.questionToken) {
+      throw createError(
+        member,
+        'An import attributes property cannot be optional.',
+      );
+    }
+
+    if (!ts.isIdentifier(member.name) && !ts.isStringLiteral(member.name)) {
+      throw createError(
+        member.name,
+        'An import attributes property must have a string literal or identifier name.',
+      );
+    }
+
+    if (member.name.text === 'resolution-mode') {
+      throw createError(
+        member.name,
+        "'resolution-mode' is not a valid key for an import attributes type.",
+      );
+    }
+
+    if (
+      !ts.isLiteralTypeNode(member.type) ||
+      !ts.isStringLiteral(member.type.literal)
+    ) {
+      throw createError(
+        member.type,
+        'An import attributes property must have a string literal type annotation.',
+      );
+    }
+
+    // `convertChild` never sees the members, so check them as it would
+    checkSyntaxError(member, attributes, false);
   }
 }
 

@@ -10,6 +10,7 @@ Snapshot Diff:
     body: Array [
       TSModuleDeclaration {
         type: 'TSModuleDeclaration',
+-       attributes: Array [],
         body: TSModuleBlock {
           type: 'TSModuleBlock',
           body: Array [
