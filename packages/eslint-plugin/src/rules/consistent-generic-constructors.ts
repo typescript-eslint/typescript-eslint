@@ -5,6 +5,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   isClosingParenToken,
+  isGlobalScript,
   isReferenceToGlobalFunction,
   nullThrows,
   NullThrowsReasons,
@@ -52,8 +53,12 @@ export default createRule<Options, MessageIds>({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: ['constructor'],
   create(context, [mode]) {
+    // In a script, a top-level `interface Uint8Array<T> {}` augments the global
+    // type. If the file is a module after all, skipping its report is harmless.
+    const topLevelIsGlobal = isGlobalScript(context.sourceCode);
+
     return {
-      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(ArrowFunctionExpression,FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(ArrowFunctionExpression,FunctionDeclaration,FunctionExpression,TSParameterProperty) > AssignmentPattern'(
         node:
           | TSESTree.AccessorProperty
           | TSESTree.AssignmentPattern
@@ -90,6 +95,7 @@ export default createRule<Options, MessageIds>({
               typeName.name,
               typeName,
               context.sourceCode,
+              { topLevelIsGlobal },
             )
           );
         }

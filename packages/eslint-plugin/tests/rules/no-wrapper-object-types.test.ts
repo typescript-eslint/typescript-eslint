@@ -63,6 +63,39 @@ let value: Bigint;
 type T<Symbol> = Symbol;
 type U<UU> = UU extends T<infer Function> ? Function : never;
     `,
+    `
+export {};
+class Boolean {}
+namespace N {
+  namespace Boolean {}
+  let value: Boolean;
+}
+    `,
+    `
+export {};
+interface Number {
+  value: 1;
+}
+declare global {
+  let value: Number;
+}
+    `,
+    `
+interface String {
+  value: 1;
+}
+let value: String;
+    `,
+    {
+      code: `
+export {};
+interface String {
+  value: 1;
+}
+declare let value: String;
+      `,
+      filename: 'test.d.ts',
+    },
   ],
   invalid: [
     {
@@ -276,6 +309,179 @@ type U<UU> = UU extends T<infer Function> ? Function : never;
         },
       ],
       output: 'type MyType = number & string;',
+    },
+    {
+      code: `
+export {};
+namespace Number {}
+let value: Number;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: `
+export {};
+namespace Number {}
+let value: number;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace String {
+  export const value = 1;
+}
+let value: String;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: `
+export {};
+namespace String {
+  export const value = 1;
+}
+let value: string;
+      `,
+    },
+    {
+      code: `
+export {};
+function BigInt() {}
+namespace BigInt {}
+let value: BigInt;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { preferred: 'bigint', typeName: 'BigInt' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: `
+export {};
+function BigInt() {}
+namespace BigInt {}
+let value: bigint;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace Number {}
+interface MyInterface extends Number {}
+      `,
+      errors: [
+        {
+          column: 31,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface String {
+    custom(): String;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: `
+export {};
+declare global {
+  interface String {
+    custom(): string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface String {
+    value: 1;
+  }
+  let value: String;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'bannedClassType',
+        },
+      ],
+      output: `
+export {};
+declare global {
+  interface String {
+    value: 1;
+  }
+  let value: string;
+}
+      `,
+    },
+    {
+      code: `
+interface String {
+  value: 1;
+}
+declare let value: String;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { preferred: 'string', typeName: 'String' },
+          endColumn: 26,
+          endLine: 5,
+          line: 5,
+          messageId: 'bannedClassType',
+        },
+      ],
+      filename: 'test.d.ts',
+      output: `
+interface String {
+  value: 1;
+}
+declare let value: string;
+      `,
     },
   ],
 });

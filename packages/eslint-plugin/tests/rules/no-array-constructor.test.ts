@@ -56,6 +56,33 @@ Array(1, 2);
       `,
       languageOptions: { parserOptions: { sourceType: 'script' } },
     },
+    `
+export {};
+declare var Array: ArrayConstructor;
+new Array(1, 2);
+    `,
+    `
+declare const Array: ArrayConstructor;
+function create() {
+  const Array = (...items: number[]) => items;
+  return Array(1, 2);
+}
+    `,
+    `
+export {};
+namespace Array {
+  export const value = 1;
+}
+new Array(1, 2);
+    `,
+    `
+namespace Array {
+  export const enum E {
+    A,
+  }
+}
+new Array(1, 2);
+    `,
   ],
 
   invalid: [
@@ -397,6 +424,285 @@ new Array(x, y);
       ],
       output: `
 namespace Array {}
+[x, y];
+      `,
+    },
+    {
+      code: 'new Array(...xs, ...ys);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: '[...xs, ...ys];',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'Array(x, ...ys);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: '[x, ...ys];',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'new Array(...xs, 1);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: '[...xs, 1];',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'Array?.(...xs, ...ys);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: '[...xs, ...ys];',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'new Array(...xs, 1, 2);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: '[...xs, 1, 2];',
+    },
+    {
+      code: 'Array(1, ...xs, 2);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: '[1, ...xs, 2];',
+    },
+    {
+      code: noFormat`
+foo
+Array(...xs, ...ys)
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: `
+foo
+;[...xs, ...ys]
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+Array(/* a */ ...xs, ...ys);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'useLiteral',
+          suggestions: [
+            {
+              messageId: 'replaceWithLiteral',
+              output: `
+[/* a */ ...xs, ...ys];
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+new /* a */ Array(...xs, ...ys);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare var Array: ArrayConstructor;
+new Array(1, 2);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+declare var Array: ArrayConstructor;
+[1, 2];
+      `,
+    },
+    {
+      code: `
+declare var Array: ArrayConstructor;
+new Array(1, 2);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+declare var Array: ArrayConstructor;
+[1, 2];
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T;
+}
+declare var Array: ArrayConstructor;
+Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+interface Array<T> {
+  custom(): T;
+}
+declare var Array: ArrayConstructor;
+[x, y];
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  var Array: ArrayConstructor;
+}
+new Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+export {};
+declare global {
+  var Array: ArrayConstructor;
+}
+[x, y];
+      `,
+    },
+    {
+      code: `
+export {};
+namespace Array {
+  export type T = string;
+}
+new Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+export {};
+namespace Array {
+  export type T = string;
+}
 [x, y];
       `,
     },

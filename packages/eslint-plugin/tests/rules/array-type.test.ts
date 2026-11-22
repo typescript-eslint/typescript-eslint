@@ -477,6 +477,57 @@ namespace N {
       `,
       options: [{ default: 'generic' }],
     },
+    {
+      code: `
+class Container<Array> {
+  items: string[] = [];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+declare function keys(o: object): string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+declare function keys(o: object): string[];
+export {};
+      `,
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+export {};
+type Array<T> = { value: T };
+namespace N {
+  namespace Array {}
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2486,6 +2537,215 @@ declare global {
   }
 }
       `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): Array<T>;
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T;
+}
+declare function keys(o: object): string[];
+      `,
+      errors: [
+        {
+          column: 35,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): T;
+}
+declare function keys(o: object): Array<string>;
+      `,
+    },
+    {
+      code: `
+interface ReadonlyArray<T> {
+  custom(): ReadonlyArray<T>;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringArray',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'array' }],
+      output: `
+interface ReadonlyArray<T> {
+  custom(): readonly T[];
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): Array<T>;
+}
+      `,
+    },
+    {
+      code: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+    },
+    {
+      code: 'type T = [ReadonlyArray<string>?];',
+      errors: [
+        {
+          column: 11,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [(readonly string[])?];',
+    },
+    {
+      code: 'type T = [Readonly<string[]>?];',
+      errors: [
+        {
+          column: 11,
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [(readonly string[])?];',
+    },
+    {
+      code: 'type T = [Array<string>?];',
+      errors: [
+        {
+          column: 11,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [string[]?];',
+    },
+    {
+      code: 'type T = [...ReadonlyArray<string>];',
+      errors: [
+        {
+          column: 14,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [...readonly string[]];',
     },
   ],
 });

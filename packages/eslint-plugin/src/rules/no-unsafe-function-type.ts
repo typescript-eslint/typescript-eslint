@@ -2,7 +2,11 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isReferenceToGlobalFunction } from '../util';
+import {
+  createRule,
+  isGlobalScriptDeclarationFile,
+  isReferenceToGlobalFunction,
+} from '../util';
 
 export default createRule({
   name: 'no-unsafe-function-type',
@@ -23,11 +27,20 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
+    // A top-level `interface Function {}` in a global declaration file augments
+    // the global type
+    const topLevelIsGlobal = isGlobalScriptDeclarationFile(
+      context.filename,
+      context.sourceCode,
+    );
+
     function checkBannedTypes(node: TSESTree.Node): void {
       if (
         node.type === AST_NODE_TYPES.Identifier &&
         node.name === 'Function' &&
-        isReferenceToGlobalFunction('Function', node, context.sourceCode)
+        isReferenceToGlobalFunction('Function', node, context.sourceCode, {
+          topLevelIsGlobal,
+        })
       ) {
         context.report({
           node,

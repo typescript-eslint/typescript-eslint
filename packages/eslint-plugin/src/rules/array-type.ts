@@ -1,9 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isParenthesized } from '../util';
+import {
+  createRule,
+  findShadowingVariable,
+  isGlobalScriptDeclarationFile,
+  isParenthesized,
+} from '../util';
 
 /**
  * Check whatever node can be considered as simple
@@ -147,31 +151,25 @@ export default createRule<Options, MessageIds>({
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
+    // In a script, top-level declarations such as `interface Array<T> {}`
+    // augment the global type instead of hiding it. Outside declaration files,
+    // a file with no import or export may still be a module (for example, with
+    // `moduleDetection: "force"`), where reporting would point at a local type.
+    const topLevelIsGlobal =
+      context.sourceCode.ast.sourceType === 'script' ||
+      isGlobalScriptDeclarationFile(context.filename, context.sourceCode);
+
+    /**
+     * Whether a local type hides the global type `name`. Namespaces and
+     * `declare global` augmentations don't.
+     */
     function isShadowed(node: TSESTree.Node, name: string): boolean {
-      for (
-        let scope = context.sourceCode.getScope(node);
-        scope.upper;
-        scope = scope.upper
-      ) {
-        // `declare global { interface Array<T> {} }` augments the global type,
-        // and values and namespaces don't hide a global type
-        if (
-          scope.set
-            .get(name)
-            ?.defs.some(
-              def =>
-                def.isTypeDefinition &&
-                def.type !== DefinitionType.TSModuleName,
-            ) &&
-          !(
-            scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            scope.block.kind === 'global'
-          )
-        ) {
-          return true;
-        }
-      }
-      return false;
+      return !!findShadowingVariable(
+        name,
+        context.sourceCode.getScope(node),
+        'type',
+        { topLevelIsGlobal },
+      );
     }
 
     /**
@@ -311,10 +309,12 @@ export default createRule<Options, MessageIds>({
 
         const type = typeParams[0];
         const typeParens = typeNeedsParentheses(type);
-        // `readonly T[][]` and `readonly T[][number]` would apply to the outer type
+        // `readonly T[][]` and `readonly T[][number]` would apply to the outer
+        // type, and `[readonly T[]?]` isn't valid
         const parentParens =
           readonlyPrefix &&
           (node.parent.type === AST_NODE_TYPES.TSArrayType ||
+            node.parent.type === AST_NODE_TYPES.TSOptionalType ||
             (node.parent.type === AST_NODE_TYPES.TSIndexedAccessType &&
               node.parent.objectType === node)) &&
           !isParenthesized(node, context.sourceCode);

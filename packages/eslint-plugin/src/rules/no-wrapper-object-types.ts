@@ -2,7 +2,11 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isReferenceToGlobalFunction } from '../util';
+import {
+  createRule,
+  isGlobalScriptDeclarationFile,
+  isReferenceToGlobalFunction,
+} from '../util';
 
 const classNames = new Set([
   'BigInt',
@@ -33,6 +37,13 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
+    // A top-level `interface String {}` in a global declaration file augments
+    // the global type
+    const topLevelIsGlobal = isGlobalScriptDeclarationFile(
+      context.filename,
+      context.sourceCode,
+    );
+
     function checkBannedTypes(
       node: TSESTree.EntityName | TSESTree.Expression,
       includeFix: boolean,
@@ -41,7 +52,9 @@ export default createRule({
       if (
         !typeName ||
         !classNames.has(typeName) ||
-        !isReferenceToGlobalFunction(typeName, node, context.sourceCode)
+        !isReferenceToGlobalFunction(typeName, node, context.sourceCode, {
+          topLevelIsGlobal,
+        })
       ) {
         return;
       }

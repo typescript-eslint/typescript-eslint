@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isOpeningParenToken,
@@ -9,6 +9,9 @@ import {
 
 import {
   createRule,
+  findShadowingVariable,
+  isGlobalScript,
+  isReferenceToGlobalFunction,
   isStartOfExpressionStatement,
   needsPrecedingSemicolon,
 } from '../util';
@@ -23,7 +26,9 @@ export default createRule({
       recommended: 'recommended',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      replaceWithLiteral: 'Replace with an array literal.',
       useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
@@ -34,29 +39,33 @@ export default createRule({
     const sourceCode = context.sourceCode;
 
     /**
-     * Checks whether `Array` resolves to a declared value. A script's
-     * `interface Array<T>` merges into the global, and a namespace alone
-     * doesn't need to be a value.
+     * Checks whether `Array` is the global one. Types and namespaces without
+     * values don't hide it.
      */
-    function isShadowed(callee: TSESTree.Identifier): boolean {
-      for (
-        let scope: TSESLint.Scope.Scope | null = sourceCode.getScope(callee);
-        scope;
-        scope = scope.upper
-      ) {
-        const reference = scope.references.find(
-          ref => ref.identifier === callee,
-        );
-        if (reference) {
-          const variable = reference.resolved;
-          return !!variable?.defs.some(
-            def =>
-              def.type !== DefinitionType.Type &&
-              def.type !== DefinitionType.TSModuleName,
-          );
-        }
+    function isGlobalArray(callee: TSESTree.Identifier): boolean {
+      if (isReferenceToGlobalFunction('Array', callee, sourceCode)) {
+        return true;
       }
-      return false;
+
+      // In a script, a top-level `declare var Array: ArrayConstructor`
+      // redeclares the global. It emits nothing, so `Array` is the global at
+      // runtime even if TypeScript treats the file as a module.
+      const variable = findShadowingVariable(
+        'Array',
+        sourceCode.getScope(callee),
+        'value',
+      );
+      return (
+        !!variable &&
+        (variable.scope.type === ScopeType.global ||
+          variable.scope.type === ScopeType.module) &&
+        isGlobalScript(sourceCode) &&
+        variable.defs.every(
+          def =>
+            def.type === DefinitionType.Type ||
+            (def.type === DefinitionType.Variable && def.parent.declare),
+        )
+      );
     }
 
     function hasCommentsOutsideArguments(
@@ -109,25 +118,40 @@ export default createRule({
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
         !node.typeArguments &&
-        !isShadowed(node.callee)
+        isGlobalArray(node.callee)
       ) {
+        const fix = hasCommentsOutsideArguments(node)
+          ? null
+          : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+              const semicolon =
+                isStartOfExpressionStatement(node) &&
+                needsPrecedingSemicolon(sourceCode, node)
+                  ? ';'
+                  : '';
+
+              return fixer.replaceText(
+                node,
+                `${semicolon}[${getArgumentsText(node)}]`,
+              );
+            };
+
+        // With fewer than two other arguments, spread arguments can add up to
+        // a single number, which `Array` takes as the length:
+        // `new Array(...[3])` is `[, , ,]`, not `[3]`
+        const isUnsafe =
+          node.arguments.some(
+            argument => argument.type === AST_NODE_TYPES.SpreadElement,
+          ) &&
+          node.arguments.filter(
+            argument => argument.type !== AST_NODE_TYPES.SpreadElement,
+          ).length < 2;
+
         context.report({
           node,
           messageId: 'useLiteral',
-          fix: hasCommentsOutsideArguments(node)
-            ? null
-            : fixer => {
-                const semicolon =
-                  isStartOfExpressionStatement(node) &&
-                  needsPrecedingSemicolon(sourceCode, node)
-                    ? ';'
-                    : '';
-
-                return fixer.replaceText(
-                  node,
-                  `${semicolon}[${getArgumentsText(node)}]`,
-                );
-              },
+          fix: isUnsafe ? null : fix,
+          suggest:
+            isUnsafe && fix ? [{ messageId: 'replaceWithLiteral', fix }] : null,
         });
       }
     }
