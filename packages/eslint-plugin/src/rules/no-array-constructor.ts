@@ -49,7 +49,9 @@ export default createRule({
 
       // In a script, a top-level `declare var Array: ArrayConstructor`
       // redeclares the global. It emits nothing, so `Array` is the global at
-      // runtime even if TypeScript treats the file as a module.
+      // runtime even if TypeScript treats the file as a module. Other types
+      // could make `new Array(...)` mean something other than an array, and
+      // `isGlobalScript` can be wrong, so only that exact type counts.
       const variable = findShadowingVariable(
         'Array',
         sourceCode.getScope(callee),
@@ -60,10 +62,37 @@ export default createRule({
         (variable.scope.type === ScopeType.global ||
           variable.scope.type === ScopeType.module) &&
         isGlobalScript(sourceCode) &&
+        variable.references.every(reference => !reference.isWrite()) &&
         variable.defs.every(
           def =>
             def.type === DefinitionType.Type ||
-            (def.type === DefinitionType.Variable && def.parent.declare),
+            (def.type === DefinitionType.Variable &&
+              def.parent.declare &&
+              def.parent.kind === 'var' &&
+              def.node.id.type === AST_NODE_TYPES.Identifier &&
+              isGlobalArrayConstructorType(def.node.id.typeAnnotation)),
+        )
+      );
+    }
+
+    /**
+     * Checks whether a type annotation is exactly the lib's `ArrayConstructor`.
+     * Any declaration of that name in the file counts as hiding it, even one
+     * that would merge into the global, since that can change its signatures.
+     */
+    function isGlobalArrayConstructorType(
+      annotation: TSESTree.TSTypeAnnotation | undefined,
+    ): boolean {
+      const type = annotation?.typeAnnotation;
+      return (
+        type?.type === AST_NODE_TYPES.TSTypeReference &&
+        type.typeName.type === AST_NODE_TYPES.Identifier &&
+        type.typeName.name === 'ArrayConstructor' &&
+        !type.typeArguments &&
+        !findShadowingVariable(
+          'ArrayConstructor',
+          sourceCode.getScope(type),
+          'type',
         )
       );
     }

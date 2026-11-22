@@ -83,6 +83,73 @@ namespace Array {
 }
 new Array(1, 2);
     `,
+    // the file may be a module, where this `Array` returns a string
+    `
+declare var Array: { new (a: number, b: number): string };
+const arr: string = new Array(1, 2);
+    `,
+    `
+interface PairConstructor {
+  new (a: number, b: number): string;
+}
+declare var Array: PairConstructor;
+new Array(1, 2);
+    `,
+    `
+declare var Array: ArrayConstructor<string>;
+new Array(1, 2);
+    `,
+    `
+declare var { Array }: ArrayConstructor;
+new Array(1, 2);
+    `,
+    `
+declare var Array: typeof globalThis.Array;
+new Array(1, 2);
+    `,
+    `
+declare var Array: ArrayConstructor & { extra: true };
+new Array(1, 2);
+    `,
+    `
+interface ArrayConstructor {
+  new (a: number, b: number): string;
+}
+declare var Array: ArrayConstructor;
+new Array(1, 2);
+    `,
+    `
+declare let Array: ArrayConstructor;
+new Array(1, 2);
+    `,
+    // in a module, this `Array` is undefined
+    `
+var Array: ArrayConstructor;
+new Array(1, 2);
+    `,
+    `
+declare let Array: ArrayConstructor;
+Array = function () {} as any;
+new Array(1, 2);
+    `,
+    `
+declare var Array: ArrayConstructor;
+Array = function () {} as any;
+new Array(1, 2);
+    `,
+    `
+declare var Array: ArrayConstructor, Other: ArrayConstructor;
+declare var Array: { new (a: number, b: number): string };
+new Array(1, 2);
+    `,
+    {
+      code: `
+import x = require('m');
+declare var Array: ArrayConstructor;
+new Array(1, 2);
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
   ],
 
   invalid: [
@@ -653,6 +720,25 @@ interface Array<T> {
   custom(): T;
 }
 declare var Array: ArrayConstructor;
+[x, y];
+      `,
+    },
+    {
+      code: `
+declare var Other: number, Array: ArrayConstructor;
+new Array(x, y);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'useLiteral',
+        },
+      ],
+      output: `
+declare var Other: number, Array: ArrayConstructor;
 [x, y];
       `,
     },

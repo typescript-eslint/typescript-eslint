@@ -163,18 +163,10 @@ export function isReferenceToGlobalFunction(
     return true;
   }
 
-  return (
-    !findShadowingVariable(
-      calleeName,
-      ref.resolved.scope,
-      ref.isValueReference ? 'value' : 'type',
-      options,
-    ) &&
-    // a reference in `export { calleeName }` is both a type and a value
-    !(
-      ref.isValueReference &&
-      ref.isTypeReference &&
-      findShadowingVariable(calleeName, ref.resolved.scope, 'type', options)
-    )
+  return !findShadowingVariable(
+    calleeName,
+    ref.resolved.scope,
+    ref.isValueReference ? 'value' : 'type',
+    options,
   );
 }

@@ -21,10 +21,11 @@ function isModuleIndicator(node: TSESTree.ProgramStatement): boolean {
 
 /**
  * Whether TypeScript treats the file as a global script rather than a module:
- * either it's parsed as a script, or no top-level statement is an import or
- * export. Top-level declarations in such a file are globals, so they merge
- * with (augment) lib declarations of the same name, even though ESLint's scope
- * analysis still puts them in a module scope.
+ * no top-level statement is an import or export. Top-level declarations in
+ * such a file are globals, so they merge with (augment) lib declarations of
+ * the same name, even though ESLint's scope analysis may still put them in a
+ * module scope. ESLint's `sourceType` doesn't matter here: TypeScript treats a
+ * file with an import or export as a module even when it's parsed as a script.
  *
  * This follows TypeScript's default `moduleDetection` (`"auto"`) using only the
  * AST. It doesn't detect files that TypeScript makes modules for other reasons:
@@ -34,8 +35,5 @@ function isModuleIndicator(node: TSESTree.ProgramStatement): boolean {
 export function isGlobalScript(
   sourceCode: Readonly<Pick<TSESLint.SourceCode, 'ast'>>,
 ): boolean {
-  return (
-    sourceCode.ast.sourceType === 'script' ||
-    !sourceCode.ast.body.some(isModuleIndicator)
-  );
+  return !sourceCode.ast.body.some(isModuleIndicator);
 }

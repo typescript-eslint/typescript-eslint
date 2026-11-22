@@ -50,7 +50,19 @@ describe(isGlobalScript, () => {
     },
   );
 
-  it('returns true for a file parsed as a script', () => {
-    expect(check('interface Array<T> {}\nexport {};', 'script')).toBe(true);
+  it('returns true for a file parsed as a script with no import or export', () => {
+    expect(check('interface Array<T> {}', 'script')).toBe(true);
   });
+
+  it.for([
+    ['interface Array<T> {}\nexport {};'],
+    ['export const a = 1;'],
+    ['import x = require("m");'],
+    ['export = Foo;'],
+  ] as const)(
+    'returns false for a file parsed as a script with a top-level import or export: %s',
+    ([code], { expect }) => {
+      expect(check(code, 'script')).toBe(false);
+    },
+  );
 });
