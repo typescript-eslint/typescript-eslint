@@ -1,10 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import {
-  AST_NODE_TYPES,
-  ASTUtils,
-  ESLintUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
+import { needsPrecedingSemicolon } from './needsPrecedingSemiColon';
 
 interface WrappingFixerParams {
   /**
@@ -56,7 +54,10 @@ export function getWrappingFixer(
     });
 
     if (!wrap) {
-      return fixer.replaceText(node, innerCodes.join(''));
+      return fixer.replaceText(
+        node,
+        addSemicolonIfNeeded(innerCodes.join(''), node, sourceCode),
+      );
     }
 
     // do the wrapping
@@ -72,13 +73,33 @@ export function getWrappingFixer(
       code = `(${code})`;
     }
 
-    // check if we need to insert semicolon
-    if (/^[`([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
-      code = `;${code}`;
-    }
-
-    return fixer.replaceText(node, code);
+    return fixer.replaceText(
+      node,
+      addSemicolonIfNeeded(code, node, sourceCode),
+    );
   };
+}
+
+/**
+ * Prefixes the code with a semicolon if it starts with a token that could
+ * continue the previous line, such as `(`, `[`, `` ` ``, `/`, `+`, `-` or `<`,
+ * and it's replacing a node at the start of an expression statement that
+ * relies on automatic semicolon insertion.
+ */
+function addSemicolonIfNeeded(
+  code: string,
+  node: TSESTree.Node,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): string {
+  if (!/^[(+\-/<[`]/.test(code)) {
+    return code;
+  }
+
+  const statement = getExpressionStatementStartingWith(node);
+
+  return statement && needsPrecedingSemicolon(sourceCode, statement, code)
+    ? `;${code}`
+    : code;
 }
 /**
  * If the node to be moved and the destination node require parentheses, include parentheses in the node to be moved.
@@ -141,7 +162,8 @@ export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
     parent.type === AST_NODE_TYPES.BinaryExpression ||
     parent.type === AST_NODE_TYPES.LogicalExpression ||
     parent.type === AST_NODE_TYPES.ConditionalExpression ||
-    parent.type === AST_NODE_TYPES.AwaitExpression
+    parent.type === AST_NODE_TYPES.AwaitExpression ||
+    parent.type === AST_NODE_TYPES.TSNonNullExpression
   ) {
     return true;
   }
@@ -172,92 +194,25 @@ export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
 }
 
 /**
- * Returns true if a node is at the beginning of expression statement and the statement above doesn't end with semicolon.
- * Doesn't check if the node begins with `(`, `[` or `` ` ``.
+ * Returns the expression statement that `node` is at the very start of, such
+ * as the statement of `a` in `a.b?.(c) + d;`, or `undefined` if there's none.
+ * A node wrapped in parentheses isn't at the start of its statement, since the
+ * parenthesis comes first.
  */
-function isMissingSemicolonBefore(
+function getExpressionStatementStartingWith(
   node: TSESTree.Node,
-  sourceCode: TSESLint.SourceCode,
-): boolean {
-  for (;;) {
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const parent = node.parent!;
+): TSESTree.ExpressionStatement | undefined {
+  let current = node;
 
-    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
-      const block = parent.parent;
-      if (
-        block.type === AST_NODE_TYPES.Program ||
-        block.type === AST_NODE_TYPES.BlockStatement
-      ) {
-        // parent is an expression statement in a block
-        const statementIndex = block.body.indexOf(parent);
-        const previousStatement = block.body[statementIndex - 1];
-        if (
-          statementIndex > 0 &&
-          ESLintUtils.nullThrows(
-            sourceCode.getLastToken(previousStatement),
-            'Mismatched semicolon and block',
-          ).value !== ';'
-        ) {
-          return true;
-        }
-      }
+  while (current.type !== AST_NODE_TYPES.ExpressionStatement) {
+    const parent = current.parent;
+    if (parent?.range[0] !== current.range[0]) {
+      return undefined;
     }
-
-    if (!isLeftHandSide(node)) {
-      return false;
-    }
-
-    node = parent;
-  }
-}
-
-/**
- * Checks if a node is LHS of an operator.
- */
-function isLeftHandSide(node: TSESTree.Node): boolean {
-  // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const parent = node.parent!;
-
-  // a++
-  if (parent.type === AST_NODE_TYPES.UpdateExpression) {
-    return true;
+    current = parent;
   }
 
-  // a + b
-  if (
-    (parent.type === AST_NODE_TYPES.BinaryExpression ||
-      parent.type === AST_NODE_TYPES.LogicalExpression ||
-      parent.type === AST_NODE_TYPES.AssignmentExpression) &&
-    node === parent.left
-  ) {
-    return true;
-  }
-
-  // a ? b : c
-  if (
-    parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    node === parent.test
-  ) {
-    return true;
-  }
-
-  // a(b)
-  if (parent.type === AST_NODE_TYPES.CallExpression && node === parent.callee) {
-    return true;
-  }
-
-  // a`b`
-  if (
-    parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-    node === parent.tag
-  ) {
-    return true;
-  }
-
-  return false;
+  return current;
 }
 
 /**

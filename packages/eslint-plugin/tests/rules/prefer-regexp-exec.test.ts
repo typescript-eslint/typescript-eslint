@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/prefer-regexp-exec';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -380,6 +382,122 @@ function temp(text: string): void {
         },
       ],
       output: "RegExp('thing').exec('something');",
+    },
+    // the regex literal mustn't continue the previous statement
+    {
+      code: noFormat`
+declare let x: number;
+declare const s: string;
+x = 1
+s.match(/a/)?.forEach(m => m);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const s: string;
+x = 1
+;(/a/.exec(s))?.forEach(m => m);
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const s: string;
+x = 1
+s.match(/a/i);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const s: string;
+x = 1
+;/a/i.exec(s);
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const s: string;
+x = 1
+s.match(/a/)!.length;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const s: string;
+x = 1
+;(/a/.exec(s))!.length;
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const s: string;
+x++
+s.match(/a/);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const s: string;
+x++
+;/a/.exec(s);
+      `,
+    },
+    {
+      code: `
+declare let x: number;
+declare const s: string;
+x = 1;
+s.match(/a/);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const s: string;
+x = 1;
+/a/.exec(s);
+      `,
     },
   ],
 });

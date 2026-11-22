@@ -2848,5 +2848,611 @@ class Test {
 }
       `,
     },
+    // removing `public` mustn't join the member onto the previous field's initializer
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;[k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public [Symbol.iterator]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Symbol.iterator', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;[Symbol.iterator]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;*gen() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public in() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'in', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;in() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public instanceof() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'instanceof', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;instanceof() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = o
+  public ['m'] = 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'm', type: 'class property' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = o
+  ;['m'] = 2;
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public in = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'in', type: 'class property' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;in = 1;
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public /* comment */ [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  ;/* comment */ [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y++
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y++
+  ;*gen() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = function () {}
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = function () {}
+  ;[k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  accessor x = y
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  accessor x = y
+  ;[k]() {}
+}
+      `,
+    },
+    // ASI already ends the field, so `public` is just removed
+    {
+      code: noFormat`
+class Test {
+  x = y++
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y++
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = () => {}
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = () => {}
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x: number
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x: number
+  *gen() {}
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  x = y;
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y;
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public as() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'as', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  as() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public satisfies() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'satisfies', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  satisfies() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public static [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  static [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public readonly [k] = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'class property' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  readonly [k] = 1;
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  public get [k]() {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'get property accessor' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  get [k]() {
+    return 1;
+  }
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y
+  @dec public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y
+  @dec [k]() {}
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  m() {}
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  m() {}
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test extends Base {
+  x = y
+  public override [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test extends Base {
+  x = y
+  override [k]() {}
+}
+      `,
+    },
   ],
 });

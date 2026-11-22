@@ -206,6 +206,39 @@ ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
         ;(void wrappedMe)\`\`
       `,
     },
+    {
+      code: `
+        dontWrap
+        wrapMe.prop
+      `,
+      errors: [{ messageId: 'addVoid' }],
+      output: `
+        dontWrap
+        ;(void wrappedMe).prop
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        wrapMe?.prop
+      `,
+      errors: [{ messageId: 'addVoid' }],
+      output: `
+        dontWrap
+        ;(void wrappedMe)?.prop
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        wrapMe!.prop
+      `,
+      errors: [{ messageId: 'addVoid' }],
+      output: `
+        dontWrap
+        ;(void wrappedMe)!.prop
+      `,
+    },
 
     // shouldn't add a semi when not necessary
     {
@@ -257,6 +290,28 @@ ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
       errors: [{ messageId: 'addVoid' }],
       output: `
         if (true) (void wrappedMe) && f()
+      `,
+    },
+    {
+      code: `
+        if (true)
+          wrapMe && f()
+      `,
+      errors: [{ messageId: 'addVoid' }],
+      output: `
+        if (true)
+          (void wrappedMe) && f()
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        f(wrapMe.prop)
+      `,
+      errors: [{ messageId: 'addVoid' }],
+      output: `
+        dontWrap
+        f((void wrappedMe).prop)
       `,
     },
     {
@@ -332,6 +387,255 @@ ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
       code: '() => fn("string")',
       errors: [{ messageId: 'removeFunction' }],
       output: '() => "string"',
+    },
+  ],
+  valid: [],
+});
+
+const unwrapFunctionRule = createRule({
+  create(context) {
+    const report = (node: TSESTree.CallExpression): void => {
+      context.report({
+        fix: getWrappingFixer({
+          innerNode: [node.arguments[0]],
+          node,
+          sourceCode: context.sourceCode,
+        }),
+        messageId: 'unwrapFunction',
+        node,
+      });
+    };
+
+    return {
+      'CallExpression[callee.name="unwrap"]': report,
+    };
+  },
+  meta: {
+    docs: {
+      description:
+        'Replace a call with its first argument, without a wrap, for test purposes.',
+    },
+    fixable: 'code',
+    messages: {
+      unwrapFunction: 'Please unwrap this function',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'unwrap-function',
+});
+
+ruleTester.run('getWrappingFixer - unwrapFunctionRule', unwrapFunctionRule, {
+  invalid: [
+    // should add a semi when the code could continue the previous line
+    {
+      code: `
+        dontWrap
+        unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        ;(-a)
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        unwrap([a])[0]
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        ;[a][0]
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        unwrap(/a/).source
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        ;/a/.source
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        unwrap(\`a\`)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        ;(\`a\`)
+      `,
+    },
+    {
+      code: `
+        dontWrap++
+        unwrap(/a/).source
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap++
+        ;/a/.source
+      `,
+    },
+
+    // shouldn't add a semi when not necessary
+    {
+      code: `
+        dontWrap;
+        unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap;
+        (-a)
+      `,
+    },
+    {
+      code: `
+        dontWrap++
+        unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap++
+        (-a)
+      `,
+    },
+    {
+      code: `
+        unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        (-a)
+      `,
+    },
+    {
+      code: `
+        function dontWrap() {}
+        unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        function dontWrap() {}
+        (-a)
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        const b = unwrap(-a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        const b = (-a)
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        ;(unwrap([a]))
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        ;([a])
+      `,
+    },
+    {
+      code: `
+        dontWrap
+        unwrap(a)
+      `,
+      errors: [{ messageId: 'unwrapFunction' }],
+      output: `
+        dontWrap
+        a
+      `,
+    },
+  ],
+  valid: [],
+});
+
+const negateRule = createRule({
+  create(context) {
+    const report = (node: TSESTree.CallExpression): void => {
+      context.report({
+        fix: getWrappingFixer({
+          innerNode: [node.arguments[0]],
+          node,
+          sourceCode: context.sourceCode,
+          wrap: code => `-${code}`,
+        }),
+        messageId: 'negate',
+        node,
+      });
+    };
+
+    return {
+      'CallExpression[callee.name="negate"]': report,
+    };
+  },
+  meta: {
+    docs: {
+      description: 'Replace a call with a negation, for test purposes.',
+    },
+    fixable: 'code',
+    messages: {
+      negate: 'Please negate this instead',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'negate',
+});
+
+ruleTester.run('getWrappingFixer - negateRule', negateRule, {
+  invalid: [
+    // should add a semi before a binary operator that would continue the previous line
+    {
+      code: `
+        dontWrap
+        negate(a)
+      `,
+      errors: [{ messageId: 'negate' }],
+      output: `
+        dontWrap
+        ;-a
+      `,
+    },
+    {
+      code: `
+        dontWrap++
+        negate(a)
+      `,
+      errors: [{ messageId: 'negate' }],
+      output: `
+        dontWrap++
+        ;-a
+      `,
+    },
+
+    // shouldn't add a semi when not necessary
+    {
+      code: `
+        dontWrap;
+        negate(a)
+      `,
+      errors: [{ messageId: 'negate' }],
+      output: `
+        dontWrap;
+        -a
+      `,
     },
   ],
   valid: [],

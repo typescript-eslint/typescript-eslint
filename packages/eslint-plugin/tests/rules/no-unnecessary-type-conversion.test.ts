@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unnecessary-type-conversion';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -1043,6 +1045,391 @@ threeOrFour;
               output: `
 declare const threeOrFour: 3 | 4;
 threeOrFour satisfies number;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    // the remaining code mustn't continue the previous statement
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+Number(-n);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;(-n);
+      `,
+            },
+            {
+              data: { type: 'number' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;(-n) satisfies number;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+String(\`\${s}\`);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;(\`\${s}\`);
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;(\`\${s}\`) satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+String([s][0]);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;[s][0];
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;[s][0] satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+String(/a/.source);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;/a/.source;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+;/a/.source satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const a: string;
+declare const b: string;
+const chars: string[] = []
+String(a + b).split('').forEach(c => chars.push(c));
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const a: string;
+declare const b: string;
+const chars: string[] = []
+;(a + b).split('').forEach(c => chars.push(c));
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const a: string;
+declare const b: string;
+const chars: string[] = []
+;((a + b) satisfies string).split('').forEach(c => chars.push(c));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x++
+Number(-n);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x++
+(-n);
+      `,
+            },
+            {
+              data: { type: 'number' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x++
+(-n) satisfies number;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1;
+Number(-n);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'number', violation: 'Passing a number to Number()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1;
+(-n);
+      `,
+            },
+            {
+              data: { type: 'number' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1;
+(-n) satisfies number;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+String(s);
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+s;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare let x: number;
+declare const n: number;
+declare const s: string;
+x = 1
+s satisfies string;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string;
+String(s)!.length;
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          data: { type: 'string', violation: 'Passing a string to String()' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+declare const s: string;
+s!.length;
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+declare const s: string;
+(s satisfies string)!.length;
       `,
             },
           ],
