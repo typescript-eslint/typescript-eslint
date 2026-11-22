@@ -19,9 +19,6 @@ const oldTypeScriptSkippedTests = [
   './rules/no-unsafe-enum-assignment.test.ts',
 ];
 
-// Sharded CI jobs run this package as their only Nx task, so Vitest can use every core.
-const isSharded = process.argv.some(arg => arg.startsWith('--shard'));
-
 /**
  * Vitest shards by path hash, which leaves one shard ~1.7x slower than another.
  * Greedily balance by file size instead.
@@ -74,7 +71,6 @@ const vitestConfig: ViteUserConfig = mergeConfig(
         ...(isOldTypeScript ? oldTypeScriptSkippedTests : []),
       ],
 
-      maxWorkers: isSharded ? '100%' : undefined,
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
 
