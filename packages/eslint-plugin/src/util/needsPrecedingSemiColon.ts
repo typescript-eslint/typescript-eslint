@@ -46,10 +46,45 @@ const NODE_TYPES_BY_KEYWORD: Record<string, TSESTree.AST_NODE_TYPES | null> = {
 const PUNCTUATORS = new Set([';', ':', '{', '=>']);
 
 /*
- * Before an opening parenthesis, bracket or backtick, postfix `++` and `--` always trigger ASI, but a binary operator
- * such as `+`, `-`, `/` or `<` continues the expression, as in `x++\n-y`.
+ * Postfix `++` and `--` can't be called, indexed or tagged, so before an opening parenthesis, bracket or backtick they
+ * always trigger ASI, but a binary operator continues the expression, as in `x++\n-y`.
  */
 const UPDATE_OPERATORS = new Set(['--', '++']);
+
+/*
+ * Whether text starts with a binary operator such as `+`, `-`, `/`, `<`, `*`, `in` or `instanceof`, which continues
+ * an expression that can't be called, indexed or tagged, such as `x++` or `x as {}`. A prefix `++` or `--` doesn't.
+ */
+function startsWithBinaryOperator(text: string): boolean {
+  return (
+    /^(?:[-%&*+/<>^|]|in(?:stanceof)?(?![$\p{ID_Continue}]))/u.test(text) &&
+    !/^(?:\+\+|--)/.test(text)
+  );
+}
+
+/**
+ * Whether a closing brace ends the type of an `as` or `satisfies` expression, as in `x as {}`,
+ * `x satisfies { [K in Y]: 1 }` or `x as () => {}`.
+ */
+function endsTypeAssertion(
+  braceNode: TSESTree.Node,
+  braceToken: TSESTree.Token,
+): boolean {
+  for (
+    let current: TSESTree.Node | undefined = braceNode;
+    current?.range[1] === braceToken.range[1];
+    current = current.parent
+  ) {
+    if (
+      current.type === AST_NODE_TYPES.TSAsExpression ||
+      current.type === AST_NODE_TYPES.TSSatisfiesExpression
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /*
  * Statements that can contain an `ExpressionStatement` after a closing parenthesis.
@@ -67,13 +102,13 @@ const STATEMENTS = new Set([
 
 /**
  * Determines whether a token that could continue the previous line, such as an opening parenthesis `(`, bracket `[`,
- * backtick ``` ` ```, `+`, `-`, `/` or `<`, needs to be preceded by a semicolon.
+ * backtick ``` ` ```, `+`, `-`, `/`, `<`, `*`, `in` or `instanceof`, needs to be preceded by a semicolon.
  * This token should be at the start of an `ExpressionStatement`, a `MethodDefinition` or at the start of the body of
  * an `ArrowFunctionExpression`.
  * @param sourceCode The source code object.
  * @param node A node at the position where the token will be inserted.
  * @param nextTokenText The text that will start at `node`'s position. Defaults to an opening parenthesis; only its
- * first character is checked.
+ * first token is checked.
  * @returns Whether a semicolon is required before the token.
  */
 export function needsPrecedingSemicolon(
@@ -95,7 +130,7 @@ export function needsPrecedingSemicolon(
     prevToken.type === AST_TOKEN_TYPES.Punctuator &&
     UPDATE_OPERATORS.has(prevToken.value)
   ) {
-    return !/^[(`[]/.test(nextTokenText);
+    return startsWithBinaryOperator(nextTokenText);
   }
 
   const prevNode = sourceCode.getNodeByRangeIndex(prevToken.range[0]);
@@ -109,6 +144,14 @@ export function needsPrecedingSemicolon(
   }
 
   if (isClosingBraceToken(prevToken)) {
+    if (
+      (prevNode.type === AST_NODE_TYPES.TSTypeLiteral ||
+        prevNode.type === AST_NODE_TYPES.TSMappedType) &&
+      endsTypeAssertion(prevNode, prevToken)
+    ) {
+      return startsWithBinaryOperator(nextTokenText);
+    }
+
     return (
       (prevNode.type === AST_NODE_TYPES.BlockStatement &&
         prevNode.parent.type === AST_NODE_TYPES.FunctionExpression &&

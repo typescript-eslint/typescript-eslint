@@ -121,8 +121,12 @@ export default createRule({
           context.sourceCode.getTokenAfter(asyncToken),
           'There will always be a token after the "async" keyword.',
         );
+        // Only a punctuator such as `[`, `(`, `*` or `<`, or a method named
+        // `in` or `instanceof`, can continue the previous line.
         const addSemiColon =
-          nextToken.type === AST_TOKEN_TYPES.Punctuator &&
+          (nextToken.type === AST_TOKEN_TYPES.Punctuator ||
+            nextToken.value === 'in' ||
+            nextToken.value === 'instanceof') &&
           // `static async *a()` becomes `static *a()`, which ASI handles
           context.sourceCode.getFirstToken(nodeWithAsyncKeyword) ===
             asyncToken &&

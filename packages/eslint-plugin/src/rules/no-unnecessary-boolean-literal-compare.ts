@@ -9,8 +9,10 @@ import {
   getConstraintInfo,
   getParserServices,
   isConditionalTest,
+  isStartOfExpressionStatement,
   isStrongPrecedenceNode,
   isWeakPrecedenceParent,
+  needsPrecedingSemicolon,
 } from '../util';
 
 export type MessageIds =
@@ -335,6 +337,20 @@ export default createRule<Options, MessageIds>({
 
             if (mayNeedParentheses && isWeakPrecedenceParent(mutatedNode)) {
               replacementText = parenthesize(replacementText);
+            }
+
+            // A statement relying on ASI could now continue the previous
+            // line, as in `a = b\n(c ?? false) && d()`.
+            if (
+              /^[-(+/<[`]/.test(replacementText) &&
+              isStartOfExpressionStatement(mutatedNode) &&
+              needsPrecedingSemicolon(
+                context.sourceCode,
+                mutatedNode,
+                replacementText,
+              )
+            ) {
+              replacementText = `;${replacementText}`;
             }
 
             return fixer.replaceText(mutatedNode, replacementText);

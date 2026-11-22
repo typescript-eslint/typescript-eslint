@@ -1935,6 +1935,416 @@ class A {
       ],
     },
     {
+      code: noFormat`
+class A {
+  a = 0
+  async in() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'in'" },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  ;in() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  async instanceof() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'instanceof'" },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  ;instanceof() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let b: number;
+class A {
+  a = b++
+  async in() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'in'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare let b: number;
+class A {
+  a = b++
+  ;in() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown;
+class A {
+  a = b as number
+  async instanceof() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'instanceof'" },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown;
+class A {
+  a = b as number
+  ;instanceof() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = {}
+  async in() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'in'" },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = {}
+  ;in() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  #a = 0
+  async instanceof() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'instanceof'" },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  #a = 0
+  ;instanceof() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown;
+class A {
+  a = b as {}
+  async *c() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async generator method 'c'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown;
+class A {
+  a = b as {}
+  ;*c() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown;
+class A {
+  a = b satisfies {}
+  async in() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'in'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown;
+class A {
+  a = b satisfies {}
+  ;in() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown;
+class A {
+  a = b as { [K in string]: 1 }
+  async instanceof() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'instanceof'" },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown;
+class A {
+  a = b as { [K in string]: 1 }
+  ;instanceof() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown;
+class A {
+  a = b as () => {}
+  async *c() {
+    yield 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async generator method 'c'" },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown;
+class A {
+  a = b as () => {}
+  ;*c() {
+    yield 1;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: unknown; declare const c: string;
+class A {
+  a = b as {}
+  async [c]() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'Async method' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+declare const b: unknown; declare const c: string;
+class A {
+  a = b as {}
+  [c]() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  a = 0
+  async 'in'() {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: "Async method 'in'" },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAwait',
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+class A {
+  a = 0
+  'in'() {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 type AsyncNumber<T> = Promise<T>;
 async function returnsNumber(): AsyncNumber<number> {

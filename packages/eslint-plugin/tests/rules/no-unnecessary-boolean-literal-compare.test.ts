@@ -1298,5 +1298,150 @@ declare const y: boolean | undefined;
 (x || y) ?? false;
       `,
     },
+    // the parenthesized fix would otherwise continue the previous line
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+;(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+true === b && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+;(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1;
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1;
+(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+if (b) {}
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+if (b) {}
+(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === true
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b ?? false
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === false || f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+!(b ?? true) || f()
+      `,
+    },
   ],
 });

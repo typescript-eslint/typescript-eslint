@@ -3106,6 +3106,8 @@ class Test {
   public [k]() {}
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3297,6 +3299,158 @@ class Test {
 class Test {
   x = y
   satisfies() {}
+}
+      `,
+    },
+    // a binary operator continues an `as` or `satisfies` type that ends in a brace
+    {
+      code: noFormat`
+class Test {
+  x = y as {}
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y as {}
+  ;*gen() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y satisfies {}
+  public in() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'in', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y satisfies {}
+  ;in() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y as { [K in T]: 1 }
+  public instanceof() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'instanceof', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y as { [K in T]: 1 }
+  ;instanceof() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x = y as () => {}
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y as () => {}
+  ;*gen() {}
+}
+      `,
+    },
+    // but a type can't be indexed or called across a line break
+    {
+      code: noFormat`
+class Test {
+  x = y as {}
+  public [k]() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'k', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x = y as {}
+  [k]() {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  x: {}
+  public *gen() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'gen', type: 'method definition' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'unwantedPublicAccessibility',
+        },
+      ],
+      options: [{ accessibility: 'no-public' }],
+      output: `
+class Test {
+  x: {}
+  *gen() {}
 }
       `,
     },
