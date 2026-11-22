@@ -37,7 +37,10 @@ import type { AssertionOptions } from './types/AssertionOptions';
 
 import { TestFramework } from './TestFramework';
 import { ajvBuilder } from './utils/ajv';
-import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
+import {
+  cloneDeeplyExcludesParent,
+  isEqualToCloneExcludingParent,
+} from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
 import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
 import { freezeDeeply } from './utils/freezeDeeply';
@@ -887,8 +890,12 @@ export class RuleTester extends TestFramework {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
       // is definitely assigned within the `@rule-tester/validate-ast` rule
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      afterAST: cloneDeeplyExcludesParent(afterAST!),
+      // Only clone the AST (for the assertion diff) when it actually changed.
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      afterAST: isEqualToCloneExcludingParent(beforeAST!, afterAST!)
+        ? beforeAST!
+        : cloneDeeplyExcludesParent(afterAST!),
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     };
   }
 
