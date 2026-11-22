@@ -565,7 +565,7 @@ jobs:
           node-version: 22
 
       - name: Run eslint-plugin unit tests with tsgo backend coverage
-        run: pnpm exec nx test eslint-plugin -- --shard=${{ matrix.shard }} --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
+        run: pnpm exec nx test eslint-plugin -- --shard=${{ matrix.shard }} --coverage --coverage.provider=v8 --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
           NX_SKIP_NX_CACHE: true # TEMP: measure real test time
