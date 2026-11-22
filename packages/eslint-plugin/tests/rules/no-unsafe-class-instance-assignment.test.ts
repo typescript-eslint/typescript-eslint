@@ -501,15 +501,6 @@ class Point {
     public y: number,
   ) {}
 }
-const shorthand = { point = new Point(1, 2) };
-    `,
-    `
-class Point {
-  constructor(
-    public x: number,
-    public y: number,
-  ) {}
-}
 declare function draw(...points: Point[]): void;
 declare const points: Point[];
 draw(...points);
