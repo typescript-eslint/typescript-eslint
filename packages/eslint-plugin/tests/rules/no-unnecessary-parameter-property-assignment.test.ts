@@ -1451,9 +1451,12 @@ class Foo {
     `
 class Foo {
   f!: () => void;
-  constructor(public foo: string) {
+  constructor(
+    public foo: string,
+    g: () => void,
+  ) {
     this.f =
-      (0,
+      (g(),
       function (this: Foo) {
         this.foo = 'x';
       });
@@ -1587,9 +1590,11 @@ class Foo {
     `
 abstract class Foo {
   constructor(public foo: string) {
-    this.g = () => {
-      this.foo = 'x';
-    };
+    (() => {
+      this.g = () => {
+        this.foo = 'x';
+      };
+    })();
     this.foo = foo;
   }
   abstract set g(value: () => void);
@@ -1608,6 +1613,61 @@ class Foo extends Base {
     this.g = this.f = () => {
       this.foo = 'x';
     };
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (this as Foo).foo = 'x';
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  bar = () => {
+    (this as Foo).foo = 'x';
+  };
+  constructor(public foo: string) {
+    this.bar();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    const o: { g?: () => void } = {};
+    this.f = o.g = function (this: Foo) {
+      this.foo = 'x';
+    }.bind(this);
+    o.g();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    (function (this: Foo) {
+      this.foo = 'x';
+    }).bind(this)();
+    this.foo = foo;
+  }
+}
+    `,
+    `
+class Foo {
+  g!: () => void;
+  constructor(public foo: string) {
+    const o: { f?: () => void } = {};
+    this.g = o.f = () => {
+      this.foo = 'x';
+    };
+    o.f!();
     this.foo = foo;
   }
 }
@@ -3085,12 +3145,17 @@ class Foo {
       code: `
 class Foo {
   f!: unknown;
-  constructor(public foo: string) {
-    this.f = function (this: Foo) {
+  constructor(
+    public foo: string,
+    g: (value?: unknown) => void,
+  ) {
+    this.f = (g(),
+    function (this: Foo) {
       this.foo = 'x';
-    }
+    })
       ? 1
       : 2;
+    g(this.f);
     this.foo = foo;
   }
 }
@@ -3099,8 +3164,8 @@ class Foo {
         {
           column: 5,
           endColumn: 19,
-          endLine: 10,
-          line: 10,
+          endLine: 15,
+          line: 15,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -3206,6 +3271,195 @@ class Foo extends Base {
           endColumn: 19,
           endLine: 12,
           line: 12,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(public foo: string) {
+    this.f = function (this: Foo) {
+      this.foo = 'x';
+    } as () => void;
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(
+    public foo: string,
+    condition: boolean,
+  ) {
+    this.f = condition
+      ? function (this: Foo) {
+          this.foo = 'x';
+        }
+      : () => {};
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 13,
+          line: 13,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(
+    public foo: string,
+    g?: () => void,
+  ) {
+    this.f =
+      g ||
+      function (this: Foo) {
+        this.foo = 'x';
+      };
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 13,
+          line: 13,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f!: () => void;
+  constructor(
+    public foo: string,
+    g: () => void,
+  ) {
+    this.f =
+      (g(),
+      function (this: Foo) {
+        this.foo = 'x';
+      });
+    this.foo = foo;
+    this.f();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 13,
+          line: 13,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const h = function (this: Foo) {
+      this.foo = 'x';
+    }.bind(this);
+    this.foo = foo;
+    h();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    const o = {
+      h: function (this: Foo) {
+        this.foo = 'x';
+      }.bind(this) as () => void,
+    };
+    this.foo = foo;
+    o.h();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    (this as Foo).foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo = <string>foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],

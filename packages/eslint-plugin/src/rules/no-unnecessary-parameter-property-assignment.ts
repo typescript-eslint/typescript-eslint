@@ -78,12 +78,16 @@ export default createRule({
       );
     }
 
+    /**
+     * Whether `node` is a property of `this`, as in `this.bar`, `this[key]`
+     * or `(this as any).bar`.
+     */
     function isThisMemberExpression(
       node: TSESTree.Node,
     ): node is TSESTree.MemberExpression {
       return (
         node.type === AST_NODE_TYPES.MemberExpression &&
-        node.object.type === AST_NODE_TYPES.ThisExpression
+        skipTypeWrappers(node.object).type === AST_NODE_TYPES.ThisExpression
       );
     }
 
@@ -242,19 +246,6 @@ export default createRule({
       );
     }
 
-    function getIdentifier(node: TSESTree.Node): TSESTree.Identifier | null {
-      if (node.type === AST_NODE_TYPES.Identifier) {
-        return node;
-      }
-      if (
-        node.type === AST_NODE_TYPES.TSAsExpression ||
-        node.type === AST_NODE_TYPES.TSNonNullExpression
-      ) {
-        return getIdentifier(node.expression);
-      }
-      return null;
-    }
-
     /**
      * Whether `node` is an arrow function IIFE that runs all of its body
      * immediately. An async one may stop at an `await` and run the rest later.
@@ -300,27 +291,53 @@ export default createRule({
       return undefined;
     }
 
+    /**
+     * Whether `node` only changes the type of its expression, as in
+     * `value as Type`, `<Type>value`, `value!` or `value satisfies Type`.
+     */
+    function isTypeWrapper(
+      node: TSESTree.Node,
+    ): node is
+      | TSESTree.TSAsExpression
+      | TSESTree.TSNonNullExpression
+      | TSESTree.TSSatisfiesExpression
+      | TSESTree.TSTypeAssertion {
+      return (
+        isTypeAssertion(node) ||
+        node.type === AST_NODE_TYPES.TSNonNullExpression ||
+        node.type === AST_NODE_TYPES.TSSatisfiesExpression
+      );
+    }
+
     function skipTypeWrappers(node: TSESTree.Node): TSESTree.Node {
       let current = node;
-      while (
-        isTypeAssertion(current) ||
-        current.type === AST_NODE_TYPES.TSNonNullExpression ||
-        current.type === AST_NODE_TYPES.TSSatisfiesExpression
-      ) {
+      while (isTypeWrapper(current)) {
         current = current.expression;
       }
       return current;
     }
 
     /**
-     * Whether `node` is a property of `this`, as in `this.bar`, `this[key]`
-     * or `(this as any).bar`.
+     * Finds the parent of `node` if its value may be `node`'s value, as in
+     * `cond ? node : other`, `other || node`, `(other, node)` or
+     * `node as Type`.
      */
-    function isThisMemberTarget(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.MemberExpression &&
-        skipTypeWrappers(node.object).type === AST_NODE_TYPES.ThisExpression
-      );
+    function getValuePassthrough(
+      node: TSESTree.Node,
+    ): TSESTree.Expression | undefined {
+      const { parent } = node;
+      if (
+        parent &&
+        ((parent.type === AST_NODE_TYPES.ConditionalExpression &&
+          parent.test !== node) ||
+          parent.type === AST_NODE_TYPES.LogicalExpression ||
+          (parent.type === AST_NODE_TYPES.SequenceExpression &&
+            parent.expressions.at(-1) === node) ||
+          isTypeWrapper(parent))
+      ) {
+        return parent;
+      }
+      return undefined;
     }
 
     /**
@@ -333,25 +350,16 @@ export default createRule({
       let current = node;
       while (true) {
         const { parent } = current;
-        if (
-          !parent ||
-          !(
-            (parent.type === AST_NODE_TYPES.AssignmentExpression &&
-              parent.right === current &&
-              !isThisMemberTarget(parent.left)) ||
-            (parent.type === AST_NODE_TYPES.ConditionalExpression &&
-              parent.test !== current) ||
-            parent.type === AST_NODE_TYPES.LogicalExpression ||
-            (parent.type === AST_NODE_TYPES.SequenceExpression &&
-              parent.expressions.at(-1) === current) ||
-            isTypeAssertion(parent) ||
-            parent.type === AST_NODE_TYPES.TSNonNullExpression ||
-            parent.type === AST_NODE_TYPES.TSSatisfiesExpression
-          )
-        ) {
+        const next =
+          parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+          parent.right === current &&
+          !isThisMemberExpression(parent.left)
+            ? parent
+            : getValuePassthrough(current);
+        if (!next) {
           return current;
         }
-        current = parent;
+        current = next;
       }
     }
 
@@ -369,7 +377,7 @@ export default createRule({
       if (
         parent?.type === AST_NODE_TYPES.AssignmentExpression &&
         parent.right === value &&
-        isThisMemberTarget(parent.left)
+        isThisMemberExpression(parent.left)
       ) {
         return parent.left;
       }
@@ -535,17 +543,33 @@ export default createRule({
         );
       }
 
-      // The object and array literals the function is a value in, if any.
-      let holder: TSESTree.Node = node;
+      // The outermost expression the function's value reaches: through the
+      // object and array literals it is a value in, the expressions whose
+      // value may be it, as in `cond ? f : other` or `f as Type`, and
+      // `f.bind(x)`, whose value only calls `f` when it's called. Not through
+      // other assignments, as in `o.f = f`, which `o.f` may call later.
+      let holder: TSESTree.Expression = node;
       while (true) {
+        const parent: TSESTree.Node = holder.parent;
+        const passthrough = getValuePassthrough(holder);
         if (
-          holder.parent.type === AST_NODE_TYPES.Property &&
-          holder.parent.value === holder &&
-          holder.parent.parent.type === AST_NODE_TYPES.ObjectExpression
+          parent.type === AST_NODE_TYPES.Property &&
+          parent.value === holder &&
+          parent.parent.type === AST_NODE_TYPES.ObjectExpression
         ) {
-          holder = holder.parent.parent;
-        } else if (holder.parent.type === AST_NODE_TYPES.ArrayExpression) {
-          holder = holder.parent;
+          holder = parent.parent;
+        } else if (parent.type === AST_NODE_TYPES.ArrayExpression) {
+          holder = parent;
+        } else if (passthrough) {
+          holder = passthrough;
+        } else if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.object === holder &&
+          isStaticMemberAccessOfValue(parent, context, 'bind') &&
+          parent.parent.type === AST_NODE_TYPES.CallExpression &&
+          parent.parent.callee === parent
+        ) {
+          holder = parent.parent;
         } else {
           break;
         }
@@ -720,7 +744,8 @@ export default createRule({
           return;
         }
 
-        const rightId = getIdentifier(node.right);
+        const right = skipTypeWrappers(node.right);
+        const rightId = right.type === AST_NODE_TYPES.Identifier ? right : null;
 
         if (
           UNNECESSARY_OPERATORS.has(node.operator) &&
