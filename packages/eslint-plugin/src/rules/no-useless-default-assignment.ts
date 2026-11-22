@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getStaticMemberAccessValue,
   isFunction,
   isTypeAnyType,
   isTypeFlagSet,
@@ -101,9 +102,18 @@ export default createRule<Options, MessageId>({
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return true;
       }
-      return tsutils
-        .unionConstituents(type)
-        .some(part => isTypeFlagSet(part, ts.TypeFlags.Undefined));
+      return tsutils.unionConstituents(type).some(part => {
+        if (isTypeFlagSet(part, ts.TypeFlags.Undefined)) {
+          return true;
+        }
+        if (!isTypeFlagSet(part, possiblyUndefinedTypeVariableFlags)) {
+          return false;
+        }
+        // A type variable may be instantiated with `undefined` unless its
+        // constraint rules that out, as in `T extends string`
+        const constraint = checker.getBaseConstraintOfType(part);
+        return !constraint || constraint === part || canBeUndefined(constraint);
+      });
     }
 
     function getArrayElementType(
@@ -133,7 +143,7 @@ export default createRule<Options, MessageId>({
           canBeUndefined(checker.getTypeFromTypeNode(tsNode.type)) &&
           canUseOptionalSyntax(tsNode)
         ) {
-          reportPreferOptionalSyntax(node, node.left);
+          reportPreferOptionalSyntax(node);
           return;
         }
 
@@ -152,7 +162,9 @@ export default createRule<Options, MessageId>({
         parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         parent.type === AST_NODE_TYPES.FunctionExpression
       ) {
-        const paramIndex = parent.params.indexOf(node);
+        // Signature parameters don't include a `this` parameter
+        const paramIndex =
+          parent.params.indexOf(node) - (hasThisParameter(parent) ? 1 : 0);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
         const contextualType = checker.getContextualType(
           tsFunc as ts.Expression,
@@ -161,11 +173,22 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        // Each member of a union of function types may be called differently
+        // Each member of a union of function types may be called differently.
+        // Nullish members (as in an optional callback) can't hold the function.
         const signaturesByType = tsutils
           .unionConstituents(contextualType)
+          .filter(
+            type =>
+              !isTypeFlagSet(
+                type,
+                ts.TypeFlags.Undefined | ts.TypeFlags.Null | ts.TypeFlags.Void,
+              ),
+          )
           .map(type => type.getCallSignatures());
-        if (signaturesByType.some(signatures => signatures.length === 0)) {
+        if (
+          signaturesByType.length === 0 ||
+          signaturesByType.some(signatures => signatures.length === 0)
+        ) {
           return;
         }
 
@@ -189,10 +212,7 @@ export default createRule<Options, MessageId>({
             return true;
           }
 
-          const paramType = checker.getTypeOfSymbol(params[paramIndex]);
-          return (
-            tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
-          );
+          return canBeUndefined(checker.getTypeOfSymbol(params[paramIndex]));
         });
 
         if (!defaultCanBeUsed) {
@@ -342,17 +362,8 @@ export default createRule<Options, MessageId>({
     }
 
     function getPropertyName(property: TSESTree.Property): string | null {
-      const { key } = property;
-      switch (key.type) {
-        case AST_NODE_TYPES.Identifier:
-          return property.computed ? null : key.name;
-        case AST_NODE_TYPES.Literal:
-          return String(key.value);
-        case AST_NODE_TYPES.TemplateLiteral:
-          return key.expressions.length ? null : key.quasis[0].value.cooked;
-        default:
-          return null;
-      }
+      const name = getStaticMemberAccessValue(property, context);
+      return typeof name === 'string' ? name : null;
     }
 
     function reportUselessDefaultAssignment(
@@ -381,25 +392,27 @@ export default createRule<Options, MessageId>({
 
     function reportPreferOptionalSyntax(
       node: TSESTree.AssignmentPattern,
-      left: TSESTree.Identifier,
     ): void {
       context.report({
         node: node.right,
         messageId: 'preferOptionalSyntax',
-        suggest: [useOptionalSyntaxSuggestion(node, left)],
+        suggest: [useOptionalSyntaxSuggestion(node)],
       });
     }
 
     function useOptionalSyntaxSuggestion(
       node: TSESTree.AssignmentPattern,
-      left: TSESTree.Identifier,
     ): TSESLint.SuggestionReportDescriptor<MessageId> {
       return {
         messageId: 'useOptionalSyntax',
         *fix(fixer) {
           yield removeDefault(fixer, node);
-          yield fixer.insertTextAfterRange(
-            [left.range[0], left.range[0] + left.name.length],
+          // The name's token, which may be written with escapes like `\u0061`
+          yield fixer.insertTextAfter(
+            nullThrows(
+              context.sourceCode.getFirstToken(node.left),
+              NullThrowsReasons.MissingToken('name', 'parameter'),
+            ),
             '?',
           );
         },
@@ -446,6 +459,23 @@ export default createRule<Options, MessageId>({
     };
   },
 });
+
+/**
+ * Type variables that may be instantiated with a type that includes
+ * `undefined`: type parameters, indexed access types like `T[K]`,
+ * conditional types, and substitution types like `NoInfer<T>`
+ */
+const possiblyUndefinedTypeVariableFlags: ts.TypeFlags =
+  ts.TypeFlags.TypeVariable |
+  ts.TypeFlags.Conditional |
+  ts.TypeFlags.Substitution;
+
+function hasThisParameter(
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+): boolean {
+  const first = node.params.at(0);
+  return first?.type === AST_NODE_TYPES.Identifier && first.name === 'this';
+}
 
 /**
  * Whether callers can leave out a parameter or pass `undefined` for it,
