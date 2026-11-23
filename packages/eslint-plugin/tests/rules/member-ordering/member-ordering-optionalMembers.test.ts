@@ -487,5 +487,76 @@ class Test {
         },
       ],
     },
+    {
+      code: `
+interface X {
+  b: string;
+  a(): void;
+  z: string;
+  a2?: string;
+  y?: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a', rank: 'field' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['method', 'field'],
+            optionalityOrder: 'required-first',
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+interface X {
+  b: string;
+  a(): void;
+  z: string;
+  a2?: string;
+  y?: string;
+  x?(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a', rank: 'field' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: { name: 'x', rank: 'field' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['method', 'field'],
+            optionalityOrder: 'required-first',
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

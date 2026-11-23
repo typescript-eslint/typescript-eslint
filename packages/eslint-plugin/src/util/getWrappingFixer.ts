@@ -5,6 +5,13 @@ import {
   ASTUtils,
   ESLintUtils,
 } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
+
+import {
+  isDirectivePrologueExpression,
+  isExpressionStartNeedingParentheses,
+} from './expressionStartUtils';
+import { needsPrecedingSemicolon } from './needsPrecedingSemiColon';
 
 interface WrappingFixerParams {
   /**
@@ -55,30 +62,152 @@ export function getWrappingFixer(
       return code;
     });
 
-    if (!wrap) {
-      return fixer.replaceText(node, innerCodes.join(''));
+    let code: string;
+
+    if (wrap) {
+      code = wrap(...innerCodes);
+
+      // check the outer expression's precedence
+      if (
+        isWeakPrecedenceParent(node) &&
+        // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
+        // let's wrap the whole expression in parens just in case
+        !ASTUtils.isParenthesized(node, sourceCode) &&
+        // a non-null assertion only needs them around looser code than `a.b(c)`
+        !(
+          node.parent?.type === AST_NODE_TYPES.TSNonNullExpression &&
+          isWrapLeftHandSideExpression(wrap, innerCodes.length)
+        )
+      ) {
+        code = `(${code})`;
+      }
+    } else {
+      code = innerCodes.join('');
     }
 
-    // do the wrapping
-    let code = wrap(...innerCodes);
-
-    // check the outer expression's precedence
+    // The code mustn't start a block, a declaration or a directive.
     if (
-      isWeakPrecedenceParent(node) &&
-      // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
-      // let's wrap the whole expression in parens just in case
-      !ASTUtils.isParenthesized(node, sourceCode)
+      startsWithInnerCodeNeedingParentheses(
+        code,
+        node,
+        innerNodes,
+        innerCodes,
+        sourceCode,
+      )
     ) {
       code = `(${code})`;
     }
 
-    // check if we need to insert semicolon
-    if (/^[`([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
-      code = `;${code}`;
+    return fixer.replaceText(
+      node,
+      addSemicolonIfNeeded(code, node, sourceCode),
+    );
+  };
+}
+
+/**
+ * Whether the code starts with one of the inner nodes' unchanged code, such as
+ * `{ a }.a` or `function () {}.name`, that would make it start a block, a
+ * declaration or a directive instead of an expression where `node` is.
+ */
+function startsWithInnerCodeNeedingParentheses(
+  code: string,
+  node: TSESTree.Node,
+  innerNodes: TSESTree.Node[],
+  innerCodes: string[],
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): boolean {
+  return innerNodes.some((innerNode, index) => {
+    const innerCode = innerCodes[index];
+    if (
+      innerCode !== sourceCode.getText(innerNode) ||
+      !code.startsWith(innerCode)
+    ) {
+      return false;
     }
 
-    return fixer.replaceText(node, code);
-  };
+    const firstToken = ESLintUtils.nullThrows(
+      sourceCode.getFirstToken(innerNode),
+      ESLintUtils.NullThrowsReasons.MissingToken('first token', innerNode.type),
+    );
+
+    return (
+      isExpressionStartNeedingParentheses(node, firstToken, sourceCode) ||
+      (code === innerCode &&
+        innerNode.type === AST_NODE_TYPES.Literal &&
+        typeof innerNode.value === 'string' &&
+        isDirectivePrologueExpression(node, sourceCode))
+    );
+  });
+}
+
+/**
+ * Whether `wrap` produces a left-hand side expression, such as `a.b(c)`,
+ * which binds at least as tightly as a member access. The inner codes are
+ * either tightly binding or parenthesized, so stand-in identifiers give the
+ * code the same shape.
+ */
+function isWrapLeftHandSideExpression(
+  wrap: (...code: string[]) => string,
+  innerCodeCount: number,
+): boolean {
+  const sourceFile = ts.createSourceFile(
+    'wrap.ts',
+    wrap(...Array.from({ length: innerCodeCount }, (_, index) => `_${index}`)),
+    ts.ScriptTarget.Latest,
+    /* setParentNodes */ false,
+    ts.ScriptKind.TS,
+  );
+  const [statement] = sourceFile.statements;
+
+  if (
+    sourceFile.statements.length !== 1 ||
+    !ts.isExpressionStatement(statement)
+  ) {
+    return false;
+  }
+
+  const { expression } = statement;
+
+  switch (expression.kind) {
+    case ts.SyntaxKind.CallExpression:
+    case ts.SyntaxKind.ElementAccessExpression:
+    case ts.SyntaxKind.Identifier:
+    case ts.SyntaxKind.NonNullExpression:
+    case ts.SyntaxKind.ParenthesizedExpression:
+    case ts.SyntaxKind.PropertyAccessExpression:
+    case ts.SyntaxKind.TaggedTemplateExpression:
+      return true;
+
+    case ts.SyntaxKind.NewExpression:
+      // `new A!` would assert `A`, not the new instance.
+      return (expression as ts.NewExpression).arguments != null;
+
+    default:
+      return false;
+  }
+}
+
+/**
+ * Prefixes the code with a semicolon if it starts with a token that could
+ * continue the previous line, such as `(`, `[`, `` ` ``, `/`, `+`, `-` or `<`,
+ * and it's replacing a node at the start of an expression statement that
+ * relies on automatic semicolon insertion.
+ */
+function addSemicolonIfNeeded(
+  code: string,
+  node: TSESTree.Node,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): string {
+  if (!/^[(+\-/<[`]/.test(code)) {
+    return code;
+  }
+
+  const statement = getExpressionStatementStartingWith(node);
+
+  return statement && needsPrecedingSemicolon(sourceCode, statement, code)
+    ? `;${code}`
+    : code;
 }
 /**
  * If the node to be moved and the destination node require parentheses, include parentheses in the node to be moved.
@@ -128,6 +257,9 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 
 /**
  * Check if a node's parent could have different precedence if the node changes.
+ * A node wrapped in parentheses at the start of a member access, call, tagged
+ * template or non-null assertion, as in `(a + b)!`, keeps them when it's
+ * replaced, so the parent can't be affected.
  */
 export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
   const parent = node.parent;
@@ -146,18 +278,25 @@ export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
     return true;
   }
 
+  // These parents start with the node, so anything before it is a parenthesis.
+  const isUnparenthesizedStart = parent.range[0] === node.range[0];
+
+  if (parent.type === AST_NODE_TYPES.TSNonNullExpression) {
+    return isUnparenthesizedStart;
+  }
+
   if (
     parent.type === AST_NODE_TYPES.MemberExpression &&
     parent.object === node
   ) {
-    return true;
+    return isUnparenthesizedStart;
   }
 
-  if (
-    (parent.type === AST_NODE_TYPES.CallExpression ||
-      parent.type === AST_NODE_TYPES.NewExpression) &&
-    parent.callee === node
-  ) {
+  if (parent.type === AST_NODE_TYPES.CallExpression && parent.callee === node) {
+    return isUnparenthesizedStart;
+  }
+
+  if (parent.type === AST_NODE_TYPES.NewExpression && parent.callee === node) {
     return true;
   }
 
@@ -165,99 +304,32 @@ export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
     parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
     parent.tag === node
   ) {
-    return true;
+    return isUnparenthesizedStart;
   }
 
   return false;
 }
 
 /**
- * Returns true if a node is at the beginning of expression statement and the statement above doesn't end with semicolon.
- * Doesn't check if the node begins with `(`, `[` or `` ` ``.
+ * Returns the expression statement that `node` is at the very start of, such
+ * as the statement of `a` in `a.b?.(c) + d;`, or `undefined` if there's none.
+ * A node wrapped in parentheses isn't at the start of its statement, since the
+ * parenthesis comes first.
  */
-function isMissingSemicolonBefore(
+function getExpressionStatementStartingWith(
   node: TSESTree.Node,
-  sourceCode: TSESLint.SourceCode,
-): boolean {
-  for (;;) {
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const parent = node.parent!;
+): TSESTree.ExpressionStatement | undefined {
+  let current = node;
 
-    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
-      const block = parent.parent;
-      if (
-        block.type === AST_NODE_TYPES.Program ||
-        block.type === AST_NODE_TYPES.BlockStatement
-      ) {
-        // parent is an expression statement in a block
-        const statementIndex = block.body.indexOf(parent);
-        const previousStatement = block.body[statementIndex - 1];
-        if (
-          statementIndex > 0 &&
-          ESLintUtils.nullThrows(
-            sourceCode.getLastToken(previousStatement),
-            'Mismatched semicolon and block',
-          ).value !== ';'
-        ) {
-          return true;
-        }
-      }
+  while (current.type !== AST_NODE_TYPES.ExpressionStatement) {
+    const parent = current.parent;
+    if (parent?.range[0] !== current.range[0]) {
+      return undefined;
     }
-
-    if (!isLeftHandSide(node)) {
-      return false;
-    }
-
-    node = parent;
-  }
-}
-
-/**
- * Checks if a node is LHS of an operator.
- */
-function isLeftHandSide(node: TSESTree.Node): boolean {
-  // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const parent = node.parent!;
-
-  // a++
-  if (parent.type === AST_NODE_TYPES.UpdateExpression) {
-    return true;
+    current = parent;
   }
 
-  // a + b
-  if (
-    (parent.type === AST_NODE_TYPES.BinaryExpression ||
-      parent.type === AST_NODE_TYPES.LogicalExpression ||
-      parent.type === AST_NODE_TYPES.AssignmentExpression) &&
-    node === parent.left
-  ) {
-    return true;
-  }
-
-  // a ? b : c
-  if (
-    parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    node === parent.test
-  ) {
-    return true;
-  }
-
-  // a(b)
-  if (parent.type === AST_NODE_TYPES.CallExpression && node === parent.callee) {
-    return true;
-  }
-
-  // a`b`
-  if (
-    parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
-    node === parent.tag
-  ) {
-    return true;
-  }
-
-  return false;
+  return current;
 }
 
 /**

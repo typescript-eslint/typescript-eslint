@@ -246,15 +246,17 @@ export default createRule<Options, MessageIds>({
         }
       }
 
-      const unsafeRefs = references
-        .filter(r => r.resolved && !isSafe(loopNode, r))
-        .map(r => r.identifier.name);
+      const unsafeRefs = new Set(
+        references
+          .filter(r => r.resolved && !isSafe(loopNode, r))
+          .map(r => r.identifier.name),
+      );
 
-      if (unsafeRefs.length > 0) {
+      if (unsafeRefs.size > 0) {
         context.report({
           node,
           messageId: 'unsafeRefs',
-          data: { varNames: `'${unsafeRefs.join("', '")}'` },
+          data: { varNames: `'${[...unsafeRefs].join("', '")}'` },
         });
       }
     }

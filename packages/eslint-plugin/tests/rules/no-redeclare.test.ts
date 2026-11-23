@@ -140,8 +140,88 @@ namespace A {}
       `,
       options: [{ ignoreDeclarationMerge: true }],
     },
+    `
+namespace A {
+  interface B {}
+  interface B {}
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+class A {
+  static {
+    var b = 3;
+    var b = 10;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { id: 'b' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'redeclared',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+    },
+    {
+      code: `
+function a() {
+  var b = 3;
+  var b = 10;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { id: 'b' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'redeclared',
+        },
+      ],
+    },
+    {
+      code: `
+class A {}
+enum A {}
+      `,
+      errors: [
+        {
+          column: 6,
+          data: { id: 'A' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+namespace A {
+  var b = 3;
+  var b = 10;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { id: 'b' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'redeclared',
+        },
+      ],
+    },
     {
       code: `
 var a = 3;
@@ -365,6 +445,36 @@ var a;
       ],
       languageOptions: { globals: { top: 'readonly' } },
       options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      errors: [
+        {
+          column: 5,
+          data: { id: 'top' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      languageOptions: { globals: { top: 'writable' } },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'class top {}',
+      errors: [
+        {
+          column: 7,
+          data: { id: 'top' },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      languageOptions: { globals: { top: 'readonly' } },
+      options: [{ builtinGlobals: true, ignoreDeclarationMerge: true }],
     },
     {
       code: `

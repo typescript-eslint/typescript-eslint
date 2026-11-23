@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -48,6 +49,16 @@ export default createRule({
         );
     }
 
+    function isConstAssertion(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      return (
+        node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+        node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
+        node.typeAnnotation.typeName.name === 'const'
+      );
+    }
+
     return {
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
@@ -62,7 +73,7 @@ export default createRule({
           return;
         }
 
-        if (isTypeAssertion(secondArg)) {
+        if (isTypeAssertion(secondArg) && !isConstAssertion(secondArg)) {
           const initializerType = services.getTypeAtLocation(
             secondArg.expression,
           );
@@ -91,33 +102,51 @@ export default createRule({
         );
 
         // Check the owner type of the `reduce` method.
-        if (isArrayType(calleeObjType)) {
+        if (isArrayType(checker.getNonNullableType(calleeObjType))) {
+          // The fix keeps the expression, and moves the type annotation
+          // into the type arguments only if there are none yet.
+          const keptNodes = callee.parent.typeArguments
+            ? [secondArg.expression]
+            : [secondArg.expression, secondArg.typeAnnotation];
+          const fixRemovesComments = context.sourceCode
+            .getCommentsInside(secondArg)
+            .some(
+              comment =>
+                !keptNodes.some(
+                  kept =>
+                    comment.range[0] >= kept.range[0] &&
+                    comment.range[1] <= kept.range[1],
+                ),
+            );
+
           context.report({
             node: secondArg,
             messageId: 'preferTypeParameter',
-            fix: fixer => {
-              const fixes = [
-                fixer.removeRange([
-                  secondArg.range[0],
-                  secondArg.expression.range[0],
-                ]),
-                fixer.removeRange([
-                  secondArg.expression.range[1],
-                  secondArg.range[1],
-                ]),
-              ];
+            fix: fixRemovesComments
+              ? null
+              : fixer => {
+                  const fixes = [
+                    fixer.removeRange([
+                      secondArg.range[0],
+                      secondArg.expression.range[0],
+                    ]),
+                    fixer.removeRange([
+                      secondArg.expression.range[1],
+                      secondArg.range[1],
+                    ]),
+                  ];
 
-              if (!callee.parent.typeArguments) {
-                fixes.push(
-                  fixer.insertTextAfter(
-                    callee,
-                    `<${context.sourceCode.getText(secondArg.typeAnnotation)}>`,
-                  ),
-                );
-              }
+                  if (!callee.parent.typeArguments) {
+                    fixes.push(
+                      fixer.insertTextAfter(
+                        callee,
+                        `<${context.sourceCode.getText(secondArg.typeAnnotation)}>`,
+                      ),
+                    );
+                  }
 
-              return fixes;
-            },
+                  return fixes;
+                },
           });
 
           return;

@@ -127,6 +127,19 @@ class Foo {
 }
       `,
     },
+    'let a: number;',
+    `
+class Foo {
+  a: number;
+}
+    `,
+    'const a: number = foo;',
+    'const a: number = foo();',
+    'const a: null = foo;',
+    'let a: number = null;',
+    'let a: RegExp = null;',
+    'const a: Foo = /a/;',
+    "const a: RegExp = new MyRegExp('a');",
   ],
 
   invalid: [
@@ -837,6 +850,29 @@ class Foo {
       output: `
 class Foo {
   accessor a = 5;
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  a!: number = 5;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: 'number' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      output: `
+class Foo {
+  a = 5;
 }
       `,
     },

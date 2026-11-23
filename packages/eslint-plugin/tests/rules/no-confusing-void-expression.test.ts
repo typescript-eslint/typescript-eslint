@@ -410,6 +410,927 @@ test((() => {
   invalid: [
     {
       code: `
+declare function v(): void;
+declare const c: boolean;
+function f() {
+  if (c) return c ? v() : 1;
+  return 2;
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: null,
+    },
+    {
+      // a top-level \`return\`, as in a CommonJS module
+      code: 'return console.log();',
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: '{ console.log(); return; }',
+    },
+    {
+      code: noFormat`
+function f() {
+  console.log('a')
+  return \`x\`.split('').forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f() {
+  console.log('a')
+  ;\`x\`.split('').forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f() {
+  console.log('a')
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f() {
+  console.log('a')
+  ;(console.log)('b');
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;(console.log)('b');
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return ['b'].forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;['b'].forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return \`b\`.split('').forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 44,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;\`b\`.split('').forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return /b/.test(s) ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 37,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;/b/.test(s) ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return +s ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;+s ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return -n ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;-n ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return <boolean>c ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;<boolean>c ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  (console.log)('b');
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return ['b'].forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ['b'].forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return \`b\`.split('').forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 44,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  \`b\`.split('').forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return /b/.test(s) ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 37,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ;/b/.test(s) ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return +s ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ;+s ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return -n ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ;-n ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return <boolean>c ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ;<boolean>c ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  (console.log)('b');
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  return \`b\`.split('').forEach(console.log)
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 44,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  \`b\`.split('').forEach(console.log);
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  return -n ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  ;-n ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  return <boolean>c ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x--
+  ;<boolean>c ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  return (console.log)('b')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  (console.log)('b');
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  return -n ? console.log() : v
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  -n ? console.log() : v;
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  return -n ? console.log() : v
+  console.log('c')
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x = 1
+  ;-n ? console.log() : v; return;
+  console.log('c')
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return (console.log)('b')
+  console.log('c')
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  (console.log)('b'); return;
+  console.log('c')
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  return <boolean>c ? console.log() : v
+  console.log('c')
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 36,
+          endLine: 9,
+          line: 9,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const v: void;
+declare const n: number;
+declare const s: string;
+declare const c: unknown;
+function f() {
+  x++
+  ;<boolean>c ? console.log() : v; return;
+  console.log('c')
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const c: boolean;
+function f() {
+  x = 1
+  if (c) return (console.log)('b')
+  console.log('c')
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 35,
+          endLine: 6,
+          line: 6,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare let x: number;
+declare const c: boolean;
+function f() {
+  x = 1
+  if (c) { (console.log)('b'); return; }
+  console.log('c')
+}
+      `,
+    },
+    {
+      code: `
+function f(): void {
+  return console.log();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function f(): void {
+  console.log();
+}
+      `,
+    },
+    {
+      code: `
+let x;
+x = console.log();
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExpr',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'const x = console.log();',
+      errors: [
+        {
+          column: 11,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidExpr',
+        },
+      ],
+      options: [{ ignoreArrowShorthand: true }],
+      output: null,
+    },
+    {
+      code: `
 const x = console.log('foo');
       `,
       errors: [
@@ -1702,6 +2623,247 @@ function test(arg?: string): any | void {
   }
   console.log();
 }
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+function g(): void {
+  return function () {
+    f();
+  }.call(null);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 15,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(): void {
+  (function () {
+    f();
+  }.call(null));
+}
+      `,
+    },
+    {
+      code: `
+function g(): void {
+  return { m(): void {} }.m();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  ({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+function g(): void {
+  return ({ m(): void {} }.m());
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  ({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: `
+function g(): void {
+  return class {
+    static m(): void {}
+  }.m();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 8,
+          endLine: 5,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function g(): void {
+  (class {
+    static m(): void {}
+  }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare let x: number;
+function g(): void {
+  x = 1
+  return { m(): void {} }.m()
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare let x: number;
+function g(): void {
+  x = 1
+  ;({ m(): void {} }.m());
+}
+      `,
+    },
+    {
+      code: noFormat`
+declare function f(): void;
+function g(): void {
+  return (function () {
+    f();
+  }).call(null);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(): void {
+  (function () {
+    f();
+  }).call(null);
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) {
+    return { m(): void {} }.m();
+  }
+  f();
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) {
+    ({ m(): void {} }.m()); return;
+  }
+  f();
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) return { m(): void {} }.m();
+  f();
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+declare function f(): void;
+function g(b: boolean): void {
+  if (b) { ({ m(): void {} }.m()); return; }
+  f();
+}
+      `,
+    },
+    {
+      code: `
+declare function f(): void;
+const a = () =>
+  function () {
+    f();
+  }.call(null);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 6,
+          line: 4,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+declare function f(): void;
+const a = () => { (function () {
+    f();
+  }.call(null)); };
+      `,
+    },
+    {
+      code: noFormat`
+const a = () => ({ m(): void {} }.m());
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 38,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+const a = () => { ({ m(): void {} }.m()); };
       `,
     },
   ],

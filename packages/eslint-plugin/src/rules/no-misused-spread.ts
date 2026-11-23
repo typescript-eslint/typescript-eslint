@@ -254,6 +254,7 @@ export default createRule<Options, MessageIds>({
       'ArrayExpression > SpreadElement': checkArrayOrCallSpread,
       'CallExpression > SpreadElement': checkArrayOrCallSpread,
       JSXSpreadAttribute: checkObjectSpread,
+      'NewExpression > SpreadElement': checkArrayOrCallSpread,
       'ObjectExpression > SpreadElement': checkObjectSpread,
     };
   },

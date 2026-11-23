@@ -1,12 +1,20 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isOpeningParenToken,
   isClosingParenToken,
 } from '@typescript-eslint/utils/ast-utils';
 
-import { createRule } from '../util';
+import {
+  createRule,
+  findShadowingVariable,
+  isGlobalScript,
+  isReferenceToGlobalFunction,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
+} from '../util';
 
 export default createRule({
   name: 'no-array-constructor',
@@ -18,7 +26,9 @@ export default createRule({
       recommended: 'recommended',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      replaceWithLiteral: 'Replace with an array literal.',
       useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
@@ -27,6 +37,82 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.sourceCode;
+
+    /**
+     * Checks whether `Array` is the global one. Types and namespaces without
+     * values don't hide it.
+     */
+    function isGlobalArray(callee: TSESTree.Identifier): boolean {
+      if (isReferenceToGlobalFunction('Array', callee, sourceCode)) {
+        return true;
+      }
+
+      // In a script, a top-level `declare var Array: ArrayConstructor`
+      // redeclares the global. It emits nothing, so `Array` is the global at
+      // runtime even if TypeScript treats the file as a module. Other types
+      // could make `new Array(...)` mean something other than an array, and
+      // `isGlobalScript` can be wrong, so only that exact type counts.
+      const variable = findShadowingVariable(
+        'Array',
+        sourceCode.getScope(callee),
+        'value',
+      );
+      return (
+        !!variable &&
+        (variable.scope.type === ScopeType.global ||
+          variable.scope.type === ScopeType.module) &&
+        isGlobalScript(sourceCode) &&
+        variable.references.every(reference => !reference.isWrite()) &&
+        variable.defs.every(
+          def =>
+            def.type === DefinitionType.Type ||
+            (def.type === DefinitionType.Variable &&
+              def.parent.declare &&
+              def.parent.kind === 'var' &&
+              def.node.id.type === AST_NODE_TYPES.Identifier &&
+              isGlobalArrayConstructorType(def.node.id.typeAnnotation)),
+        )
+      );
+    }
+
+    /**
+     * Checks whether a type annotation is exactly the lib's `ArrayConstructor`.
+     * Any declaration of that name in the file counts as hiding it, even one
+     * that would merge into the global, since that can change its signatures.
+     */
+    function isGlobalArrayConstructorType(
+      annotation: TSESTree.TSTypeAnnotation | undefined,
+    ): boolean {
+      const type = annotation?.typeAnnotation;
+      return (
+        type?.type === AST_NODE_TYPES.TSTypeReference &&
+        type.typeName.type === AST_NODE_TYPES.Identifier &&
+        type.typeName.name === 'ArrayConstructor' &&
+        !type.typeArguments &&
+        !findShadowingVariable(
+          'ArrayConstructor',
+          sourceCode.getScope(type),
+          'type',
+        )
+      );
+    }
+
+    function hasCommentsOutsideArguments(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ): boolean {
+      const lastToken = sourceCode.getLastToken(node);
+      let token = sourceCode.getLastToken(node.callee);
+
+      while (token && token !== lastToken && !isOpeningParenToken(token)) {
+        token = sourceCode.getTokenAfter(token);
+      }
+
+      const argumentsStart = token?.range[0] ?? node.range[1];
+
+      return sourceCode
+        .getCommentsInside(node)
+        .some(comment => comment.range[1] <= argumentsStart);
+    }
 
     function getArgumentsText(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
@@ -60,16 +146,41 @@ export default createRule({
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeArguments
+        !node.typeArguments &&
+        isGlobalArray(node.callee)
       ) {
+        const fix = hasCommentsOutsideArguments(node)
+          ? null
+          : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+              const semicolon =
+                isStartOfExpressionStatement(node) &&
+                needsPrecedingSemicolon(sourceCode, node)
+                  ? ';'
+                  : '';
+
+              return fixer.replaceText(
+                node,
+                `${semicolon}[${getArgumentsText(node)}]`,
+              );
+            };
+
+        // With fewer than two other arguments, spread arguments can add up to
+        // a single number, which `Array` takes as the length:
+        // `new Array(...[3])` is `[, , ,]`, not `[3]`
+        const isUnsafe =
+          node.arguments.some(
+            argument => argument.type === AST_NODE_TYPES.SpreadElement,
+          ) &&
+          node.arguments.filter(
+            argument => argument.type !== AST_NODE_TYPES.SpreadElement,
+          ).length < 2;
+
         context.report({
           node,
           messageId: 'useLiteral',
-          fix(fixer) {
-            const argsText = getArgumentsText(node);
-
-            return fixer.replaceText(node, `[${argsText}]`);
-          },
+          fix: isUnsafe ? null : fix,
+          suggest:
+            isUnsafe && fix ? [{ messageId: 'replaceWithLiteral', fix }] : null,
         });
       }
     }

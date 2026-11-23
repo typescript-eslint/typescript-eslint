@@ -35,6 +35,28 @@ ruleTester.run('no-useless-empty-export', rule, {
     `
       export {};
     `,
+    `
+      const _ = {};
+      export {};
+    `,
+    `
+      namespace _ {
+        export const a = {};
+      }
+      import a = _.a;
+      export {};
+    `,
+    `
+      declare module '_' {
+        export const a: {};
+        const b: {};
+        export {};
+      }
+    `,
+    `
+      export {} from '_';
+      export const _ = {};
+    `,
     // https://github.com/microsoft/TypeScript/issues/38592
     {
       code: `
@@ -205,6 +227,282 @@ import _ = require('_');
 
       `,
     },
+    {
+      code: `
+import _ from '_';
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+import _ from '_';
+
+      `,
+    },
+    {
+      code: `
+export = {};
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export = {};
+
+      `,
+    },
+    {
+      code: `
+export {} from '_';
+export {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export {} from '_';
+
+      `,
+    },
+    {
+      code: `
+export const _ = {};
+export /* comment */ {};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export const _ = {};
+export {
+  // comment
+};
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 5,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: null,
+    },
+    // A next statement relying on ASI must not join the previous line
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+(f)()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+;
+(f)()
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+[f][0]()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+;
+[f][0]()
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+\`a\`.length
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+;
+\`a\`.length
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+-y
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+;
+-y
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {};
+(f)()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+;
+(f)()
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+
+f()
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1;
+export {}
+(f)();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1;
+
+(f)();
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+function g() {}
+export {}
+(f)();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+function g() {}
+
+(f)();
+      `,
+    },
     // Multiple errors
     /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
@@ -233,6 +531,38 @@ export {};
 import _ = require('_');
 
 
+      `,
+    },
+    {
+      code: `
+export const y = 1;
+x = 1
+export {}
+export {}
+(f)()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'uselessExport',
+        },
+      ],
+      output: `
+export const y = 1;
+x = 1
+
+;
+(f)()
       `,
     },
     /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */

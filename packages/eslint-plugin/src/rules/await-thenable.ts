@@ -4,7 +4,7 @@ import type {
 } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { TSESTree } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -15,12 +15,15 @@ import {
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
-  isStartOfArrowFunctionBodyNeedingParentheses,
-  isStartOfExpressionStatementNeedingParentheses,
+  isExpressionStartNeedingParentheses,
+  isStartOfExpressionStatement,
   isTypeAnyType,
+  LINEBREAK_MATCHER,
+  needsPrecedingSemicolon,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
+  wouldBecomeDirective,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 import { isPromiseAggregatorMethod } from '../util/isPromiseAggregatorMethod';
@@ -123,25 +126,71 @@ export default createRule<Options, MessageId>({
                       'await expression',
                     ),
                   );
+
+                  // Removing `await` from `return await // comment\n value`
+                  // would leave a line break after `return`, which ASI would
+                  // end the statement at.
+                  const tokenBeforeAwait =
+                    context.sourceCode.getTokenBefore(awaitKeyword);
                   if (
-                    isStartOfArrowFunctionBodyNeedingParentheses(
+                    tokenBeforeAwait?.type === AST_TOKEN_TYPES.Keyword &&
+                    ['return', 'throw', 'yield'].includes(
+                      tokenBeforeAwait.value,
+                    ) &&
+                    LINEBREAK_MATCHER.test(
+                      context.sourceCode.text.slice(
+                        awaitTokenRemovalRange[1],
+                        firstOperandToken.range[0],
+                      ),
+                    )
+                  ) {
+                    return [
+                      fixer.replaceText(awaitKeyword, '('),
+                      fixer.insertTextAfter(node, ')'),
+                    ];
+                  }
+
+                  // Without `await`, a leading `{`, `function`,
+                  // `async function` or `class` could start a block or
+                  // declaration instead of an expression, and a string could
+                  // start a directive.
+                  const needsParentheses =
+                    isExpressionStartNeedingParentheses(
                       node,
                       firstOperandToken,
                       context.sourceCode,
                     ) ||
-                    isStartOfExpressionStatementNeedingParentheses(
+                    wouldBecomeDirective(
                       node,
-                      firstOperandToken,
+                      awaitArgumentEsNode,
+                      context.sourceCode,
+                    );
+                  const nextTokenText = needsParentheses
+                    ? '('
+                    : firstOperandToken.value;
+
+                  // Without `await`, a statement relying on ASI could
+                  // continue the previous line, as in `x = 1\n-1`.
+                  const fixes = [
+                    /^[-([`+/<]/.test(nextTokenText) &&
+                    isStartOfExpressionStatement(node) &&
+                    needsPrecedingSemicolon(
+                      context.sourceCode,
+                      node,
+                      nextTokenText,
                     )
-                  ) {
-                    return [
-                      awaitRemovalFix,
+                      ? fixer.replaceTextRange(awaitTokenRemovalRange, ';')
+                      : awaitRemovalFix,
+                  ];
+
+                  if (needsParentheses) {
+                    fixes.push(
                       fixer.insertTextBefore(awaitArgumentEsNode, '('),
                       fixer.insertTextAfter(awaitArgumentEsNode, ')'),
-                    ];
+                    );
                   }
 
-                  return awaitRemovalFix;
+                  return fixes;
                 },
               },
             ],

@@ -517,5 +517,60 @@ function foo(x: { a: number }, y: NotKnown) {
       ],
       options: [{ allowOptionalChaining: true }],
     },
+    {
+      code: `
+declare const x: any;
+x.a!.b;
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { property: '.a' },
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(this: NotKnown) {
+  return this.bar;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { property: '.bar' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorThisMemberExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(this: any) {
+  return this.bar;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { property: '.bar' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
   ],
 });

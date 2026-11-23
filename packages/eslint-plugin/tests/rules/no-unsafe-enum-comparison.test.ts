@@ -1357,6 +1357,266 @@ stringKey === StringKey['key-\`with-backticks\`-quotes'];
     },
     {
       code: `
+enum StringKey {
+  'key-\\\\with-backslash' = 1,
+}
+declare const stringKey: StringKey;
+stringKey === 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum StringKey {
+  'key-\\\\with-backslash' = 1,
+}
+declare const stringKey: StringKey;
+stringKey === StringKey['key-\\\\with-backslash'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum StringKey {
+  'key-\\r\\nwith-crlf' = 1,
+}
+declare const stringKey: StringKey;
+stringKey === 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum StringKey {
+  'key-\\r\\nwith-crlf' = 1,
+}
+declare const stringKey: StringKey;
+stringKey === StringKey['key-\\r\\nwith-crlf'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export enum Fruit {
+  Apple = 'apple',
+}
+declare const fruit: Fruit;
+fruit === 'apple';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+export enum Fruit {
+  Apple = 'apple',
+}
+declare const fruit: Fruit;
+fruit === Fruit.Apple;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+namespace NS {
+  export enum Fruit {
+    Apple = 'apple',
+  }
+}
+declare const fruit: NS.Fruit;
+fruit === 'apple';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+        },
+      ],
+    },
+    {
+      code: `
+namespace NS {
+  export enum Fruit {
+    Apple = 'apple',
+  }
+  declare const fruit: Fruit;
+  fruit === 'apple';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+namespace NS {
+  export enum Fruit {
+    Apple = 'apple',
+  }
+  declare const fruit: Fruit;
+  fruit === Fruit.Apple;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+namespace NS {
+  export enum Fruit {
+    Apple = 'apple',
+  }
+}
+import Fruit = NS.Fruit;
+declare const fruit: Fruit;
+fruit === 'apple';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+namespace NS {
+  export enum Fruit {
+    Apple = 'apple',
+  }
+}
+import Fruit = NS.Fruit;
+declare const fruit: Fruit;
+fruit === Fruit.Apple;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple = 'apple',
+}
+declare const fruit: Fruit;
+function check(Fruit: unknown) {
+  return fruit === 'apple';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 27,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple = 'apple',
+}
+declare const fruit: Fruit;
+function check(Fruit: unknown) {
+  return 'apple' === fruit;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 27,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple = 'apple',
+}
+enum Vegetable {
+  Apple = 'apple',
+}
+declare const food: Fruit | Vegetable;
+function check(Fruit: unknown) {
+  return food === 'apple';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 26,
+          endLine: 10,
+          line: 10,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum Fruit {
+  Apple = 'apple',
+}
+enum Vegetable {
+  Apple = 'apple',
+}
+declare const food: Fruit | Vegetable;
+function check(Fruit: unknown) {
+  return food === Vegetable.Apple;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 enum Fruit {
   Apple,
 }

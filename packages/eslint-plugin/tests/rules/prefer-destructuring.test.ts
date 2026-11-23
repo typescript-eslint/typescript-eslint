@@ -176,6 +176,34 @@ let y = x[0];
     },
     {
       code: `
+declare const x: { 0: Disposable };
+{
+  using y = x[0];
+}
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+declare const x: { 0: AsyncDisposable };
+async function f() {
+  await using y = x[0];
+}
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
 let x: { 0: unknown };
 y = x[0];
       `,
@@ -466,6 +494,23 @@ class C {
     },
   ],
   invalid: [
+    {
+      code: `
+let x: { 0: unknown };
+let y = x[0];
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { type: 'object' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferDestructuring',
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+    },
     // enforceForDeclarationWithTypeAnnotation: true
     {
       code: 'var foo: string = object.foo;',

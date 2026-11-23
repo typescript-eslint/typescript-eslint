@@ -4,7 +4,16 @@ import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, nullThrows } from '../util';
+import {
+  createRule,
+  isExpressionStartNeedingParentheses,
+  isStartOfExpressionStatement,
+  isTokenOnSameLine,
+  needsPrecedingSemicolon,
+  nullThrows,
+  NullThrowsReasons,
+  wouldBecomeDirective,
+} from '../util';
 
 export type Options = [
   {
@@ -57,15 +66,72 @@ export default createRule<
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
-        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
-          return fixer.removeRange([
-            context.sourceCode.getTokens(node)[0].range[0],
-            context.sourceCode.getTokens(node)[1].range[0],
-          ]);
+        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
+          const voidToken = nullThrows(
+            context.sourceCode.getFirstToken(node),
+            NullThrowsReasons.MissingToken('void', 'void expression'),
+          );
+          const argumentToken = nullThrows(
+            context.sourceCode.getTokenAfter(voidToken),
+            NullThrowsReasons.MissingToken('argument', 'void expression'),
+          );
+          // Keeping a comment that spans a line break would end a `return`,
+          // `throw` or `yield` before the argument, so only there are the
+          // comments dropped.
+          const tokenBeforeVoid = context.sourceCode.getTokenBefore(voidToken);
+          const isRestrictedPosition =
+            tokenBeforeVoid != null &&
+            ['return', 'throw', 'yield'].includes(tokenBeforeVoid.value);
+          const voidRange: TSESTree.Range = [
+            voidToken.range[0],
+            nullThrows(
+              context.sourceCode.getTokenAfter(voidToken, {
+                includeComments:
+                  !isRestrictedPosition ||
+                  isTokenOnSameLine(voidToken, argumentToken),
+              }),
+              NullThrowsReasons.MissingToken('argument', 'void expression'),
+            ).range[0],
+          ];
+
+          // Without `void`, a leading `{`, `function`, `async function` or
+          // `class` could start a block or declaration instead of an
+          // expression, and a string could start a directive.
+          const needsParentheses =
+            isExpressionStartNeedingParentheses(
+              node,
+              argumentToken,
+              context.sourceCode,
+            ) || wouldBecomeDirective(node, node.argument, context.sourceCode);
+
+          // Without `void`, a statement relying on ASI could continue the
+          // previous line, as in `a = b\n(c)`.
+          const prefix =
+            (needsParentheses || /^[-([`+/<]/.test(argumentToken.value)) &&
+            isStartOfExpressionStatement(node) &&
+            needsPrecedingSemicolon(
+              context.sourceCode,
+              node,
+              needsParentheses ? '(' : argumentToken.value,
+            )
+              ? ';'
+              : '';
+
+          if (needsParentheses) {
+            return [
+              fixer.replaceTextRange(voidRange, `${prefix}(`),
+              fixer.insertTextAfter(node, ')'),
+            ];
+          }
+
+          return [fixer.replaceTextRange(voidRange, prefix)];
         };
 
         const inner = unwrapVoidArgument(node.argument);
-        if (inner.type !== AST_NODE_TYPES.CallExpression) {
+        if (
+          inner.type !== AST_NODE_TYPES.CallExpression &&
+          inner.type !== AST_NODE_TYPES.TaggedTemplateExpression
+        ) {
           // `void 0` is a common undefined idiom, not a discarded call.
           if (inner.type === AST_NODE_TYPES.Literal && inner.value === 0) {
             return;

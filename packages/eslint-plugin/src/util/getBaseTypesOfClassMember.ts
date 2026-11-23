@@ -10,12 +10,19 @@ import type * as ts from 'typescript';
  */
 export function* getBaseTypesOfClassMember(
   services: ParserServicesWithTypeInformation,
-  memberNode: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+  memberNode:
+    | TSESTree.AccessorProperty
+    | TSESTree.MethodDefinition
+    | TSESTree.PropertyDefinition,
 ): Generator<{
   baseType: ts.Type;
   baseMemberType: ts.Type;
   heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
 }> {
+  // The base types below are instance types, which don't have static members
+  if (memberNode.static) {
+    return;
+  }
   const memberTsNode = services.esTreeNodeToTSNodeMap.get(memberNode);
   if (memberTsNode.name == null) {
     return;

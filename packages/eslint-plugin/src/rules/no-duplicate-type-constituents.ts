@@ -76,6 +76,12 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
   return false;
 };
 
+function isAncestorOf(ancestor: TSESTree.Node, node: TSESTree.Node): boolean {
+  return (
+    ancestor.range[0] <= node.range[0] && node.range[1] <= ancestor.range[1]
+  );
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-duplicate-type-constituents',
   meta: {
@@ -217,7 +223,12 @@ export default createRule<Options, MessageIds>({
 
       duplicatedPrevious = cachedTypeMap.get(type);
 
-      if (duplicatedPrevious) {
+      // A nested group can have the same type as one of its own constituents,
+      // as in `number | (string | 'a')`, without that constituent being a duplicate.
+      if (
+        duplicatedPrevious &&
+        !isAncestorOf(duplicatedPrevious, constituentNode)
+      ) {
         reportDuplicate(duplicatedPrevious);
         return;
       }
@@ -295,7 +306,6 @@ export default createRule<Options, MessageIds>({
                 const maybeFunction = maybeIdentifier.parent;
                 if (
                   isFunctionOrFunctionType(maybeFunction) &&
-                  maybeFunction.params.includes(maybeIdentifier) &&
                   tsutils.isTypeFlagSet(
                     constituentNodeType,
                     ts.TypeFlags.Undefined,

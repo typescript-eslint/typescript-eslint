@@ -1377,6 +1377,32 @@ export function g(a: string, b: unknown) {
       `,
       options: [{ args: 'after-used' }],
     },
+    {
+      code: `
+try {
+} catch (_error) {}
+      `,
+      options: [
+        { caughtErrorsIgnorePattern: '^_', reportUsedIgnorePattern: true },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (_error) {
+  console.log(_error);
+}
+      `,
+      options: [{ caughtErrorsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+declare const values: number[];
+const [_first] = values;
+console.log(_first);
+      `,
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
   ],
 
   invalid: [
@@ -1408,6 +1434,534 @@ export class Foo {}
           ],
         },
       ],
+    },
+    {
+      code: `
+import Used, * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, /* keep */ * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used /* keep */, * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+import Used, * /* keep */ as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, * as /* keep */ Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, * as Unused /* keep */ from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+import Used, // keep
+  * as Unused from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used // keep
+   from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Unused /* keep */, { Used } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import /* keep */ { Used } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, { /* keep */ Unused } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import Used, { Unused /* keep */ } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import Used /* keep */ from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Used, /* keep */ Unused } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { Used /* keep */ } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Unused /* keep */, Used } from 'foo';
+Used();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { /* keep */ Used } from 'foo';
+Used();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import * as _Used from 'foo';
+_Used.x();
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used, * as Unused from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 20,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import _Used from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import _Used, { Unused } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import _Used from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import { _Used, Unused } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import { _Used } from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+import Unused, { _Used } from 'foo';
+_Used();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '. Allowed unused vars must match /^_/u',
+            varName: 'Unused',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+import  { _Used } from 'foo';
+_Used();
+      `,
+            },
+          ],
+        },
+        {
+          column: 18,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Used',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+          suggestions: [],
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
     },
     {
       code: `
@@ -3552,6 +4106,60 @@ export function g(a: string, b: unknown, c: string) {
         },
       ],
       options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+declare const obj: { a: number; b: number };
+const { a, b } = obj;
+console.log(b);
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { action: 'assigned a value', additional: '', varName: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreRestSiblings: true }],
+    },
+    {
+      code: `
+const unused = 1;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'unused',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreUsingDeclarations: true }],
+    },
+    {
+      code: `
+export function foo(unused: number) {}
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ ignoreUsingDeclarations: true }],
     },
   ],
 });

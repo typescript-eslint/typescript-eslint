@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-as-const';
 
@@ -28,6 +28,8 @@ ruleTester.run('prefer-as-const', rule, {
     "let foo: 'bar';",
     'let foo = { bar };',
     "let foo: 'baz' = 'baz' as const;",
+    "let foo = 'bar' as 'baz';",
+    'let foo: 1 = 2;',
     `
 class foo {
   bar = 'baz';
@@ -356,6 +358,67 @@ class foo {
   foo = 5 as const;
 }
       `,
+    },
+    {
+      code: noFormat`let foo = 'bar' as "bar";`,
+      errors: [
+        {
+          column: 20,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferConstAssertion',
+        },
+      ],
+      output: "let foo = 'bar' as const;",
+    },
+    {
+      code: 'let foo: 16 = 0x10;',
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'variableConstAssertion',
+          suggestions: [
+            {
+              messageId: 'variableSuggest',
+              output: 'let foo = 0x10 as const;',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class foo {
+  accessor bar: 'baz' = 'baz';
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 17,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'variableConstAssertion',
+          suggestions: [
+            {
+              messageId: 'variableSuggest',
+              output: `
+class foo {
+  accessor bar = 'baz' as const;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
   ],
 });

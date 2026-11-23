@@ -207,6 +207,402 @@ function bar<T extends any>(value: T | undefined): T {
 }
     `,
     `
+function bar<T>(value: T): T & {} {
+  return value!;
+}
+    `,
+    `
+function bar<T extends string | undefined>(value: T) {
+  return value as NonNullable<T>;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  return value as NonNullable<T>;
+}
+    `,
+    `
+type WithA<T> = T & { a: 1 };
+function bar<T extends string>(value: T) {
+  return value as WithA<T>;
+}
+    `,
+    `
+type With<T, U> = T & U;
+function bar<T extends string, U>(value: T) {
+  return value as With<T, U>;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const nonNullable: {} = value!;
+  return nonNullable;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  return value!;
+}
+    `,
+    `
+const bar = <T,>(value: T) => value!;
+    `,
+    `
+const bar = <T,>(value: T): T & {} => value!;
+    `,
+    `
+function bar<T>(value: T): {} {
+  return value!;
+}
+    `,
+    `
+function bar<T>(value: T, take: (x: T & {}) => void) {
+  take(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const o: { a: T & {} } = { a: value! };
+  return o;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const arr: (T & {})[] = [value!];
+  return arr;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  return { a: value! };
+}
+    `,
+    `
+function bar<T>(value: T) {
+  return [1].map(() => value!);
+}
+    `,
+    `
+async function bar<T>(value: T): Promise<T & {}> {
+  return value!;
+}
+    `,
+    `
+function* bar<T>(value: T): Generator<T & {}> {
+  yield value!;
+}
+    `,
+    `
+function bar<T>() {
+  const f: (v: T) => T & {} = v => v!;
+  return f;
+}
+    `,
+    `
+function bar<T>(value: T | string): {} {
+  return value!;
+}
+    `,
+    `
+function bar<T>(value: T | string) {
+  return value!;
+}
+    `,
+    `
+function bar<T>(value: T | number): T | string {
+  return value!;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K): {} {
+  return obj[key]!;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: {} = obj[key]!;
+  return value;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: NonNullable<T[K]> = obj[key]!;
+  return value;
+}
+    `,
+    `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): {} {
+  return value!;
+}
+    `,
+    `
+declare function take<U extends {}>(value: U): U;
+function bar<T>(value: T | string) {
+  return take(value!);
+}
+    `,
+    {
+      code: `
+function bar<T>(value: T) {
+  return value! satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return { a: value! } satisfies { a: T };
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return [value!] satisfies T[];
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result = value! satisfies T;
+  return result;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: noFormat`
+function bar<T>(value: T) {
+  return (value!) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T, flag: boolean) {
+  return (flag ? value! : value) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T) {
+  return (value! ?? other) satisfies T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return (() => value!) satisfies () => T;
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return {
+    get a() {
+      return value!;
+    },
+  } satisfies { a: T };
+}
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+declare function run<R>(callback: () => R): R;
+function bar<T>(value: T) {
+  return run(() => value!);
+}
+    `,
+    `
+function bar<T>(value: T, other: string): T {
+  return value! ?? other;
+}
+    `,
+    `
+function bar<T>(value: T, other: string) {
+  const result: T = value! ?? other;
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T, other: T): T {
+  return value! ?? other;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick?.(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const pick = <U,>(input: { a: U | T }): U => input.a as U;
+  return pick({ a: value! });
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run(() => value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  class Box<U> {
+    constructor(public value: U | T) {}
+  }
+  return new Box(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const tag = <U,>(strings: TemplateStringsArray, input: U | T): U =>
+    input as U;
+  return tag\`\${value!}\`;
+}
+    `,
+    `
+function bar<T>(value: T, pick?: <U>(input: U | T) => U) {
+  return pick?.(value!);
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const tag = <U,>(strings: TemplateStringsArray, input: (U | T)[]): U =>
+    input[0] as U;
+  return tag\`\${[value!]}\`;
+}
+    `,
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return (
+    <Comp
+      v={value!}
+      f={u => {
+        const x: NonNullable<T> = u;
+      }}
+    />
+  );
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { children: U | T; f: (u: U) => void }) => null;
+  return (
+    <Comp
+      f={u => {
+        const x: NonNullable<T> = u;
+      }}
+    >
+      {value!}
+    </Comp>
+  );
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: (U | T)[] }) => null;
+  return <Comp v={[value!]} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  class Comp<U> extends React.Component<{ v: U | T }> {}
+  return <Comp v={value!} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const components = {
+    Comp: <U,>(props: { v: U | T }) => null,
+  };
+  return <components.Comp v={value!} />;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    `
+function bar<T>(value: T) {
+  let target: { a: T };
+  const result = (target = { a: value! });
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  let target: T | undefined;
+  target ??= value!;
+  return target;
+}
+    `,
+    `
+function bar<T>(value: T) {
+  const { a = value! }: { a?: T } = {};
+  return a;
+}
+    `,
+    `
+function bar<T>(value: T | undefined) {
+  const result: {} | undefined = value!;
+  return result;
+}
+    `,
+    `
+function bar<T>(value: T | null) {
+  const result: {} | null = value!;
+  return result;
+}
+    `,
+    `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value = obj[key] as T[K] | undefined;
+  const result: {} | undefined = value!;
+  return result;
+}
+    `,
+    `
 declare function nonNull(s: string);
 let s: string | null = null;
 nonNull(s!);
@@ -2863,6 +3259,1545 @@ const fn = (): Props => ({ a: 1 });
     },
     {
       code: `
+declare const value: number;
+const fn = (): number => value as unknown as number;
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const value: number;
+const fn = (): number => value;
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const props = { a: 1 } as unknown as Props;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const props = { a: 1 };
+      `,
+    },
+    {
+      code: `
+function bar<T extends string>(value: T) {
+  return value as T & {};
+}
+      `,
+      // Before 5.4, the checker keeps `T & {}` as an intersection here
+      dependencyConstraints: { typescript: '5.4' },
+      errors: [
+        {
+          column: 10,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T extends string>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const same: T = value!;
+  return same;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const same: T = value;
+  return same;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): T {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): T {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+const bar = <T,>(value: T): T => value!;
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const bar = <T,>(value: T): T => value;
+      `,
+    },
+    {
+      code: noFormat`
+const bar = <T,>(value: T): T => (value!);
+      `,
+      errors: [
+        {
+          column: 35,
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const bar = <T,>(value: T): T => (value);
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): T | undefined {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): T | undefined {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): unknown {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): unknown {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, cond: boolean): T {
+  return cond ? value! : value;
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, cond: boolean): T {
+  return cond ? value : value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, take: (x: T) => void) {
+  take(value!);
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, take: (x: T) => void) {
+  take(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const o: { a: T } = { a: value! };
+  return o;
+}
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const o: { a: T } = { a: value };
+  return o;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): { a: T } {
+  return { a: value! };
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): { a: T } {
+  return { a: value };
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const arr: T[] = [value!];
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const arr: T[] = [value];
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): T[] {
+  return [value!];
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): T[] {
+  return [value];
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T = value!) {
+  return other;
+}
+      `,
+      errors: [
+        {
+          column: 38,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: T = value) {
+  return other;
+}
+      `,
+    },
+    {
+      code: `
+class Bar<T> {
+  constructor(private value: T) {}
+  copy: T = this.value!;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+class Bar<T> {
+  constructor(private value: T) {}
+  copy: T = this.value;
+}
+      `,
+    },
+    {
+      code: `
+async function bar<T>(value: T): Promise<T> {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+async function bar<T>(value: T): Promise<T> {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function* bar<T>(value: T): Generator<T> {
+  yield value!;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function* bar<T>(value: T): Generator<T> {
+  yield value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>() {
+  const f: (v: T) => T = v => v!;
+  return f;
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>() {
+  const f: (v: T) => T = v => v;
+  return f;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T extends string>(value: T): T {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T extends string>(value: T): T {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+const bar = <T extends string>(value: T): T => value!;
+      `,
+      errors: [
+        {
+          column: 48,
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const bar = <T extends string>(value: T): T => value;
+      `,
+    },
+    {
+      code: `
+function bar<T extends string>(value: T) {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T extends string>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T & {}): T & {} {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T>(value: T & {}): T & {} {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+const bar = <T,>(value: T & {}) => value!;
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const bar = <T,>(value: T & {}) => value;
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T | string): T | string {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T | string): T | string {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key]!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+      `,
+    },
+    {
+      code: `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: T[K] = obj[key]!;
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T, K extends keyof T>(obj: T, key: K) {
+  const value: T[K] = obj[key];
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): MaybeUndefined<T> {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type MaybeUndefined<T> = T extends string ? T : T | undefined;
+function bar<T>(value: MaybeUndefined<T>): MaybeUndefined<T> {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+declare function log(value: unknown): void;
+function bar<T>(value: T | string) {
+  log(value!);
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function log(value: unknown): void;
+function bar<T>(value: T | string) {
+  log(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result: { a: T } = { a: value! };
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: { a: T } = { a: value };
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result: T[] = [value!];
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: T[] = [value];
+  return result;
+}
+      `,
+    },
+    {
+      code: noFormat`
+function bar<T>(value: T, flag: boolean): T {
+  return flag ? (value!) : value;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, flag: boolean): T {
+  return flag ? (value) : value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const callback: () => T = () => value!;
+  return callback;
+}
+      `,
+      errors: [
+        {
+          column: 35,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const callback: () => T = () => value;
+  return callback;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const result: { get(): T } = {
+    get() {
+      return value!;
+    },
+  };
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const result: { get(): T } = {
+    get() {
+      return value;
+    },
+  };
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T): readonly [T] {
+  return [value!] as const;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T): readonly [T] {
+  return [value] as const;
+}
+      `,
+    },
+    {
+      // TypeScript narrows `result` to its initializer's type, so removing the
+      // `!` widens the function's return type, as it does for a concrete type
+      // such as `string | undefined`.
+      code: `
+function bar<T>(value: T | undefined) {
+  const result: T | undefined = value!;
+  return result;
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T | undefined) {
+  const result: T | undefined = value;
+  return result;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T): T {
+  return value! || other;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: T): T {
+  return value || other;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: T | null): T | null {
+  return other ?? value!;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: T | null): T | null {
+  return other ?? value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, other: string): T | string {
+  return other && value!;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, other: string): T | string {
+  return other && value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick<T>(value!);
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const pick = <U,>(input: U | T): U => input as U;
+  return pick<T>(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run<T>(() => value!);
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const run = <U,>(callback: () => U | T): U => callback() as U;
+  return run<T>(() => value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const pick = (input: T): T => input;
+  return pick(value!);
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const pick = (input: T): T => input;
+  return pick(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const run = (callback: () => T): T => callback();
+  return run(() => value!);
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const run = (callback: () => T): T => callback();
+  return run(() => value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, list: T[]) {
+  list.push(value!);
+  return list;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, list: T[]) {
+  list.push(value);
+  return list;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  class Box {
+    constructor(public value: T) {}
+  }
+  return new Box(value!);
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  class Box {
+    constructor(public value: T) {}
+  }
+  return new Box(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T): T => input;
+  return tag\`\${value!}\`;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T): T => input;
+  return tag\`\${value}\`;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T[]): T => input[0];
+  return tag\`\${[value!]}\`;
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T) {
+  const tag = (strings: TemplateStringsArray, input: T[]): T => input[0];
+  return tag\`\${[value]}\`;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T, pick?: (input: T) => T) {
+  return pick?.(value!);
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function bar<T>(value: T, pick?: (input: T) => T) {
+  return pick?.(value);
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return <Comp<T> v={value!} f={u => {}} />;
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = <U,>(props: { v: U | T; f: (u: U) => void }) => null;
+  return <Comp<T> v={value} f={u => {}} />;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T }) => null;
+  return <Comp v={value!} />;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T }) => null;
+  return <Comp v={value} />;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { children: T }) => null;
+  return <Comp>{value!}</Comp>;
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { children: T }) => null;
+  return <Comp>{value}</Comp>;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T[] }) => null;
+  return <Comp v={[value!]} />;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: `
+function bar<T>(value: T) {
+  const Comp = (props: { v: T[] }) => null;
+  return <Comp v={[value]} />;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T) {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      output: `
+function bar<T>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(value: T | string): {} {
+  return value!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      output: `
+function bar<T>(value: T | string): {} {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+class Bar {
+  get self() {
+    return this!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class Bar {
+  get self() {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+function bar<T>(key: keyof T) {
+  return key!;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar<T>(key: keyof T) {
+  return key;
+}
+      `,
+    },
+    {
+      code: `
+function bar(value: string | undefined) {
+  if (value) {
+    return value!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function bar(value: string | undefined) {
+  if (value) {
+    return value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+(function () {}) as unknown as () => void;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(function () {});
+      `,
+    },
+    {
+      code: `
+(async function () {}) as unknown as () => Promise<void>;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(async function () {});
+      `,
+    },
+    {
+      code: noFormat`
+function f() {}
+export default (function f() {}) as unknown as () => void;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 58,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function f() {}
+export default (function f() {});
+      `,
+    },
+    {
+      code: noFormat`
+async function f() {}
+export default (async function f() {}) as unknown as () => Promise<void>;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 73,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+async function f() {}
+export default (async function f() {});
+      `,
+    },
+    {
+      code: noFormat`
+const K = class C {};
+export default (class C {}) as unknown as typeof K;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const K = class C {};
+export default (class C {});
+      `,
+    },
+    {
+      code: `
+({ a: 1, b: 2 }) as unknown as { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 56,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+({ a: 1, b: 2 });
+      `,
+    },
+    {
+      code: noFormat`
+<{ a: number; b: number }><unknown>{ a: 1, b: 2 };
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+({ a: 1, b: 2 });
+      `,
+    },
+    {
+      code: `
+const fn = () => ({ a: 1 }) as unknown as { a: number } satisfies { a: number };
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 18,
+          endColumn: 56,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const fn = () => ({ a: 1 }) satisfies { a: number };
+      `,
+    },
+    {
+      code: `
+declare const a: number;
+const x = a /* keep */ as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const a: number;
+const x = a as /* keep */ unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare const a: number;
+const x = (/* keep */ a) as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare const a: number;
+const x = a as unknown as number /* keep */;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: number;
+const x = a /* keep */;
+      `,
+    },
+    {
+      code: `
+declare const a: string;
+declare const b: number;
+const x = (a, b) as unknown as number;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 38,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: string;
+declare const b: number;
+const x = (a, b);
+      `,
+    },
+    {
+      code: `
+declare const a: number;
+declare const b: number;
+const x = ((a || b) as unknown as number).toFixed();
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: number;
+declare const b: number;
+const x = (a || b).toFixed();
+      `,
+    },
+    {
+      code: `
 declare function fn(param: number): void;
 fn(42 as unknown as number);
       `,
@@ -3593,6 +5528,128 @@ fn1(() => {
         },
       ],
       output: '(class Clazz {}.length);',
+    },
+    {
+      code: noFormat`
+<Promise<number>>async function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(async function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <number>function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <Promise<number>>async function () {
+  return 1;
+}();
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (async function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: `
+export default <number>class {
+  static v = 1;
+}.v;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (class {
+  static v = 1;
+}.v);
+      `,
+    },
+    {
+      code: noFormat`
+export default (<number>function () {
+  return 1;
+}());
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 4,
+          endLine: 4,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function () {
+  return 1;
+}());
+      `,
+    },
+    {
+      code: noFormat`
+export default <() => void><unknown>function f() {};
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+export default (function f() {});
+      `,
     },
     {
       code: 'const foo = () => <number>{ lol: 123 as number }.lol + 54321;',

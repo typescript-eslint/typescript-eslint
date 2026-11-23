@@ -113,6 +113,53 @@ class BaseUnion {
   }
 }
     `,
+    `
+class Foo {
+  f(): Foo | undefined {
+    return undefined;
+  }
+}
+    `,
+    `
+class Foo {
+  f = (): Foo | undefined => undefined;
+}
+    `,
+    `
+interface Bar {}
+
+class Foo implements Bar {
+  f(): Bar {
+    return this;
+  }
+}
+    `,
+    `
+class Foo {
+  f(): Foo | undefined {
+    return Math.random() > 0.5 ? this : new Foo();
+  }
+}
+    `,
+    `
+class Foo {
+  next: this | Foo = this;
+  f = (): Foo => this.next;
+}
+    `,
+    `
+class Foo {
+  foo = 1;
+  f(): Foo {
+    return Math.random() > 0.5 ? this : new Sub();
+  }
+  g = (): Foo => (Math.random() > 0.5 ? this : new Sub());
+}
+
+class Sub extends Foo {
+  sub = 1;
+}
+    `,
   ],
   invalid: [
     {
@@ -471,6 +518,135 @@ class BaseUnion {
     }
 
     return valueUnion;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f(): undefined | Foo {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): undefined | this {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f(): Foo;
+  f(x?: number): Foo {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): Foo;
+  f(x?: number): this {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f(): Foo | undefined {
+    return Math.random() > 0.5 ? this : undefined;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): this | undefined {
+    return Math.random() > 0.5 ? this : undefined;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo | undefined => (Math.random() > 0.5 ? this : undefined);
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this | undefined => (Math.random() > 0.5 ? this : undefined);
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f(): Foo | undefined {
+    if (Math.random() > 0.5) {
+      return undefined;
+    }
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): this | undefined {
+    if (Math.random() > 0.5) {
+      return undefined;
+    }
+    return this;
   }
 }
       `,

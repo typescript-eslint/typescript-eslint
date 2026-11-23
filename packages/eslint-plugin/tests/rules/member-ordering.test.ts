@@ -5352,6 +5352,160 @@ class Foo {
         { default: ['public-instance-method', 'public-static-method'] },
       ],
     },
+    {
+      code: `
+class Foo {
+  method() {}
+  @Dec readonly field = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['public-decorated-field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+  @Dec readonly field = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['decorated-field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+  readonly field = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['public-instance-field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+  readonly field = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['instance-field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  method() {}
+  readonly field = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['public-field', 'method'] }],
+    },
+    {
+      code: `
+interface Foo {
+  method(): void;
+  readonly [key: string]: unknown;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'key',
+            rank: 'method',
+          },
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['signature', 'method'] }],
+    },
+    {
+      code: `
+interface Foo {
+  method(): void;
+  readonly field: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'field',
+            rank: 'method',
+          },
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['field', 'method'] }],
+    },
   ],
 };
 

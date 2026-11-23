@@ -2,7 +2,13 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isParenthesized } from '../util';
+import {
+  createRule,
+  findShadowingVariable,
+  isGlobalScript,
+  isGlobalScriptDeclarationFile,
+  isParenthesized,
+} from '../util';
 
 /**
  * Check whatever node can be considered as simple
@@ -146,6 +152,46 @@ export default createRule<Options, MessageIds>({
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
+    // In a script, top-level declarations such as `interface Array<T> {}`
+    // augment the global type instead of hiding it. Outside declaration files,
+    // a file with no import or export may still be a module (for example, with
+    // `moduleDetection: "force"`), where reporting would point at a local type,
+    // so only trust that when the file is also parsed as a script. A file with
+    // an import or export is a module to TypeScript whatever its `sourceType`.
+    const topLevelIsGlobal =
+      (context.sourceCode.ast.sourceType === 'script' &&
+        isGlobalScript(context.sourceCode)) ||
+      isGlobalScriptDeclarationFile(context.filename, context.sourceCode);
+
+    /**
+     * Whether a local type hides the global type `name`. Namespaces and
+     * `declare global` augmentations don't.
+     */
+    function isShadowed(node: TSESTree.Node, name: string): boolean {
+      return !!findShadowingVariable(
+        name,
+        context.sourceCode.getScope(node),
+        'type',
+        { node, topLevelIsGlobal },
+      );
+    }
+
+    /**
+     * Checks whether a fix would drop comments outside of the kept type node.
+     */
+    function hasCommentsOutside(
+      outer: TSESTree.Node,
+      inner: TSESTree.Node,
+    ): boolean {
+      return context.sourceCode
+        .getCommentsInside(outer)
+        .some(
+          comment =>
+            comment.range[1] <= inner.range[0] ||
+            comment.range[0] >= inner.range[1],
+        );
+    }
+
     /**
      * @param node the node to be evaluated.
      */
@@ -176,6 +222,12 @@ export default createRule<Options, MessageIds>({
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
         const errorNode = isReadonly ? node.parent : node;
+        const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+
+        // a local `Array` type can't be used for the global one
+        if (isShadowed(node, arrayType)) {
+          return;
+        }
 
         context.report({
           node: errorNode,
@@ -187,7 +239,9 @@ export default createRule<Options, MessageIds>({
           },
           fix(fixer) {
             const typeNode = node.elementType;
-            const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
+            if (hasCommentsOutside(errorNode, typeNode)) {
+              return null;
+            }
 
             return [
               fixer.replaceTextRange(
@@ -217,19 +271,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        for (
-          let scope = context.sourceCode.getScope(node);
-          scope.upper;
-          scope = scope.upper
-        ) {
-          if (scope.set.has(node.typeName.name)) {
-            return;
-          }
+        if (isShadowed(node, node.typeName.name)) {
+          return;
         }
 
         const isReadonlyWithGenericArrayType =
-          node.typeName.name === 'Readonly' &&
-          node.typeArguments?.params[0].type === AST_NODE_TYPES.TSArrayType;
+          node.typeName.name === 'Readonly';
         const isReadonlyArrayType =
           node.typeName.name === 'ReadonlyArray' ||
           isReadonlyWithGenericArrayType;
@@ -266,10 +313,15 @@ export default createRule<Options, MessageIds>({
 
         const type = typeParams[0];
         const typeParens = typeNeedsParentheses(type);
+        // `readonly T[][]` and `readonly T[][number]` would apply to the outer
+        // type, and `[readonly T[]?]` isn't valid
         const parentParens =
           readonlyPrefix &&
-          node.parent.type === AST_NODE_TYPES.TSArrayType &&
-          !isParenthesized(node.parent.elementType, context.sourceCode);
+          (node.parent.type === AST_NODE_TYPES.TSArrayType ||
+            node.parent.type === AST_NODE_TYPES.TSOptionalType ||
+            (node.parent.type === AST_NODE_TYPES.TSIndexedAccessType &&
+              node.parent.objectType === node)) &&
+          !isParenthesized(node, context.sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''
@@ -280,10 +332,14 @@ export default createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(type),
-            className: isReadonlyArrayType ? node.typeName.name : 'Array',
+            className: node.typeName.name,
             readonlyPrefix,
           },
           fix(fixer) {
+            if (hasCommentsOutside(node, type)) {
+              return null;
+            }
+
             return [
               fixer.replaceTextRange([node.range[0], type.range[0]], start),
               fixer.replaceTextRange([type.range[1], node.range[1]], end),

@@ -123,6 +123,387 @@ interface Foo {
 
 interface Bar extends Foo {}
 
+interface Bar {
+  other: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+function Bar() {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+
+function Bar() {}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+export default interface Bar extends Foo {}
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export {};
+interface Foo {
+  props: string;
+}
+
+declare global {
+  interface Bar extends Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+export {};
+interface Foo {
+  props: string;
+}
+
+declare global {
+  type Bar = Foo
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<T> {
+  props: T;
+}
+
+interface Bar<T> extends Foo<T> {}
+
+interface Bar<T> {
+  other: T;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<T> {
+  props: T;
+}
+
+declare module 'bar' {
+  interface Bar<T> extends Foo<T> {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo<T> {
+  props: T;
+}
+
+declare module 'bar' {
+  type Bar<T> = Foo<T>
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+export {};
+interface Foo {
+  props: string;
+}
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends Foo {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 25,
+          endLine: 9,
+          line: 9,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+export {};
+interface Foo {
+  props: string;
+}
+
+declare global {
+  namespace NodeJS {
+    type ProcessEnv = Foo
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+declare namespace Baz {
+  interface Bar extends Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+
+declare namespace Baz {
+  type Bar = Foo
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  export interface Bar extends Foo {}
+}
+namespace Baz {
+  export interface Bar {
+    other: string;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 23,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  export type Bar = Foo
+}
+namespace Baz {
+  export interface Bar {
+    other: string;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'test.d.ts',
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+namespace Bar {
+  export const value = 1;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+
+namespace Bar {
+  export const value = 1;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  interface Bar extends Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+interface Foo {
+  props: string;
+}
+
+namespace Baz {
+  type Bar = Foo
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
 const bar = class Bar {};
       `,
       errors: [
@@ -286,6 +667,63 @@ declare module FooBar {
       filename: 'test.d.ts',
       // output matches input because a suggestion was made
       output: null,
+    },
+    // In a file without imports or exports, a top-level interface named after
+    // a lib type augments that global type, which a type alias can't do.
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+interface Array<T> extends Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'noEmptyWithSuper',
+          suggestions: [
+            {
+              messageId: 'noEmptyWithSuper',
+              output: `
+interface Foo {
+  props: string;
+}
+type Array<T> = Foo
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      // in a module, the interface is local and doesn't merge with the global
+      code: `
+export {};
+interface Foo {
+  props: string;
+}
+interface Array<T> extends Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyWithSuper',
+        },
+      ],
+      output: `
+export {};
+interface Foo {
+  props: string;
+}
+type Array<T> = Foo
+      `,
     },
   ],
 });

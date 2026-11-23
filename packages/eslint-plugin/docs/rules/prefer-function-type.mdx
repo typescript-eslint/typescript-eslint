@@ -92,7 +92,9 @@ type Intersection = ((data: string) => number) & ((id: number) => string);
 
 If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can avoid this rule.
 
-This rule has a known edge case of sometimes triggering on global augmentations such as `interface Function`.
+This rule has a known edge case of triggering on global augmentations such as `interface Function`, even though a type alias can't merge with the existing global interface.
+The rule only suggests the function type instead of fixing it automatically inside a `declare global` block, in a declaration file, and at the top level of a file without imports or exports when the interface is named after a type from the configured [`lib`](/packages/parser#lib).
+Other global augmentations, such as of a global interface that a package's types declare, may still be autofixed.
 These edge cases are rare and often symptomatic of odd code.
 We recommend you use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments).
 See [#454](https://github.com/typescript-eslint/typescript-eslint/issues/454) for details.

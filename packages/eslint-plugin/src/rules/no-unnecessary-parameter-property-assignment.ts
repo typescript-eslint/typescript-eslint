@@ -3,7 +3,15 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule, getStaticStringValue, nullThrows } from '../util';
+import {
+  createRule,
+  getStaticMemberAccessValue,
+  getStaticStringValue,
+  isAssignee,
+  isStaticMemberAccessOfValue,
+  isTypeAssertion,
+  nullThrows,
+} from '../util';
 
 const UNNECESSARY_OPERATORS = new Set(['??=', '&&=', '=', '||=']);
 
@@ -24,21 +32,60 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
-    const reportInfoStack: {
-      assignedBeforeConstructor: Set<string>;
-      assignedBeforeUnnecessary: Set<string>;
-      unnecessaryAssignments: {
-        name: string;
-        node: TSESTree.AssignmentExpression;
-      }[];
-    }[] = [];
+    /**
+     * The report info of each class body being visited. Nested classes have
+     * their own, and code in a nested class can still use the outer `this`,
+     * as in a computed key, so each lookup goes by class body.
+     */
+    const reportInfos = new Map<
+      TSESTree.Node,
+      {
+        /**
+         * Assignments such as `this.foo = foo` that are unnecessary if `foo`
+         * still holds the parameter's value. Whether it does depends on code
+         * after them, so they're checked once the class body is done.
+         */
+        possibleCopies: {
+          constructorNode: TSESTree.FunctionExpression;
+          name: string;
+          node: TSESTree.AssignmentExpression;
+          rightId: TSESTree.Identifier;
+        }[];
+        /** Nodes that write to a property of the constructor's `this`. */
+        writes: {
+          constructorNode: TSESTree.FunctionExpression;
+          name: string;
+          node: TSESTree.Node;
+        }[];
+      }
+    >();
 
+    /**
+     * Each constructor's `this` expressions, including the ones in arrow
+     * functions in it, which share its `this`.
+     */
+    const constructorThisExpressions = new Map<
+      TSESTree.FunctionExpression,
+      TSESTree.ThisExpression[]
+    >();
+
+    function getReportInfo(classBody: TSESTree.Node | undefined) {
+      return nullThrows(
+        classBody && reportInfos.get(classBody),
+        'The class body should have report info',
+      );
+    }
+
+    /**
+     * Whether `node` is a property of `this`, as in `this.bar`, `this[key]`
+     * or `(this as any).bar`.
+     */
     function isThisMemberExpression(
       node: TSESTree.Node,
     ): node is TSESTree.MemberExpression {
       return (
         node.type === AST_NODE_TYPES.MemberExpression &&
-        node.object.type === AST_NODE_TYPES.ThisExpression
+        skipTypeWrappers(node.object).type === AST_NODE_TYPES.ThisExpression
       );
     }
 
@@ -56,49 +103,101 @@ export default createRule({
       return null;
     }
 
-    function findParentFunction(
-      node: TSESTree.Node | undefined,
-    ):
+    type ThisContainer =
+      | TSESTree.AccessorProperty
       | TSESTree.ArrowFunctionExpression
       | TSESTree.FunctionDeclaration
       | TSESTree.FunctionExpression
-      | undefined {
-      if (
-        !node ||
-        node.type === AST_NODE_TYPES.FunctionDeclaration ||
-        node.type === AST_NODE_TYPES.FunctionExpression ||
-        node.type === AST_NODE_TYPES.ArrowFunctionExpression
-      ) {
-        return node;
-      }
-      return findParentFunction(node.parent);
+      | TSESTree.PropertyDefinition
+      | TSESTree.StaticBlock;
+
+    /**
+     * Finds the function that has `node`, or the class static block or class
+     * field initializer that has it, as their `this` is that class rather
+     * than anything outside it.
+     */
+    function findThisContainer(
+      node: TSESTree.Node | undefined,
+    ): ThisContainer | undefined {
+      return node &&
+        (ASTUtils.isFunction(node) || node.type === AST_NODE_TYPES.StaticBlock)
+        ? node
+        : findEnclosingThisContainer(node);
     }
 
-    function findParentPropertyDefinition(
+    /**
+     * Like `findThisContainer`, but for the code around `node` rather than in
+     * it, so a function that is a field's value gives that field.
+     */
+    function findEnclosingThisContainer(
       node: TSESTree.Node | undefined,
-    ): TSESTree.PropertyDefinition | undefined {
-      if (!node || node.type === AST_NODE_TYPES.PropertyDefinition) {
-        return node;
+    ): ThisContainer | undefined {
+      for (let current = node; current?.parent; current = current.parent) {
+        const { parent } = current;
+        if (
+          ((parent.type === AST_NODE_TYPES.AccessorProperty ||
+            parent.type === AST_NODE_TYPES.PropertyDefinition) &&
+            parent.value === current) ||
+          ASTUtils.isFunction(parent) ||
+          parent.type === AST_NODE_TYPES.StaticBlock
+        ) {
+          return parent;
+        }
       }
-      return findParentPropertyDefinition(node.parent);
+      return undefined;
     }
 
-    function isConstructorFunctionExpression(
-      node: TSESTree.Node | undefined,
-    ): node is TSESTree.FunctionExpression {
+    /**
+     * Whether `node` is an instance field of the class that has
+     * `constructorNode`, whose initializer runs as part of the constructor.
+     */
+    function isInstanceFieldOf(
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+    ): node is TSESTree.AccessorProperty | TSESTree.PropertyDefinition {
       return (
-        node?.type === AST_NODE_TYPES.FunctionExpression &&
-        ASTUtils.isConstructor(node.parent)
+        (node.type === AST_NODE_TYPES.AccessorProperty ||
+          node.type === AST_NODE_TYPES.PropertyDefinition) &&
+        !node.static &&
+        node.parent === constructorNode.parent.parent
       );
     }
 
-    function isReferenceFromParameter(node: TSESTree.Identifier): boolean {
-      const scope = context.sourceCode.getScope(node);
-
-      const rightRef = scope.references.find(
-        ref => ref.identifier.name === node.name,
+    /**
+     * Whether `node` reads a parameter of `constructorNode` that may not have
+     * been written to before `position`, so it still holds the value that the
+     * parameter property assigned.
+     */
+    function isUnchangedConstructorParameter(
+      node: TSESTree.Identifier,
+      constructorNode: TSESTree.FunctionExpression,
+      position: number,
+    ): boolean {
+      const variable = ASTUtils.findVariable(
+        context.sourceCode.getScope(node),
+        node,
       );
-      return rightRef?.resolved?.defs.at(0)?.type === DefinitionType.Parameter;
+      const definition = variable?.defs.at(0);
+
+      if (
+        definition?.type !== DefinitionType.Parameter ||
+        definition.node !== constructorNode
+      ) {
+        return false;
+      }
+
+      // Any write other than the parameter's own default value, including
+      // `var foo = 'bar'` or `for (var foo of values)` redeclaring it.
+      return !variable?.references.some(reference => {
+        if (!reference.isWrite() || reference.identifier === definition.name) {
+          return false;
+        }
+        const writePosition = getEarliestRunPosition(
+          reference.identifier,
+          constructorNode,
+        );
+        return writePosition != null && writePosition < position;
+      });
     }
 
     function isParameterPropertyWithName(
@@ -114,127 +213,604 @@ export default createRule({
       );
     }
 
-    function getIdentifier(node: TSESTree.Node): TSESTree.Identifier | null {
-      if (node.type === AST_NODE_TYPES.Identifier) {
-        return node;
-      }
-      if (
-        node.type === AST_NODE_TYPES.TSAsExpression ||
-        node.type === AST_NODE_TYPES.TSNonNullExpression
-      ) {
-        return getIdentifier(node.expression);
-      }
-      return null;
-    }
-
-    function isArrowIIFE(node: TSESTree.Node): boolean {
+    /**
+     * Whether `node` is an arrow function IIFE that runs all of its body
+     * immediately. An async one may stop at an `await` and run the rest later.
+     */
+    function isSyncArrowIIFE(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        node.parent.type === AST_NODE_TYPES.CallExpression
+        !node.async &&
+        node.parent.type === AST_NODE_TYPES.CallExpression &&
+        node.parent.callee === node
       );
     }
 
-    return {
-      ClassBody(): void {
-        reportInfoStack.push({
-          assignedBeforeConstructor: new Set(),
-          assignedBeforeUnnecessary: new Set(),
-          unnecessaryAssignments: [],
-        });
-      },
-      'ClassBody:exit'(): void {
-        const { assignedBeforeConstructor, unnecessaryAssignments } =
-          nullThrows(reportInfoStack.pop(), 'The top stack should exist');
-        unnecessaryAssignments.forEach(({ name, node }) => {
-          if (assignedBeforeConstructor.has(name)) {
-            return;
-          }
-          context.report({
-            node,
-            messageId: 'unnecessaryAssign',
-          });
-        });
-      },
-      "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
-        node: TSESTree.AssignmentExpression,
-      ): void {
-        let functionNode = findParentFunction(node);
-        if (functionNode && isArrowIIFE(functionNode)) {
-          functionNode = findParentFunction(functionNode.parent);
+    /**
+     * Finds the constructor that runs `node` immediately: either directly or
+     * through non-async arrow function IIFEs.
+     */
+    function findImmediateConstructor(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionExpression | undefined {
+      let container = findThisContainer(node);
+      while (container && isSyncArrowIIFE(container)) {
+        container = findThisContainer(container.parent);
+      }
+
+      return container?.type === AST_NODE_TYPES.FunctionExpression &&
+        ASTUtils.isConstructor(container.parent)
+        ? container
+        : undefined;
+    }
+
+    /**
+     * Whether `node` only changes the type of its expression, as in
+     * `value as Type`, `<Type>value`, `value!` or `value satisfies Type`.
+     */
+    function isTypeWrapper(
+      node: TSESTree.Node,
+    ): node is
+      | TSESTree.TSAsExpression
+      | TSESTree.TSNonNullExpression
+      | TSESTree.TSSatisfiesExpression
+      | TSESTree.TSTypeAssertion {
+      return (
+        isTypeAssertion(node) ||
+        node.type === AST_NODE_TYPES.TSNonNullExpression ||
+        node.type === AST_NODE_TYPES.TSSatisfiesExpression
+      );
+    }
+
+    function skipTypeWrappers(node: TSESTree.Node): TSESTree.Node {
+      let current = node;
+      while (isTypeWrapper(current)) {
+        current = current.expression;
+      }
+      return current;
+    }
+
+    /**
+     * Finds the parent of `node` if its value may be `node`'s value, as in
+     * `cond ? node : other`, `other || node`, `(other, node)` or
+     * `node as Type`.
+     */
+    function getValuePassthrough(
+      node: TSESTree.Node,
+    ): TSESTree.Expression | undefined {
+      const { parent } = node;
+      if (
+        parent &&
+        ((parent.type === AST_NODE_TYPES.ConditionalExpression &&
+          parent.test !== node) ||
+          parent.type === AST_NODE_TYPES.LogicalExpression ||
+          (parent.type === AST_NODE_TYPES.SequenceExpression &&
+            parent.expressions.at(-1) === node) ||
+          isTypeWrapper(parent))
+      ) {
+        return parent;
+      }
+      return undefined;
+    }
+
+    /**
+     * Goes up from `node` through the expressions whose value may be `node`'s
+     * value, as in `cond ? node : other`, `other || node`, `(other, node)`,
+     * `node as Type` or `o.bar = node`, stopping at an assignment to a
+     * property of `this`, which is the target that `node` reaches.
+     */
+    function getValueContext(node: TSESTree.Node): TSESTree.Node {
+      let current = node;
+      while (true) {
+        const { parent } = current;
+        const next =
+          parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+          parent.right === current &&
+          !isThisMemberExpression(parent.left)
+            ? parent
+            : getValuePassthrough(current);
+        if (!next) {
+          return current;
         }
+        current = next;
+      }
+    }
 
-        if (!isConstructorFunctionExpression(functionNode)) {
-          return;
-        }
-
-        const { assignedBeforeUnnecessary, unnecessaryAssignments } =
-          nullThrows(
-            reportInfoStack.at(reportInfoStack.length - 1),
-            'The top of stack should exist',
-          );
-
-        // A prior write to the parameter binding means a later `this.x = x`
-        // may copy a different value than the parameter property initialized.
-        if (node.left.type === AST_NODE_TYPES.Identifier) {
-          if (isReferenceFromParameter(node.left)) {
-            assignedBeforeUnnecessary.add(node.left.name);
-          }
-          return;
-        }
-
-        const leftName = getPropertyName(node.left);
-
-        if (!leftName) {
-          return;
-        }
-
-        if (!UNNECESSARY_OPERATORS.has(node.operator)) {
-          assignedBeforeUnnecessary.add(leftName);
-          return;
-        }
-
-        const rightId = getIdentifier(node.right);
-
-        if (leftName !== rightId?.name || !isReferenceFromParameter(rightId)) {
-          return;
-        }
-
-        const hasParameterProperty = functionNode.params.some(param =>
-          isParameterPropertyWithName(param, rightId.name),
-        );
-
-        if (hasParameterProperty && !assignedBeforeUnnecessary.has(leftName)) {
-          unnecessaryAssignments.push({
-            name: leftName,
-            node,
-          });
-        }
-      },
-      'PropertyDefinition AssignmentExpression'(
-        node: TSESTree.AssignmentExpression,
-      ): void {
-        const name = getPropertyName(node.left);
-
-        if (!name) {
-          return;
-        }
-
-        const functionNode = findParentFunction(node);
+    /**
+     * Finds the `this` that a function expression is known to be called
+     * with, given its `getValueContext`: the object of
+     * `this.bar = function () {}`, as `this.bar()` calls it with the instance
+     * as `this`, or the first argument of `function () {}.call(this)`,
+     * `.apply(this)` or `.bind(this)`.
+     */
+    function findThisOfFunctionValue(
+      value: TSESTree.Node,
+    ): TSESTree.Node | undefined {
+      const { parent } = value;
+      if (
+        parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.right === value &&
+        isThisMemberExpression(parent.left)
+      ) {
+        return parent.left;
+      }
+      if (
+        parent?.type === AST_NODE_TYPES.MemberExpression &&
+        parent.object === value &&
+        isStaticMemberAccessOfValue(parent, context, 'apply', 'bind', 'call') &&
+        parent.parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.parent.callee === parent
+      ) {
+        const thisArgument = parent.parent.arguments.at(0);
         if (
-          functionNode &&
-          !(
-            isArrowIIFE(functionNode) &&
-            findParentPropertyDefinition(node)?.value === functionNode.parent
+          thisArgument &&
+          skipTypeWrappers(thisArgument).type === AST_NODE_TYPES.ThisExpression
+        ) {
+          return thisArgument;
+        }
+      }
+      return undefined;
+    }
+
+    /**
+     * Finds the constructor whose `this` a write in `node` changes: like
+     * `findImmediateConstructor`, but through any arrow function, as each one
+     * shares the constructor's `this`. That includes the instance fields of
+     * its class, as in `bar = () => { this.foo = 1; }`, and a function
+     * expression that is a field's value, as in `bar = function () {}`, or
+     * that is called with the constructor's `this`, as in
+     * `this.bar = function () {}` or `function () {}.call(this)`.
+     */
+    function findConstructorOfWrite(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionExpression | undefined {
+      let container = findThisContainer(node);
+      while (container?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+        container = findEnclosingThisContainer(container);
+      }
+
+      if (container?.type === AST_NODE_TYPES.FunctionExpression) {
+        if (ASTUtils.isConstructor(container.parent)) {
+          return container;
+        }
+        const value = getValueContext(container);
+        const thisNode = findThisOfFunctionValue(value);
+        if (thisNode) {
+          return findConstructorOfWrite(thisNode);
+        }
+        if (
+          (value.parent?.type === AST_NODE_TYPES.AccessorProperty ||
+            value.parent?.type === AST_NODE_TYPES.PropertyDefinition) &&
+          value.parent.value === value
+        ) {
+          container = value.parent;
+        }
+      }
+
+      if (
+        (container?.type === AST_NODE_TYPES.AccessorProperty ||
+          container?.type === AST_NODE_TYPES.PropertyDefinition) &&
+        !container.static
+      ) {
+        for (const member of container.parent.body) {
+          if (
+            member.type === AST_NODE_TYPES.MethodDefinition &&
+            member.kind === 'constructor' &&
+            member.value.type === AST_NODE_TYPES.FunctionExpression
+          ) {
+            return member.value;
+          }
+        }
+      }
+
+      return undefined;
+    }
+
+    /** Finds the reads of the variable that `node` declares. */
+    function getDeclaredVariableReads(node: TSESTree.Node) {
+      return context.sourceCode
+        .getDeclaredVariables(node)
+        .at(0)
+        ?.references.filter(reference => reference.isRead())
+        .map(reference => reference.identifier);
+    }
+
+    /**
+     * Finds the `this` expressions in `constructorNode` that may read the
+     * property `name`: `this.name` or `(this as Type).name` other than as the
+     * target of `=`, and any `this` not used for a known property, as in
+     * `const { name } = this`.
+     */
+    function getThisPropertyReads(
+      constructorNode: TSESTree.FunctionExpression,
+      name: string,
+    ): TSESTree.ThisExpression[] {
+      return (constructorThisExpressions.get(constructorNode) ?? []).filter(
+        thisExpression => {
+          let object: TSESTree.Node = thisExpression;
+          while (isTypeWrapper(object.parent)) {
+            object = object.parent;
+          }
+          const { parent } = object;
+          if (
+            parent.type !== AST_NODE_TYPES.MemberExpression ||
+            parent.object !== object
+          ) {
+            return true;
+          }
+          const propertyName = getPropertyName(parent);
+          if (propertyName == null) {
+            return true;
+          }
+          return (
+            propertyName === name &&
+            !(
+              parent.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+              parent.parent.operator === '=' &&
+              parent.parent.left === parent
+            )
+          );
+        },
+      );
+    }
+
+    /**
+     * Whether `this.name = value` in `constructorNode` may call a setter,
+     * which may call `value` right away: one the class has, or one a base
+     * class may have if the class doesn't declare `name` itself, as
+     * TypeScript reports a property that overrides an accessor.
+     */
+    function mayCallSetter(
+      name: string,
+      constructorNode: TSESTree.FunctionExpression,
+    ): boolean {
+      const classBody = constructorNode.parent.parent as TSESTree.ClassBody;
+      let declared = constructorNode.params.some(param =>
+        isParameterPropertyWithName(param, name),
+      );
+      for (const member of classBody.body) {
+        // Skipping an abstract accessor only treats its name as undeclared.
+        if (
+          member.type === AST_NODE_TYPES.StaticBlock ||
+          member.type === AST_NODE_TYPES.TSAbstractAccessorProperty ||
+          member.type === AST_NODE_TYPES.TSIndexSignature ||
+          member.static ||
+          member.key.type === AST_NODE_TYPES.PrivateIdentifier ||
+          getStaticMemberAccessValue(member, context) !== name
+        ) {
+          continue;
+        }
+        if (
+          (member.type === AST_NODE_TYPES.MethodDefinition ||
+            member.type === AST_NODE_TYPES.TSAbstractMethodDefinition) &&
+          member.kind === 'set'
+        ) {
+          return true;
+        }
+        declared = true;
+      }
+      return !declared && classBody.parent.superClass != null;
+    }
+
+    /**
+     * Finds the nodes a function can only be called through, as in
+     * `function f() {}`, `const f = () => {}`, `const o = { f: () => {} }`,
+     * `this.f = () => {};` or a field such as `f = () => {}`. Calls from
+     * other methods, as in `this.init()`, aren't counted, as with writes in
+     * other methods, but a setter that `this.f = () => {};` may call is.
+     */
+    function getFunctionAccesses(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+      constructorNode: TSESTree.FunctionExpression,
+    ): TSESTree.Node[] | undefined {
+      if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
+        return getDeclaredVariableReads(node);
+      }
+
+      // The outermost expression the function's value reaches: through the
+      // object and array literals it is a value in, the expressions whose
+      // value may be it, as in `cond ? f : other` or `f as Type`, and
+      // `f.bind(x)`, whose value only calls `f` when it's called. Not through
+      // other assignments, as in `o.f = f`, which `o.f` may call later, or
+      // through `.bind` on a literal, as in `{ f, bind() {} }.bind(x)`,
+      // whose `bind` may be any method.
+      let holder: TSESTree.Expression = node;
+      let isFunctionValue = true;
+      while (true) {
+        const parent: TSESTree.Node = holder.parent;
+        const passthrough = getValuePassthrough(holder);
+        if (
+          parent.type === AST_NODE_TYPES.Property &&
+          parent.value === holder &&
+          parent.parent.type === AST_NODE_TYPES.ObjectExpression
+        ) {
+          holder = parent.parent;
+          isFunctionValue = false;
+        } else if (parent.type === AST_NODE_TYPES.ArrayExpression) {
+          holder = parent;
+          isFunctionValue = false;
+        } else if (passthrough) {
+          holder = passthrough;
+        } else if (
+          isFunctionValue &&
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.object === holder &&
+          isStaticMemberAccessOfValue(parent, context, 'bind') &&
+          parent.parent.type === AST_NODE_TYPES.CallExpression &&
+          parent.parent.callee === parent
+        ) {
+          holder = parent.parent;
+        } else {
+          break;
+        }
+      }
+
+      const { parent } = holder;
+      if (
+        parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        parent.init === holder &&
+        parent.id.type === AST_NODE_TYPES.Identifier
+      ) {
+        return getDeclaredVariableReads(parent);
+      }
+
+      // The properties of `this` that the function is assigned to, as in
+      // `this.g = this.f = () => {}`. Only when the assignments are a whole
+      // statement: their value, as in `(this.f = () => {})()`, also reaches
+      // the function. An assignment that may call a setter is an access too,
+      // as the setter may call the function.
+      const assignmentAccesses: TSESTree.Node[] = [];
+      let assigned: TSESTree.Node = holder;
+      while (
+        assigned.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        assigned.parent.operator === '=' &&
+        assigned.parent.right === assigned &&
+        findConstructorOfWrite(assigned.parent.left) === constructorNode
+      ) {
+        const name = getPropertyName(assigned.parent.left);
+        if (name == null) {
+          break;
+        }
+        assignmentAccesses.push(...getThisPropertyReads(constructorNode, name));
+        if (mayCallSetter(name, constructorNode)) {
+          assignmentAccesses.push(assigned.parent);
+        }
+        assigned = assigned.parent;
+      }
+      if (
+        assigned !== holder &&
+        assigned.parent.type === AST_NODE_TYPES.ExpressionStatement
+      ) {
+        return assignmentAccesses;
+      }
+
+      if (
+        isInstanceFieldOf(parent, constructorNode) &&
+        parent.value === holder
+      ) {
+        const name = getStaticMemberAccessValue(parent, context);
+        if (typeof name === 'string') {
+          return getThisPropertyReads(constructorNode, name);
+        }
+      }
+
+      return undefined;
+    }
+
+    /**
+     * Finds the earliest position in `constructorNode` that `node` may run
+     * at, or `undefined` if it never runs as part of the constructor.
+     *
+     * A function can't run before it's created, and one only reachable
+     * through a variable or property can't run before that is first read, so
+     * `const f = () => { this.foo = 1; };` doesn't run until `f` is used.
+     * Instance field initializers run before the constructor's body.
+     */
+    function getEarliestRunPosition(
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+      visited = new Set<TSESTree.Node>(),
+    ): number | undefined {
+      let container = findThisContainer(node);
+      let position = node.range[0];
+      while (container && !visited.has(container)) {
+        if (container === constructorNode) {
+          return position;
+        }
+        if (isInstanceFieldOf(container, constructorNode)) {
+          return constructorNode.range[0];
+        }
+
+        visited.add(container);
+
+        const accesses = ASTUtils.isFunction(container)
+          ? getFunctionAccesses(container, constructorNode)
+          : undefined;
+        if (accesses) {
+          let earliest: number | undefined;
+          for (const access of accesses) {
+            const accessPosition = getEarliestRunPosition(
+              access,
+              constructorNode,
+              visited,
+            );
+            if (
+              accessPosition != null &&
+              (earliest == null || accessPosition < earliest)
+            ) {
+              earliest = accessPosition;
+            }
+          }
+          return earliest;
+        }
+
+        position = container.range[0];
+        container = findEnclosingThisContainer(container);
+      }
+      return undefined;
+    }
+
+    /**
+     * Finds the latest position that writes before `node` may run at. In a
+     * loop, a write later in the loop runs before the next iteration's
+     * `node`, so that's the end of `node`'s outermost loop in the
+     * constructor.
+     */
+    function getCopyPosition(
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+    ): number {
+      let position = node.range[0];
+      for (
+        let current: TSESTree.Node | undefined = node;
+        current && current !== constructorNode;
+        current = current.parent
+      ) {
+        if (ASTUtils.isLoop(current)) {
+          position = current.range[1];
+        }
+      }
+      return position;
+    }
+
+    function addWrite(
+      name: string,
+      node: TSESTree.Node,
+      constructorNode: TSESTree.FunctionExpression,
+    ): void {
+      getReportInfo(constructorNode.parent.parent).writes.push({
+        name,
+        node,
+        constructorNode,
+      });
+    }
+
+    return {
+      ":matches(MethodDefinition[kind='constructor'] > FunctionExpression, AccessorProperty, PropertyDefinition) AssignmentExpression"(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        const leftName = getPropertyName(node.left);
+        const constructorNode = findConstructorOfWrite(node);
+
+        if (!leftName || !constructorNode) {
+          return;
+        }
+
+        const right = skipTypeWrappers(node.right);
+        const rightId = right.type === AST_NODE_TYPES.Identifier ? right : null;
+
+        if (
+          UNNECESSARY_OPERATORS.has(node.operator) &&
+          leftName === rightId?.name &&
+          constructorNode.params.some(param =>
+            isParameterPropertyWithName(param, leftName),
           )
         ) {
+          getReportInfo(constructorNode.parent.parent).possibleCopies.push({
+            name: leftName,
+            node,
+            constructorNode,
+            rightId,
+          });
           return;
         }
 
-        const { assignedBeforeConstructor } = nullThrows(
-          reportInfoStack.at(-1),
-          'The top stack should exist',
-        );
-        assignedBeforeConstructor.add(name);
+        addWrite(leftName, node, constructorNode);
+      },
+      ":matches(MethodDefinition[kind='constructor'] > FunctionExpression, AccessorProperty, PropertyDefinition) MemberExpression"(
+        node: TSESTree.MemberExpression,
+      ): void {
+        const name = getPropertyName(node);
+        const constructorNode = findConstructorOfWrite(node);
+
+        // Writes such as `this.foo++`, `[this.foo] = values`,
+        // `(this.foo as number) = 1`, `delete this.foo` or
+        // `delete this?.foo`. A plain `this.foo = value` is handled by the
+        // AssignmentExpression listener.
+        if (
+          name &&
+          isAssignee(
+            node.parent.type === AST_NODE_TYPES.ChainExpression
+              ? node.parent
+              : node,
+          ) &&
+          !(
+            node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+            node.parent.left === node
+          ) &&
+          constructorNode
+        ) {
+          addWrite(name, node, constructorNode);
+        }
+      },
+      ":matches(MethodDefinition[kind='constructor'] > FunctionExpression, AccessorProperty, PropertyDefinition) ThisExpression"(
+        node: TSESTree.ThisExpression,
+      ): void {
+        const constructorNode = findConstructorOfWrite(node);
+        if (!constructorNode) {
+          return;
+        }
+        const thisExpressions =
+          constructorThisExpressions.get(constructorNode) ?? [];
+        thisExpressions.push(node);
+        constructorThisExpressions.set(constructorNode, thisExpressions);
+      },
+      ClassBody(node): void {
+        reportInfos.set(node, { possibleCopies: [], writes: [] });
+      },
+      'ClassBody:exit'(node): void {
+        const { possibleCopies, writes } = getReportInfo(node);
+        reportInfos.delete(node);
+
+        const unnecessaryAssignments: {
+          name: string;
+          node: TSESTree.AssignmentExpression;
+          /**
+           * The latest position in the code that this assignment may run
+           * after: the end of its outermost loop, or else its start.
+           */
+          position: number;
+        }[] = [];
+        for (const copy of possibleCopies) {
+          const position = getCopyPosition(copy.node, copy.constructorNode);
+          if (
+            !isUnchangedConstructorParameter(
+              copy.rightId,
+              copy.constructorNode,
+              position,
+            )
+          ) {
+            writes.push(copy);
+          } else if (findImmediateConstructor(copy.node)) {
+            // A copy in a callback such as `setTimeout` may run after the
+            // property changed, so only report copies that run immediately.
+            unnecessaryAssignments.push({ ...copy, position });
+          }
+        }
+
+        // For each property written in the constructor, the earliest position
+        // in the code that a write to it may run at.
+        const earliestWrites = new Map<string, number>();
+        for (const write of writes) {
+          const position = getEarliestRunPosition(
+            write.node,
+            write.constructorNode,
+          );
+          const earliest = earliestWrites.get(write.name);
+          if (position != null && (earliest == null || position < earliest)) {
+            earliestWrites.set(write.name, position);
+          }
+        }
+
+        for (const { name, node, position } of unnecessaryAssignments) {
+          const earliestWrite = earliestWrites.get(name);
+          if (earliestWrite == null || earliestWrite >= position) {
+            context.report({ node, messageId: 'unnecessaryAssign' });
+          }
+        }
       },
     };
   },

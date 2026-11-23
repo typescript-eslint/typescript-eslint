@@ -413,6 +413,375 @@ export { Used };
       },
       {
         code: `
+import Used, * as Unused from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 19,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 25,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import Used from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import Used, /* keep */ * as Unused from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 30,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 36,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import Used /* keep */ from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import * as _Used from 'module';
+_Used.x();
+        `,
+        errors: [
+          {
+            column: 13,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 18,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: null,
+      },
+      {
+        code: `
+import _Used from 'module';
+_Used();
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 13,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: null,
+      },
+      {
+        code: `
+import _Used, * as Unused from 'module';
+_Used();
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 13,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+          {
+            column: 20,
+            data: {
+              action: 'defined',
+              additional: '. Allowed unused vars must match /^_/u',
+              varName: 'Unused',
+            },
+            endColumn: 26,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: `
+import _Used from 'module';
+_Used();
+        `,
+      },
+      {
+        code: `
+import _Used, { Unused } from 'module';
+_Used();
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 13,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+          {
+            column: 17,
+            data: {
+              action: 'defined',
+              additional: '. Allowed unused vars must match /^_/u',
+              varName: 'Unused',
+            },
+            endColumn: 23,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: `
+import _Used from 'module';
+_Used();
+        `,
+      },
+      {
+        code: `
+import { _Used, Unused } from 'module';
+_Used();
+        `,
+        errors: [
+          {
+            column: 10,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 15,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+          {
+            column: 17,
+            data: {
+              action: 'defined',
+              additional: '. Allowed unused vars must match /^_/u',
+              varName: 'Unused',
+            },
+            endColumn: 23,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: `
+import { _Used } from 'module';
+_Used();
+        `,
+      },
+      {
+        code: `
+import Unused, { _Used } from 'module';
+_Used();
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              action: 'defined',
+              additional: '. Allowed unused vars must match /^_/u',
+              varName: 'Unused',
+            },
+            endColumn: 14,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+          {
+            column: 18,
+            data: {
+              additional: '. Used vars must not match /^_/u',
+              varName: '_Used',
+            },
+            endColumn: 23,
+            endLine: 2,
+            line: 2,
+            messageId: 'usedIgnoredVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+            reportUsedIgnorePattern: true,
+            varsIgnorePattern: '^_',
+          },
+        ],
+        output: `
+import  { _Used } from 'module';
+_Used();
+        `,
+      },
+      {
+        code: `
+import Unused, * as Used from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 14,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import  * as Used from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import Unused, * as Unused2 from 'module';
+export {};
+        `,
+        errors: [
+          {
+            column: 8,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            endColumn: 14,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+          {
+            column: 21,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused2',
+            },
+            endColumn: 28,
+            endLine: 2,
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+export {};
+        `,
+      },
+      {
+        code: `
 import Used, { Used2, Unused } from 'module';
 export { Used, Used2 };
         `,

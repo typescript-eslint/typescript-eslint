@@ -441,6 +441,155 @@ declare module '2' {
       code: "let z: Array = [3, '4'];",
       options: [{ default: 'array-simple' }],
     },
+    {
+      code: `
+export {};
+type Array<T> = { value: T };
+let a: Array<string>;
+      `,
+      options: [{ default: 'array' }],
+    },
+    {
+      code: `
+export {};
+type Array<T> = { value: T };
+let a: string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+export {};
+const Array = 1;
+type Array<T> = { value: T };
+let a: string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+namespace N {
+  interface Array<T> {
+    value: T;
+  }
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+class Container<Array> {
+  items: string[] = [];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+declare function keys(o: object): string[];
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+declare function keys(o: object): string[];
+export {};
+      `,
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+export {};
+interface Array<T> {
+  custom: T;
+}
+export let a: Array<number> = { custom: 1 };
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+import type { Foo } from './foo';
+interface Array<T> {
+  custom: T;
+}
+let a: Array<Foo>;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+import foo = require('foo');
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number>;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number>;
+export = a;
+      `,
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+    },
+    {
+      code: `
+export {};
+type Array<T> = { value: T };
+namespace N {
+  namespace Array {}
+  let a: string[];
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    // an `infer` type parameter hides the global in the true branch
+    {
+      code: 'type T<U> = U extends [infer Array] ? string[] : 1;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer Array] ? Array<string> : 1;',
+      options: [{ default: 'array' }],
+    },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Array extends string[]] ? Array : 0;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer ReadonlyArray extends readonly 1[]] ? 1 : 0;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type T<U> = U extends [infer Array extends (U extends 1 ? 1 : 1[])] ? 1 : 0;',
+      options: [{ default: 'generic' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -2160,6 +2309,657 @@ interface FooInterface {
       output:
         'type Conditional<T> = Array<T extends string ? string : number>;',
     },
+    {
+      code: "type T = ReadonlyArray<string>['length'];",
+      errors: [
+        {
+          column: 10,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: "type T = (readonly string[])['length'];",
+    },
+    {
+      code: 'type T = Readonly<string[]>[number];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = (readonly string[])[number];',
+    },
+    {
+      code: 'type T = keyof string[];',
+      errors: [
+        {
+          column: 16,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: 'type T = keyof Array<string>;',
+    },
+    {
+      code: 'let a: Array</* comment */ string> = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: null,
+    },
+    {
+      code: 'let a: string /* comment */[] = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: null,
+    },
+    {
+      code: 'type T = Foo[ReadonlyArray<string>];',
+      errors: [
+        {
+          column: 14,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = Foo[readonly string[]];',
+    },
+    {
+      code: 'let a: Array<Array<number>> = [];',
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'Array',
+            readonlyPrefix: '',
+            type: 'Array<number>',
+          },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArraySimple',
+        },
+        {
+          column: 14,
+          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArraySimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output: ['let a: Array<number>[] = [];', 'let a: number[][] = [];'],
+    },
+    {
+      code: `
+export {};
+const Array = 1;
+let a: string[];
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+const Array = 1;
+let a: Array<string>;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace Array {
+  export const value = 1;
+}
+let a: string[];
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+namespace Array {
+  export const value = 1;
+}
+let a: Array<string>;
+      `,
+    },
+    {
+      code: `
+export {};
+namespace ReadonlyArray {}
+let a: ReadonlyArray<string>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+namespace ReadonlyArray {}
+let a: readonly string[];
+      `,
+    },
+    {
+      code: `
+export {};
+function ReadonlyArray() {}
+let a: ReadonlyArray<string>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+function ReadonlyArray() {}
+let a: readonly string[];
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+    },
+    {
+      code: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: `
+export {};
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): Array<T>;
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T;
+}
+declare function keys(o: object): string[];
+      `,
+      errors: [
+        {
+          column: 35,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): T;
+}
+declare function keys(o: object): Array<string>;
+      `,
+    },
+    {
+      code: `
+interface ReadonlyArray<T> {
+  custom(): ReadonlyArray<T>;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringArray',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ default: 'array' }],
+      output: `
+interface ReadonlyArray<T> {
+  custom(): readonly T[];
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom(): T[];
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      options: [{ default: 'generic' }],
+      output: `
+interface Array<T> {
+  custom(): Array<T>;
+}
+      `,
+    },
+    {
+      code: `
+interface Array<T> {
+  custom: T;
+}
+let a: Array<number> = { custom: 1 };
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'errorStringArray',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+interface Array<T> {
+  custom: T;
+}
+let a: number[] = { custom: 1 };
+      `,
+    },
+    {
+      code: `
+import Foo = N.Foo;
+interface Array<T> {
+  custom: T;
+}
+let a: Array<Foo>;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'Foo' },
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'errorStringArray',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      output: `
+import Foo = N.Foo;
+interface Array<T> {
+  custom: T;
+}
+let a: Foo[];
+      `,
+    },
+    {
+      code: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  interface Array<T> {
+    custom(): T[];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: `
+export {};
+interface Array<T> {
+  value: T;
+}
+declare global {
+  interface Array<T> {
+    custom(): Array<T>;
+  }
+}
+      `,
+    },
+    {
+      code: 'type T = [ReadonlyArray<string>?];',
+      errors: [
+        {
+          column: 11,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [(readonly string[])?];',
+    },
+    {
+      code: 'type T = [Readonly<string[]>?];',
+      errors: [
+        {
+          column: 11,
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [(readonly string[])?];',
+    },
+    {
+      code: 'type T = [Array<string>?];',
+      errors: [
+        {
+          column: 11,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [string[]?];',
+    },
+    {
+      code: 'type T = [...ReadonlyArray<string>];',
+      errors: [
+        {
+          column: 14,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T = [...readonly string[]];',
+    },
+    // an `infer` type parameter is only visible in the true branch
+    {
+      code: 'type T<U> = U extends [infer Array] ? Array : string[];',
+      errors: [
+        {
+          column: 47,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: 'type T<U> = U extends [infer Array] ? Array : Array<string>;',
+    },
+    {
+      code: 'type T<U> = U extends [infer ReadonlyArray] ? 1 : readonly string[];',
+      errors: [
+        {
+          column: 51,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'string',
+          },
+          endColumn: 68,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer ReadonlyArray] ? 1 : ReadonlyArray<string>;',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array] ? 1 : Array<string>;',
+      errors: [
+        {
+          column: 43,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T<U> = U extends [infer Array] ? 1 : string[];',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array, Array<string>] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 50,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type T<U> = U extends [infer Array, string[]] ? 1 : 0;',
+    },
+    // nor in the constraint of another `infer` type parameter
+    {
+      code: 'type T<U> = U extends [infer V extends string[], infer Array] ? V : 0;',
+      errors: [
+        {
+          column: 40,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer V extends Array<string>, infer Array] ? V : 0;',
+    },
+    {
+      code: 'type T<U> = U extends [infer Array, infer V extends string[]] ? V : 0;',
+      errors: [
+        {
+          column: 53,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type T<U> = U extends [infer Array, infer V extends Array<string>] ? V : 0;',
+    },
   ],
 });
 
@@ -2202,6 +3002,16 @@ describe('array-type (nested)', () => {
       });
     }
 
+    testOutput(
+      'array-simple',
+      'let a: Array<Array<number>> = [];',
+      'let a: number[][] = [];',
+    );
+    testOutput(
+      'array',
+      'let a: Array<ReadonlyArray<string>> = [];',
+      'let a: (readonly string[])[] = [];',
+    );
     testOutput(
       'array',
       'let a: ({ foo: Array<Array<Bar> | Array<any>> })[] = []',

@@ -7,8 +7,8 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getStaticMemberAccessValue,
   isFunction,
-  isRestParameterDeclaration,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -102,9 +102,23 @@ export default createRule<Options, MessageId>({
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return true;
       }
-      return tsutils
-        .unionConstituents(type)
-        .some(part => isTypeFlagSet(part, ts.TypeFlags.Undefined));
+      return tsutils.unionConstituents(type).some(part => {
+        if (isTypeFlagSet(part, ts.TypeFlags.Undefined)) {
+          return true;
+        }
+        // `undefined` fits an intersection only if it fits every member, as
+        // in `T & U`, but not in `T & {}`
+        if (tsutils.isIntersectionType(part)) {
+          return part.types.every(canBeUndefined);
+        }
+        if (!isTypeFlagSet(part, possiblyUndefinedTypeVariableFlags)) {
+          return false;
+        }
+        // A type variable may be instantiated with `undefined` unless its
+        // constraint rules that out, as in `T extends string`
+        const constraint = checker.getBaseConstraintOfType(part);
+        return !constraint || constraint === part || canBeUndefined(constraint);
+      });
     }
 
     function getArrayElementType(
@@ -128,9 +142,11 @@ export default createRule<Options, MessageId>({
       ) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(node);
         if (
+          node.left.type === AST_NODE_TYPES.Identifier &&
           ts.isParameter(tsNode) &&
           tsNode.type &&
-          canBeUndefined(checker.getTypeFromTypeNode(tsNode.type))
+          canBeUndefined(checker.getTypeFromTypeNode(tsNode.type)) &&
+          canUseOptionalSyntax(tsNode)
         ) {
           reportPreferOptionalSyntax(node);
           return;
@@ -151,57 +167,61 @@ export default createRule<Options, MessageId>({
         parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         parent.type === AST_NODE_TYPES.FunctionExpression
       ) {
-        const paramIndex = parent.params.indexOf(node);
-        if (paramIndex !== -1) {
-          const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
-          // tsFunc is already a FunctionLike subtype; defensive runtime check
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          if (ts.isFunctionLike(tsFunc)) {
-            const contextualType = checker.getContextualType(
-              tsFunc as ts.Expression,
-            );
-            if (!contextualType) {
-              return;
-            }
+        // Signature parameters don't include a `this` parameter
+        const paramIndex =
+          parent.params.indexOf(node) - (hasThisParameter(parent) ? 1 : 0);
+        const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
+        const contextualType = checker.getContextualType(
+          tsFunc as ts.Expression,
+        );
+        if (!contextualType) {
+          return;
+        }
 
-            const signatures = contextualType.getCallSignatures();
-            if (
-              signatures.length === 0 ||
-              signatures[0].getDeclaration() === tsFunc
-            ) {
-              return;
-            }
+        // Each member of a union of function types may be called differently.
+        // Nullish members (as in an optional callback) can't hold the function.
+        const signaturesByType = tsutils
+          .unionConstituents(contextualType)
+          .filter(
+            type =>
+              !isTypeFlagSet(
+                type,
+                ts.TypeFlags.Undefined | ts.TypeFlags.Null | ts.TypeFlags.Void,
+              ),
+          )
+          .map(type => type.getCallSignatures());
+        if (
+          signaturesByType.length === 0 ||
+          signaturesByType.some(signatures => signatures.length === 0)
+        ) {
+          return;
+        }
 
-            const defaultCanBeUsed = signatures.some(signature => {
-              const params = signature.getParameters();
-              if (paramIndex >= params.length) {
-                return true;
-              }
+        const signatures = signaturesByType.flat();
+        if (signatures[0].getDeclaration() === tsFunc) {
+          return;
+        }
 
-              const paramSymbol = params[paramIndex];
-              if (
-                paramSymbol.valueDeclaration &&
-                isRestParameterDeclaration(paramSymbol.valueDeclaration)
-              ) {
-                return true;
-              }
-
-              if (
-                tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
-              ) {
-                return true;
-              }
-
-              const paramType = checker.getTypeOfSymbol(paramSymbol);
-              return (
-                tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
-              );
-            });
-
-            if (!defaultCanBeUsed) {
-              reportUselessDefaultAssignment(node, 'parameter');
-            }
+        const defaultCanBeUsed = signatures.some(signature => {
+          const params = signature.getParameters();
+          if (paramIndex >= params.length) {
+            return true;
           }
+
+          const declaration = params[paramIndex].valueDeclaration;
+          if (
+            declaration &&
+            ts.isParameter(declaration) &&
+            canOmitParameter(declaration)
+          ) {
+            return true;
+          }
+
+          return canBeUndefined(checker.getTypeOfSymbol(params[paramIndex]));
+        });
+
+        if (!defaultCanBeUsed) {
+          reportUselessDefaultAssignment(node, 'parameter');
         }
         return;
       }
@@ -227,9 +247,6 @@ export default createRule<Options, MessageId>({
 
         const tupleArgs = checker.getTypeArguments(sourceType);
         const elementIndex = parent.elements.indexOf(node);
-        if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
-          return;
-        }
         const { fixedLength, minLength } = sourceType.target;
 
         if (elementIndex >= minLength) {
@@ -254,7 +271,7 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      const propertyName = getPropertyName(node.key);
+      const propertyName = getPropertyName(node);
       if (!propertyName) {
         return null;
       }
@@ -271,7 +288,7 @@ export default createRule<Options, MessageId>({
           parent.init &&
           hasConditionalInitializer(objectPattern)
         ) {
-          const propertyName = getPropertyName(node.key);
+          const propertyName = getPropertyName(node);
 
           if (
             !propertyName ||
@@ -349,19 +366,9 @@ export default createRule<Options, MessageId>({
       return null;
     }
 
-    function getPropertyName(
-      key: TSESTree.Expression | TSESTree.PrivateIdentifier,
-    ): string | null {
-      switch (key.type) {
-        case AST_NODE_TYPES.Identifier:
-          return key.name;
-        case AST_NODE_TYPES.Literal:
-          return String(key.value);
-        case AST_NODE_TYPES.TemplateLiteral:
-          return key.expressions.length ? null : key.quasis[0].value.cooked;
-        default:
-          return null;
-      }
+    function getPropertyName(property: TSESTree.Property): string | null {
+      const name = getStaticMemberAccessValue(property, context);
+      return typeof name === 'string' ? name : null;
     }
 
     function reportUselessDefaultAssignment(
@@ -405,14 +412,14 @@ export default createRule<Options, MessageId>({
         messageId: 'useOptionalSyntax',
         *fix(fixer) {
           yield removeDefault(fixer, node);
-
-          const { left } = node;
-          if (left.type === AST_NODE_TYPES.Identifier) {
-            yield fixer.insertTextAfterRange(
-              [left.range[0], left.range[0] + left.name.length],
-              '?',
-            );
-          }
+          // The name's token, which may be written with escapes like `\u0061`
+          yield fixer.insertTextAfter(
+            nullThrows(
+              context.sourceCode.getFirstToken(node.left),
+              NullThrowsReasons.MissingToken('name', 'parameter'),
+            ),
+            '?',
+          );
         },
       };
     }
@@ -444,7 +451,7 @@ export default createRule<Options, MessageId>({
           expression.properties.some(
             prop =>
               prop.type === AST_NODE_TYPES.Property &&
-              getPropertyName(prop.key) === propertyName,
+              getPropertyName(prop) === propertyName,
           )) ||
         (expression.type === AST_NODE_TYPES.ConditionalExpression &&
           hasPropertyInAllBranches(expression.consequent, propertyName) &&
@@ -457,3 +464,43 @@ export default createRule<Options, MessageId>({
     };
   },
 });
+
+/**
+ * Type variables that may be instantiated with a type that includes
+ * `undefined`: type parameters, indexed access types like `T[K]`,
+ * conditional types, and substitution types like `NoInfer<T>`
+ */
+const possiblyUndefinedTypeVariableFlags: ts.TypeFlags =
+  ts.TypeFlags.TypeVariable |
+  ts.TypeFlags.Conditional |
+  ts.TypeFlags.Substitution;
+
+function hasThisParameter(
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+): boolean {
+  const first = node.params.at(0);
+  return first?.type === AST_NODE_TYPES.Identifier && first.name === 'this';
+}
+
+/**
+ * Whether callers can leave out a parameter or pass `undefined` for it,
+ * even when its type doesn't include `undefined`
+ */
+function canOmitParameter(param: ts.ParameterDeclaration): boolean {
+  return (
+    param.questionToken != null ||
+    param.initializer != null ||
+    param.dotDotDotToken != null
+  );
+}
+
+/**
+ * Whether a parameter can be marked with `?`, which a required parameter after
+ * it doesn't allow. Like `checker.isOptionalParameter`, which tsgo lacks.
+ */
+function canUseOptionalSyntax(param: ts.ParameterDeclaration): boolean {
+  const { parameters } = param.parent;
+  return parameters
+    .slice(parameters.indexOf(param) + 1)
+    .every(canOmitParameter);
+}

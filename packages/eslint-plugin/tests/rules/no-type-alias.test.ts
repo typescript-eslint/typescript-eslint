@@ -3301,5 +3301,32 @@ type Foo<T> = {
       ],
       options: [{ allowAliases: 'never' }],
     },
+    {
+      code: "type Foo = import('foo');",
+      errors: [
+        {
+          column: 12,
+          data: { alias: 'aliases' },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
+          messageId: 'noTypeAlias',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = readonly string[];',
+      errors: [
+        {
+          column: 12,
+          data: { alias: 'aliases' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'noTypeAlias',
+        },
+      ],
+      options: [{ allowTupleTypes: 'always' }],
+    },
   ],
 });

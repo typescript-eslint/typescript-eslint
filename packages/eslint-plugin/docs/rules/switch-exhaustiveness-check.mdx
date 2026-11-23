@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each possible type in the union or the enum.
 However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
-This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
+This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types.
 
 ## Options
 
@@ -87,7 +87,7 @@ Default: `/^no default$/iu`.
 It can sometimes be preferable to omit the default case for only some switch statements.
 For those situations, this rule can be given a pattern for a comment that's allowed to take the place of a `default:`.
 
-Examples of additional **correct** code with `{ defaultCaseCommentPattern: "^skip\\sdefault" }`:
+Examples of additional **correct** code with `{ defaultCaseCommentPattern: "^skip default" }`:
 
 ```ts option='{ "defaultCaseCommentPattern": "^skip default" }' showPlaygroundButton
 declare const value: 'a' | 'b';

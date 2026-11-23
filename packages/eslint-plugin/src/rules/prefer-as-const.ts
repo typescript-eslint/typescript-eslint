@@ -35,7 +35,7 @@ export default createRule({
         valueNode.type === AST_NODE_TYPES.Literal &&
         typeNode.type === AST_NODE_TYPES.TSLiteralType &&
         typeNode.literal.type === AST_NODE_TYPES.Literal &&
-        valueNode.raw === typeNode.literal.raw
+        valueNode.value === typeNode.literal.value
       ) {
         if (canFix) {
           context.report({
@@ -62,7 +62,9 @@ export default createRule({
     }
 
     return {
-      PropertyDefinition(node): void {
+      'AccessorProperty, PropertyDefinition'(
+        node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
+      ): void {
         if (node.value && node.typeAnnotation) {
           compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
         }

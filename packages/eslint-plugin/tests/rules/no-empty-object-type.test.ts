@@ -130,6 +130,258 @@ class Derived {}
       options: [{ allowInterfaces: 'never' }],
     },
     {
+      code: 'interface Base {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = unknown`,
+            },
+          ],
+        },
+      ],
+      options: [{ allowInterfaces: 'with-single-extends' }],
+    },
+    {
+      code: 'interface Base<T> {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base<T> = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base<T> = unknown`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+interface Base {
+  props: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+const Base = 1;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = object
+const Base = 1;
+      `,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = unknown
+const Base = 1;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base<T> {}
+class Base<T> {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+export {};
+interface Base {
+  props: string;
+}
+
+declare global {
+  interface Derived extends Base {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 8,
+          line: 8,
+          messageId: 'noEmptyInterfaceWithSuper',
+          suggestions: [
+            {
+              messageId: 'replaceEmptyInterfaceWithSuper',
+              output: `
+export {};
+interface Base {
+  props: string;
+}
+
+declare global {
+  type Derived = Base
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'foo' {
+  interface Base {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { option: 'allowInterfaces' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+declare module 'foo' {
+  type Base = object
+}
+      `,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+declare module 'foo' {
+  type Base = unknown
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  interface Base {}
+  interface Base {
+    props: string;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { option: 'allowInterfaces' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'noEmptyInterface',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+namespace Space {
+  export interface Base {}
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { option: 'allowInterfaces' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+namespace Space {
+  export type Base = object
+}
+      `,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+namespace Space {
+  export type Base = unknown
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 interface Base {
   props: string;
@@ -805,6 +1057,32 @@ let value: unknown;
         },
       ],
       options: [{ allowWithName: '.*Props$' }],
+    },
+    {
+      // a global augmentation still gets the suggestions
+      code: 'interface Array<T> {}',
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Array<T> = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Array<T> = unknown`,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

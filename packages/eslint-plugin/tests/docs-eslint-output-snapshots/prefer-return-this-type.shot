@@ -10,6 +10,7 @@ class Foo {
     return this;
   };
   f3(): Foo | undefined {
+        ~~~ Use `this` type instead.
     return Math.random() > 0.5 ? this : undefined;
   }
 }

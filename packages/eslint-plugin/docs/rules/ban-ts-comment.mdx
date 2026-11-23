@@ -95,11 +95,12 @@ if (false) {
 
 </TabItem>
 </Tabs>
+
 ### `descriptionFormat`
 
 {/* insert option description */}
 
-For each directive type, you can specify a custom format in the form of a regular expression. Only description that matches the pattern will be allowed.
+For each directive type, you can specify a custom format in the form of a regular expression. Only descriptions that match the pattern will be allowed.
 
 For example, with `{ 'ts-expect-error': { descriptionFormat: '^: TS\\d+ because .+$' } }`:
 
@@ -128,7 +129,7 @@ const a = doSomething('hello');
 
 {/* insert option description */}
 
-Use `minimumDescriptionLength` to set a minimum length for descriptions when using the `allow-with-description` option for a directive.
+Use `minimumDescriptionLength` to set a minimum length for descriptions when using the `allow-with-description` or `descriptionFormat` option for a directive.
 
 For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescriptionLength: 10 }` the following pattern is:
 

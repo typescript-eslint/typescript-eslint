@@ -224,7 +224,7 @@ export function getOperatorPrecedenceForNode(
     case AST_NODE_TYPES.BinaryExpression:
     case AST_NODE_TYPES.LogicalExpression:
       switch (node.operator) {
-        case '==':
+        case '=':
         case '+=':
         case '-=':
         case '**=':

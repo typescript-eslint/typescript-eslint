@@ -62,7 +62,7 @@ export default createRule({
         hasAsync: node.async,
         hasAwait: false,
         isAsyncYield: false,
-        isGen: node.generator || false,
+        isGen: node.generator,
         upper: scopeInfo,
       };
     }
@@ -81,7 +81,7 @@ export default createRule({
         node.async &&
         !scopeInfo.hasAwait &&
         !isEmptyFunction(node) &&
-        !(scopeInfo.isGen && scopeInfo.isAsyncYield)
+        !scopeInfo.isAsyncYield
       ) {
         // If the function belongs to a method definition or
         // property, then the function's range may not include the
@@ -121,12 +121,22 @@ export default createRule({
           context.sourceCode.getTokenAfter(asyncToken),
           'There will always be a token after the "async" keyword.',
         );
+        // Only a punctuator such as `[`, `(`, `*` or `<`, or a method named
+        // `in` or `instanceof`, can continue the previous line.
         const addSemiColon =
-          nextToken.type === AST_TOKEN_TYPES.Punctuator &&
-          (nextToken.value === '[' || nextToken.value === '(') &&
+          (nextToken.type === AST_TOKEN_TYPES.Punctuator ||
+            nextToken.value === 'in' ||
+            nextToken.value === 'instanceof') &&
+          // `static async *a()` becomes `static *a()`, which ASI handles
+          context.sourceCode.getFirstToken(nodeWithAsyncKeyword) ===
+            asyncToken &&
           (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
             isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
-          needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+          needsPrecedingSemicolon(
+            context.sourceCode,
+            nodeWithAsyncKeyword,
+            nextToken.value,
+          );
 
         const changes = [
           { range: asyncRange, replacement: addSemiColon ? ';' : undefined },
@@ -154,21 +164,13 @@ export default createRule({
             node.returnType.typeAnnotation.typeArguments != null
           ) {
             const openAngle = nullThrows(
-              context.sourceCode.getFirstToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '<',
+              context.sourceCode.getTokenAfter(
+                node.returnType.typeAnnotation.typeName,
               ),
               'There are type arguments, so the angle bracket will exist.',
             );
             const closeAngle = nullThrows(
-              context.sourceCode.getLastToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '>',
-              ),
+              context.sourceCode.getLastToken(node.returnType.typeAnnotation),
               'There are type arguments, so the angle bracket will exist.',
             );
             changes.push(
@@ -284,11 +286,8 @@ export default createRule({
 
       // check body-less async arrow function.
       // ignore `async () => await foo` because it's obviously correct
-      'ArrowFunctionExpression[async = true] > :not(BlockStatement, AwaitExpression)'(
-        node: Exclude<
-          TSESTree.Node,
-          TSESTree.AwaitExpression | TSESTree.BlockStatement
-        >,
+      'ArrowFunctionExpression[async = true] > .body:not(BlockStatement, AwaitExpression)'(
+        node: Exclude<TSESTree.Expression, TSESTree.AwaitExpression>,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
         if (isThenableType(expression)) {

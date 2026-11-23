@@ -153,8 +153,75 @@ type T = Record<string, A | B>;
       code: 'type T = A | A | string;',
     },
     { code: '(a: string | undefined) => {};' },
+    "type T = number | (string | 'a');",
+    `
+type A = { a: 1 };
+type B = { b: 1 };
+type T = A & (A | B);
+    `,
+    {
+      code: `
+type A = 'A';
+type T = A | A;
+      `,
+      options: [{ ignoreUnions: true }],
+    },
+    {
+      code: `
+type A = { a: 1 };
+type T = A & A;
+      `,
+      options: [{ ignoreIntersections: true }],
+    },
+    `
+class C {
+  constructor(private a?: string | undefined) {}
+}
+    `,
   ],
   invalid: [
+    {
+      code: "type T = (string | 'a') | string;",
+      errors: [
+        {
+          column: 27,
+          data: {
+            previous: 'string',
+            type: 'Union',
+          },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'duplicate',
+        },
+      ],
+      output: "type T = (string | 'a')  ;",
+    },
+    {
+      code: `
+type A = { a: 1 };
+type B = { b: 1 };
+type T = A & (B & B);
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            previous: 'B',
+            type: 'Intersection',
+          },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'duplicate',
+        },
+      ],
+      output: `
+type A = { a: 1 };
+type B = { b: 1 };
+type T = A & (B  );
+      `,
+    },
     {
       code: 'type T = 1 | 1;',
       errors: [

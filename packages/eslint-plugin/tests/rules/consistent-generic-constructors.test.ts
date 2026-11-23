@@ -84,6 +84,11 @@ export {};
 const a: Uint8ClampedArray<ArrayBufferLike> = new Uint8ClampedArray();
 export {};
     `,
+    `
+const a: Int32Array<ArrayBufferLike> = new Int32Array();
+export {};
+    `,
+    'const a: Foo<string> | undefined = new Foo();',
     {
       code: `
 const foo: Foo<string> = new Foo();
@@ -194,6 +199,37 @@ const [a = new Foo<string>()] = [];
     {
       code: `
 function a([a = new Foo<string>()]) {}
+      `,
+      options: ['type-annotation'],
+    },
+    `
+export {};
+namespace Uint8Array {}
+const a: Uint8Array<ArrayBuffer> = new Uint8Array(1);
+    `,
+    `
+export {};
+namespace Float32Array {
+  export const value = 1;
+}
+const a: Float32Array<ArrayBuffer> = new Float32Array(1);
+    `,
+    `
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+  toHex(): string;
+}
+const a: Uint8Array<ArrayBuffer> = new Uint8Array(1);
+    `,
+    `
+class C {
+  constructor(private a = new Foo<string>()) {}
+}
+    `,
+    {
+      code: `
+class C {
+  constructor(private a: Foo<string> = new Foo()) {}
+}
       `,
       options: ['type-annotation'],
     },
@@ -443,6 +479,104 @@ function foo(a: Foo<string> = new Foo()) {}
       ],
       output: `
 function foo(a = new Foo<string>()) {}
+      `,
+    },
+    {
+      code: `
+const foo = (a: Foo<string> = new Foo()) => {};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const foo = (a = new Foo<string>()) => {};
+      `,
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = new (Foo)();
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new (Foo)<string>();
+      `,
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = new (Foo);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new (Foo)<string>();
+      `,
+    },
+    {
+      code: noFormat`const a: Foo<string> = new Foo`,
+      errors: [
+        {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: 'const a = new Foo<string>()',
+    },
+    {
+      code: noFormat`
+const a: Foo<string> = (new Foo);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = (new Foo<string>());
+      `,
+    },
+    {
+      code: `
+const a: Foo</* comment */ string> = new Foo();
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = new Foo</* comment */ string>();
       `,
     },
     {
@@ -701,6 +835,24 @@ function foo(a: Foo<string> = new Foo()) {}
     },
     {
       code: `
+const foo = (a = new Foo<string>()) => {};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+const foo = (a: Foo<string> = new Foo()) => {};
+      `,
+    },
+    {
+      code: `
 function foo({ a } = new Foo<string>()) {}
       `,
       errors: [
@@ -882,6 +1034,95 @@ class Foo {
       output: `
 class Foo {
   accessor a?: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+  toHex(): string;
+}
+const a: Uint8Array<ArrayBuffer> = new Uint8Array(1);
+export {};
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 53,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+  toHex(): string;
+}
+const a = new Uint8Array<ArrayBuffer>(1);
+export {};
+      `,
+    },
+    {
+      code: `
+class C {
+  constructor(private a: Foo<string> = new Foo()) {}
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 49,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class C {
+  constructor(private a = new Foo<string>()) {}
+}
+      `,
+    },
+    {
+      code: `
+class C {
+  constructor(public readonly a: Foo<string> = new Foo()) {}
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class C {
+  constructor(public readonly a = new Foo<string>()) {}
+}
+      `,
+    },
+    {
+      code: `
+class C {
+  constructor(readonly a = new Foo<string>()) {}
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+class C {
+  constructor(readonly a: Foo<string> = new Foo()) {}
 }
       `,
     },

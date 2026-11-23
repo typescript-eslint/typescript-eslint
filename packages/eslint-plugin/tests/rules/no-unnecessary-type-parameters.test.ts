@@ -239,6 +239,27 @@ async function getData<T>(url: string): Promise<T | null> {
     'declare function fetchJson<T>(url: string): Promise<T>;',
     'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
+    `
+function fn<T, U>(input: T, flag: U) {
+  return null! as U extends string ? T : 0;
+}
+    `,
+    `
+function fn<T, U>(input: T, flag: U) {
+  return null! as U extends string ? 0 : T;
+}
+    `,
+    `
+function fn<T, U>(input: T, flag: U) {
+  return null! as U extends T ? 0 : 1;
+}
+    `,
+    `
+declare function conditional<V, W>(value: V, flag: W): W extends string ? V : 0;
+function fn<T, U>(input: T, flag: U) {
+  return conditional(input, flag);
+}
+    `,
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
 declare function useFocus<T extends HTMLOrSVGElement>(): {
@@ -2530,6 +2551,33 @@ declare function foo(
             {
               messageId: 'replaceUsagesWithConstraint',
               output: 'declare function foo(x: (readonly string[])[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function fn<T, U>(flag: U) {
+  return null! as U extends string ? 0 : 1;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function fn<U>(flag: U) {
+  return null! as U extends string ? 0 : 1;
+}
+      `,
             },
           ],
         },

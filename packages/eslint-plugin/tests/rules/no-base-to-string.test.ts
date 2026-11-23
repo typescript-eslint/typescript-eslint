@@ -837,8 +837,75 @@ String(x);
 declare const x: any;
 '' += x;
     `,
+    `
+declare const a: {
+  [Symbol.toPrimitive]: (hint: string) => string;
+};
+
+\`\${a}\`;
+    `,
+    `
+class Primitive {
+  [Symbol.toPrimitive](hint: string) {
+    return hint;
+  }
+}
+
+\`\${new Primitive()}\`;
+    `,
+    `
+const a = {
+  [Symbol.toPrimitive](hint: string) {
+    return hint;
+  },
+};
+
+\`\${a}\`;
+    `,
+    'String();',
+    `
+class Joiner<T> {
+  join() {
+    return '';
+  }
+}
+declare const joiner: Joiner<{}>;
+joiner.join();
+    `,
+    `
+type A = B[];
+type B = A[];
+declare const a: A;
+\`\${a}\`;
+    `,
+    {
+      code: `
+declare const x: any;
+\`\${x}\`;
+      `,
+      options: [{ checkUnknown: true }],
+    },
   ],
   invalid: [
+    {
+      code: `
+declare namespace MySymbol {
+  const toPrimitive: unique symbol;
+}
+declare const a: { [MySymbol.toPrimitive](): string };
+\`\${a}\`;
+      `,
+      errors: [
+        {
+          column: 4,
+          data: { certainty: 'will', name: 'a' },
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'baseToString',
+        },
+      ],
+    },
     {
       code: `
 declare const x: unknown;

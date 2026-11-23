@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -9,7 +8,12 @@ import type {
   InferOptionsTypeFromRule,
 } from '../util';
 
-import { createRule, getModifiers, getParserServices } from '../util';
+import {
+  createRule,
+  getModifiers,
+  getParserServices,
+  getStaticStringValue,
+} from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('dot-notation');
@@ -54,7 +58,7 @@ export default createRule<Options, MessageIds>({
           },
           allowKeywords: {
             type: 'boolean',
-            description: 'Whether to allow keywords such as ["class"]`.',
+            description: 'Whether to allow keywords such as `["class"]`.',
           },
           allowPattern: {
             type: 'string',
@@ -100,17 +104,15 @@ export default createRule<Options, MessageIds>({
           node.computed
         ) {
           // for perf reasons - only fetch symbols if we have to
+          const propertyName = getStaticStringValue(node.property);
           const propertySymbol =
             services.getSymbolAtLocation(node.property) ??
-            services
-              .getTypeAtLocation(node.object)
-              .getNonNullableType()
-              .getProperties()
-              .find(
-                propertySymbol =>
-                  node.property.type === AST_NODE_TYPES.Literal &&
-                  propertySymbol.escapedName === node.property.value,
-              );
+            (propertyName == null
+              ? undefined
+              : services
+                  .getTypeAtLocation(node.object)
+                  .getNonNullableType()
+                  .getProperty(propertyName));
           const modifierKind = getModifiers(
             propertySymbol?.getDeclarations()?.[0],
           )?.[0].kind;

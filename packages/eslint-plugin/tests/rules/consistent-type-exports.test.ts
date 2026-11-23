@@ -610,5 +610,68 @@ import { type NAME as Foo } from './consistent-type-exports';
 export type { Foo };
       `,
     },
+    {
+      code: `
+export {
+  Type1, // type
+  value1, // value
+} from './consistent-type-exports';
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { exportNames: 'Type1' },
+          endColumn: 36,
+          endLine: 5,
+          line: 2,
+          messageId: 'singleExportIsType',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type T = 1;
+const v = 1;
+export { T as 'a-b', v };
+      `,
+      dependencyConstraints: { typescript: '5.6' },
+      errors: [
+        {
+          column: 1,
+          data: { exportNames: 'T' },
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'singleExportIsType',
+        },
+      ],
+      output: `
+type T = 1;
+const v = 1;
+export type { T as 'a-b' };
+export { v };
+      `,
+    },
+    {
+      code: `
+export { 'Type1' as T, value1 } from './consistent-type-exports';
+      `,
+      dependencyConstraints: { typescript: '5.6' },
+      errors: [
+        {
+          column: 1,
+          data: { exportNames: 'Type1' },
+          endColumn: 66,
+          endLine: 2,
+          line: 2,
+          messageId: 'singleExportIsType',
+        },
+      ],
+      output: `
+export type { 'Type1' as T } from './consistent-type-exports';
+export { value1 } from './consistent-type-exports';
+      `,
+    },
   ],
 });

@@ -2,7 +2,12 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows, NullThrowsReasons } from '../util';
+import {
+  createRule,
+  getInterfaceMerging,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export default createRule({
   name: 'consistent-type-definitions',
@@ -14,8 +19,10 @@ export default createRule({
       recommended: 'stylistic',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',
+      replaceWithType: 'Replace the `interface` with a `type`.',
       typeOverInterface: 'Use a `type` instead of an `interface`.',
     },
     schema: [
@@ -29,23 +36,6 @@ export default createRule({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: ['interface'],
   create(context, [option]) {
-    /**
-     * Iterates from the highest parent to the currently traversed node
-     * to determine whether any node in tree is globally declared module declaration
-     */
-    function isCurrentlyTraversedNodeWithinModuleDeclaration(
-      node: TSESTree.Node,
-    ): boolean {
-      return context.sourceCode
-        .getAncestors(node)
-        .some(
-          node =>
-            node.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.declare &&
-            node.kind === 'global',
-        );
-    }
-
     return {
       ...(option === 'interface' && {
         "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
@@ -100,52 +90,64 @@ export default createRule({
       }),
       ...(option === 'type' && {
         TSInterfaceDeclaration(node): void {
-          const fix = isCurrentlyTraversedNodeWithinModuleDeclaration(node)
-            ? null
-            : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
-                const typeNode = node.typeParameters ?? node.id;
-                const fixes: TSESLint.RuleFix[] = [];
+          const merging = getInterfaceMerging(context, node);
 
-                const firstToken = context.sourceCode.getTokenBefore(node.id);
-                if (firstToken) {
-                  fixes.push(fixer.replaceText(firstToken, 'type'));
-                  fixes.push(
-                    fixer.replaceTextRange(
-                      [typeNode.range[1], node.body.range[0]],
-                      ' = ',
-                    ),
-                  );
-                }
+          // A type alias can't merge with other declarations
+          if (merging === 'merged') {
+            context.report({
+              node: node.id,
+              messageId: 'typeOverInterface',
+            });
+            return;
+          }
 
-                node.extends.forEach(heritage => {
-                  const typeIdentifier = context.sourceCode.getText(heritage);
-                  fixes.push(
-                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                  );
-                });
+          function fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] {
+            const typeNode = node.typeParameters ?? node.id;
+            const fixes: TSESLint.RuleFix[] = [];
 
-                if (
-                  node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
-                ) {
-                  fixes.push(
-                    fixer.removeRange([node.parent.range[0], node.range[0]]),
-                    fixer.insertTextAfter(
-                      node.body,
-                      `\nexport default ${node.id.name}`,
-                    ),
-                  );
-                }
+            const interfaceToken = nullThrows(
+              context.sourceCode.getTokenBefore(node.id),
+              NullThrowsReasons.MissingToken('interface keyword', 'interface'),
+            );
+            fixes.push(
+              fixer.replaceText(interfaceToken, 'type'),
+              fixer.replaceTextRange(
+                [typeNode.range[1], node.body.range[0]],
+                ' = ',
+              ),
+            );
 
-                return fixes;
-              };
+            node.extends.forEach(heritage => {
+              const typeIdentifier = context.sourceCode.getText(heritage);
+              fixes.push(
+                fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+              );
+            });
+
+            if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
+              fixes.push(
+                fixer.removeRange([node.parent.range[0], node.range[0]]),
+                fixer.insertTextAfter(
+                  node.body,
+                  `\nexport default ${node.id.name}`,
+                ),
+              );
+            }
+
+            return fixes;
+          }
+
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
             /**
-             * remove automatically fix when the interface is within a declare global
+             * Where other declarations can merge with the interface, the fix
+             * may not compile, so it's only suggested
              * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
              */
-            fix,
+            ...(merging === 'mergeable'
+              ? { suggest: [{ messageId: 'replaceWithType', fix }] }
+              : { fix }),
           });
         },
       }),

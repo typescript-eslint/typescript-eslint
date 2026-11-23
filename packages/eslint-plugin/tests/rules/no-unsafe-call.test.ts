@@ -88,6 +88,13 @@ new Function('lol');
     `
 Function('lol');
     `,
+    `
+interface ConstructableWithNonVoidCallSignature extends Function {
+  (): string;
+}
+declare const safe: ConstructableWithNonVoidCallSignature;
+new safe();
+    `,
   ],
   invalid: [
     {
@@ -536,6 +543,67 @@ function callThis(this: NotKnown) {
           endLine: 3,
           line: 3,
           messageId: 'errorCallThis',
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeFunction: Function | undefined;
+maybeFunction?.();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bar: any;
+  baz() {
+    this.bar();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { type: 'an `any`' },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+  ],
+});
+
+const ruleTesterWithNoImplicitThis = createRuleTesterWithTypes();
+
+ruleTesterWithNoImplicitThis.run('no-unsafe-call - noImplicitThis', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: `
+function foo(this: any) {
+  this.bar();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: 'an `any`' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },

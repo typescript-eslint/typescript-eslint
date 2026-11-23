@@ -114,8 +114,8 @@ export default createRule<Options, MessageIds>({
       // promise.catch(x => { throw x; })
       // promise.then(onFulfilled, x => { throw x; })
       if (
-        def.node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        def.node.params.length >= 1 &&
+        (def.node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          def.node.type === AST_NODE_TYPES.FunctionExpression) &&
         def.node.params[0] === def.name &&
         def.node.parent.type === AST_NODE_TYPES.CallExpression
       ) {

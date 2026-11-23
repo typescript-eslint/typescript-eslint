@@ -5,6 +5,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   getNameFromMember,
+  needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -192,7 +193,7 @@ export default createRule<Options, MessageIds>({
             name: methodName,
             type: nodeType,
           },
-          fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
+          fix: getRemovePublicKeywordFix(methodDefinition, publicKeyword),
         });
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
         context.report({
@@ -251,6 +252,80 @@ export default createRule<Options, MessageIds>({
         }
       }
       return { range: keywordRange, rangeToRemove };
+    }
+
+    /**
+     * Creates a fixer that removes the "public" keyword from a class member.
+     * If the previous member is a field whose initializer would run on into
+     * this member once "public" is gone, as in `x = y` followed by
+     * `public [k]() {}`, the keyword is replaced with a semicolon instead.
+     */
+    function getRemovePublicKeywordFix(
+      node:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
+      publicKeyword: ReturnType<typeof findPublicKeyword>,
+    ): TSESLint.ReportFixFunction {
+      return fixer =>
+        isPublicKeywordEndingPreviousField(node, publicKeyword.range)
+          ? fixer.replaceTextRange(publicKeyword.rangeToRemove, ';')
+          : fixer.removeRange(publicKeyword.rangeToRemove);
+    }
+
+    function isPublicKeywordEndingPreviousField(
+      node:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
+      publicKeywordRange: TSESLint.AST.Range,
+    ): boolean {
+      // With a decorator or another modifier before it, removing "public"
+      // doesn't change where the member starts.
+      const firstToken = nullThrows(
+        context.sourceCode.getFirstToken(node),
+        NullThrowsReasons.MissingToken('first token', node.type),
+      );
+      if (firstToken.range[0] !== publicKeywordRange[0]) {
+        return false;
+      }
+
+      // Only an initializer can continue onto the next line: a type
+      // annotation doesn't, and neither does a bare field name.
+      const members = node.parent.body;
+      const index = members.indexOf(node);
+      const previousMember = index > 0 ? members[index - 1] : undefined;
+      if (
+        !previousMember ||
+        (previousMember.type !== AST_NODE_TYPES.PropertyDefinition &&
+          previousMember.type !== AST_NODE_TYPES.AccessorProperty) ||
+        !previousMember.value
+      ) {
+        return false;
+      }
+
+      const nextToken = nullThrows(
+        context.sourceCode.getTokenAfter(firstToken),
+        NullThrowsReasons.MissingToken('token', 'public keyword'),
+      );
+      // `[k]()`, `*gen()`, `in()` and `instanceof()` would continue the
+      // initializer; `as()` and `satisfies()` wouldn't, because TypeScript
+      // doesn't continue those across a line break.
+      if (
+        !/^[(*[`]/.test(nextToken.value) &&
+        nextToken.value !== 'in' &&
+        nextToken.value !== 'instanceof'
+      ) {
+        return false;
+      }
+
+      return needsPrecedingSemicolon(context.sourceCode, node, nextToken.value);
     }
 
     /**
@@ -333,7 +408,10 @@ export default createRule<Options, MessageIds>({
             name: propertyName,
             type: nodeType,
           },
-          fix: fixer => fixer.removeRange(publicKeywordRange.rangeToRemove),
+          fix: getRemovePublicKeywordFix(
+            propertyDefinition,
+            publicKeywordRange,
+          ),
         });
       } else if (
         propCheck === 'explicit' &&
@@ -384,7 +462,10 @@ export default createRule<Options, MessageIds>({
           break;
         }
         case 'no-public': {
-          if (node.accessibility === 'public' && node.readonly) {
+          if (
+            node.accessibility === 'public' &&
+            (node.readonly || node.override)
+          ) {
             const publicKeyword = findPublicKeyword(node);
             context.report({
               loc: rangeToLoc(context.sourceCode, publicKeyword.range),

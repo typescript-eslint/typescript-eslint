@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import {
@@ -9,7 +9,10 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isClosingParenToken,
   isStaticMemberAccessOfValue,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export default createRule({
@@ -96,20 +99,100 @@ export default createRule({
     }
 
     /**
+     * Whether `node` creates a new `RegExp` object, so its `lastIndex` is 0.
+     */
+    function isNewRegExpObject(node: TSESTree.Node): boolean {
+      while (
+        node.type === AST_NODE_TYPES.SequenceExpression ||
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSNonNullExpression ||
+        node.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        node =
+          node.type === AST_NODE_TYPES.SequenceExpression
+            ? node.expressions[node.expressions.length - 1]
+            : node.expression;
+      }
+      if (node.type === AST_NODE_TYPES.Literal) {
+        return true;
+      }
+      if (
+        (node.type !== AST_NODE_TYPES.CallExpression &&
+          node.type !== AST_NODE_TYPES.NewExpression) ||
+        node.callee.type !== AST_NODE_TYPES.Identifier ||
+        node.callee.name !== 'RegExp'
+      ) {
+        return false;
+      }
+      if (node.type === AST_NODE_TYPES.NewExpression) {
+        return true;
+      }
+      // `RegExp(re)` and `RegExp(re, undefined)` return `re` itself
+      const pattern = node.arguments.at(0);
+      const flags = node.arguments.at(1);
+      if (pattern == null || pattern.type === AST_NODE_TYPES.SpreadElement) {
+        return false;
+      }
+      return (
+        (flags != null && getStaticValue(flags, globalScope)?.value != null) ||
+        isNewRegExpObject(pattern)
+      );
+    }
+
+    /**
+     * Whether evaluating `node`, which the fix removes, may do more than create
+     * or read a `RegExp`, as `f()` does in `(f(), /bar/)`.
+     */
+    function hasSideEffectBesidesRegExp(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+        case AST_NODE_TYPES.TSSatisfiesExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          return hasSideEffectBesidesRegExp(node.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return node.expressions.some((expression, index) =>
+            index === node.expressions.length - 1
+              ? hasSideEffectBesidesRegExp(expression)
+              : ASTUtils.hasSideEffect(expression, context.sourceCode),
+          );
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          if (
+            node.callee.type === AST_NODE_TYPES.Identifier &&
+            node.callee.name === 'RegExp'
+          ) {
+            return node.arguments.some(argument =>
+              ASTUtils.hasSideEffect(argument, context.sourceCode),
+            );
+          }
+      }
+      return ASTUtils.hasSideEffect(node, context.sourceCode);
+    }
+
+    /**
      * Parse a given node if it's a `RegExp` instance.
      * @param node The node to parse.
+     * @param allowGlobal Whether the `g` flag can't change the result, as on a new object.
      */
-    function parseRegExp(node: TSESTree.Node): string | null {
+    function parseRegExp(
+      node: TSESTree.Node,
+      allowGlobal: boolean,
+    ): string | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
         return null;
       }
 
+      // `g` and `y` make `test` start at `lastIndex`, which is 0 on a new object,
+      // but `y` still only matches at that index
       const { flags, pattern } = parseRegExpLiteral(evaluated.value);
       if (
         pattern.alternatives.length !== 1 ||
         flags.ignoreCase ||
-        flags.global
+        (flags.global && !allowGlobal) ||
+        flags.sticky
       ) {
         return null;
       }
@@ -117,6 +200,15 @@ export default createRule({
       // Check if it can determine a unique string.
       const chars = pattern.alternatives[0].elements;
       if (!chars.every(c => c.type === 'Character')) {
+        return null;
+      }
+
+      // With `u` or `v`, a lone surrogate doesn't match half of a surrogate
+      // pair, as in `/\ud83d/u.test('😀')`, but `includes` does
+      if (
+        (flags.unicode || flags.unicodeSets) &&
+        chars.some(c => c.value >= 0xd800 && c.value <= 0xdfff)
+      ) {
         return null;
       }
 
@@ -139,9 +231,19 @@ export default createRule({
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replaceAll(
-        replaceRegex,
-        char => EscapeMap[char as keyof typeof EscapeMap],
+      return (
+        str
+          .replaceAll(replaceRegex, (char, offset: number) =>
+            // `\0` followed by a digit would be a (disallowed) legacy octal escape
+            char === '\0' && /\d/.test(str.charAt(offset + 1))
+              ? '\\x00'
+              : EscapeMap[char as keyof typeof EscapeMap],
+          )
+          // a lone surrogate can't be written as UTF-8, so keep it as an escape
+          .replaceAll(
+            /\p{Surrogate}/gu,
+            char => `\\u${char.charCodeAt(0).toString(16)}`,
+          )
       );
     }
 
@@ -177,15 +279,15 @@ export default createRule({
 
       // Check if every declaration of `indexOf` method has `includes` method
       // and the two methods have the same parameters.
-      for (const instanceofMethodDecl of indexofMethodDeclarations) {
-        const typeDecl = instanceofMethodDecl.parent;
+      for (const indexofMethodDecl of indexofMethodDeclarations) {
+        const typeDecl = indexofMethodDecl.parent;
         const type = checker.getTypeAtLocation(typeDecl);
         const includesMethodDecl = type
           .getProperty('includes')
           ?.getDeclarations();
         if (
           !includesMethodDecl?.some(includesMethodDecl =>
-            hasSameParameters(includesMethodDecl, instanceofMethodDecl),
+            hasSameParameters(includesMethodDecl, indexofMethodDecl),
           )
         ) {
           return;
@@ -202,7 +304,17 @@ export default createRule({
               yield fixer.insertTextBefore(callNode, '!');
             }
             yield fixer.replaceText(node.property, 'includes');
-            yield fixer.removeRange([callNode.range[1], compareNode.range[1]]);
+            // keep any parentheses around the call, as in `(a.indexOf(b)) !== -1`
+            const lastLeftToken = nullThrows(
+              context.sourceCode.getTokenBefore(compareNode.right, {
+                filter: isClosingParenToken,
+              }),
+              NullThrowsReasons.MissingToken(')', 'call expression'),
+            );
+            yield fixer.removeRange([
+              lastLeftToken.range[1],
+              compareNode.range[1],
+            ]);
           },
         }),
       });
@@ -228,7 +340,7 @@ export default createRule({
         node: { parent: TSESTree.CallExpression } & TSESTree.MemberExpression,
       ): void {
         const callNode = node.parent;
-        const text = parseRegExp(node.object);
+        const text = parseRegExp(node.object, isNewRegExpObject(node.object));
         if (text == null) {
           return;
         }
@@ -248,6 +360,10 @@ export default createRule({
           node: callNode,
           messageId: 'preferStringIncludes',
           *fix(fixer) {
+            // removing the regex would drop a side effect, as `f()` in `(f(), /bar/)`
+            if (hasSideEffectBesidesRegExp(node.object)) {
+              return;
+            }
             const argNode = callNode.arguments[0];
             const needsParen =
               argNode.type !== AST_NODE_TYPES.Literal &&

@@ -428,6 +428,33 @@ class A {
       // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
+    {
+      code: `
+class A {
+  a = this;
+  accessor b = this;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    `
+class A {
+  a = 1;
+  b: typeof this.a = 1;
+  declare c: typeof this;
+}
+    `,
+    {
+      code: `
+class A {
+  a = 1;
+  accessor b: typeof this.a = 1;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [
@@ -1947,6 +1974,119 @@ function foo(
           endColumn: 31,
           endLine: 4,
           line: 4,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(bar: string) {
+  this.prop;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = function (bar: string) {
+  this.prop;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(this: SomeType) {}
+this.prop;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = function (this: SomeType) {};
+this.prop;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  [this.foo] = 1;
+}
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  accessor [this.foo] = 1;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  @dec(this)
+  foo = 1;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],

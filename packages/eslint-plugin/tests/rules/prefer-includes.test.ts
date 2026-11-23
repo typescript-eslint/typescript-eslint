@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/prefer-includes';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -89,8 +91,538 @@ function f(a) {
   return pattern.test(a);
 }
     `,
+    `
+function f(a: string): void {
+  /bar/y.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  /bar/gy.test(a);
+}
+    `,
+    // a stored global regex starts at its `lastIndex`, which may not be 0
+    `
+const pattern = /bar/g;
+function f(a: string): void {
+  pattern.test(a);
+}
+    `,
+    `
+const pattern = /bar/g;
+function f(a: string): void {
+  RegExp(pattern).test(a);
+}
+    `,
+    `
+const pattern = /bar/g;
+function f(a: string): void {
+  (0, pattern).test(a);
+}
+    `,
+    // with `u` or `v`, a lone surrogate doesn't match half of a surrogate pair
+    `
+function f(a: string): void {
+  /\\ud83d/u.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  /\\ude00/v.test(a);
+}
+    `,
+    `
+function f(a: string): void {
+  a.lastIndexOf(b) !== -1;
+}
+    `,
+    `
+declare const a: {
+  indexOf: (x: string) => number;
+  includes(x: string): boolean;
+};
+a.indexOf(b) !== -1;
+    `,
   ],
   invalid: [
+    {
+      code: noFormat`
+function f(a: string): void {
+  (a.indexOf(b)) !== -1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  (a.includes(b));
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f(a: string): void {
+  (a.indexOf(b)) === -1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  (!a.includes(b));
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/g.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  new RegExp('bar', 'g').test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  (0, /bar/g).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  (/bar/g as RegExp).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud800/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\ud800');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\udc00/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\udc00');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud83d\\ude00/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('😀');
+}
+      `,
+    },
+    // the fix would drop `g()`
+    {
+      code: `
+declare function g(): void;
+function f(a: string): void {
+  (g(), /bar/g).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+declare function g(): void;
+function f(a: string): void {
+  (g(), /bar/).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+declare function g(): string;
+function f(a: string): void {
+  new RegExp((g(), 'bar')).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: string): void {
+  (0, /bar/).test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud83d\\ude00/u.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('😀');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\ud83d/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\ud83d');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /\\x001/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\x001');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /'1/.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.includes('\\'1');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/?.test(a);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a?.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test('foo');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  'foo'.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test(\`foo\`);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  \`foo\`.includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test([a][0]);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  [a][0].includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(a: string): void {
+  /bar/.test(a.trim());
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
+      output: `
+function f(a: string): void {
+  a.trim().includes('bar');
+}
+      `,
+    },
+    {
+      code: `
+declare const a: {
+  indexOf(x: string): number;
+  includes(x: number): boolean;
+  includes(x: string): boolean;
+};
+a.indexOf(b) !== -1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferIncludes',
+        },
+      ],
+      output: `
+declare const a: {
+  indexOf(x: string): number;
+  includes(x: number): boolean;
+  includes(x: string): boolean;
+};
+a.includes(b);
+      `,
+    },
     // positive
     {
       code: `

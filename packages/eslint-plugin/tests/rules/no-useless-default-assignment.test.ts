@@ -137,16 +137,6 @@ class C {
 const foo = (x: string = '') => {};
     `,
     `
-const obj = { ab: { x: 1 } };
-const {
-  ['a' + 'b']: { x = 1 },
-} = obj;
-    `,
-    `
-const obj = { ab: 1 };
-const { ['a' + 'b']: x = 1 } = obj;
-    `,
-    `
 for ([[a = 1]] of []) {
 }
     `,
@@ -367,8 +357,419 @@ const fn: Fn = (value = 'default') => {
   return value;
 };
     `,
+    `
+declare const obj: { k: string; x?: string };
+const k = 'x';
+const { [k]: a = '' } = obj;
+    `,
+    `
+declare const obj: { a: number; [key: string]: number | undefined };
+declare const suffix: string;
+const { [\`a\${suffix}\`]: a = 1 } = obj;
+    `,
+    `
+declare function f(
+  callback: ((a: number) => void) | ((a: number, b: string) => void),
+): void;
+f((a, b = '') => {});
+    `,
+    `
+const x = 1;
+function f(a = x) {}
+    `,
+    `
+declare function useCallback<T>(callback: T): void;
+useCallback((value: number[] = [], other: string) => {});
+    `,
+    `
+class C {
+  constructor(private a: [number] = [1]) {}
+}
+    `,
+    {
+      code: `
+declare function f(callback: (a?: number) => void): void;
+f((a = 1) => {});
+      `,
+      languageOptions: {
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
+      },
+      options: [
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
+      ],
+    },
+    `
+function g(a = 1) {}
+const h: typeof g = (a = 2) => {};
+    `,
+    `
+function g(a = 1, b: number) {}
+const h: typeof g = (a = 2, b) => {};
+    `,
+    `
+interface Win {
+  w: 1;
+}
+declare function f(
+  callback: (this: Win, a: number | undefined, b: number) => void,
+): void;
+f(function (this: Win, a = 1, b) {});
+    `,
+    `
+interface Win {
+  w: 1;
+}
+declare function f(callback: (this: Win, a?: number) => void): void;
+f(function (this: Win, a = 1) {});
+    `,
+    `
+declare function f(callback?: (a?: number) => void): void;
+f((a = 1) => {});
+    `,
+    `
+declare function f(callback: ((a: number) => void) | Function): void;
+f((a = 1) => {});
+    `,
+    `
+declare function f(callback: undefined): void;
+f((a = 1) => {});
+    `,
+    `
+function f<T>() {
+  const cb: (x: T | string) => void = (x = 'a') => {};
+  return cb;
+}
+    `,
+    `
+function f<T, K extends keyof T>() {
+  const cb: (x: T[K]) => void = (x = 'a' as T[K]) => {};
+  return cb;
+}
+    `,
+    `
+function f<T>() {
+  const cb: (x: T extends string ? T : T | undefined) => void = (
+    x = 'a' as never,
+  ) => {};
+  return cb;
+}
+    `,
+    `
+function f<T extends string | undefined>() {
+  const cb: (x: T) => void = (x = 'a' as T) => {};
+  return cb;
+}
+    `,
+    `
+function f<T>({ a = 1 }: { a: T }) {
+  return a;
+}
+    `,
+    `
+function f<T>([a = 1]: [T]) {
+  return a;
+}
+    `,
+    `
+function f<T>(o: { a: T | string }) {
+  const { a = 'x' } = o;
+  return a;
+}
+    `,
+    `
+function f<T, U>(o: { a: T & U }) {
+  const { a = 1 as T & U } = o;
+  return a;
+}
+    `,
+    `
+function f<T, U extends string | undefined>(o: { a: T & U }) {
+  const { a = '' as T & U } = o;
+  return a;
+}
+    `,
+    `
+declare const obj: { x: string; y?: string };
+const { ['y']: a = '' } = obj;
+    `,
+    `
+declare const obj: { x: string };
+declare let k: string;
+const { [k]: a = '' } = obj;
+    `,
   ],
   invalid: [
+    {
+      code: `
+[1, 2].map(function (a = 0) {
+  return a;
+});
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+[1, 2].map(function (a) {
+  return a;
+});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const t: [{ a: number }, ...{ a: number }[]];
+const [, , { a = 1 }] = t;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'property' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const t: [{ a: number }, ...{ a: number }[]];
+const [, , { a }] = t;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, { a = 1 }: { a: number }) {}
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(this: void, { a }: { a: number }) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: { a: number };
+declare const y: { a: number };
+const { a = 1 } = Math.random() ? x : y;
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const x: { a: number };
+declare const y: { a: number };
+const { a } = Math.random() ? x : y;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b: number) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'parameter' },
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(a: number | undefined, b: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b = 1, c: number) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'parameter' },
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(a: number | undefined, b = 1, c: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, a: number | undefined = undefined, b: number) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          data: { type: 'parameter' },
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(this: void, a: number | undefined, b: number) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b = 1) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(a?: number | undefined, b = 1) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(a: number | undefined = undefined, b?: number, ...c: number[]) {}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(a?: number | undefined, b?: number, ...c: number[]) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(this: void, a: number | undefined = undefined) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(this: void, a?: number | undefined) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f({ a }: { a?: number } | undefined = undefined) {}
+      `,
+      errors: [
+        {
+          column: 48,
+          data: { type: 'parameter' },
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f({ a }: { a?: number } | undefined) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     {
       code: `
 declare const mixed: [boolean, ...number[], string];
@@ -1049,6 +1450,490 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
               messageId: 'removeDefaultAssignment',
               output: `
 const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Win {
+  w: 1;
+}
+declare function g(callback: (this: Win, a: number) => void): void;
+g(function (this: Win, a = 1) {});
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'parameter' },
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+interface Win {
+  w: 1;
+}
+declare function g(callback: (this: Win, a: number) => void): void;
+g(function (this: Win, a) {});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Win {
+  w: 1;
+}
+declare function g(callback: (a: number, b: number) => void): void;
+g(function (this: Win, a = 1, b) {});
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'parameter' },
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+interface Win {
+  w: 1;
+}
+declare function g(callback: (a: number, b: number) => void): void;
+g(function (this: Win, a, b) {});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- Prettier would unescape the parameter name
+      code: `
+function f(\\u0061: number | undefined = undefined) {}
+      `,
+      errors: [
+        {
+          column: 41,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function f(\\u0061?: number | undefined) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function dec(...args: unknown[]): ParameterDecorator;
+class C {
+  method(@dec() a: number | undefined = undefined) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          endColumn: 50,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+declare function dec(...args: unknown[]): ParameterDecorator;
+class C {
+  method(@dec() a?: number | undefined) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class C {
+  constructor(private a: number | undefined = undefined) {}
+}
+      `,
+      errors: [
+        {
+          column: 47,
+          endColumn: 56,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+class C {
+  constructor(private a?: number | undefined) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const obj: { x: string };
+const k = 'x';
+const { [k]: a = '' } = obj;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'property' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const obj: { x: string };
+const k = 'x';
+const { [k]: a } = obj;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const obj = { ab: 1 };
+const { ['a' + 'b']: x = 1 } = obj;
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { type: 'property' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const obj = { ab: 1 };
+const { ['a' + 'b']: x } = obj;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const obj = { ab: { x: 1 } };
+const {
+  ['a' + 'b']: { x = 1 },
+} = obj;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { type: 'property' },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const obj = { ab: { x: 1 } };
+const {
+  ['a' + 'b']: { x },
+} = obj;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function f(callback?: (a: number) => void): void;
+f((a = 1) => {});
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { type: 'parameter' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare function f(callback?: (a: number) => void): void;
+f((a) => {});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function f(callback: ((a: number) => void) | null): void;
+f((a = 1) => {});
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { type: 'parameter' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare function f(callback: ((a: number) => void) | null): void;
+f((a) => {});
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const p: Promise<number>;
+p.then((v = 1) => v);
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { type: 'parameter' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const p: Promise<number>;
+p.then((v) => v);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T extends string>() {
+  const cb: (x: T) => void = (x = 'a' as T) => {};
+  return cb;
+}
+      `,
+      errors: [
+        {
+          column: 35,
+          data: { type: 'parameter' },
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T extends string>() {
+  const cb: (x: T) => void = (x) => {};
+  return cb;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T extends string>({ a = 'a' }: { a: T }) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'property' },
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T extends string>({ a }: { a: T }) {
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T>() {
+  const cb: (x: string) => void = (x = 'a') => {};
+  return cb;
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          data: { type: 'parameter' },
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T>() {
+  const cb: (x: string) => void = (x) => {};
+  return cb;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T>(o: { a: T & {} }) {
+  const { a = 1 as T & {} } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T>(o: { a: T & {} }) {
+  const { a } = o;
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f<T>(o: { a: T & string }) {
+  const { a = '' as T & string } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f<T>(o: { a: T & string }) {
+  const { a } = o;
+  return a;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(o: { a: { x: 1 } & { y: 2 } }) {
+  const { a = { x: 1, y: 2 } as const } = o;
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function f(o: { a: { x: 1 } & { y: 2 } }) {
+  const { a } = o;
+  return a;
+}
       `,
             },
           ],

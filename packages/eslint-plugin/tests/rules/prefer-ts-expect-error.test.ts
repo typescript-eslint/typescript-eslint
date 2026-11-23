@@ -12,6 +12,7 @@ ruleTester.run('prefer-ts-expect-error', rule, {
     '// @ts-nocheck',
     '// @ts-check',
     '// just a comment containing @ts-ignore somewhere',
+    '// * @ts-ignore',
     `
 {
   /*
@@ -234,6 +235,42 @@ if (false) {
 /*
 // @ts-expect-error in a block with single line comments */
       `,
+    },
+    {
+      code: `
+/**
+ * Explains why @ts-ignore is used
+ * @ts-ignore */
+const a: string = 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: `
+/**
+ * Explains why @ts-ignore is used
+ * @ts-expect-error */
+const a: string = 1;
+      `,
+    },
+    {
+      code: '// @ts-ignore: unlike @ts-ignore elsewhere',
+      errors: [
+        {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '// @ts-expect-error: unlike @ts-ignore elsewhere',
     },
   ],
 });

@@ -13,7 +13,27 @@ ruleTester.run('no-unsafe-assignment', rule, {
     requireData: true,
   },
   valid: [
+    `
+declare const map: Map<any, string>;
+const [entry] = map;
+    `,
+    `
+declare const tuple: [any];
+const [...rest] = tuple;
+    `,
+    `
+declare const object: { a: number };
+const { a } = object;
+    `,
     'const x = 1;',
+    `
+declare let x: number;
+x += 1 as any;
+    `,
+    `
+declare let x: unknown;
+x ??= 1 as any;
+    `,
     'const x: number = 1;',
     `
 const x = 1,
@@ -924,6 +944,122 @@ const foo: Foo = { bar };
           endLine: 4,
           line: 4,
           messageId: 'anyAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: string | undefined;
+x ??= 1 as any;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { sender: '`any`' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: string;
+x ||= 1 as any;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { sender: '`any`' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: string;
+x &&= 1 as any;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { sender: '`any`' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: Set<string>;
+x ||= new Set<any>();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { receiver: '`Set<string>`', sender: '`Set<any>`' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: { 'a-b': any };
+const { 'a-b': value } = object;
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { sender: '`any`' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  value: any;
+  method() {
+    const copy = this.value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { sender: '`any`' },
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
+          messageId: 'anyAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+declare const tuple: [any];
+const [value]: [string] = tuple;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { receiver: '`[string]`', sender: '`[any]`' },
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeAssignment',
         },
       ],
     },

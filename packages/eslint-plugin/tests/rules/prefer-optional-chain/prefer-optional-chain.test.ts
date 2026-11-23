@@ -264,6 +264,23 @@ declare const x: 0n | { a: string };
 declare const x: void | (() => void);
 x && x();
     `,
+    `
+declare const foo: { bar: number | null } | undefined;
+declare const baz: { qux: boolean };
+foo && foo.bar !== null && baz.qux;
+    `,
+    `
+declare const foo: { bar: number | null | undefined } | undefined;
+foo && foo.bar !== null && foo.bar !== undefined;
+    `,
+    `
+declare const foo: { bar: number | null } | undefined;
+!foo || foo.bar === null;
+    `,
+    `
+declare const foo: { bar: number | null | undefined } | undefined;
+!foo || foo.bar === null || foo.bar === undefined;
+    `,
   ],
   invalid: [
     // two  errors
@@ -1178,7 +1195,7 @@ null != foo &&
 null != foo?.bar?.baz;
       `,
     },
-    // We should retain the split strict equals check if it's the last operand
+    // A split strict equals check can't end the chain, because `foo?.bar?.baz !== null` is true when `foo` is nullish
     {
       code: `
 null != foo &&
@@ -1190,22 +1207,19 @@ null != foo &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-null !== foo?.bar?.baz &&
-  'undefined' !== typeof foo.bar.baz;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+'undefined' !== typeof foo?.bar &&
+  null !== foo.bar &&
+  null !== foo.bar.baz &&
+  'undefined' !== typeof foo.bar.baz;
+      `,
     },
     {
       code: `
@@ -1218,22 +1232,19 @@ foo != null &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-foo?.bar?.baz !== null &&
-  typeof foo.bar.baz !== 'undefined';
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+typeof foo?.bar !== 'undefined' &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  typeof foo.bar.baz !== 'undefined';
+      `,
     },
     {
       code: `
@@ -1246,22 +1257,19 @@ null != foo &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-null !== foo?.bar?.baz &&
-  undefined !== foo.bar.baz;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+'undefined' !== typeof foo?.bar &&
+  null !== foo.bar &&
+  null !== foo.bar.baz &&
+  undefined !== foo.bar.baz;
+      `,
     },
     {
       code: `
@@ -1274,22 +1282,19 @@ foo != null &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-foo?.bar?.baz !== null &&
-  foo.bar.baz !== undefined;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+typeof foo?.bar !== 'undefined' &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz !== undefined;
+      `,
     },
     {
       code: `
@@ -1442,8 +1447,81 @@ declare const foo: { bar: number } | undefined;
 'undefined' !== typeof foo?.bar;
       `,
     },
-
+    {
+      code: noFormat`
+declare const foo: { bar: number } | undefined;
+declare const something: boolean;
+foo && (foo.bar && something);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferOptionalChain',
+          suggestions: null,
+        },
+      ],
+      output: `
+declare const foo: { bar: number } | undefined;
+declare const something: boolean;
+foo?.bar && something;
+      `,
+    },
     // requireNullish
+    {
+      code: `
+declare const foo: { bar: { baz: number } | null };
+foo.bar && foo.bar.baz === 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+declare const foo: { bar: { baz: number } | null };
+foo.bar?.baz === 1;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ requireNullish: true }],
+      output: null,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: string } } | null;
+foo && foo.bar && foo.bar.baz;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+declare const foo: { bar: { baz: string } } | null;
+foo?.bar?.baz;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ requireNullish: true }],
+      output: null,
+    },
     {
       code: `
 declare const thing1: string | null;

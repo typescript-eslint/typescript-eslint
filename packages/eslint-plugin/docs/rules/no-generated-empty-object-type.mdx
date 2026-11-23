@@ -14,7 +14,7 @@ It is rarely what you want it to be: even primitives such as `0` and `""` are as
 
 [`no-empty-object-type`](./no-empty-object-type.mdx) reports `{}` written out by hand.
 This rule instead reports type operations that _resolve_ to `{}`, which is usually a sign that the operation went wrong.
-For example, `Omit<T, K>` distributes over a union, so `Omit<null | { a: number; b: string }, 'a'>` resolves to `{}` rather than `null | { b: string }`.
+For example, `Omit<T, K>` does not distribute over a union: it only keeps keys shared by every member, and `null` has none, so `Omit<null | { a: number; b: string }, 'a'>` resolves to `{}` rather than `null | { b: string }`.
 
 ## Examples
 
@@ -25,7 +25,7 @@ For example, `Omit<T, K>` distributes over a union, so `Omit<null | { a: number;
 type Data = { name: string; value: number };
 type NullableData = null | Data;
 
-// `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
+// `keyof NullableData` is `never`, so this is `{}`
 type Unexpected = Omit<NullableData, 'name'>;
 ```
 

@@ -83,25 +83,13 @@ export default createRule<Options, MessageIds>({
     const isAllowedOverrideMethods = allow.includes('overrideMethods');
 
     /**
-     * Check if the method body is empty
-     * @param node the node to be validated
-     * @returns true if the body is empty
-     * @private
-     */
-    function isBodyEmpty(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-    ): boolean {
-      return node.body.body.length === 0;
-    }
-
-    /**
      * Check if method has parameter properties
      * @param node the node to be validated
      * @returns true if the body has parameter properties
      * @private
      */
     function hasParameterProperties(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+      node: TSESTree.FunctionExpression,
     ): boolean {
       return node.params.some(
         param => param.type === AST_NODE_TYPES.TSParameterProperty,
@@ -114,27 +102,26 @@ export default createRule<Options, MessageIds>({
      * @private
      */
     function isAllowedEmptyConstructor(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+      node: TSESTree.FunctionExpression,
     ): boolean {
       const parent = node.parent;
       if (
-        isBodyEmpty(node) &&
-        parent.type === AST_NODE_TYPES.MethodDefinition &&
-        parent.kind === 'constructor'
+        parent.type !== AST_NODE_TYPES.MethodDefinition ||
+        parent.kind !== 'constructor'
       ) {
-        const { accessibility } = parent;
-
-        return (
-          // allow protected constructors
-          (accessibility === 'protected' && isAllowedProtectedConstructors) ||
-          // allow private constructors
-          (accessibility === 'private' && isAllowedPrivateConstructors) ||
-          // allow constructors which have parameter properties
-          hasParameterProperties(node)
-        );
+        return false;
       }
 
-      return false;
+      const { accessibility } = parent;
+
+      return (
+        // allow protected constructors
+        (accessibility === 'protected' && isAllowedProtectedConstructors) ||
+        // allow private constructors
+        (accessibility === 'private' && isAllowedPrivateConstructors) ||
+        // allow constructors which have parameter properties
+        hasParameterProperties(node)
+      );
     }
 
     /**
@@ -143,17 +130,13 @@ export default createRule<Options, MessageIds>({
      * @private
      */
     function isAllowedEmptyDecoratedFunctions(
-      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+      node: TSESTree.FunctionExpression,
     ): boolean {
-      if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
-        const decorators =
-          node.parent.type === AST_NODE_TYPES.MethodDefinition
-            ? node.parent.decorators
-            : undefined;
-        return !!decorators && !!decorators.length;
-      }
-
-      return false;
+      return (
+        isAllowedDecoratedFunctions &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.decorators.length > 0
+      );
     }
 
     function isAllowedEmptyOverrideMethod(
@@ -161,7 +144,6 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         isAllowedOverrideMethods &&
-        isBodyEmpty(node) &&
         node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.override
       );

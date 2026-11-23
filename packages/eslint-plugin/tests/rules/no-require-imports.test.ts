@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-require-imports';
 
@@ -110,6 +110,11 @@ const require = createRequire();
 require('remark-preset-prettier');
       `,
       options: [{ allowAsImport: true }],
+    },
+    {
+      code: noFormat`import pkg = require(\`./package.json\`);`,
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      options: [{ allow: ['/package\\.json$'] }],
     },
   ],
   invalid: [
@@ -443,6 +448,59 @@ configValidator.addSchema(require('./a.json'));
         },
       ],
       options: [{ allowAsImport: true }],
+    },
+    {
+      code: 'require();',
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require(`./${name}/package.json`);',
+      errors: [
+        {
+          column: 13,
+          endColumn: 46,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: noFormat`import pkg = require(name);`,
+      errors: [
+        {
+          column: 14,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: noFormat`import pkg = require(\`./\${name}/package.json\`);`,
+      errors: [
+        {
+          column: 14,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRequireImports',
+        },
+      ],
+      languageOptions: { parserOptions: { allowInvalidAST: true } },
+      options: [{ allow: ['/package\\.json$'] }],
     },
   ],
 });

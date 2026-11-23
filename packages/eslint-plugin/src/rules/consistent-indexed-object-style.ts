@@ -6,7 +6,9 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  findShadowingVariable,
   getFixOrSuggest,
+  getInterfaceMerging,
   isNodeEqual,
   isParenthesized,
   nullThrows,
@@ -68,13 +70,49 @@ export default createRule<Options, MessageIds>({
         );
     }
 
+    /**
+     * Checks whether each of the type names refers to the global type at the
+     * node. Values and namespaces don't hide a global type, but a namespace
+     * import can, since the module it imports may be a type (`export =`).
+     */
+    function areGlobalTypes(
+      node: TSESTree.Node,
+      ...names: (string | undefined)[]
+    ): boolean {
+      // A mapped type's own scope holds its key, which can't be seen where
+      // the fix writes the names in place of the mapped type.
+      const scope = context.sourceCode.getScope(
+        node.type === AST_NODE_TYPES.TSMappedType ? node.parent : node,
+      );
+      return names.every(
+        name =>
+          name == null || !findShadowingVariable(name, scope, 'type', { node }),
+      );
+    }
+
+    /**
+     * The utility type that the fixer wraps around `Record<…>` in a mapped
+     * type with an optional modifier, if any.
+     */
+    function getMappedTypeOptionalWrapper(
+      node: TSESTree.TSMappedType,
+    ): 'Partial' | 'Required' | undefined {
+      if (node.optional === '+' || node.optional === true) {
+        return 'Partial';
+      }
+      if (node.optional === '-') {
+        return 'Required';
+      }
+      return undefined;
+    }
+
     function checkMembers(
       members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
-      safeFix = true,
+      fixOrSuggest: 'fix' | 'none' | 'suggest' = 'fix',
     ): void {
       if (members.length !== 1) {
         return;
@@ -116,15 +154,25 @@ export default createRule<Options, MessageIds>({
         node,
         messageId: 'preferRecord',
         ...getFixOrSuggest({
-          fixOrSuggest: !safeFix
-            ? 'none'
-            : hasUnpreservedComments(
-                  node,
-                  keyType.typeAnnotation,
-                  valueType.typeAnnotation,
-                )
-              ? 'suggest'
-              : 'fix',
+          fixOrSuggest:
+            // The fix writes `Record<…>` (and `Readonly<…>`) in place of
+            // `node`, which means something else where they aren't the
+            // global types.
+            fixOrSuggest === 'none' ||
+            !areGlobalTypes(
+              node,
+              'Record',
+              member.readonly ? 'Readonly' : undefined,
+            )
+              ? 'none'
+              : fixOrSuggest === 'fix' &&
+                  hasUnpreservedComments(
+                    node,
+                    keyType.typeAnnotation,
+                    valueType.typeAnnotation,
+                  )
+                ? 'suggest'
+                : fixOrSuggest,
           suggestion: {
             messageId: 'preferRecordSuggestion',
             fix: (fixer): TSESLint.RuleFix => {
@@ -142,6 +190,28 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    // A type alias can't merge with other declarations the way an interface
+    // can, so converting a merged or augmenting interface could break it.
+    function getInterfaceFixOrSuggest(
+      node: TSESTree.TSInterfaceDeclaration,
+    ): 'fix' | 'none' | 'suggest' {
+      if (
+        node.extends.length ||
+        node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
+      ) {
+        return 'none';
+      }
+
+      switch (getInterfaceMerging(context, node)) {
+        case 'merged':
+          return 'none';
+        case 'mergeable':
+          return 'suggest';
+        case undefined:
+          return 'fix';
+      }
+    }
+
     return {
       ...(mode === 'index-signature' && {
         TSTypeReference(node): void {
@@ -150,6 +220,11 @@ export default createRule<Options, MessageIds>({
             return;
           }
           if (typeName.name !== 'Record') {
+            return;
+          }
+
+          // Only the global `Record` utility type can become an index signature.
+          if (!areGlobalTypes(typeName, 'Record')) {
             return;
           }
 
@@ -201,11 +276,16 @@ export default createRule<Options, MessageIds>({
             node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
-            !node.extends.length &&
-              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration,
+            getInterfaceFixOrSuggest(node),
           );
         },
         TSMappedType(node): void {
+          // A key remapping clause (`as`) changes the keys, which a Record
+          // can't express.
+          if (node.nameType) {
+            return;
+          }
+
           const key = node.key;
           const scope = context.sourceCode.getScope(key);
 
@@ -261,8 +341,17 @@ export default createRule<Options, MessageIds>({
             ...getFixOrSuggest({
               // There's no builtin Mutable<T> type, so a `-readonly` mapped
               // type can't be represented as a Record and is left untouched.
+              // The fix also needs the global `Record` and any utility types
+              // it wraps that in where the mapped type is, which is outside
+              // its own key's scope.
               fixOrSuggest:
-                node.readonly === '-'
+                node.readonly === '-' ||
+                !areGlobalTypes(
+                  node,
+                  'Record',
+                  getMappedTypeOptionalWrapper(node),
+                  node.readonly ? 'Readonly' : undefined,
+                )
                   ? 'none'
                   : hasUnpreservedComments(
                         node,
@@ -281,10 +370,9 @@ export default createRule<Options, MessageIds>({
 
                   let recordText = `Record<${keyType}, ${valueType}>`;
 
-                  if (node.optional === '+' || node.optional === true) {
-                    recordText = `Partial<${recordText}>`;
-                  } else if (node.optional === '-') {
-                    recordText = `Required<${recordText}>`;
+                  const optionalWrapper = getMappedTypeOptionalWrapper(node);
+                  if (optionalWrapper) {
+                    recordText = `${optionalWrapper}<${recordText}>`;
                   }
 
                   if (node.readonly === '+' || node.readonly === true) {

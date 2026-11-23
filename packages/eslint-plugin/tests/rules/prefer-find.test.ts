@@ -41,6 +41,15 @@ notNecessarilyAnArray?.filter(item => true)[0];
     // should not need to be optional for the cases the rule is concerned with.
     '[].filter?.(() => true)[0];',
     '[1, 2, 3].filter(x => x > 0).at(-Infinity);',
+    '[1, 2, 3].filter(x => x > 0).indexOf(0);',
+    `
+declare const index: number;
+[1, 2, 3].filter(x => x > 0).at(index);
+    `,
+    `
+declare const arr: string[];
+arr.at(0);
+    `,
     `
 declare const arr: string[];
 declare const cond: Parameters<Array<string>['filter']>[0];

@@ -135,7 +135,6 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const skipFix = returnTypeReferencesThisType(methodNode.returnType);
           const parent = methodNode.parent;
           const members =
             parent.type === AST_NODE_TYPES.TSInterfaceBody
@@ -150,6 +149,9 @@ export default createRule<Options, MessageIds>({
                 getMethodKey(element) === getMethodKey(methodNode),
             );
           const isParentModule = isNodeParentModuleDeclaration(methodNode);
+          const skipFix = [methodNode, ...duplicatedKeyMethodNodes].some(node =>
+            returnTypeReferencesThisType(node.returnType),
+          );
 
           if (duplicatedKeyMethodNodes.length > 0) {
             if (isParentModule) {

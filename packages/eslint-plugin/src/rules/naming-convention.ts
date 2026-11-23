@@ -187,6 +187,14 @@ export default createRule<Options, MessageIds>({
       return unusedVariables.has(variable);
     }
 
+    function getDeclarationScope(
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeAliasDeclaration,
+    ): TSESLint.Scope.Scope | null {
+      const scope = context.sourceCode.getScope(node);
+      // generic declarations create their own nested scope for their type parameters
+      return node.typeParameters ? scope.upper : scope;
+    }
+
     function isDestructured(id: TSESTree.Identifier): boolean {
       return (
         // `const { x }`
@@ -219,11 +227,10 @@ export default createRule<Options, MessageIds>({
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
-        ('async' in id.parent && id.parent.async) ||
-        ('init' in id.parent &&
-          id.parent.init &&
-          'async' in id.parent.init &&
-          id.parent.init.async),
+        'init' in id.parent &&
+        id.parent.init &&
+        'async' in id.parent.init &&
+        id.parent.init.async,
       );
     }
 
@@ -654,7 +661,7 @@ export default createRule<Options, MessageIds>({
       TSInterfaceDeclaration: {
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = context.sourceCode.getScope(node);
+          const scope = getDeclarationScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -676,7 +683,7 @@ export default createRule<Options, MessageIds>({
       TSTypeAliasDeclaration: {
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = context.sourceCode.getScope(node);
+          const scope = getDeclarationScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);

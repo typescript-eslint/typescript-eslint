@@ -3,7 +3,7 @@ Incorrect
 type Data = { name: string; value: number };
 type NullableData = null | Data;
 
-// `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
+// `keyof NullableData` is `never`, so this is `{}`
 type Unexpected = Omit<NullableData, 'name'>;
                   ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, the empty object type. This was likely not intentional.
 

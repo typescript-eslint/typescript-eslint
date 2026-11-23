@@ -416,6 +416,26 @@ switch (value) {
     },
     {
       code: `
+type Brand = { _brand: true };
+declare const value: ('a' & Brand) | ('b' & Brand);
+declare const a: 'a' & Brand;
+declare const b: 'b' & Brand;
+switch (value) {
+  case a:
+    break;
+  case b:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
 declare const value: ('literal' & { _brand: true }) | 1;
 switch (value) {
   case 'literal':
@@ -997,6 +1017,129 @@ switch (value) {
     },
   ],
   invalid: [
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // some comment
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '"b"' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  // some comment
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ considerDefaultExhaustiveForUnions: true }],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b' | undefined;
+switch (value) {
+  case 'a':
+    break;
+  case undefined:
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '"b"' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'a' | 'b' | undefined;
+switch (value) {
+  case 'a':
+    break;
+  case undefined:
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum First {
+  'a-b' = 1,
+  c = 2,
+}
+enum Second {
+  d = 3,
+  e = 4,
+}
+declare const value: First | Second;
+switch (value) {
+  case First.c:
+  case Second.d:
+  case Second.e:
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '(typeof First)["a-b"]' },
+          endColumn: 14,
+          endLine: 11,
+          line: 11,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum First {
+  'a-b' = 1,
+  c = 2,
+}
+enum Second {
+  d = 3,
+  e = 4,
+}
+declare const value: First | Second;
+switch (value) {
+  case First.c:
+  case Second.d:
+  case Second.e:
+    break;
+  case First['a-b']: { throw new Error('Not implemented yet: First[\\'a-b\\'] case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
     {
       code: `
 declare const value: 'literal';

@@ -45,6 +45,7 @@ See detailed examples in the sections for each option.
 - If you return a promise between a `using` or `await using` declaration and the end of its scope, it should be awaited, since it behaves equivalently to code wrapped in a `try` block followed by a `finally`.
 
 Ordinary contexts are anywhere else a promise may be returned.
+This includes every `return` in an `async` generator function, since an async generator's `return` awaits its operand before leaving the function.
 The choice of whether to await a returned promise in an ordinary context is mostly stylistic.
 
 With these terms defined, the options may be summarized as follows:

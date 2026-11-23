@@ -3,9 +3,11 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
+  SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { isTokenOnSameLine } from '@typescript-eslint/utils/ast-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -15,8 +17,10 @@ import {
   getContextualType,
   getDeclaration,
   getModifiers,
+  getOperatorPrecedenceForNode,
   getParserServices,
   isNullableType,
+  isParenthesized,
   isPropertyReadonlyInType,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
@@ -25,6 +29,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export type Options = [
   {
@@ -38,6 +43,77 @@ export type MessageIds =
   | 'unnecessaryAssertion';
 
 const MAX_TYPE_CONTAINS_DEPTH = 50;
+
+/**
+ * Whether a type has a type variable among its union or intersection
+ * constituents, as in `T`, `T | undefined`, `T[K] | null`, or
+ * `(T & string) | undefined`.
+ */
+function hasTypeVariableConstituent(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(part =>
+      tsutils
+        .intersectionConstituents(part)
+        .some(member => isTypeFlagSet(member, ts.TypeFlags.Instantiable)),
+    );
+}
+
+/**
+ * Whether an expression whose first token is `firstToken`, placed at `node`'s
+ * position, would start an `export default` and so be parsed as a function or
+ * class declaration: a leading `function`, `class`, or `async function`.
+ */
+function isStartOfExportDefaultNeedingParentheses(
+  node: TSESTree.Node,
+  firstToken: TSESTree.Token,
+  sourceCode: Readonly<SourceCode>,
+): boolean {
+  if (!startsDeclaration(firstToken, sourceCode)) {
+    return false;
+  }
+
+  let current = node;
+  while (!isParenthesized(current, sourceCode)) {
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
+      return true;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    current = parent;
+  }
+  return false;
+}
+
+function startsDeclaration(
+  firstToken: TSESTree.Token,
+  sourceCode: Readonly<SourceCode>,
+): boolean {
+  if (firstToken.value === 'class' || firstToken.value === 'function') {
+    return true;
+  }
+  if (firstToken.value !== 'async') {
+    return false;
+  }
+  const nextToken = sourceCode.getTokenAfter(firstToken);
+  // `async` followed by a line break is an identifier, not a modifier.
+  return (
+    nextToken?.value === 'function' && isTokenOnSameLine(firstToken, nextToken)
+  );
+}
+
+function isConstAssertion(node: TSESTree.TypeNode): boolean {
+  return (
+    node.type === AST_NODE_TYPES.TSTypeReference &&
+    node.typeName.type === AST_NODE_TYPES.Identifier &&
+    node.typeName.name === 'const'
+  );
+}
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -166,14 +242,6 @@ export default createRule<Options, MessageIds>({
         }
       }
       return false;
-    }
-
-    function isConstAssertion(node: TSESTree.TypeNode): boolean {
-      return (
-        node.type === AST_NODE_TYPES.TSTypeReference &&
-        node.typeName.type === AST_NODE_TYPES.Identifier &&
-        node.typeName.name === 'const'
-      );
     }
 
     function isTemplateLiteralWithExpressions(expression: TSESTree.Expression) {
@@ -543,6 +611,191 @@ export default createRule<Options, MessageIds>({
       return type.getCallSignatures().some(hasTypeParams);
     }
 
+    /**
+     * Whether a call infers its type arguments from its arguments: it has no
+     * explicit type arguments and its callee has a generic signature. A JSX
+     * element is a call of its tag, with its attributes and children as the
+     * props argument, and TypeScript resolves the tag's call signatures or,
+     * for a class component, its construct signatures.
+     */
+    function isCallInferringTypeArguments(
+      node:
+        | TSESTree.CallExpression
+        | TSESTree.JSXOpeningElement
+        | TSESTree.NewExpression
+        | TSESTree.TaggedTemplateExpression,
+    ): boolean {
+      if (node.typeArguments != null) {
+        return false;
+      }
+      if (node.type === AST_NODE_TYPES.JSXOpeningElement) {
+        const tagType = services.getTypeAtLocation(node.name);
+        return [
+          ...tagType.getCallSignatures(),
+          ...tagType.getConstructSignatures(),
+        ].some(hasTypeParams);
+      }
+      // An optional callee (`foo?.(...)`, with `foo` possibly undefined)
+      // types as `<function> | undefined`, and a union exposes no signatures.
+      const calleeType = services
+        .getTypeAtLocation(
+          node.type === AST_NODE_TYPES.TaggedTemplateExpression
+            ? node.tag
+            : node.callee,
+        )
+        .getNonNullableType();
+      return (
+        node.type === AST_NODE_TYPES.NewExpression
+          ? calleeType.getConstructSignatures()
+          : calleeType.getCallSignatures()
+      ).some(hasTypeParams);
+    }
+
+    /**
+     * Whether an expression is an argument, a tagged template's substitution,
+     * or a JSX attribute's or child's value, of a call that infers its type
+     * arguments from it. Its contextual type then comes from the inferred
+     * signature, so changing the expression's type can change what's
+     * inferred, and so the call's type.
+     */
+    function isArgumentToCallInferringTypeArguments(
+      node: TSESTree.Node,
+    ): boolean {
+      const { parent } = node;
+      switch (parent?.type) {
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          return (
+            parent.arguments.includes(
+              node as TSESTree.CallExpressionArgument,
+            ) && isCallInferringTypeArguments(parent)
+          );
+        case AST_NODE_TYPES.JSXExpressionContainer:
+          switch (parent.parent.type) {
+            case AST_NODE_TYPES.JSXAttribute:
+              return isCallInferringTypeArguments(parent.parent.parent);
+            case AST_NODE_TYPES.JSXElement:
+              return isCallInferringTypeArguments(parent.parent.openingElement);
+            default:
+              return false;
+          }
+        case AST_NODE_TYPES.TemplateLiteral:
+          return (
+            parent.parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
+            isCallInferringTypeArguments(parent.parent)
+          );
+        default:
+          return false;
+      }
+    }
+
+    /**
+     * Whether an expression's value goes only into a declared type, such as an
+     * annotated variable, an argument to a non-generic call, or the return of
+     * a function with a declared return type, so its own type doesn't flow on
+     * into the type of another expression or declaration. Positions whose type
+     * flows out aren't declared, even when they have a contextual type: the
+     * operand of `satisfies`, the left operand of `??` (`a! ?? b` is typed as
+     * `a!`, without `b`), an argument to a generic call or JSX element that
+     * infers its type arguments, and the return of a function without a
+     * declared return type.
+     *
+     * A variable declared with a union type is still a declared destination,
+     * even though TypeScript narrows the variable to the part of its union
+     * that its initializer's type can be assigned to, so removing a `!` can
+     * widen the variable's narrowed type, as it can for a concrete type such
+     * as `string | undefined`.
+     */
+    function isInDeclaredDestination(node: TSESTree.Node): boolean {
+      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+      switch (parent.type) {
+        // These pass their operand's type on to their own position.
+        case AST_NODE_TYPES.ArrayExpression:
+        case AST_NODE_TYPES.ChainExpression:
+          return isInDeclaredDestination(parent);
+        case AST_NODE_TYPES.LogicalExpression:
+          // `??` uses its right operand only when the left one may be
+          // nullish, so the left one's type decides whether the right one's
+          // type is part of the result. (The left of `&&` has no contextual
+          // type, so it's never checked against one.)
+          return (
+            (parent.right === node || parent.operator !== '??') &&
+            isInDeclaredDestination(parent)
+          );
+        case AST_NODE_TYPES.ConditionalExpression:
+          return parent.test !== node && isInDeclaredDestination(parent);
+        case AST_NODE_TYPES.SequenceExpression:
+          return (
+            parent.expressions.at(-1) === node &&
+            isInDeclaredDestination(parent)
+          );
+        case AST_NODE_TYPES.Property:
+          return (
+            parent.value === node &&
+            parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+            isInDeclaredDestination(parent.parent)
+          );
+        case AST_NODE_TYPES.SpreadElement:
+          return (
+            (parent.parent.type === AST_NODE_TYPES.ArrayExpression ||
+              parent.parent.type === AST_NODE_TYPES.ObjectExpression) &&
+            isInDeclaredDestination(parent.parent)
+          );
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          // `as const` keeps its operand's type; other assertions replace it.
+          return (
+            !isConstAssertion(parent.typeAnnotation) ||
+            isInDeclaredDestination(parent)
+          );
+
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+          return parent.body === node && isReturnTypeDeclared(parent);
+        case AST_NODE_TYPES.ReturnStatement:
+        case AST_NODE_TYPES.YieldExpression: {
+          const functionNode = getParentFunctionNode(parent);
+          return functionNode != null && isReturnTypeDeclared(functionNode);
+        }
+
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
+          return (
+            parent.arguments.includes(
+              node as TSESTree.CallExpressionArgument,
+            ) && !isArgumentToCallInferringTypeArguments(node)
+          );
+        case AST_NODE_TYPES.JSXExpressionContainer:
+        case AST_NODE_TYPES.TemplateLiteral:
+          return !isArgumentToCallInferringTypeArguments(node);
+        case AST_NODE_TYPES.AccessorProperty:
+        case AST_NODE_TYPES.PropertyDefinition:
+          return parent.value === node && parent.typeAnnotation != null;
+        case AST_NODE_TYPES.AssignmentPattern:
+          return parent.right === node && parent.left.typeAnnotation != null;
+        case AST_NODE_TYPES.VariableDeclarator:
+          return parent.init === node && parent.id.typeAnnotation != null;
+        default:
+          return false;
+      }
+    }
+
+    /**
+     * Whether a function's return type is declared, either by its own annotation
+     * or by a declared type the function itself goes into.
+     */
+    function isReturnTypeDeclared(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      return (
+        node.returnType != null ||
+        (node.type !== AST_NODE_TYPES.FunctionDeclaration &&
+          isInDeclaredDestination(node))
+      );
+    }
+
     function getInnermostCall(
       expression: TSESTree.Expression,
     ): TSESTree.CallExpression | undefined {
@@ -889,8 +1142,14 @@ export default createRule<Options, MessageIds>({
             isStartOfExpressionStatementNeedingParentheses(
               node,
               firstOperandToken,
+              context.sourceCode,
             ) ||
             isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            ) ||
+            isStartOfExportDefaultNeedingParentheses(
               node,
               firstOperandToken,
               context.sourceCode,
@@ -943,11 +1202,46 @@ export default createRule<Options, MessageIds>({
           messageId: doubleAssertionResult,
           fix(fixer) {
             const originalExpr = getOriginalExpression(node);
+            // Only the original expression's text is kept, so comments
+            // elsewhere in the assertions would be dropped.
+            if (
+              context.sourceCode
+                .getCommentsInside(node)
+                .some(
+                  comment =>
+                    comment.range[1] <= originalExpr.range[0] ||
+                    comment.range[0] >= originalExpr.range[1],
+                )
+            ) {
+              return null;
+            }
+
+            // The original expression takes the assertion's position, so its
+            // first token leads whatever the assertion led.
+            const firstToken = nullThrows(
+              context.sourceCode.getFirstToken(originalExpr),
+              NullThrowsReasons.MissingToken('first token', 'expression'),
+            );
             let text = context.sourceCode.getText(originalExpr);
             if (
-              originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
-              node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-              node.parent.body === node
+              !isParenthesized(node, context.sourceCode) &&
+              (getOperatorPrecedenceForNode(originalExpr) <
+                getOperatorPrecedenceForNode(node) ||
+                isStartOfExpressionStatementNeedingParentheses(
+                  node,
+                  firstToken,
+                  context.sourceCode,
+                ) ||
+                isStartOfArrowFunctionBodyNeedingParentheses(
+                  node,
+                  firstToken,
+                  context.sourceCode,
+                ) ||
+                isStartOfExportDefaultNeedingParentheses(
+                  node,
+                  firstToken,
+                  context.sourceCode,
+                ))
             ) {
               text = `(${text})`;
             }
@@ -1109,8 +1403,17 @@ export default createRule<Options, MessageIds>({
         // constrained type is `any` (nullable) but the actual type might be
         // a type parameter that TypeScript treats nominally.
         // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
-        const constrainedTypeIsNullable = isNullableType(constrainedType);
         const actualTypeIsNullable = isNullableType(actualType);
+        // A type that may be `null` or `undefined` only through a type
+        // variable, such as an unconstrained `T`, `T | string`, or `T[K]`, has
+        // no nullish flags, but the `!` still changes it (to `NonNullable<T>`).
+        // Without `strictNullChecks`, the `!` never changes the type.
+        const isNullishTypeVariable =
+          !actualTypeIsNullable &&
+          !isNullableType(constrainedType) &&
+          checker.getNonNullableType(actualType) !== actualType;
+        const constrainedTypeIsNullable =
+          isNullishTypeVariable || isNullableType(constrainedType);
 
         if (!constrainedTypeIsNullable && !actualTypeIsNullable) {
           if (
@@ -1134,15 +1437,37 @@ export default createRule<Options, MessageIds>({
           // as contextually unnecessary. TypeScript may still require the assertion
           // even if the constraint is nullable (like `any`).
           // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
-          if (constrainedType !== actualType) {
+          // A nullish type variable has a constraint that isn't nullable, and
+          // is checked below against the receiver's type as written.
+          if (!isNullishTypeVariable && constrainedType !== actualType) {
             return;
           }
 
-          const contextualType = getContextualType(checker, originalNode);
+          // The shared helper leaves out positions such as `return` and arrow
+          // bodies. For a type variable, those positions also make the `!`
+          // unnecessary when their type accepts it, but only if they're
+          // declared: elsewhere, such as under `satisfies` or in an inferred
+          // return, the `!` also changes the type that flows out.
+          // For an argument to a generic call, the contextual type comes from
+          // the signature inferred with the `!`, so it can't show the `!` is
+          // unnecessary for a type variable.
+          const contextualType =
+            isNullishTypeVariable &&
+            isArgumentToCallInferringTypeArguments(node)
+              ? undefined
+              : (getContextualType(checker, originalNode) ??
+                (isNullishTypeVariable && isInDeclaredDestination(node)
+                  ? checker.getContextualType(originalNode)
+                  : undefined));
           if (contextualType) {
+            // Nullish flags say nothing about a type variable in the type,
+            // as in `T | undefined`, so the receiver must accept the whole
+            // type without the `!`.
             if (
-              isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
-              !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
+              isNullishTypeVariable || hasTypeVariableConstituent(actualType)
+                ? !checker.isTypeAssignableTo(actualType, contextualType)
+                : isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
+                  !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
             ) {
               return;
             }

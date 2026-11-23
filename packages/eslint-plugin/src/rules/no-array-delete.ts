@@ -1,12 +1,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isExpressionStartNeedingParentheses,
+  isParenthesized,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export type MessageId = 'noArrayDelete' | 'useSplice';
@@ -49,13 +56,33 @@ export default createRule<[], MessageId>({
       return predicate(type);
     }
 
+    /**
+     * Whether the key can't name an array element: a symbol, or a string
+     * literal such as `'foo'` that isn't an array index like `'0'`.
+     */
+    function isNonIndexKey(property: TSESTree.Expression): boolean {
+      const type = getConstrainedTypeAtLocation(services, property);
+
+      return tsutils
+        .unionConstituents(type)
+        .every(
+          part =>
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.ESSymbolLike) ||
+            (part.isStringLiteral() && !isArrayIndex(part.value)),
+        );
+    }
+
     return {
       'UnaryExpression[operator="delete"]'(
         node: TSESTree.UnaryExpression,
       ): void {
         const { argument } = node;
 
-        if (argument.type !== AST_NODE_TYPES.MemberExpression) {
+        if (
+          argument.type !== AST_NODE_TYPES.MemberExpression ||
+          !argument.computed ||
+          isNonIndexKey(argument.property)
+        ) {
           return;
         }
 
@@ -78,13 +105,42 @@ export default createRule<[], MessageId>({
                   property.type === AST_NODE_TYPES.SequenceExpression;
 
                 const nodeMap = services.esTreeNodeToTSNodeMap;
-                const target = nodeMap.get(object).getText();
+                const rawTarget = nodeMap.get(object).getText();
+                const objectFirstToken = nullThrows(
+                  context.sourceCode.getFirstToken(object),
+                  NullThrowsReasons.MissingToken('first token', object.type),
+                );
+                // Without `delete`, a leading `{`, `function` or `class` could
+                // start a block or a declaration instead of an expression.
+                const target =
+                  isParenthesized(object, context.sourceCode) ||
+                  isExpressionStartNeedingParentheses(
+                    node,
+                    objectFirstToken,
+                    context.sourceCode,
+                  )
+                    ? `(${rawTarget})`
+                    : rawTarget;
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
-                let suggestion = `${target}.splice(${key}, 1)`;
+                const semicolon =
+                  /^[([`/]/.test(target) &&
+                  isStartOfExpressionStatement(node) &&
+                  needsPrecedingSemicolon(context.sourceCode, node, target)
+                    ? ';'
+                    : '';
 
-                const comments = context.sourceCode.getCommentsInside(node);
+                let suggestion = `${semicolon}${target}.splice(${key}, 1)`;
+
+                // Comments inside the target or key are already in their text.
+                const comments = context.sourceCode
+                  .getCommentsInside(node)
+                  .filter(
+                    comment =>
+                      !isInside(comment, object) &&
+                      !isInside(comment, property),
+                  );
 
                 if (comments.length > 0) {
                   const indentationCount = node.loc.start.column;
@@ -110,3 +166,15 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+// 2 ** 32 - 1, the maximum array length
+const MAX_ARRAY_LENGTH = 4_294_967_295;
+
+// Array indices are canonical integers below the maximum array length.
+function isArrayIndex(key: string): boolean {
+  return /^(?:0|[1-9]\d*)$/.test(key) && Number(key) < MAX_ARRAY_LENGTH;
+}
+
+function isInside(comment: TSESTree.Comment, node: TSESTree.Node): boolean {
+  return comment.range[0] >= node.range[0] && comment.range[1] <= node.range[1];
+}

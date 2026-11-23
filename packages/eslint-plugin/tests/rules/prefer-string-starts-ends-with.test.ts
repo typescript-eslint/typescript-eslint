@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import { typescriptVersionIsAtLeast } from '@typescript-eslint/type-utils';
 
 import rule from '../../src/rules/prefer-string-starts-ends-with';
 import { createRuleTesterWithTypes } from '../RuleTester';
@@ -316,8 +317,894 @@ s[s.length - 1] === 'a';
     "/beforeDollarSign\\$afterDollarSign/.test('string');",
     "/beforeAnchor\\\\$afterAnchor/.test('string');",
     '/[$]/.test(string);',
+    `
+function f(s: string) {
+  /a$/y.test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  pattern.test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  (pattern as RegExp).test(s);
+}
+    `,
+    `
+function f(s: string) {
+  new RegExp('^a', 'y').test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern).test(s);
+}
+    `,
+    `
+function f(s: string) {
+  RegExp().test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern, undefined).test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+const args = [pattern, undefined];
+function f(s: string) {
+  RegExp(...(args as [RegExp]), 'g').test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+const empty: string[] = [];
+function f(s: string) {
+  RegExp(pattern, ...(empty as [])).test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  [pattern].find(Boolean, null)!.test(s);
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  (new Object(pattern) as RegExp).test(s);
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/a$/y) === null;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-3, 0) === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.substring(s.length - 3, 0) === 'bar';
+}
+    `,
+    // `substring` treats a negative start as 0, so these compare all of `s`
+    `
+function f(s: string) {
+  s.substring(-3) === 'bar';
+}
+    `,
+    `
+function f(s: string, t: string) {
+  s.substring(-t.length) === t;
+}
+    `,
+    `
+function f(s: string) {
+  s.substring(-3, s.length) === 'bar';
+}
+    `,
+    `
+const pattern = /^a/g;
+function f(s: string) {
+  (0, pattern).test(s);
+}
+    `,
+    `
+function f(s: string) {
+  s[0] === undefined;
+}
+    `,
+    `
+function f(s: string) {
+  s.charAt(0) === '';
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/^foo/) === bar;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-t.length) === t.trim();
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(0, needle.size) === needle;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(0, n) === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(+needle.length) === needle;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(s.length + needle.length) === needle;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(t.length - needle.length) === needle;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(s.length - 3) === needle;
+}
+    `,
+    `
+function f(s: string) {
+  s[-1] === 'a';
+}
+    `,
+    `
+function f(s: string) {
+  s[s.length + 1] === 'a';
+}
+    `,
+    `
+function f(s: string) {
+  /^bar/i.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  /^bar/m.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  s.indexOf('bar', 1) === 0;
+}
+    `,
+    `
+function f(s: string) {
+  s.indexOf('bar') >= 0;
+}
+    `,
+    `
+function f(s: string) {
+  s.lastIndexOf('bar', 5) === s.length - 3;
+}
+    `,
+    `
+function f(s: string) {
+  s.lastIndexOf('bar') >= s.length - 3;
+}
+    `,
+    `
+function f(s: string) {
+  s.lastIndexOf('bar') === s.length + 3;
+}
+    `,
+    `
+function f(s: string) {
+  s.lastIndexOf('bar') === t.length - 3;
+}
+    `,
+    `
+function f(s: string) {
+  s.lastIndexOf('bar') === s.length - 4;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(0, 3) < 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice() === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(1, 3) === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-3, 5) === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(1, s.length) === 'bar';
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/^bar/i) === null;
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/^bar/m) === null;
+}
+    `,
+    // `s.slice(-0)` is all of `s`, but `s.endsWith('')` is always true
+    `
+function f(s: string) {
+  s.slice(-''.length) === '';
+}
+    `,
+    `
+const e = '';
+function f(s: string) {
+  s.slice(-e.length) === e;
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-0) === '';
+}
+    `,
+    `
+function f(s: string) {
+  s.slice(-''.length, s.length) === '';
+}
+    `,
+    // with `u` or `v`, a lone surrogate doesn't match half of a surrogate pair
+    `
+function f(s: string) {
+  /^\\ud83d/u.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  /\\ude00$/u.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  /^\\ud83d/v.test(s);
+}
+    `,
+    `
+function f(s: string) {
+  s.match(/^\\ud83d/u) === null;
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+function f(s: string) {
+  /^a/g.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /a$/g.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.endsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  new RegExp('^a', 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  RegExp('^a', 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+const pattern = /^a/g;
+function f(s: string) {
+  new RegExp(pattern).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+const pattern = /^a/g;
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+const pattern = /^a/g;
+function f(s: string) {
+  RegExp(pattern, 'g').test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+const pattern = /^a/g;
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  RegExp(/^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    // the fix would drop `g()`
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  (g(), /^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  (g(), /^a/).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): string;
+function f(s: string) {
+  new RegExp((g(), '^a')).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function g(): void;
+function f(s: string) {
+  s.match((g(), /^a/)) === null;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(s: string) {
+  (0, /^a/).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\ud83d\\ude00/u.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("😀");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\ud83d/.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("\\ud83d");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  s.match(/\\ude00$/) === null;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  !s.endsWith("\\ude00");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (0, /^a/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (/^a/g as RegExp)!.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (<RegExp>/a$/g).test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.endsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  (/^a/g satisfies RegExp).test(s);
+}
+      `,
+      // `satisfies` needs TypeScript 4.9. `dependencyConstraints` would make
+      // RuleTester overwrite every case's `skip`, including the Node one below.
+      skip: !typescriptVersionIsAtLeast['4.9'],
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("a");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  s?.lastIndexOf('bar') === s.length - 3;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s?.endsWith('bar');
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^bar/.test(\`foo\`);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  \`foo\`.startsWith("bar");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^bar/.test([s][0]);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  [s][0].startsWith("bar");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^bar/.test(s.trim());
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.trim().startsWith("bar");
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  s?.charAt(0) === 'a';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s?.startsWith('a');
+}
+      `,
+    },
+    {
+      code: `
+function f(s: string) {
+  s[0] === 'ab';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+function f(s: string) {
+  (s.indexOf('bar')) === 0;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  (s.startsWith('bar'));
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f(s: string) {
+  (s.lastIndexOf('bar')) === s.length - 3;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  (s.endsWith('bar'));
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f(s: string) {
+  (s.match(/^a/)) === null;
+}
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  !(s.startsWith("a"));
+}
+      `,
+    },
+    {
+      code: noFormat`
+function f(s: string) {
+  (s.slice(0, 3)) === 'bar';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  (s.startsWith('bar'));
+}
+      `,
+    },
     // String indexing.
     {
       code: `
@@ -1422,9 +2309,113 @@ function f(s: string) {
           messageId: 'preferEndsWith',
         },
       ],
+      // `s.slice(-0)` is all of `s`, but `s.endsWith('')` is always true
+      output: null,
+    },
+    {
+      code: `
+function f(s: string, t: string) {
+  s.slice(-t.length, s.length) === t;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function f(s: string) {
+  s.slice(-'bar'.length) === 'bar';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
-  s.endsWith(needle);
+  s.endsWith('bar');
+}
+      `,
+    },
+    {
+      code: `
+const t = 'bar';
+function f(s: string) {
+  s.slice(-t.length) === t;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferEndsWith',
+        },
+      ],
+      output: `
+const t = 'bar';
+function f(s: string) {
+  s.endsWith(t);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: number;
+function f(s: string) {
+  s.slice(0, 3) === (x, 'bar');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+declare const x: number;
+function f(s: string) {
+  s.startsWith((x, 'bar'));
+}
+      `,
+    },
+    {
+      code: `
+declare const x: number;
+function f(s: string) {
+  s[0] === (x, 'a');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+declare const x: number;
+function f(s: string) {
+  s.startsWith((x, 'a'));
 }
       `,
     },
@@ -1469,23 +2460,6 @@ function f(s: string) {
   s.startsWith('bar');
 }
       `,
-    },
-    {
-      code: `
-function f(s: string) {
-  s.substring(-3) === 'bar'; // the code is probably mistake.
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          endColumn: 28,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferEndsWith',
-        },
-      ],
-      output: null,
     },
     {
       code: `

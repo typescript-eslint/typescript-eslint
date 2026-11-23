@@ -1083,6 +1083,10 @@ a || (b && c);
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     },
+    `
+declare let x: string | null;
+x !== undefined ? x : 'y';
+    `,
     {
       code: `
 declare let a: number | null | undefined;
@@ -2225,6 +2229,123 @@ const b = a || 'bar';
   invalid: [
     {
       code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a ||= b && c;
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'assignment', equals: '=' },
+          endColumn: 6,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '=' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a ??= b && c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'or', equals: '' },
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          data: { description: 'or', equals: '' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+(a || b) ?? c;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: true }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || (b ?? (c && d));
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'or', equals: '' },
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a ?? (b ?? (c && d));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: true }],
+      output: null,
+    },
+    {
+      code: `
 declare let x: string | null | undefined;
 x || 'foo';
       `,
@@ -2506,6 +2627,28 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
               data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && x !== null ? x : y == z;',
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `x ?? y == z;`,
             },
           ],
         },
@@ -7367,6 +7510,309 @@ while ((x ??= 'foo')) {}
 
     // ignoreMixedLogicalExpressions
     {
+      code: noFormat`
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a || b && c;
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'or', equals: '' },
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+x && a || b;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { description: 'or', equals: '' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+(x && a) ?? b;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare function foo(): void;
+foo()
+x && a || b
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { description: 'or', equals: '' },
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare function foo(): void;
+foo()
+;(x && a) ?? b
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare function foo(): void;
+foo()
+a || b
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'or', equals: '' },
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare function foo(): void;
+foo()
+a ?? b
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+const c = x && a || b;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { description: 'or', equals: '' },
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+const c = (x && a) ?? b;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare function foo(): void;
+foo()
+a || b || c
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { description: 'or', equals: '' },
+          endColumn: 5,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare function foo(): void;
+foo()
+;(a ?? b) || c
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          data: { description: 'or', equals: '' },
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare function foo(): void;
+foo()
+;(a || b) ?? c
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a && b || c || d;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { description: 'or', equals: '' },
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+((a && b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 13,
+          data: { description: 'or', equals: '' },
+          endColumn: 15,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b || c) ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null;
+declare let b: string | null;
+declare let c: string | null;
+a !== null ? a : b && c;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null;
+declare let b: string | null;
+declare let c: string | null;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
       code: `
 declare let a: string | null | undefined;
 declare let b: string | null | undefined;
@@ -7540,7 +7986,7 @@ declare let a: string | null | undefined;
 declare let b: string | null | undefined;
 declare let c: string | null | undefined;
 declare let d: string | null | undefined;
-a || b ?? (c && d);
+(a || b) ?? (c && d);
       `,
             },
           ],
@@ -7595,7 +8041,7 @@ declare let a: number | null | undefined;
 declare let b: number | null | undefined;
 declare let c: number | null | undefined;
 declare let d: number | null | undefined;
-a || b ?? (c && d);
+(a || b) ?? (c && d);
       `,
             },
           ],
@@ -7650,7 +8096,7 @@ declare let a: boolean | null | undefined;
 declare let b: boolean | null | undefined;
 declare let c: boolean | null | undefined;
 declare let d: boolean | null | undefined;
-a || b ?? (c && d);
+(a || b) ?? (c && d);
       `,
             },
           ],
@@ -7705,7 +8151,7 @@ declare let a: object | null | undefined;
 declare let b: object | null | undefined;
 declare let c: object | null | undefined;
 declare let d: object | null | undefined;
-a || b ?? (c && d);
+(a || b) ?? (c && d);
       `,
             },
           ],
@@ -7739,7 +8185,7 @@ declare let a: string | null | undefined;
 declare let b: string | null | undefined;
 declare let c: string | null | undefined;
 declare let d: string | null | undefined;
-(a && (b) ?? c) || d;
+((a && b) ?? c) || d;
       `,
             },
           ],
@@ -7760,7 +8206,7 @@ declare let a: string | null | undefined;
 declare let b: string | null | undefined;
 declare let c: string | null | undefined;
 declare let d: string | null | undefined;
-(a && b) || c ?? d;
+((a && b) || c) ?? d;
       `,
             },
           ],
@@ -7794,7 +8240,7 @@ declare let a: number | null | undefined;
 declare let b: number | null | undefined;
 declare let c: number | null | undefined;
 declare let d: number | null | undefined;
-(a && (b) ?? c) || d;
+((a && b) ?? c) || d;
       `,
             },
           ],
@@ -7815,7 +8261,7 @@ declare let a: number | null | undefined;
 declare let b: number | null | undefined;
 declare let c: number | null | undefined;
 declare let d: number | null | undefined;
-(a && b) || c ?? d;
+((a && b) || c) ?? d;
       `,
             },
           ],
@@ -7849,7 +8295,7 @@ declare let a: boolean | null | undefined;
 declare let b: boolean | null | undefined;
 declare let c: boolean | null | undefined;
 declare let d: boolean | null | undefined;
-(a && (b) ?? c) || d;
+((a && b) ?? c) || d;
       `,
             },
           ],
@@ -7870,7 +8316,7 @@ declare let a: boolean | null | undefined;
 declare let b: boolean | null | undefined;
 declare let c: boolean | null | undefined;
 declare let d: boolean | null | undefined;
-(a && b) || c ?? d;
+((a && b) || c) ?? d;
       `,
             },
           ],
@@ -7904,7 +8350,7 @@ declare let a: object | null | undefined;
 declare let b: object | null | undefined;
 declare let c: object | null | undefined;
 declare let d: object | null | undefined;
-(a && (b) ?? c) || d;
+((a && b) ?? c) || d;
       `,
             },
           ],
@@ -7925,7 +8371,7 @@ declare let a: object | null | undefined;
 declare let b: object | null | undefined;
 declare let c: object | null | undefined;
 declare let d: object | null | undefined;
-(a && b) || c ?? d;
+((a && b) || c) ?? d;
       `,
             },
           ],

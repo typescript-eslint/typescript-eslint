@@ -314,7 +314,13 @@ export default createRule<Options, MessageIds>({
         node?: TSESTree.Node;
       },
     ) => {
-      reportedUnusedVariables.add(unusedVar);
+      // A used variable whose name matches an ignore pattern is reported only
+      // to rename it, so it must not be removed, and other specifiers of its
+      // import must not treat it as unused.
+      const isUsed = opts.messageId === 'usedIgnoredVar';
+      if (!isUsed) {
+        reportedUnusedVariables.add(unusedVar);
+      }
 
       const writeReferences = unusedVar.references.filter(
         ref =>
@@ -343,7 +349,7 @@ export default createRule<Options, MessageIds>({
           messageId?: MessageIds;
           useAutofix?: boolean;
         } => {
-          if (unusedVar.defs.length !== 1) {
+          if (isUsed || unusedVar.defs.length !== 1) {
             // If there's multiple definitions then we'd have to clean them all
             // up! That's complicated and messy so for now let's just ignore it.
             return {};
@@ -550,6 +556,49 @@ export default createRule<Options, MessageIds>({
       return fixer.remove(node);
     }
 
+    /**
+     * Removes the tokens in `range`, but keeps any comments among them, e.g.
+     *
+     *     import Used, /* keep *\/ * as Unused from 'module';
+     *     import Used /* keep *\/ from 'module';
+     */
+    function removeRangeKeepingComments(
+      fixer: TSESLint.RuleFixer,
+      range: TSESTree.Range,
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      const sourceCode = context.sourceCode;
+      const fixes: TSESLint.RuleFix[] = [];
+      let hasComments = false;
+      let token: TSESTree.Token | null = nullThrows(
+        sourceCode.getTokenByRangeStart(range[0], { includeComments: true }),
+        NullThrowsReasons.MissingToken('token', 'range'),
+      );
+      let previous = sourceCode.getTokenBefore(token, {
+        includeComments: true,
+      });
+
+      while (token && token.range[1] <= range[1]) {
+        if (
+          token.type === AST_TOKEN_TYPES.Block ||
+          token.type === AST_TOKEN_TYPES.Line
+        ) {
+          hasComments = true;
+        } else {
+          // Remove the whitespace before each token too, unless it ends a line
+          // comment.
+          const start =
+            previous && previous.type !== AST_TOKEN_TYPES.Line
+              ? previous.range[1]
+              : token.range[0];
+          fixes.push(fixer.removeRange([start, token.range[1]]));
+        }
+        previous = token;
+        token = sourceCode.getTokenAfter(token, { includeComments: true });
+      }
+
+      return hasComments ? fixes : fixer.removeRange(range);
+    }
+
     function getImportFixer(def: ImportBindingDefinition): {
       fix: TSESLint.ReportFixFunction;
       messageId: MessageIds;
@@ -607,7 +656,7 @@ export default createRule<Options, MessageIds>({
               );
               assertToken(isCommaToken, comma);
 
-              return fixer.removeRange([
+              return removeRangeKeepingComments(fixer, [
                 Math.min(def.node.range[0], comma.range[0]),
                 Math.max(def.node.range[1], comma.range[1]),
               ]);
@@ -685,7 +734,7 @@ export default createRule<Options, MessageIds>({
                     isRightCurlyToken.predicate,
                   ),
                 );
-                return fixer.removeRange([
+                return removeRangeKeepingComments(fixer, [
                   leftToken.range[0],
                   rightToken.range[1],
                 ]);
@@ -728,7 +777,7 @@ export default createRule<Options, MessageIds>({
                       isCommaToken,
                       context.sourceCode.getTokenAfter(def.node),
                     );
-              return fixer.removeRange([
+              return removeRangeKeepingComments(fixer, [
                 Math.min(def.node.range[0], comma.range[0]),
                 Math.max(def.node.range[1], comma.range[1]),
               ]);
@@ -737,12 +786,34 @@ export default createRule<Options, MessageIds>({
         }
 
         case AST_NODE_TYPES.ImportNamespaceSpecifier: {
-          // namespace specifiers cannot be used with any other specifier -- so
-          // we can just remove entire import declaration
           const importDecl = def.node.parent;
+          if (
+            importDecl.specifiers.length === 1 ||
+            areAllSpecifiersUnused(importDecl)
+          ) {
+            return {
+              messageId: 'removeUnusedImportDeclaration',
+              fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
+            };
+          }
+
+          // a namespace specifier can only follow a default specifier, and in
+          // this branch we know that default specifier isn't reported as unused
+          //
+          //     import Used, * as Unused from 'module';
+          //                ^^^^^^^^^^^^^ remove this
           return {
-            messageId: 'removeUnusedImportDeclaration',
-            fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
+            messageId: 'removeUnusedVar',
+            fix: fixer => {
+              const comma = assertToken(
+                isCommaToken,
+                context.sourceCode.getTokenBefore(def.node),
+              );
+              return removeRangeKeepingComments(fixer, [
+                comma.range[0],
+                def.node.range[1],
+              ]);
+            },
           };
         }
       }

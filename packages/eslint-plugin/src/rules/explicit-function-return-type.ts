@@ -141,47 +141,33 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-        node.type === AST_NODE_TYPES.FunctionExpression
-      ) {
+      let funcName;
+      if (node.id?.name) {
+        funcName = node.id.name;
+      } else {
         const parent = node.parent;
-        let funcName;
-        if (node.id?.name) {
-          funcName = node.id.name;
-        } else {
-          switch (parent.type) {
-            case AST_NODE_TYPES.VariableDeclarator: {
-              if (parent.id.type === AST_NODE_TYPES.Identifier) {
-                funcName = parent.id.name;
-              }
-              break;
+        switch (parent.type) {
+          case AST_NODE_TYPES.VariableDeclarator: {
+            if (parent.id.type === AST_NODE_TYPES.Identifier) {
+              funcName = parent.id.name;
             }
-            case AST_NODE_TYPES.MethodDefinition:
-            case AST_NODE_TYPES.PropertyDefinition:
-            case AST_NODE_TYPES.Property: {
-              if (
-                parent.key.type === AST_NODE_TYPES.Identifier &&
-                !parent.computed
-              ) {
-                funcName = parent.key.name;
-              }
-              break;
+            break;
+          }
+          case AST_NODE_TYPES.AccessorProperty:
+          case AST_NODE_TYPES.MethodDefinition:
+          case AST_NODE_TYPES.PropertyDefinition:
+          case AST_NODE_TYPES.Property: {
+            if (
+              parent.key.type === AST_NODE_TYPES.Identifier &&
+              !parent.computed
+            ) {
+              funcName = parent.key.name;
             }
+            break;
           }
         }
-        if (!!funcName && options.allowedNames.includes(funcName)) {
-          return true;
-        }
       }
-      if (
-        node.type === AST_NODE_TYPES.FunctionDeclaration &&
-        node.id &&
-        options.allowedNames.includes(node.id.name)
-      ) {
-        return true;
-      }
-      return false;
+      return !!funcName && options.allowedNames.includes(funcName);
     }
 
     function isIIFE(
@@ -190,7 +176,10 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): boolean {
-      return node.parent.type === AST_NODE_TYPES.CallExpression;
+      return (
+        node.parent.type === AST_NODE_TYPES.CallExpression &&
+        node.parent.callee === node
+      );
     }
 
     function exitFunctionExpression(
@@ -201,7 +190,6 @@ export default createRule<Options, MessageIds>({
       if (
         options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
         node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        node.expression &&
         node.body.type === AST_NODE_TYPES.UnaryExpression &&
         node.body.operator === 'void'
       ) {
@@ -236,9 +224,6 @@ export default createRule<Options, MessageIds>({
       'FunctionDeclaration:exit'(node): void {
         const info = popFunctionInfo('function declaration');
         if (isAllowedFunction(node)) {
-          return;
-        }
-        if (options.allowTypedFunctionExpressions && node.returnType) {
           return;
         }
 

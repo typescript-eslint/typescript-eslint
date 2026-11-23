@@ -4,6 +4,8 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isClosingParenToken,
+  isGlobalScript,
   isReferenceToGlobalFunction,
   nullThrows,
   NullThrowsReasons,
@@ -51,8 +53,12 @@ export default createRule<Options, MessageIds>({
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: ['constructor'],
   create(context, [mode]) {
+    // In a script, a top-level `interface Uint8Array<T> {}` augments the global
+    // type. If the file is a module after all, skipping its report is harmless.
+    const topLevelIsGlobal = isGlobalScript(context.sourceCode);
+
     return {
-      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(ArrowFunctionExpression,FunctionDeclaration,FunctionExpression,TSParameterProperty) > AssignmentPattern'(
         node:
           | TSESTree.AccessorProperty
           | TSESTree.AssignmentPattern
@@ -89,6 +95,7 @@ export default createRule<Options, MessageIds>({
               typeName.name,
               typeName,
               context.sourceCode,
+              { topLevelIsGlobal },
             )
           );
         }
@@ -162,8 +169,18 @@ export default createRule<Options, MessageIds>({
         const isolatedDeclarations =
           context.languageOptions.parserOptions.isolatedDeclarations;
         if (!isolatedDeclarations && lhs?.typeArguments && !rhs.typeArguments) {
-          const hasParens =
-            context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+          // Type arguments go after any parentheses around the callee, as in `new (Foo)()`
+          let calleeEnd: TSESTree.Node | TSESTree.Token = rhs.callee;
+          let tokenAfterCallee = context.sourceCode.getTokenAfter(calleeEnd);
+          while (
+            tokenAfterCallee &&
+            isClosingParenToken(tokenAfterCallee) &&
+            tokenAfterCallee.range[1] <= rhs.range[1]
+          ) {
+            calleeEnd = tokenAfterCallee;
+            tokenAfterCallee = context.sourceCode.getTokenAfter(calleeEnd);
+          }
+          const hasParens = tokenAfterCallee?.value === '(';
           const extraComments = new Set(
             context.sourceCode.getCommentsInside(lhs.parent),
           );
@@ -181,16 +198,16 @@ export default createRule<Options, MessageIds>({
                 const suffix =
                   comment.type === AST_TOKEN_TYPES.Line ? '\n' : '';
                 yield fixer.insertTextAfter(
-                  rhs.callee,
+                  calleeEnd,
                   context.sourceCode.getText(comment) + suffix,
                 );
               }
               yield fixer.insertTextAfter(
-                rhs.callee,
+                calleeEnd,
                 context.sourceCode.getText(lhs.typeArguments),
               );
               if (!hasParens) {
-                yield fixer.insertTextAfter(rhs.callee, '()');
+                yield fixer.insertTextAfter(calleeEnd, '()');
               }
             },
           });

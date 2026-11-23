@@ -14,6 +14,9 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isFunctionOrClassStartToken,
+  isOpeningBraceToken,
+  needsPrecedingSemicolon,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -173,14 +176,17 @@ export default createRule<Options, MessageId>({
                   'before arrow function body',
                 ),
               );
+              const needsParentheses = wouldStartBlockOrDeclaration(
+                arrowFunction.body,
+              );
               return [
                 fixer.replaceTextRange(
                   [arrowToken.range[1], arrowFunction.body.range[0]],
-                  ' { ',
+                  needsParentheses ? ' { (' : ' { ',
                 ),
                 fixer.replaceTextRange(
                   [arrowFunction.body.range[1], arrowFunction.range[1]],
-                  '; }',
+                  needsParentheses ? '); }' : '; }',
                 ),
               ];
             },
@@ -220,10 +226,11 @@ export default createRule<Options, MessageId>({
                 if (!canFix(invalidAncestor)) {
                   return null;
                 }
-                const returnValue = invalidAncestor.argument;
-                const returnValueText = context.sourceCode.getText(returnValue);
+                const returnValueText = getStatementText(
+                  invalidAncestor.argument,
+                );
                 let newReturnStmtText = `${returnValueText};`;
-                if (isPreventingASI(returnValue)) {
+                if (isPreventingASI(invalidAncestor, returnValueText)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
@@ -237,19 +244,22 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
-              const returnValue = invalidAncestor.argument;
-              const returnValueText = context.sourceCode.getText(returnValue);
-              let newReturnStmtText = `${returnValueText}; return;`;
-              if (isPreventingASI(returnValue)) {
-                // put a semicolon at the beginning of the line
-                newReturnStmtText = `;${newReturnStmtText}`;
+              if (!canFix(invalidAncestor)) {
+                return null;
               }
+              const returnValueText = getStatementText(
+                invalidAncestor.argument,
+              );
+              let newReturnStmtText = `${returnValueText}; return;`;
               if (
                 invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
               ) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
+              } else if (isPreventingASI(invalidAncestor, returnValueText)) {
+                // put a semicolon at the beginning of the line
+                newReturnStmtText = `;${newReturnStmtText}`;
               }
               return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
@@ -385,18 +395,46 @@ export default createRule<Options, MessageId>({
     }
 
     /**
-     * Checks whether the given node, if placed on its own line,
-     * would prevent automatic semicolon insertion on the line before.
+     * Checks whether the given text, if it replaced the given statement,
+     * would continue the line before instead of starting a new statement.
      *
-     * This happens if the line begins with `(`, `[` or `` ` ``
+     * This can happen if the text begins with `(`, `[`, `` ` ``, `/`, `+`, `-` or `<`,
+     * as in `<boolean>cond ? a() : b()` or `-x ? a() : b()`.
      */
-    function isPreventingASI(node: TSESTree.Expression): boolean {
-      const startToken = nullThrows(
+    function isPreventingASI(
+      statement: TSESTree.Statement,
+      text: string,
+    ): boolean {
+      return (
+        /^[-(+/<[`]/.test(text) &&
+        needsPrecedingSemicolon(context.sourceCode, statement, text)
+      );
+    }
+
+    /**
+     * Whether the expression, as the start of a statement, would be read as a
+     * block or a declaration, as in `function () {}.call(null)`.
+     */
+    function wouldStartBlockOrDeclaration(node: TSESTree.Node): boolean {
+      const firstToken = nullThrows(
         context.sourceCode.getFirstToken(node),
         NullThrowsReasons.MissingToken('first token', node.type),
       );
 
-      return ['(', '[', '`'].includes(startToken.value);
+      return (
+        isOpeningBraceToken(firstToken) ||
+        isFunctionOrClassStartToken(firstToken, context.sourceCode)
+      );
+    }
+
+    /**
+     * Gets the expression's text to use as an expression statement,
+     * parenthesized if it would otherwise start a block or a declaration.
+     */
+    function getStatementText(node: TSESTree.Expression): string {
+      const text = context.sourceCode.getText(node);
+
+      return wouldStartBlockOrDeclaration(node) ? `(${text})` : text;
     }
 
     function canFix(
@@ -412,13 +450,15 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const functionNode = nullThrows(
+      const functionNode =
         node.type === AST_NODE_TYPES.ArrowFunctionExpression
           ? node
-          : getParentFunctionNode(node),
-        'Expected a return statement to be inside a function.',
+          : getParentFunctionNode(node);
+      // a top-level `return`, as in a CommonJS module, has no declared return type
+      return (
+        functionNode == null ||
+        functionDeclarationAllowsEmptyReturn(functionNode)
       );
-      return functionDeclarationAllowsEmptyReturn(functionNode);
     }
 
     function functionDeclarationAllowsEmptyReturn(

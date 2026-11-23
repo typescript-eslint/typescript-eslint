@@ -234,9 +234,15 @@ export default createRule<Options, MessageIds>({
             break;
           }
 
-          getNodesByName(
-            statement.expression.right.name,
-          ).constructorAssignment = statement.expression;
+          if (
+            !statement.expression.left.computed &&
+            statement.expression.left.property.name ===
+              statement.expression.right.name
+          ) {
+            getNodesByName(
+              statement.expression.right.name,
+            ).constructorAssignment = statement.expression;
+          }
         }
       },
     };

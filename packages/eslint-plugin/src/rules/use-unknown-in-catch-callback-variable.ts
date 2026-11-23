@@ -148,7 +148,11 @@ export default createRule<[], MessageIds>({
       argument: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): Partial<ReportDescriptor<MessageIds>> | undefined {
       const catchVariableOuterWithIncorrectTypes = nullThrows(
-        argument.params.at(0),
+        // skip a function expression's `this` parameter, which isn't a real parameter
+        argument.params.find(
+          param =>
+            param.type !== AST_NODE_TYPES.Identifier || param.name !== 'this',
+        ),
         'There should have been at least one parameter for the rule to have flagged.',
       );
 

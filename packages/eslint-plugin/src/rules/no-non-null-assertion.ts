@@ -5,6 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   isAssignee,
+  isClosingParenToken,
   isNonNullAssertionPunctuator,
   nullThrows,
   NullThrowsReasons,
@@ -45,8 +46,35 @@ export default createRule<[], MessageIds>({
           NullThrowsReasons.MissingToken('!', 'expression'),
         );
 
-        function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
-          return fixer => fixer.replaceText(nonNullOperator, '?.');
+        function convertToOptionalChain(): TSESLint.ReportFixFunction {
+          return fixer => {
+            // x!.y, x![y], or x!(), possibly parenthesized as in (x!).y
+            //   ^ tokenAfterNode
+            const tokenAfterNode = nullThrows(
+              context.sourceCode.getTokenAfter(
+                node,
+                token => !isClosingParenToken(token),
+              ),
+              NullThrowsReasons.MissingToken('member access or call', '!'),
+            );
+
+            if (tokenAfterNode.value === '.') {
+              return [
+                fixer.remove(nonNullOperator),
+                fixer.insertTextBefore(tokenAfterNode, '?'),
+              ];
+            }
+
+            // the `!` itself, or the last `)` around the non-null expression
+            const tokenBeforeAccess = nullThrows(
+              context.sourceCode.getTokenBefore(tokenAfterNode),
+              NullThrowsReasons.MissingToken('!', 'member access or call'),
+            );
+            return [
+              fixer.remove(nonNullOperator),
+              fixer.insertTextAfter(tokenBeforeAccess, '?.'),
+            ];
+          };
         }
 
         function removeToken(): TSESLint.ReportFixFunction {
@@ -54,59 +82,19 @@ export default createRule<[], MessageIds>({
         }
 
         if (
-          node.parent.type === AST_NODE_TYPES.MemberExpression &&
-          node.parent.object === node &&
-          !isAssignee(node.parent)
+          (node.parent.type === AST_NODE_TYPES.MemberExpression &&
+            node.parent.object === node &&
+            !isAssignee(node.parent)) ||
+          (node.parent.type === AST_NODE_TYPES.CallExpression &&
+            node.parent.callee === node)
         ) {
-          if (!node.parent.optional) {
-            if (node.parent.computed) {
-              // it is x![y]?.z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: replaceTokenWithOptional(),
-              });
-            } else {
-              // it is x!.y?.z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix(fixer) {
-                  // x!.y?.z
-                  //   ^ punctuator
-                  const punctuator = nullThrows(
-                    context.sourceCode.getTokenAfter(nonNullOperator),
-                    NullThrowsReasons.MissingToken('.', '!'),
-                  );
-                  return [
-                    fixer.remove(nonNullOperator),
-                    fixer.insertTextBefore(punctuator, '?'),
-                  ];
-                },
-              });
-            }
-          } else {
-            // it is x!?.[y].z or  x!?.y.z
-            suggest.push({
-              messageId: 'suggestOptionalChain',
-              fix: removeToken(),
-            });
-          }
-        } else if (
-          node.parent.type === AST_NODE_TYPES.CallExpression &&
-          node.parent.callee === node
-        ) {
-          if (!node.parent.optional) {
-            // it is x.y?.z!()
-            suggest.push({
-              messageId: 'suggestOptionalChain',
-              fix: replaceTokenWithOptional(),
-            });
-          } else {
-            // it is x.y.z!?.()
-            suggest.push({
-              messageId: 'suggestOptionalChain',
-              fix: removeToken(),
-            });
-          }
+          suggest.push({
+            messageId: 'suggestOptionalChain',
+            // x!?.y, x!?.[y], and x!?.() are already optional chains
+            fix: node.parent.optional
+              ? removeToken()
+              : convertToOptionalChain(),
+          });
         }
 
         context.report({

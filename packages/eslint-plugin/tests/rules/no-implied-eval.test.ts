@@ -318,6 +318,11 @@ switch (setTimeout('')) {
     setTimeout('');
 }
     `,
+    `
+declare const fn: any;
+setTimeout(fn.bind(null), 0);
+    `,
+    'setTimeout();',
   ],
 
   invalid: [
@@ -1491,6 +1496,35 @@ setTimeout(foo || bar, 500);
           endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
+        },
+      ],
+    },
+    {
+      code: `
+globalThis[\`setTimeout\`](\`\`, 0);
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'noImpliedEvalError',
+        },
+      ],
+    },
+    {
+      code: `
+const name = 'setTimeout';
+window[name]('x', 0);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'noImpliedEvalError',
         },
       ],
     },

@@ -210,6 +210,33 @@ for (let i = 0; i < arr.length; i++) {
 }
     `,
     `
+for (let i = 0; i < arr.length; i++) {
+  ({ foo: arr[i] } = obj);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  ({ foo: arr[i] = 1 } = obj);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  [arr[i] = 1] = [];
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  for (arr[i] of xs) {
+  }
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  for (arr[i] in obj) {
+  }
+}
+    `,
+    `
 for (let i = 0; i < arr1?.length; i++) {
   const x = arr1[i] === arr2[i];
 }
@@ -243,6 +270,88 @@ for (let i = 0; i < test.length; ++i) {
     `
 for (let i = 0; i < this.length; ++i) {
   yield this[i];
+}
+    `,
+    `
+for (const i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0, j = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.size; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+const length = 1;
+for (let i = 0; i < arr[length]; i++) {
+  console.log(arr[i]);
+}
+    `,
+    `
+class Foo {
+  #length = 1;
+  method(arr: Foo) {
+    for (let i = 0; i < arr.#length; i++) {
+      console.log(arr[i]);
+    }
+  }
+}
+    `,
+    `
+for (let i = 0; i < arr.length; j += 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i *= i + 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = i - 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = j + 1) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = 2 + i) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i = 1 + j) {
+  console.log(arr[i]);
+}
+    `,
+    `
+for (var i = 0; i < arr.length; i++) {
+  if (arr[i] === target) {
+    break;
+  }
+}
+console.log(i);
+    `,
+    `
+for (var i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+for (let j = 0; j < 1; j++) {
+  console.log(i);
 }
     `,
   ],
@@ -503,6 +612,87 @@ for (let i = 0; i < arr.length; i++) {
     },
     {
       code: `
+for (let i = 0; i < arr.length; i++) {
+  const x = arr[i] + 1;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  const x = { foo: arr[i] };
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  ({ [arr[i]]: x } = obj);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  [x = arr[i]] = [];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  for (const x of arr[i]) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
 for (let i = 0; i < this.item.length; ++i) {
   this.item[i];
 }
@@ -521,6 +711,25 @@ for (let i = 0; i < this.item.length; ++i) {
       code: `
 for (let i = 0; i < this.array.length; ++i) {
   yield this.array[i];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (var i = 0; i < arr1.length; i++) {
+  console.log(arr1[i]);
+}
+for (var i = 0; i < arr2.length; i++) {
+  console.log(i);
 }
       `,
       errors: [

@@ -13,7 +13,7 @@ class Container {
     onlyModifiedInConstructor: number,
     // Private parameter properties can also be marked as readonly
     private neverModifiedParameter: string,
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedParameter: string' is never reassigned; mark it as `readonly`.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedParameter' is never reassigned; mark it as `readonly`.
   ) {
     this.onlyModifiedInConstructor = onlyModifiedInConstructor;
   }

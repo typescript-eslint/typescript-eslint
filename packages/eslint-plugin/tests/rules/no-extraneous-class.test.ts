@@ -148,6 +148,63 @@ abstract class Foo {
           messageId: 'empty',
         },
       ],
+      options: [{ allowWithDecorator: true }],
+    },
+    {
+      code: 'const Foo = class Bar {};',
+      errors: [
+        {
+          column: 13,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
+          messageId: 'empty',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'onlyStatic',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'onlyStatic',
+        },
+      ],
+    },
+    {
+      code: 'class Foo {}',
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'empty',
+        },
+      ],
     },
     {
       code: `

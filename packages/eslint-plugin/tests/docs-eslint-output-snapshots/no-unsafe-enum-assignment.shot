@@ -10,10 +10,13 @@ declare const someNumber: number;
 const fruit: Fruit = 0;
       ~~~~~~~~~~~~~~~~ The value assigned here does not have a shared enum type with the expected enum 'Fruit'.
 
+const fromNumber: Fruit = someNumber;
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The value assigned here does not have a shared enum type with the expected enum 'Fruit'.
+
 Incorrect
 
 enum Vegetable {
-  Asparagus = 'asparagus',
+  Asparagus,
 }
 
 let mutated: Vegetable = Vegetable.Asparagus;

@@ -52,11 +52,13 @@ declare const someNumber: number;
 
 // Fruit.Apple is set to 0, so TypeScript allows this literal.
 const fruit: Fruit = 0;
+
+const fromNumber: Fruit = someNumber;
 ```
 
 ```ts
 enum Vegetable {
-  Asparagus = 'asparagus',
+  Asparagus,
 }
 
 let mutated: Vegetable = Vegetable.Asparagus;

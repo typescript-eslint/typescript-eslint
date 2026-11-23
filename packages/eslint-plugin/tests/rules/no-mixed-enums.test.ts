@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-mixed-enums';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -317,6 +319,29 @@ namespace Test {
     `,
   ],
   invalid: [
+    {
+      code: noFormat`
+declare module 'foo' {
+  export enum E {
+    A = 0,
+  }
+}
+declare module "foo" {
+  export enum E {
+    B = 'b',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
     {
       code: `
 export enum Fruit {

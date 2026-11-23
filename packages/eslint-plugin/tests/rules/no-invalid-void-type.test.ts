@@ -306,6 +306,22 @@ export function f(x?: string): string | void {
   }
 }
     `,
+    `
+function f(): () => void;
+function f(): () => string;
+function f(): () => string | void {
+  return () => '';
+}
+    `,
+    `
+class SomeClass {
+  f(): () => void;
+  f(): () => string;
+  f(): () => string | void {
+    return () => '';
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -516,6 +532,56 @@ class ClassName {
         {
           column: 22,
           endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class ClassName {
+  abstract propName: void;
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class ClassName {
+  abstract accessor propName: void;
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 31,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+interface Interface {
+  [key: string]: void;
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -938,6 +1004,114 @@ class Test {
       options: [
         { allowAsThisParameter: true, allowInGenericTypeArguments: false },
       ],
+    },
+    {
+      code: `
+function f(): void;
+function f(x: string): string;
+function f(x?: string | void): string | void {
+  return x;
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): void;
+function f(x: string): string;
+function f(x?: string): string | void {
+  const y: string | void = x;
+  return y;
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+class SomeClass {
+  f(): void;
+  f(x: string): string;
+  f(x?: string): string | void {
+    const y: string | void = x;
+    return y;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 27,
+          endLine: 6,
+          line: 6,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'const f = function (): string | void {};',
+      errors: [
+        {
+          column: 33,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'type Generic<T = void> = T;',
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'function f(this: void) {}',
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'function f(x: void) {}',
+      errors: [
+        {
+          column: 15,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrThisParamOrGeneric',
+        },
+      ],
+      options: [{ allowAsThisParameter: true }],
     },
   ],
 });

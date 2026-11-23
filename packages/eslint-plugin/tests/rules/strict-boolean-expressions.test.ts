@@ -12,6 +12,19 @@ ruleTester.run('strict-boolean-expressions', rule, {
     requireData: true,
   },
   valid: [
+    `
+declare const x: boolean | null;
+if (x ?? false) {
+}
+    `,
+    {
+      code: noFormat`declare const x: 1 | null; if (x) {}`,
+      options: [{ allowNullableNumber: true, allowNumber: false }],
+    },
+    {
+      code: noFormat`declare const x: 'a' | null; if (x) {}`,
+      options: [{ allowNullableString: true, allowString: false }],
+    },
     // boolean in boolean context
     "true ? 'a' : 'b';",
     `
@@ -1940,13 +1953,7 @@ if (Boolean(x)) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              // TODO: fix compare zero suggestion for bigint
-              output: 'while (0n !== 0) {}',
-            },
-            {
-              // TODO: remove check NaN suggestion for bigint
-              messageId: 'conditionFixCompareNaN',
-              output: 'while (!Number.isNaN(0n)) {}',
+              output: 'while (0n !== 0n) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -2041,14 +2048,8 @@ if (Boolean(x)) {
           messageId: 'conditionErrorNumber',
           suggestions: [
             {
-              // TODO: fix compare zero suggestion for bigint
               messageId: 'conditionFixCompareZero',
-              output: '(x: bigint) => x === 0;',
-            },
-            {
-              // TODO: remove check NaN suggestion for bigint
-              messageId: 'conditionFixCompareNaN',
-              output: '(x: bigint) => Number.isNaN(x);',
+              output: '(x: bigint) => x === 0n;',
             },
             {
               messageId: 'conditionFixCastBoolean',
@@ -4738,6 +4739,169 @@ const stringValue: string = 'hoge';
         },
       ],
       options: [{ allowString: false }],
+    },
+    {
+      code: '(x: number | bigint) => !x;',
+      errors: [
+        {
+          column: 26,
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '(x: number | bigint) => !Boolean(x);',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: noFormat`declare const x: 1 | null; if (x) {}`,
+      errors: [
+        {
+          column: 32,
+          data: { context: 'conditional' },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNullableNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: 'declare const x: 1 | null; if (x != null) {}',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: 'declare const x: 1 | null; if (x ?? 0) {}',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: 'declare const x: 1 | null; if (Boolean(x)) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: noFormat`declare const x: 'a' | null; if (x) {}`,
+      errors: [
+        {
+          column: 34,
+          data: { context: 'conditional' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: "declare const x: 'a' | null; if (x != null) {}",
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: 'declare const x: \'a\' | null; if (x ?? "") {}',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "declare const x: 'a' | null; if (Boolean(x)) {}",
+            },
+          ],
+        },
+      ],
+      options: [{ allowString: false }],
+    },
+    {
+      code: noFormat`declare const x: false | null; if (x) {}`,
+      errors: [
+        {
+          column: 36,
+          data: { context: 'conditional' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNullableBoolean',
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: 'declare const x: false | null; if (x ?? false) {}',
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output: 'declare const x: false | null; if (x === true) {}',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`declare const x: { a: 1 } & { b: 2 }; if (x) {}`,
+      errors: [
+        {
+          column: 43,
+          data: { context: 'conditional' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorObject',
+        },
+      ],
+    },
+    {
+      code: noFormat`declare const arr: number[]; declare const length: number; if (arr[length]) {}`,
+      errors: [
+        {
+          column: 64,
+          data: { context: 'conditional' },
+          endColumn: 75,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output:
+                'declare const arr: number[]; declare const length: number; if (arr[length] !== 0) {}',
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                'declare const arr: number[]; declare const length: number; if (!Number.isNaN(arr[length])) {}',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                'declare const arr: number[]; declare const length: number; if (Boolean(arr[length])) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: noFormat`declare const x: number | bigint; if (x) {}`,
+      errors: [
+        {
+          column: 39,
+          data: { context: 'conditional' },
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: 'declare const x: number | bigint; if (Boolean(x)) {}',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
     },
   ],
 });

@@ -807,6 +807,30 @@ class Foo implements Foo {
 }
 new Foo().value;
     `,
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+declare const a: A;
+a['deprecatedField'];
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
+    `
+interface Foo {
+  /** @deprecated */
+  deprecatedProperty: number;
+  key: 'deprecatedProperty';
+}
+declare const foo: Foo;
+foo.key;
+    `,
   ],
   invalid: [
     {

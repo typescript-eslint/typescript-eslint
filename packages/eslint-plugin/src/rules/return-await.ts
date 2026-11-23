@@ -12,6 +12,7 @@ import {
   isAwaitExpression,
   isAwaitKeyword,
   isStartOfArrowFunctionBodyNeedingParentheses,
+  LINEBREAK_MATCHER,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -262,6 +263,25 @@ export default createRule({
         context.sourceCode.getTokenAfter(awaitToken),
         NullThrowsReasons.MissingToken('operand', 'await expression'),
       );
+
+      // Removing `await` from `return await // comment\n value` would leave a
+      // line break after `return`, which ASI would end the statement at.
+      const tokenBeforeAwait = context.sourceCode.getTokenBefore(awaitToken);
+      if (
+        tokenBeforeAwait?.value === 'return' &&
+        LINEBREAK_MATCHER.test(
+          context.sourceCode.text.slice(
+            awaitTokenRemovalRange[1],
+            firstOperandToken.range[0],
+          ),
+        )
+      ) {
+        return [
+          fixer.replaceText(awaitToken, '('),
+          fixer.insertTextAfter(node, ')'),
+        ];
+      }
+
       if (
         isStartOfArrowFunctionBodyNeedingParentheses(
           node,
@@ -293,7 +313,11 @@ export default createRule({
       ];
     }
 
-    function test(node: TSESTree.Expression, expression: ts.Node): void {
+    function test(
+      node: TSESTree.Expression,
+      expression: ts.Node,
+      isInAsyncGenerator: boolean,
+    ): void {
       let child: ts.Node;
 
       const isAwait = ts.isAwaitExpression(expression);
@@ -325,9 +349,12 @@ export default createRule({
 
       // At this point it's definitely a thenable.
 
+      // An async generator's `return` awaits its operand before leaving the
+      // function, so returning an unawaited promise there is always safe.
       const affectsErrorHandling =
-        affectsExplicitErrorHandling(expression) ||
-        affectsExplicitResourceManagement(node);
+        !isInAsyncGenerator &&
+        (affectsExplicitErrorHandling(expression) ||
+          affectsExplicitResourceManagement(node));
       const useAutoFix = !affectsErrorHandling;
 
       const ruleConfiguration = getConfiguration(option as Option);
@@ -405,7 +432,7 @@ export default createRule({
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           findPossiblyReturnedNodes(node.body).forEach(node => {
             const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-            test(node, tsNode);
+            test(node, tsNode, false);
           });
         }
       },
@@ -416,7 +443,7 @@ export default createRule({
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
           const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-          test(node, tsNode);
+          test(node, tsNode, scopeInfo.owningFunc.generator);
         });
       },
     };

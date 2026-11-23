@@ -1,9 +1,8 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isDefinitionFile } from '../util';
+import { createRule, getInterfaceMerging } from '../util';
 
 export type Options = [
   {
@@ -91,38 +90,21 @@ export default createRule<Options, MessageIds>({
               )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
             );
           };
-          const scope = context.sourceCode.getScope(node);
+          const merging = getInterfaceMerging(context, node);
 
-          const mergedWithClassDeclaration = scope.set
-            .get(node.id.name)
-            ?.defs.some(
-              def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
-            );
-
-          const isInAmbientDeclaration =
-            isDefinitionFile(context.filename) &&
-            scope.type === ScopeType.tsModule &&
-            scope.block.declare;
-
-          const useAutoFix = !(
-            isInAmbientDeclaration || mergedWithClassDeclaration
-          );
+          // `export default type` is not valid syntax
+          const cannotFix =
+            merging === 'merged' ||
+            node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
           context.report({
             node: node.id,
             messageId: 'noEmptyWithSuper',
-            ...(useAutoFix
-              ? { fix }
-              : !mergedWithClassDeclaration
-                ? {
-                    suggest: [
-                      {
-                        messageId: 'noEmptyWithSuper',
-                        fix,
-                      },
-                    ],
-                  }
-                : null),
+            ...(cannotFix
+              ? null
+              : merging === 'mergeable'
+                ? { suggest: [{ messageId: 'noEmptyWithSuper', fix }] }
+                : { fix }),
           });
         }
       },

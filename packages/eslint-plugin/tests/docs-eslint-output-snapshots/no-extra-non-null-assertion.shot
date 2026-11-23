@@ -8,7 +8,7 @@ const bar = foo!!!.bar;
 Incorrect
 
 function foo(bar: number | undefined) {
-  const bar: number = bar!!!;
+  const baz: number = bar!!!;
                       ~~~~~ Forbidden extra non-null assertion.
                       ~~~~ Forbidden extra non-null assertion.
 }
@@ -28,7 +28,7 @@ const bar = foo!.bar;
 Correct
 
 function foo(bar: number | undefined) {
-  const bar: number = bar!;
+  const baz: number = bar!;
 }
 
 Correct

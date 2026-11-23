@@ -54,4 +54,4 @@ const foo = 'foo' as const;
 Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;
-const foo: Foo = 3;
+const foo = 3 as Foo;

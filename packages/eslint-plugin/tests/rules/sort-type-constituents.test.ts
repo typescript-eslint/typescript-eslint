@@ -13,6 +13,9 @@ ruleTester.run('sort-type-constituents', rule, {
       code: 'type T = A | B;',
     },
     {
+      code: "type T = 'A' | 'a';",
+    },
+    {
       code: 'type T = A | /* comment */ B;',
     },
     {
@@ -219,6 +222,34 @@ type T = 1 | string | {} | A;
     "type A<T> = string | (T extends number ? 'hi' : 'there');",
   ],
   invalid: [
+    {
+      code: "type T = 'a' | 'A';",
+      errors: [
+        {
+          column: 10,
+          data: { name: 'T', type: 'Union' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'notSortedNamed',
+        },
+      ],
+      output: `type T = 'A' | 'a';`,
+    },
+    {
+      code: 'type T = (B | C) | A;',
+      errors: [
+        {
+          column: 10,
+          data: { name: 'T', type: 'Union' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'notSortedNamed',
+        },
+      ],
+      output: `type T = A | B | C;`,
+    },
     {
       code: 'type T = B | A;',
       errors: [

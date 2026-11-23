@@ -12,6 +12,46 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const varString: string;
+varString === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const varNullOrUndefined: null | undefined;
+varNullOrUndefined === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const varBooleanOrStringOrUndefined: boolean | string | undefined;
+varBooleanOrStringOrUndefined === true;
+      `,
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+    },
+    `
+declare const varBoolean: boolean;
+varBoolean === null;
+    `,
     `
 declare const varAny: any;
 varAny === true;
@@ -141,6 +181,42 @@ function test(a?: boolean): boolean {
   ],
 
   invalid: [
+    {
+      code: `
+declare const varBoolean: boolean;
+if (varBoolean /* comment */ === true) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const varBoolean: boolean;
+void (varBoolean === false);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: `
+declare const varBoolean: boolean;
+void (!varBoolean);
+      `,
+    },
     {
       code: 'true === true;',
       errors: [
@@ -679,6 +755,268 @@ const value: boolean = !(x !== true);
 declare const x: boolean | undefined;
 
 const value: boolean = x ?? false;
+      `,
+    },
+    // nullish values make `!== false` comparisons true, so the default must be `true`
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = x !== false;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = x ?? true;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = false !== x;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = x ?? true;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = !(x === false);
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = x ?? true;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = !(x !== false);
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = !(x ?? true);
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | null;
+
+const value: boolean = x != false;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | null;
+
+const value: boolean = x ?? true;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | null | undefined;
+
+const value: boolean = false == x;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+      output: `
+declare const x: boolean | null | undefined;
+
+const value: boolean = !(x ?? true);
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = !(false != x);
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = !(x ?? true);
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value: boolean = x !== false;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [
+        {
+          allowComparingNullableBooleansToFalse: false,
+          allowComparingNullableBooleansToTrue: false,
+        },
+      ],
+      output: `
+declare const x: boolean | undefined;
+
+const value: boolean = x ?? true;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+declare const other: boolean;
+
+const value: boolean = other && x !== false;
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 44,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+declare const other: boolean;
+
+const value: boolean = other && (x ?? true);
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+declare const condition: boolean;
+
+const value = condition ? x !== false : false;
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 38,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+declare const condition: boolean;
+
+const value = condition ? (x ?? true) : false;
+      `,
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+
+const value = x !== false ? 'yes' : 'no';
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const x: boolean | undefined;
+
+const value = (x ?? true) ? 'yes' : 'no';
       `,
     },
     {
@@ -1220,6 +1558,151 @@ declare const y: boolean | undefined;
 declare const x: boolean | undefined;
 declare const y: boolean | undefined;
 (x || y) ?? false;
+      `,
+    },
+    // the parenthesized fix would otherwise continue the previous line
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+;(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+true === b && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+;(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1;
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1;
+(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+if (b) {}
+b === true && f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+if (b) {}
+(b ?? false) && f()
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === true
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b ?? false
+      `,
+    },
+    {
+      code: noFormat`
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+b === false || f()
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+declare const b: boolean | undefined;
+declare function f(): void;
+let x = 1
+!(b ?? true) || f()
       `,
     },
   ],

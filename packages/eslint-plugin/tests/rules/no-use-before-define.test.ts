@@ -220,6 +220,22 @@ type Foo = string | number;
       `,
       options: [{ typedefs: false }],
     },
+    {
+      code: `
+var x: Foo = 2;
+type Foo = string | number;
+      `,
+      options: [{ ignoreTypeReferences: false, typedefs: false }],
+    },
+    {
+      code: `
+const a = 1;
+export { a };
+      `,
+      languageOptions: {
+        parserOptions: { sourceType: 'module' },
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2572
     {
       code: `
@@ -598,6 +614,58 @@ const X = 23;
     `,
   ],
   invalid: [
+    {
+      code: `
+var x: Foo = 2;
+type Foo = string | number;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'Foo' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ ignoreTypeReferences: false, typedefs: true }],
+    },
+    {
+      code: `
+a++;
+var a = 19;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ typedefs: false }],
+    },
+    {
+      code: `
+export { a };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: {
+        parserOptions: { sourceType: 'module' },
+      },
+    },
     {
       code: `
 a++;

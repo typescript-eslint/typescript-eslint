@@ -759,6 +759,17 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
       `,
       options: [{ allowMixedPromiseArrays: true }],
     },
+    `
+declare function takesNumbers(numbers: number[]): void;
+takesNumbers([1, 2, 3]);
+    `,
+    `
+Promise.all([, Promise.resolve(1)]);
+    `,
+    `
+declare const noPromises: [];
+Promise.all(noPromises);
+    `,
   ],
 
   invalid: [
@@ -781,6 +792,172 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
       ],
     },
     {
+      code: noFormat`
+async function test() {
+  return await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  throw await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  throw ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function* test() {
+  yield await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function* test() {
+  yield ( // comment
+    0);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  return await /* comment */ 0;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  return /* comment */ 0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = // comment
+    0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  const x = typeof await // comment
+    0;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 6,
+          endLine: 4,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  const x = typeof // comment
+    0;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "await 'value';",
       errors: [
         {
@@ -792,7 +969,8 @@ function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: "'value';",
+              // a bare string would become a directive
+              output: "('value');",
             },
           ],
         },
@@ -1037,6 +1215,778 @@ async function test() {
               output: `
 async function test() {
   (class {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await async function () {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  (async function () {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await function () {
+  return 1;
+}.call(null);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 13,
+          endLine: 4,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (function () {
+  return 1;
+}.call(null));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await class {}.name;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (class {}.name);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await async function () {}.name;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default (async function () {}.name);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export default await { a: 1 }.a;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+export default { a: 1 }.a;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test(a = 1) {
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test(a = 1) {
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  'use asm';
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  'use asm';
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+async function test() {
+  await ('use strict');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  ('use strict');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(): void;
+async function test() {
+  f();
+  await 'use strict';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare function f(): void;
+async function test() {
+  f();
+  'use strict';
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await 'use strict'.length;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  'use strict'.length;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await async function () {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;(async function () {})
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await -1
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;-1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await +1
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;+1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 2
+  await [1].length
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 2
+  ;[1].length
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 3
+  await { a: 1 }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 3
+  ;({ a: 1 })
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+declare const v: unknown;
+async function test() {
+  x = 1
+  await <number>v
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+declare const v: unknown;
+async function test() {
+  x = 1
+  ;<number>v
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await \`a\`
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;\`a\`
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await /a/.source
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;/a/.source
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x++
+  await -1
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x++
+  ;-1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x++
+  await [0]
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x++
+  [0]
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const x: number[];
+async function test() {
+  const y = x
+  await [0]
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const x: number[];
+async function test() {
+  const y = x
+  ;[0]
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface Logger {
+  flush(): void
+}
+declare const logger: unknown
+declare function save(): Promise<void>
+async function test() {
+  await save()
+  await (logger as Logger).flush()
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 9,
+          line: 9,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+interface Logger {
+  flush(): void
+}
+declare const logger: unknown
+declare function save(): Promise<void>
+async function test() {
+  await save()
+  ;(logger as Logger).flush()
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await /* comment */ -1
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  ;/* comment */ -1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: number;
+async function test() {
+  x = 1;
+  await -1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1;
+  -1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  await 1
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  x = 1
+  const y = await -1
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  x = 1
+  const y = -1
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare let x: number;
+async function test() {
+  if (x) await -1
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare let x: number;
+async function test() {
+  if (x) -1
 }
       `,
             },

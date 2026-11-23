@@ -9,8 +9,10 @@ import {
   getConstraintInfo,
   getParserServices,
   isConditionalTest,
+  isStartOfExpressionStatement,
   isStrongPrecedenceNode,
   isWeakPrecedenceParent,
+  needsPrecedingSemicolon,
 } from '../util';
 
 export type MessageIds =
@@ -127,12 +129,12 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const { constraintType, isTypeParameter } = getConstraintInfo(
+      const { constraintType } = getConstraintInfo(
         checker,
         services.getTypeAtLocation(comparison.expression),
       );
 
-      if (isTypeParameter && constraintType == null) {
+      if (constraintType == null) {
         return undefined;
       }
 
@@ -274,6 +276,14 @@ export default createRule<Options, MessageIds>({
             const isWrappedInUnaryNegation = nodeIsUnaryNegation(node.parent);
             const mutatedNode = isWrappedInUnaryNegation ? node.parent : node;
 
+            // the fix keeps only the compared expression's text, so it would drop other comments
+            if (
+              context.sourceCode.getCommentsInside(mutatedNode).length >
+              context.sourceCode.getCommentsInside(comparison.expression).length
+            ) {
+              return null;
+            }
+
             // Whether the truth table of the overall expression being replaced
             // is negated, _ignoring the nullish cases_.
             const isOverallNegated = booleanXor(
@@ -290,8 +300,12 @@ export default createRule<Options, MessageIds>({
               comparison.expression,
             );
 
+            // Only comparisons against `true` treat nullish values like
+            // `false`; against `false` they act like `true` (see below).
             const fixWouldReturnExpressionDirectly =
-              !isOverallNegated && comparison.expressionIsNullableBoolean;
+              !isOverallNegated &&
+              comparison.expressionIsNullableBoolean &&
+              comparison.booleanLiteral === 'true';
 
             if (
               fixWouldReturnExpressionDirectly &&
@@ -329,6 +343,20 @@ export default createRule<Options, MessageIds>({
               replacementText = parenthesize(replacementText);
             }
 
+            // A statement relying on ASI could now continue the previous
+            // line, as in `a = b\n(c ?? false) && d()`.
+            if (
+              /^[-(+/<[`]/.test(replacementText) &&
+              isStartOfExpressionStatement(mutatedNode) &&
+              needsPrecedingSemicolon(
+                context.sourceCode,
+                mutatedNode,
+                replacementText,
+              )
+            ) {
+              replacementText = `;${replacementText}`;
+            }
+
             return fixer.replaceText(mutatedNode, replacementText);
           },
         });
@@ -339,7 +367,6 @@ export default createRule<Options, MessageIds>({
 
 interface EqualsKind {
   isPositive: boolean;
-  isStrict: boolean;
 }
 
 function getEqualsKind(operator: string): EqualsKind | undefined {
@@ -347,25 +374,21 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
     case '!=':
       return {
         isPositive: false,
-        isStrict: false,
       };
 
     case '!==':
       return {
         isPositive: false,
-        isStrict: true,
       };
 
     case '==':
       return {
         isPositive: true,
-        isStrict: false,
       };
 
     case '===':
       return {
         isPositive: true,
-        isStrict: true,
       };
 
     default:

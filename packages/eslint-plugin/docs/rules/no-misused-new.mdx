@@ -13,7 +13,7 @@ JavaScript classes may define a `constructor` method that runs when a class inst
 TypeScript allows interfaces that describe a static class object to define a `new()` method (though this is rarely used in real world code).
 Developers new to JavaScript classes and/or TypeScript interfaces may sometimes confuse when to use `constructor` or `new`.
 
-This rule reports when a class defines a method named `new` or an interface defines a method named `constructor`.
+This rule reports when a class declares a bodiless method named `new` that returns the class type, when an interface declares a construct signature (`new ()`) that returns the interface type, or when an interface or object type declares a method named `constructor`.
 
 ## Examples
 

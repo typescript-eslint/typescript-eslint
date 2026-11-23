@@ -120,7 +120,11 @@ export default createRule<Options, MessageIds>({
                 let text = '';
                 text += printNodeModifiers(node, 'get');
                 text += node.computed ? `[${name}]` : name;
-                text += `() { return ${context.sourceCode.getText(value)}; }`;
+                text += '()';
+                if (node.typeAnnotation) {
+                  text += context.sourceCode.getText(node.typeAnnotation);
+                }
+                text += ` { return ${context.sourceCode.getText(value)}; }`;
 
                 return fixer.replaceText(node, text);
               },

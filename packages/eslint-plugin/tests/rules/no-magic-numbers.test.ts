@@ -222,6 +222,20 @@ class Foo {
       ],
     },
     {
+      code: `
+class Foo {
+  readonly A = 1;
+  static readonly B = -2;
+}
+      `,
+      options: [
+        {
+          ignoreClassFieldInitialValues: true,
+          ignoreReadonlyClassProperties: false,
+        },
+      ],
+    },
+    {
       code: 'type Foo = Bar[0];',
       options: [{ ignore: [0], ignoreTypeIndexes: false }],
     },
@@ -385,8 +399,8 @@ enum foo {
       `,
       errors: [
         {
-          column: 10,
-          data: { raw: '1' },
+          column: 9,
+          data: { raw: '+1' },
           endColumn: 11,
           endLine: 4,
           line: 4,
@@ -452,6 +466,25 @@ class Foo {
     {
       code: `
 class Foo {
+  readonly A = 1;
+  B = 2;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { raw: '2' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noMagic',
+        },
+      ],
+      options: [{ ignoreReadonlyClassProperties: true }],
+    },
+    {
+      code: `
+class Foo {
   static readonly D = 4;
 }
       `,
@@ -493,8 +526,8 @@ class Foo {
       `,
       errors: [
         {
-          column: 17,
-          data: { raw: '6' },
+          column: 16,
+          data: { raw: '+6' },
           endColumn: 18,
           endLine: 3,
           line: 3,

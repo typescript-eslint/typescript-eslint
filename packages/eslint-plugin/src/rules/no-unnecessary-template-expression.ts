@@ -11,7 +11,7 @@ import {
   getParserServices,
   isNodeOfType,
   isStringLike,
-  isUndefinedIdentifier,
+  isSymbolFromDefaultLibrary,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -27,6 +27,8 @@ interface InterpolationInfo {
   prevQuasi: TSESTree.TemplateElement;
   nextQuasi: TSESTree.TemplateElement;
 }
+
+const FIXABLE_IDENTIFIER_NAMES = new Set(['Infinity', 'NaN', 'undefined']);
 
 const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 
@@ -76,21 +78,27 @@ export default createRule<[], MessageId>({
       return node.type === AST_NODE_TYPES.TemplateLiteral;
     }
 
-    function isInfinityIdentifier(node: TSESTree.Node): boolean {
+    function isFixableIdentifier(node: TSESTree.Node): boolean {
       return (
-        node.type === AST_NODE_TYPES.Identifier && node.name === 'Infinity'
+        node.type === AST_NODE_TYPES.Identifier &&
+        FIXABLE_IDENTIFIER_NAMES.has(node.name) &&
+        isGlobalValue(node)
       );
     }
 
-    function isNaNIdentifier(node: TSESTree.Node): boolean {
-      return node.type === AST_NODE_TYPES.Identifier && node.name === 'NaN';
-    }
+    /**
+     * Whether the identifier's value is the global `Infinity`, `NaN`, or
+     * `undefined`. Asks the type checker rather than the scope manager, since
+     * declarations without a value (types, interfaces, and namespaces that
+     * hold only types) don't shadow the global value.
+     */
+    function isGlobalValue(node: TSESTree.Identifier): boolean {
+      const symbol = services.getSymbolAtLocation(node);
 
-    function isFixableIdentifier(node: TSESTree.Node): boolean {
+      // The global `undefined` symbol has no declarations.
       return (
-        isUndefinedIdentifier(node) ||
-        isInfinityIdentifier(node) ||
-        isNaNIdentifier(node)
+        !symbol?.declarations?.length ||
+        isSymbolFromDefaultLibrary(services.program, symbol)
       );
     }
 

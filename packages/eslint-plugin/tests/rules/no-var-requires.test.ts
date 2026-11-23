@@ -268,5 +268,31 @@ configValidator.addSchema(require('./a.json'));
       ],
       options: [{ allow: ['^some-package$'] }],
     },
+    {
+      code: 'const pkg = require();',
+      errors: [
+        {
+          column: 13,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'noVarReqs',
+        },
+      ],
+      options: [{ allow: ['^some-package$'] }],
+    },
+    {
+      code: 'const pkg = require(`some-${name}`);',
+      errors: [
+        {
+          column: 13,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'noVarReqs',
+        },
+      ],
+      options: [{ allow: ['^some-'] }],
+    },
   ],
 });

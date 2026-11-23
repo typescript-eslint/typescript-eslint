@@ -10,6 +10,23 @@ ruleTester.run('no-unsafe-declaration-merging', rule, {
   },
   valid: [
     `
+class Foo {}
+namespace Foo {}
+    `,
+    `
+interface Foo {}
+interface Foo {}
+    `,
+    `
+export default class {}
+    `,
+    `
+class Foo {}
+function f() {
+  interface Foo<T> {}
+}
+    `,
+    `
 interface Foo {}
 class Bar implements Foo {}
     `,
@@ -119,6 +136,50 @@ declare global {
           endColumn: 12,
           endLine: 4,
           line: 4,
+          messageId: 'unsafeMerging',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo<Foo> {}
+class Foo<Foo> {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unsafeMerging',
+        },
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeMerging',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo<T> {}
+class Foo<T> {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unsafeMerging',
+        },
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'unsafeMerging',
         },
       ],

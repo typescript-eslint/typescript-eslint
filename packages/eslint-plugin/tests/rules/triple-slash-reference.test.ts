@@ -132,6 +132,43 @@ import * as foo from 'foo';
       `,
       options: [{ lib: 'never', path: 'never', types: 'never' }],
     },
+    {
+      code: '/*/ <reference path="foo" /> */',
+      options: [{ path: 'never' }],
+    },
+    {
+      code: '/// <reference path="foo" />',
+      options: [{ path: 'always', types: 'never' }],
+    },
+    {
+      code: '/// <reference lib="foo" />',
+      options: [{ lib: 'always', types: 'never' }],
+    },
+    {
+      code: '/// <reference types="foo" />',
+      options: [{ lib: 'never', types: 'always' }],
+    },
+    {
+      code: `
+/// <reference path="foo" />
+import * as foo from 'foo';
+      `,
+      options: [{ path: 'always', types: 'prefer-import' }],
+    },
+    {
+      code: `
+/// <reference types="foo" />
+import * as foo from 'foo';
+      `,
+      options: [{ types: 'always' }],
+    },
+    {
+      code: `
+/// <reference types="foo" />
+import foo = foo;
+      `,
+      options: [{ types: 'prefer-import' }],
+    },
   ],
   invalid: [
     {
@@ -167,6 +204,55 @@ import foo = require('foo');
         },
       ],
       options: [{ types: 'prefer-import' }],
+    },
+    {
+      code: `
+/// <reference types="foo" />
+import * as foo from 'foo';
+import foo2 = require('foo');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { module: 'foo' },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'tripleSlashReference',
+        },
+      ],
+      options: [{ types: 'prefer-import' }],
+    },
+    {
+      code: `
+/// <reference types="foo" resolution-mode="import" />
+import * as foo from 'foo';
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { module: 'foo' },
+          endColumn: 55,
+          endLine: 2,
+          line: 2,
+          messageId: 'tripleSlashReference',
+        },
+      ],
+      options: [{ types: 'prefer-import' }],
+    },
+    {
+      code: '/// <reference types="foo" resolution-mode="require" />',
+      errors: [
+        {
+          column: 1,
+          data: { module: 'foo' },
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'tripleSlashReference',
+        },
+      ],
+      options: [{ types: 'never' }],
     },
     {
       code: '/// <reference path="foo" />',

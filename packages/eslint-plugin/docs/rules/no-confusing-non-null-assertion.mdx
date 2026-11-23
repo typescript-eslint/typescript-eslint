@@ -28,7 +28,7 @@ a !in b; // also a non-null assertion(`!`) and an in test(`in`)
 a! instanceof b; // a non-null assertion(`!`) and an instanceof test(`instanceof`)
 a !instanceof b; // also a non-null assertion(`!`) and an instanceof test(`instanceof`)
 !(a instanceof b); // a negated instanceof test
-````
+```
 
 This rule flags confusing `!` assertions and suggests either removing them or wrapping the asserted expression in `()` parenthesis.
 

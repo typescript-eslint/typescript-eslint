@@ -284,6 +284,85 @@ interface Foo {
       code: 'type T = A.B;',
       options: ['index-signature'],
     },
+    {
+      code: `
+import { Record } from 'immutable';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+export {};
+type Record<K, V> = Map<K, V>;
+namespace N {
+  namespace Record {}
+  type Foo = Record<string, number>;
+}
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+class Record<K, V> {}
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+interface Record<K, V> {
+  key: K;
+  value: V;
+}
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      // the module may be a type (`export =`), so a namespace import hides
+      // the global
+      code: `
+import * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    {
+      code: `
+import type * as Record from './foo';
+type Foo = Record<string, number>;
+      `,
+      options: ['index-signature'],
+    },
+    "type Foo = { [K in 'a' | 'b' as 'c']: number };",
+    // an `infer` type parameter hides the global in the true branch
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? Record<string, number> : 1;',
+      options: ['index-signature'],
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Record]
+  ? T extends 1
+    ? 1
+    : Record<string, number>
+  : 1;
+      `,
+      options: ['index-signature'],
+    },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Record extends Record<string, 1>] ? 1 : 0;',
+      options: ['index-signature'],
+    },
 
     {
       // mapped type that uses the key cannot be converted to record
@@ -427,6 +506,368 @@ export default interface Foo {
           messageId: 'preferRecord',
         },
       ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: unknown;
+}
+interface Foo {
+  bar: string;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<Foo> {
+  [key: string]: number;
+}
+interface Foo<Foo> {
+  bar: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: number;
+}
+const Foo = 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, number>;
+const Foo = 1;
+      `,
+    },
+    {
+      code: `
+function Foo() {}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function Foo() {}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+namespace Foo {
+  export const value = 1;
+}
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 7,
+          line: 5,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+namespace Foo {
+  export const value = 1;
+}
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: number;
+}
+declare class Foo {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare global {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare global {
+  type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare global {
+  namespace NodeJS {
+    interface Dict {
+      [key: string]: unknown;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 6,
+          line: 4,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare global {
+  namespace NodeJS {
+    type Dict = Record<string, unknown>;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare module 'foo' {
+  type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare module 'foo' {
+  export interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare module 'foo' {
+  export type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare namespace Bar {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+declare namespace Bar {
+  type Foo = Record<string, unknown>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Bar {
+  export interface Foo {
+    [key: string]: unknown;
+  }
+}
+namespace Bar {
+  export interface Foo {
+    other: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+namespace Bar {
+  export type Foo = Record<string, unknown>;
+}
+namespace Bar {
+  export interface Foo {
+    other: unknown;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+namespace Bar {
+  interface Foo {
+    [key: string]: unknown;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+namespace Bar {
+  type Foo = Record<string, unknown>;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: unknown;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<string, unknown>;
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'test.d.ts',
       output: null,
     },
     // Readonly interface with generic parameter
@@ -623,6 +1064,71 @@ type Foo<A, B> = Readonly<Record<A, B>>;
       ],
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+const Record = 1;
+type Foo = { [key: string]: any };
+      `,
+    },
+    {
+      code: `
+namespace Record {
+  export const value = 1;
+}
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output: `
+namespace Record {
+  export const value = 1;
+}
+type Foo = { [key: string]: any };
+      `,
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = Record<string, any>;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'script' } },
+      options: ['index-signature'],
+      output: `
+const Record = 1;
+type Foo = { [key: string]: any };
+      `,
     },
 
     // Type literal with generic parameter
@@ -1511,6 +2017,607 @@ type Test = Record<| 'a' // 3
         },
       ],
       options: ['index-signature'],
+    },
+
+    // record mode: the fix writes `Record<…>`, so it's only offered where
+    // `Record` is the global type.
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import { Record } from 'immutable';
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo<Record> {
+  [key: string]: Record;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Record>(arg: { [key: string]: Record }) {}',
+      errors: [
+        {
+          column: 27,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Record {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Record = { [key: string]: number };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Record<K, V> = Map<K, V>;
+type Foo = { [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Foo<Record> = { [K in string]: Record };',
+      errors: [
+        {
+          column: 20,
+          endColumn: 45,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // the mapped type's key is out of scope where the Record is written
+      code: 'type Foo = { [Record in string]: number };',
+      errors: [
+        {
+          column: 12,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: 'type Foo = Record<string, number>;',
+    },
+    {
+      code: `
+const Record = 1;
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+const Record = 1;
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      // the module may be a type (`export =`), so a namespace import hides
+      // the global
+      code: `
+import * as Record from './foo';
+interface Foo {
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import type * as Record from './foo';
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+
+    // record mode: the fix also writes `Readonly<…>`, `Partial<…>` and
+    // `Required<…>`, which must be the global types as well.
+    {
+      code: `
+type Readonly<T> = { value: T };
+interface Foo {
+  readonly [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Readonly<T> = { value: T };
+type Foo = { readonly [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // a non-readonly index signature doesn't need `Readonly`
+      code: `
+type Readonly<T> = { value: T };
+type Foo = { [key: string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Readonly<T> = { value: T };
+type Foo = Record<string, number>;
+      `,
+    },
+    {
+      code: `
+type Readonly<T> = { value: T };
+type Foo = { readonly [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import * as Readonly from './foo';
+type Foo = { +readonly [K in string]: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Partial<T> = { value: T };
+type Foo = { [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Partial>(arg: { [K in string]+?: number }) {}',
+      errors: [
+        {
+          column: 28,
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'function foo<Required>(arg: { [K in string]-?: number }) {}',
+      errors: [
+        {
+          column: 29,
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      // only the utility types the fix writes need to be the global ones
+      code: `
+type Partial<T> = { value: T };
+type Foo = { [K in string]-?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Partial<T> = { value: T };
+type Foo = Required<Record<string, number>>;
+      `,
+    },
+    {
+      // a value or a namespace doesn't hide a global type
+      code: `
+const Partial = 1;
+namespace Readonly {}
+type Foo = { readonly [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 47,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+const Partial = 1;
+namespace Readonly {}
+type Foo = Readonly<Partial<Record<string, number>>>;
+      `,
+    },
+    // an `infer` type parameter is only visible in the true branch
+    {
+      code: 'type Foo<T> = T extends [infer Partial] ? Partial : { [K in string]?: number };',
+      errors: [
+        {
+          column: 53,
+          endColumn: 79,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type Foo<T> = T extends [infer Partial] ? Partial : Partial<Record<string, number>>;',
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Partial]
+  ? 1
+  : T extends [infer Readonly]
+    ? Readonly
+    : { readonly [K in string]?: number };
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 42,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo<T> = T extends [infer Partial]
+  ? 1
+  : T extends [infer Readonly]
+    ? Readonly
+    : Readonly<Partial<Record<string, number>>>;
+      `,
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? 1 : { [k: string]: number };',
+      errors: [
+        {
+          column: 46,
+          endColumn: 69,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type Foo<T> = T extends [infer Record] ? 1 : Record<string, number>;',
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Partial] ? { [K in string]?: number } : 1;',
+      errors: [
+        {
+          column: 43,
+          endColumn: 69,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Foo<T> = T extends [infer Record]
+  ? T extends 1
+    ? 1
+    : { [k: string]: number }
+  : 1;
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record] ? 1 : Record<string, number>;',
+      errors: [
+        {
+          column: 46,
+          endColumn: 68,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type Foo<T> = T extends [infer Record] ? 1 : { [key: string]: number };',
+    },
+    {
+      code: 'type Foo<T> = T extends [infer Record, Record<string, number>] ? 1 : 0;',
+      errors: [
+        {
+          column: 40,
+          endColumn: 62,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type Foo<T> = T extends [infer Record, { [key: string]: number }] ? 1 : 0;',
+    },
+    // an `infer` type parameter hides the global in its own constraint
+    {
+      code: 'type T<U> = U extends [infer Record extends { [k: string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 45,
+          endColumn: 63,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type T<U> = U extends [infer Record extends { [K in string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 45,
+          endColumn: 65,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'type T<U> = U extends [infer Partial extends { [K in string]?: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 46,
+          endColumn: 67,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type T<U> = U extends [infer Readonly extends { readonly [K in string]: 1 }]
+  ? 1
+  : 0;
+      `,
+      errors: [
+        {
+          column: 47,
+          endColumn: 76,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: null,
+    },
+    // but not in the constraint of another `infer` type parameter
+    {
+      code: 'type T = 1 extends [infer V extends { [k: string]: 1 }, infer Record] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type T = 1 extends [infer V extends Record<string, 1>, infer Record] ? 1 : 0;',
+    },
+    {
+      code: 'type T = 1 extends [infer Record, infer V extends { [K in string]: 1 }] ? 1 : 0;',
+      errors: [
+        {
+          column: 51,
+          endColumn: 71,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
+      output:
+        'type T = 1 extends [infer Record, infer V extends Record<string, 1>] ? 1 : 0;',
+    },
+    {
+      code: 'type T = 1 extends [infer V extends Record<string, 1>, infer Record] ? 1 : 0;',
+      errors: [
+        {
+          column: 37,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
+      options: ['index-signature'],
+      output:
+        'type T = 1 extends [infer V extends { [key: string]: 1 }, infer Record] ? 1 : 0;',
     },
   ],
 });

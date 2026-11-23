@@ -161,6 +161,25 @@ enum E {
 }
     `,
     `
+enum E {
+  A = 1,
+  B = ~1,
+}
+    `,
+    `
+const x = 'b';
+enum E {
+  A = 'a',
+  B = \`a\${x}\`,
+}
+    `,
+    `
+enum E {
+  A = +'a',
+  B = +'b',
+}
+    `,
+    `
 const A = 'A';
 enum E {
   A = 'A',

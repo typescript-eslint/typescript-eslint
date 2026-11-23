@@ -52,8 +52,83 @@ delete container['delete'];
 const container: { [i: string]: 0 } = {};
 delete container['NaN'];
     `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container[\`aaa\`];
+    `,
+    `
+declare const container: { [i: string]: 0 } | undefined;
+delete container?.['aaa'];
+    `,
   ],
   invalid: [
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+declare const name: string;
+delete container[\`aa\${name}\`];
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'dynamicDelete',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const container: { [i: string]: 0 } | undefined;
+declare const name: string;
+delete container?.[name];
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'dynamicDelete',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+declare const index: number;
+delete container[index - 1];
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'dynamicDelete',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+delete container[-'1'];
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'dynamicDelete',
+        },
+      ],
+      output: null,
+    },
     {
       code: `
 const container: { [i: string]: 0 } = {};

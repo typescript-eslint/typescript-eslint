@@ -9,7 +9,6 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
-  isSymbolFromDefaultLibrary,
   matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
@@ -314,32 +313,10 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
-    function isSymbolToPrimitiveMethod(node: ts.Declaration) {
-      return (
-        ts.isMethodSignature(node) &&
-        ts.isComputedPropertyName(node.name) &&
-        ts.isPropertyAccessExpression(node.name.expression) &&
-        ts.isIdentifier(node.name.expression.expression) &&
-        node.name.expression.expression.text === 'Symbol' &&
-        ts.isIdentifier(node.name.expression.name) &&
-        node.name.expression.name.text === 'toPrimitive' &&
-        isSymbolFromDefaultLibrary(
-          program,
-          checker.getSymbolAtLocation(node.name.expression.expression),
-        )
-      );
-    }
-
     function isToStringLikeFromObject(type: ts.Type) {
       // An explicit [Symbol.toPrimitive] declaration is always user-defined
       if (
-        type
-          .getProperties()
-          .some(
-            property =>
-              property.valueDeclaration &&
-              isSymbolToPrimitiveMethod(property.valueDeclaration),
-          )
+        tsutils.getWellKnownSymbolPropertyOfType(type, 'toPrimitive', checker)
       ) {
         return false;
       }

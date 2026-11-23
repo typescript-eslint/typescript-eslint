@@ -122,10 +122,6 @@ function describeLiteralType(type: ts.Type): string {
     return 'template literal type';
   }
 
-  if (isTypeBigIntLiteralType(type)) {
-    return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
-  }
-
   if (tsutils.isTrueLiteralType(type)) {
     return 'true';
   }
@@ -156,16 +152,12 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
         case TSESTree.AST_NODE_TYPES.Literal:
           switch (typeof typeNode.literal.value) {
             case 'bigint':
-              return `${typeNode.literal.value < 0 ? '-' : ''}${
-                typeNode.literal.value
-              }n`;
+              return `${typeNode.literal.value}n`;
             case 'string':
               return JSON.stringify(typeNode.literal.value);
             default:
               return `${typeNode.literal.value}`;
           }
-        case TSESTree.AST_NODE_TYPES.TemplateLiteral:
-          return 'template literal type';
       }
   }
 

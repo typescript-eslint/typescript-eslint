@@ -116,9 +116,10 @@ export default createRule({
           data: {
             name: context.sourceCode.getText(name),
           },
-          fix(fixer) {
-            return fixer.removeRange([qualifier.range[0], name.range[0]]);
-          },
+          fix:
+            context.sourceCode.getCommentsInside(node).length > 0
+              ? null
+              : fixer => fixer.removeRange([node.range[0], name.range[0]]),
         });
       }
     }

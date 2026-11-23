@@ -316,25 +316,6 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if a variable of the class name in the class scope of TSEnumDeclaration.
-     *
-     * TSEnumDeclaration creates two variables of its name into its outer scope and its class scope.
-     * So we should ignore the variable in the class scope.
-     * @param variable The variable to check.
-     * @returns Whether or not the variable of the class name in the class scope of TSEnumDeclaration.
-     */
-    function isDuplicatedEnumNameVariable(
-      variable: TSESLint.Scope.Variable,
-    ): boolean {
-      const block = variable.scope.block;
-
-      return (
-        block.type === AST_NODE_TYPES.TSEnumDeclaration &&
-        block.id === variable.identifiers[0]
-      );
-    }
-
-    /**
      * Checks whether or not a given location is inside of the range of a given node.
      * @param node An node to check.
      * @param location A location to check.
@@ -523,16 +504,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      const nodeToCheck = innerDef.node;
-
-      if (!(
-        initializerNode.range[0] <= nodeToCheck.range[0] &&
-        nodeToCheck.range[1] <= initializerNode.range[1]
-      )) {
-        return false;
-      }
-
-      return initializerNode === unwrapExpression(nodeToCheck);
+      return initializerNode === unwrapExpression(innerDef.node);
     }
 
     /**
@@ -655,11 +627,6 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        // ignore variables of a class name in the class scope of ClassDeclaration
-        if (isDuplicatedEnumNameVariable(variable)) {
-          continue;
-        }
-
         // ignore configured allowed names
         if (isAllowed(variable)) {
           continue;
@@ -712,8 +679,8 @@ export default createRule<Options, MessageIds>({
         ) {
           const location = getDeclaredLocation(shadowed);
 
-          const isEnumDeclaration = shadowed.defs.some(
-            def => def.type === DefinitionType.TSEnumName,
+          const isEnumMember = variable.defs.some(
+            def => def.type === DefinitionType.TSEnumMember,
           );
 
           context.report({
@@ -726,7 +693,7 @@ export default createRule<Options, MessageIds>({
                   },
                 }
               : {
-                  messageId: isEnumDeclaration ? 'noEnumShadow' : 'noShadow',
+                  messageId: isEnumMember ? 'noEnumShadow' : 'noShadow',
                   data: {
                     name: variable.name,
                     shadowedColumn: location.column,

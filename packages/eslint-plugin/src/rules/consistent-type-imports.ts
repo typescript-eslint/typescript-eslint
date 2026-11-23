@@ -32,13 +32,8 @@ interface SourceImports {
   source: string;
   // ImportDeclaration for type-only import only with named imports.
   typeOnlyNamedImport: TSESTree.ImportDeclaration | null;
-  // ImportDeclaration for value-only import only with default imports and/or named imports.
-  valueImport: TSESTree.ImportDeclaration | null;
-  // ImportDeclaration for value-only import only with named imports.
-  valueOnlyNamedImport: TSESTree.ImportDeclaration | null;
 }
 interface ReportValueImport {
-  inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
   node: TSESTree.ImportDeclaration;
   typeSpecifiers: TSESTree.ImportClause[]; // It has at least one element.
   unusedSpecifiers: TSESTree.ImportClause[];
@@ -169,41 +164,20 @@ export default createRule<Options, MessageIds>({
           reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
           source,
           typeOnlyNamedImport: null, // if only type imports
-          valueImport: null, // if only value imports
-          valueOnlyNamedImport: null, // if only value imports with named specifiers
         };
         const sourceImports = sourceImportsMap[source];
-        if (node.importKind === 'type') {
-          if (
-            !sourceImports.typeOnlyNamedImport &&
-            node.specifiers.every(
-              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
-            )
-          ) {
-            // definitely import type { TypeX }
-            sourceImports.typeOnlyNamedImport = node;
-          }
-        } else if (
-          !sourceImports.valueOnlyNamedImport &&
-          node.specifiers.length &&
+        if (
+          node.importKind === 'type' &&
+          !sourceImports.typeOnlyNamedImport &&
           node.specifiers.every(
             specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
           )
         ) {
-          sourceImports.valueOnlyNamedImport = node;
-          sourceImports.valueImport = node;
-        } else if (
-          !sourceImports.valueImport &&
-          node.specifiers.some(
-            specifier =>
-              specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
-          )
-        ) {
-          sourceImports.valueImport = node;
+          // definitely import type { TypeX }
+          sourceImports.typeOnlyNamedImport = node;
         }
 
         const typeSpecifiers: TSESTree.ImportClause[] = [];
-        const inlineTypeSpecifiers: TSESTree.ImportSpecifier[] = [];
         const valueSpecifiers: TSESTree.ImportClause[] = [];
         const unusedSpecifiers: TSESTree.ImportClause[] = [];
         for (const specifier of node.specifiers) {
@@ -211,7 +185,6 @@ export default createRule<Options, MessageIds>({
             specifier.type === AST_NODE_TYPES.ImportSpecifier &&
             specifier.importKind === 'type'
           ) {
-            inlineTypeSpecifiers.push(specifier);
             continue;
           }
 
@@ -220,24 +193,8 @@ export default createRule<Options, MessageIds>({
             unusedSpecifiers.push(specifier);
           } else {
             const onlyHasTypeReferences = variable.references.every(ref => {
-              /**
-               * keep origin import kind when export
-               * export { Type }
-               * export default Type;
-               * export = Type;
-               */
-              if (
-                (ref.identifier.parent.type ===
-                  AST_NODE_TYPES.ExportSpecifier ||
-                  ref.identifier.parent.type ===
-                    AST_NODE_TYPES.ExportDefaultDeclaration ||
-                  ref.identifier.parent.type ===
-                    AST_NODE_TYPES.TSExportAssignment) &&
-                ref.isValueReference &&
-                ref.isTypeReference
-              ) {
-                return node.importKind === 'type';
-              }
+              // Value references, including re-exports such as `export { Type }`,
+              // keep the import a value import, except for the cases below
               if (ref.isValueReference) {
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;
                 let child: TSESTree.Node = ref.identifier;
@@ -250,10 +207,7 @@ export default createRule<Options, MessageIds>({
                       return true;
 
                     case AST_NODE_TYPES.TSQualifiedName:
-                      // TSTypeQuery must have a TSESTree.EntityName as its child, so we can filter here and break early
-                      if (parent.left !== child) {
-                        return false;
-                      }
+                      // TSTypeQuery must have a TSESTree.EntityName as its child
                       child = parent;
                       parent = parent.parent;
                       continue;
@@ -265,6 +219,7 @@ export default createRule<Options, MessageIds>({
                     // `type T = { [foo]: string }` will create a value reference because "foo" must be a value type
                     // however this value reference is safe to use with type-only imports.
                     // Also this is represented as a non-type AST - hence it uses MemberExpression
+                    case AST_NODE_TYPES.TSMethodSignature:
                     case AST_NODE_TYPES.TSPropertySignature:
                       return parent.key === child;
 
@@ -296,7 +251,6 @@ export default createRule<Options, MessageIds>({
         if (node.importKind === 'value' && typeSpecifiers.length) {
           sourceImports.reportValueImports.push({
             node,
-            inlineTypeSpecifiers,
             typeSpecifiers,
             unusedSpecifiers,
             valueSpecifiers,
@@ -343,15 +297,10 @@ export default createRule<Options, MessageIds>({
         }
 
         for (const sourceImports of Object.values(sourceImportsMap)) {
-          if (sourceImports.reportValueImports.length === 0) {
-            // nothing to fix. value specifiers and type specifiers are correctly written
-            continue;
-          }
           for (const report of sourceImports.reportValueImports) {
             if (
               report.valueSpecifiers.length === 0 &&
-              report.unusedSpecifiers.length === 0 &&
-              report.node.importKind !== 'type'
+              report.unusedSpecifiers.length === 0
             ) {
               /**
                * checks if import has type assertions
@@ -617,31 +566,17 @@ export default createRule<Options, MessageIds>({
     function* fixInlineTypeImportDeclaration(
       fixer: TSESLint.RuleFixer,
       report: ReportValueImport,
-      sourceImports: SourceImports,
     ): IterableIterator<TSESLint.RuleFix> {
-      const { node } = report;
       // For a value import, will only add an inline type to named specifiers
-      const { namedSpecifiers } = classifySpecifier(node);
-      const typeNamedSpecifiers = namedSpecifiers.filter(specifier =>
-        report.typeSpecifiers.includes(specifier),
+      // import ValueA, { type A }
+      //                  ^^^^ insert
+      const { namedSpecifiers } = classifySpecifier(report.node);
+      yield* fixInsertTypeKeywordInNamedSpecifierList(
+        fixer,
+        namedSpecifiers.filter(specifier =>
+          report.typeSpecifiers.includes(specifier),
+        ),
       );
-
-      if (sourceImports.valueImport) {
-        // add import named type specifiers to its value import
-        // import ValueA, { type A }
-        //                  ^^^^ insert
-        const { namedSpecifiers: valueImportNamedSpecifiers } =
-          classifySpecifier(sourceImports.valueImport);
-        if (
-          sourceImports.valueOnlyNamedImport ||
-          valueImportNamedSpecifiers.length
-        ) {
-          yield* fixInsertTypeKeywordInNamedSpecifierList(
-            fixer,
-            typeNamedSpecifiers,
-          );
-        }
-      }
     }
 
     function* fixToTypeImportDeclaration(
@@ -656,11 +591,8 @@ export default createRule<Options, MessageIds>({
 
       if (namespaceSpecifier && !defaultSpecifier) {
         // import * as types from 'foo'
-
-        // checks for presence of import assertions
-        if (node.attributes.length === 0) {
-          yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
-        }
+        // (imports with attributes are never reported as all types)
+        yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         return;
       }
 
@@ -683,7 +615,7 @@ export default createRule<Options, MessageIds>({
         ) {
           // if there is a default specifier but it isn't a type specifier, then just add the inline type modifier to the named specifiers
           // import AValue, {BValue, Type1, Type2} from 'foo'
-          yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
+          yield* fixInlineTypeImportDeclaration(fixer, report);
           return;
         }
       } else if (!namespaceSpecifier) {
@@ -694,7 +626,7 @@ export default createRule<Options, MessageIds>({
           )
         ) {
           // import {AValue, Type1, Type2} from 'foo'
-          yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
+          yield* fixInlineTypeImportDeclaration(fixer, report);
           return;
         }
 

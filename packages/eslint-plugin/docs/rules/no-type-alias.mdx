@@ -118,7 +118,7 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 
 The setting accepts the following values:
 
-- `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to activate or deactivate the feature.
 - `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
 - `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
 - `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
@@ -272,7 +272,7 @@ type Foo = Bar & Baz;
 
 The setting accepts the following values:
 
-- `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to activate or deactivate the feature.
 
 Examples of **correct** code for the `{ "allowCallbacks": "always" }` option:
 
@@ -304,7 +304,7 @@ type Foo<T> = T extends number ? number : null;
 
 The setting accepts the following values:
 
-- `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to activate or deactivate the feature.
 
 Examples of **correct** code for the `{ "allowConstructors": "always" }` option:
 
@@ -318,9 +318,9 @@ type Foo = new () => void;
 
 The setting accepts the following options:
 
-- `"always"` or `"never"` to active or deactivate the feature.
-- `"in-unions"`, allows literals in union statements, e.g. `type Foo = string | string[];`
-- `"in-intersections"`, allows literals in intersection statements, e.g. `type Foo = string & string[];`
+- `"always"` or `"never"` to activate or deactivate the feature.
+- `"in-unions"`, allows literals in union statements, e.g. `type Foo = { name: string } | { age: number };`
+- `"in-intersections"`, allows literals in intersection statements, e.g. `type Foo = { name: string } & { age: number };`
 - `"in-unions-and-intersections"`, allows literals in union and/or intersection statements.
 
 Examples of **correct** code for the `{ "allowLiterals": "always" }` options:
@@ -425,10 +425,10 @@ type Foo = { name: string } & { age: number };
 
 The setting accepts the following values:
 
-- `"always"` or `"never"` to active or deactivate the feature.
-- `"in-unions"`, allows aliasing in union statements, e.g. `type Foo = string | string[];`
-- `"in-intersections"`, allows aliasing in intersection statements, e.g. `type Foo = string & string[];`
-- `"in-unions-and-intersections"`, allows aliasing in union and/or intersection statements.
+- `"always"` or `"never"` to activate or deactivate the feature.
+- `"in-unions"`, allows mapped types in union statements, e.g. `type Foo<T, U> = { [P in keyof T]: T[P] } | { [P in keyof U]: U[P] };`
+- `"in-intersections"`, allows mapped types in intersection statements, e.g. `type Foo<T, U> = { [P in keyof T]: T[P] } & { [P in keyof U]: U[P] };`
+- `"in-unions-and-intersections"`, allows mapped types in union and/or intersection statements.
 
 Examples of **correct** code for the `{ "allowMappedTypes": "always" }` options:
 
@@ -524,7 +524,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 The setting accepts the following options:
 
-- `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to activate or deactivate the feature.
 - `"in-unions"`, allows tuples in union statements, e.g. `type Foo = [string] | [string, string];`
 - `"in-intersections"`, allows tuples in intersection statements, e.g. `type Foo = [string] & [string, string];`
 - `"in-unions-and-intersections"`, allows tuples in union and/or intersection statements.
@@ -599,7 +599,7 @@ type Foo = [string] | [number];
 
 The setting accepts the following options:
 
-- `"always"` or `"never"` to active or deactivate the feature.
+- `"always"` or `"never"` to activate or deactivate the feature.
 
 Examples of **correct** code for the `{ "allowGenerics": "always" }` options:
 

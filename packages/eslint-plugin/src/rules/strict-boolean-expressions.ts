@@ -489,7 +489,7 @@ export default createRule<Options, MessageId>({
       }
 
       // nullable string
-      if (is('nullish', 'string')) {
+      if (is('nullish', 'string') || is('nullish', 'truthy string')) {
         return !options.allowNullableString
           ? 'conditionErrorNullableString'
           : undefined;
@@ -501,7 +501,7 @@ export default createRule<Options, MessageId>({
       }
 
       // nullable number
-      if (is('nullish', 'number')) {
+      if (is('nullish', 'number') || is('nullish', 'truthy number')) {
         return !options.allowNullableNumber
           ? 'conditionErrorNullableNumber'
           : undefined;
@@ -775,7 +775,7 @@ export default createRule<Options, MessageId>({
             },
           ];
 
-        case 'conditionErrorNumber':
+        case 'conditionErrorNumber': {
           if (isArrayLengthExpression(node, checker, services)) {
             if (isLogicalNegationExpression(node.parent)) {
               // if (!array.length)
@@ -803,29 +803,49 @@ export default createRule<Options, MessageId>({
               },
             ];
           }
+          const numberTypes = tsutils.unionConstituents(
+            getConstrainedTypeAtLocation(services, node),
+          );
+          const isBigInt = numberTypes.some(type =>
+            tsutils.isTypeFlagSet(type, ts.TypeFlags.BigIntLike),
+          );
+          // A single comparison to zero can't cover both `0` and `0n`.
+          const canCompareZero =
+            !isBigInt ||
+            numberTypes.every(type =>
+              tsutils.isTypeFlagSet(type, ts.TypeFlags.BigIntLike),
+            );
+          const zero = isBigInt ? '0n' : '0';
           if (isLogicalNegationExpression(node.parent)) {
             // if (!number)
             return [
-              {
-                messageId: 'conditionFixCompareZero',
-                fix: getWrappingFixer({
-                  node: node.parent,
-                  innerNode: node,
-                  sourceCode: context.sourceCode,
-                  // TODO: we have to compare to 0n if the type is bigint
-                  wrap: code => `${code} === 0`,
-                }),
-              },
-              {
-                // TODO: don't suggest this for bigint because it can't be NaN
-                messageId: 'conditionFixCompareNaN',
-                fix: getWrappingFixer({
-                  node: node.parent,
-                  innerNode: node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `Number.isNaN(${code})`,
-                }),
-              },
+              ...(canCompareZero
+                ? [
+                    {
+                      messageId: 'conditionFixCompareZero' as const,
+                      fix: getWrappingFixer({
+                        node: node.parent,
+                        innerNode: node,
+                        sourceCode: context.sourceCode,
+                        wrap: code => `${code} === ${zero}`,
+                      }),
+                    },
+                  ]
+                : []),
+              // bigints can't be NaN
+              ...(isBigInt
+                ? []
+                : [
+                    {
+                      messageId: 'conditionFixCompareNaN' as const,
+                      fix: getWrappingFixer({
+                        node: node.parent,
+                        innerNode: node,
+                        sourceCode: context.sourceCode,
+                        wrap: code => `Number.isNaN(${code})`,
+                      }),
+                    },
+                  ]),
               {
                 messageId: 'conditionFixCastBoolean',
                 fix: getWrappingFixer({
@@ -839,22 +859,30 @@ export default createRule<Options, MessageId>({
           }
           // if (number)
           return [
-            {
-              messageId: 'conditionFixCompareZero',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} !== 0`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCompareNaN',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `!Number.isNaN(${code})`,
-              }),
-            },
+            ...(canCompareZero
+              ? [
+                  {
+                    messageId: 'conditionFixCompareZero' as const,
+                    fix: getWrappingFixer({
+                      node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `${code} !== ${zero}`,
+                    }),
+                  },
+                ]
+              : []),
+            ...(isBigInt
+              ? []
+              : [
+                  {
+                    messageId: 'conditionFixCompareNaN' as const,
+                    fix: getWrappingFixer({
+                      node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `!Number.isNaN(${code})`,
+                    }),
+                  },
+                ]),
             {
               messageId: 'conditionFixCastBoolean',
               fix: getWrappingFixer({
@@ -864,6 +892,7 @@ export default createRule<Options, MessageId>({
               }),
             },
           ];
+        }
 
         case 'conditionErrorString':
           if (isLogicalNegationExpression(node.parent)) {

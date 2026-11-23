@@ -7,7 +7,7 @@ import type {
   InferOptionsTypeFromRule,
 } from '../util';
 
-import { createRule } from '../util';
+import { createRule, isDefinitionFile } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('init-declarations');
@@ -15,11 +15,13 @@ const baseRule = getESLintCoreRule('init-declarations');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = ['always'];
+
 export default createRule<Options, MessageIds>({
   name: 'init-declarations',
   meta: {
     type: 'suggestion',
-    // defaultOptions, -- base rule does not use defaultOptions
+    defaultOptions,
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
@@ -31,14 +33,14 @@ export default createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
   },
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
-  defaultOptions: ['always'],
+  defaultOptions,
   create(context, [mode]) {
     // Make a custom context to adjust the loc of reports where the base
     // rule's behavior is a bit too aggressive with TS-specific syntax (namely,
     // type annotations).
     function getBaseContextOverride(): typeof context {
       const reportOverride: typeof context.report = descriptor => {
-        if ('node' in descriptor && descriptor.loc == null) {
+        if ('node' in descriptor) {
           const { node, ...rest } = descriptor;
           // We only want to special case the report loc when reporting on
           // variables declarations that are not initialized. Declarations that
@@ -81,13 +83,13 @@ export default createRule<Options, MessageIds>({
 
     return {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
-        if (mode === 'always') {
-          if (node.declare) {
-            return;
-          }
-          if (isAncestorNamespaceDeclared(node)) {
-            return;
-          }
+        if (
+          mode === 'always' &&
+          (node.declare ||
+            isDefinitionFile(context.filename) ||
+            isAncestorNamespaceDeclared(node))
+        ) {
+          return;
         }
 
         rules['VariableDeclaration:exit'](node);

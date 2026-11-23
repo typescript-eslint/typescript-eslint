@@ -56,44 +56,45 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function isArrayOrTupleType(type: ts.Type): type is ts.TypeReference {
+      return checker.isArrayType(type) || checker.isTupleType(type);
+    }
+
     /**
-     * Check if a given node is an array which all elements are string.
+     * Check if a given array or tuple type's elements are all strings.
      */
-    function isStringArrayNode(node: TSESTree.Expression): boolean {
-      const type = getConstrainedTypeAtLocation(services, node);
+    function isStringArrayType(type: ts.TypeReference): boolean {
+      // Before TS 5.1, a constrained type parameter's array type has an extra `this` type argument
+      const typeArgs = checker
+        .getTypeArguments(type)
+        .slice(0, type.target.typeParameters?.length);
 
-      if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        // Before TS 5.1, a constrained type parameter's array type has an extra `this` type argument
-        const typeArgs = checker
-          .getTypeArguments(type)
-          .slice(0, type.target.typeParameters?.length);
+      return typeArgs.every(arg => {
+        const typeName = getTypeName(
+          checker,
+          checker.getBaseConstraintOfType(arg) ?? arg,
+        );
 
-        return typeArgs.every(arg => {
-          const typeName = getTypeName(
-            checker,
-            checker.getBaseConstraintOfType(arg) ?? arg,
-          );
-
-          return typeName === 'string';
-        });
-      }
-      return false;
+        return typeName === 'string';
+      });
     }
 
     function checkSortArgument(callee: TSESTree.MemberExpression): void {
       if (!isStaticMemberAccessOfValue(callee, context, 'sort', 'toSorted')) {
         return;
       }
-      const calleeObjType = getConstrainedTypeAtLocation(
-        services,
-        callee.object,
+
+      // `array?.sort()` doesn't call `sort` on a nullish `array`
+      const calleeObjTypes = tsutils.unionConstituents(
+        checker.getNonNullableType(
+          getConstrainedTypeAtLocation(services, callee.object),
+        ),
       );
 
-      if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
-        return;
-      }
-
-      if (isAlwaysArray(calleeObjType, checker)) {
+      if (
+        calleeObjTypes.every(isArrayOrTupleType) &&
+        !(options.ignoreStringArrays && calleeObjTypes.every(isStringArrayType))
+      ) {
         context.report({ node: callee.parent, messageId: 'requireCompare' });
       }
     }
@@ -104,9 +105,3 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-function isAlwaysArray(type: ts.Type, checker: ts.TypeChecker): boolean {
-  return tsutils
-    .unionConstituents(type)
-    .every(t => checker.isArrayType(t) || checker.isTupleType(t));
-}

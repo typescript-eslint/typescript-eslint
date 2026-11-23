@@ -23,7 +23,7 @@ However, that term is technically slightly different to what is understood by ty
 Type assertions are a way to say to the TypeScript compiler, _"I know better than you, it's actually this different type!"_.
 :::
 
-[`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) are always allowed by this rule.
+[`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) are always allowed by this rule, though they must still use the configured `assertionStyle` syntax unless it's `never`.
 Examples of them include `let x = "hello" as const;` and `let x = <const>"hello";`.
 
 ## Options

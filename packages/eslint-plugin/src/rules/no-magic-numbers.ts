@@ -107,9 +107,14 @@ export default createRule<Options, MessageIds>({
         else if (isAncestorTSIndexedAccessType(node)) {
           isAllowed = options.ignoreTypeIndexes === true;
         }
-        // Check if the node is a readonly class property
-        else if (isParentTSReadonlyPropertyDefinition(node)) {
-          isAllowed = options.ignoreReadonlyClassProperties === true;
+        // Check if the node is an ignored readonly class property. Otherwise
+        // the base rule decides, so options such as
+        // `ignoreClassFieldInitialValues` still apply.
+        else if (
+          options.ignoreReadonlyClassProperties === true &&
+          isParentTSReadonlyPropertyDefinition(node)
+        ) {
+          isAllowed = true;
         }
 
         // If we’ve hit a case where the ignore option is true we can return now
@@ -123,9 +128,7 @@ export default createRule<Options, MessageIds>({
           let raw = node.raw;
           if (
             node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-            // the base rule only shows the operator for negative numbers
-            // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/lib/rules/no-magic-numbers.js#L126
-            node.parent.operator === '-'
+            ['-', '+'].includes(node.parent.operator)
           ) {
             fullNumberNode = node.parent;
             raw = `${node.parent.operator}${node.raw}`;
@@ -172,7 +175,6 @@ function normalizeLiteralValue(
 ): bigint | number {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-    ['-', '+'].includes(node.parent.operator) &&
     node.parent.operator === '-'
   ) {
     return -value;
