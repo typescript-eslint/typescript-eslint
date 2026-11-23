@@ -12,6 +12,8 @@ run() {
     if [ "$want" = on ]; then git apply "ab/$exp.patch"; else git apply -R "ab/$exp.patch"; fi
     rebuild; state=$want
   fi
+  # Cold Vitest cache every run, like CI (a warm cache reorders files).
+  rm -rf node_modules/.vite packages/*/node_modules/.vite
   local s=$(date +%s%N)
   (cd "packages/$pkg" && pnpm exec vitest run --coverage --reporter=dot) > "$log" 2>&1 || { tail -100 "$log"; exit 1; }
   local e=$(date +%s%N)
