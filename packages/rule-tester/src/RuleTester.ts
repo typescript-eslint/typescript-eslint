@@ -62,6 +62,8 @@ const ajv = ajvBuilder({ strictDefaults: true });
 
 // Rules whose options schema already passed validation, so it isn't re-validated and re-compiled for every test case.
 const rulesWithValidatedSchema = new WeakSet();
+
+
 const RULE_TESTER_PLUGIN = '@rule-tester';
 const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
