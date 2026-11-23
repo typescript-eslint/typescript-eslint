@@ -65,7 +65,6 @@
   },
   "devDependencies": {
     "@typescript/native": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
     "rimraf": "catalog:",

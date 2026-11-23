@@ -75,7 +75,6 @@
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/rule-tester": "workspace:*",
     "@typescript/native": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
     "json-schema": "catalog:",

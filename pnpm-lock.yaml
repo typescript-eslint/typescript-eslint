@@ -442,9 +442,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       '@vitest/pretty-format':
         specifier: 'catalog:'
         version: 5.1.0
@@ -518,9 +515,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       ajv:
         specifier: 'catalog:'
         version: 6.15.0
@@ -591,9 +585,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -609,9 +600,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -643,9 +631,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -677,9 +662,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -705,9 +687,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -754,9 +733,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -785,9 +761,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       '@vitest/pretty-format':
         specifier: 'catalog:'
         version: 5.1.0
@@ -812,9 +785,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -854,9 +824,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       ajv:
         specifier: 'catalog:'
         version: 6.15.0
@@ -878,9 +845,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -915,9 +879,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -967,9 +928,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -1007,9 +965,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -1035,9 +990,6 @@ importers:
       '@typescript/native':
         specifier: 'catalog:'
         version: typescript@7.1.0-dev.20261009.1
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 5.1.0(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)
       eslint:
         specifier: 'catalog:'
         version: 10.15.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -14943,6 +14895,7 @@ snapshots:
       vitest: 5.1.0(@types/node@24.19.0)(@vitest/coverage-istanbul@5.1.0)(@vitest/coverage-v8@5.1.0)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.1))
     transitivePeerDependencies:
       - vite
+    optional: true
 
   '@vitest/eslint-plugin@1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.15.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vite@7.3.6(@types/node@24.19.0)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.50.0)(tsx@4.23.12)(yaml@2.9.0))(vitest@5.1.0)':
     dependencies:
