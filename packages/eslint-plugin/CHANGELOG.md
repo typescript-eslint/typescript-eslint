@@ -1,3 +1,33 @@
+## 8.74.0 (2026-11-23)
+
+### 🚀 Features
+
+- **ast-spec:** tighten types of `Property` ([#13074](https://github.com/typescript-eslint/typescript-eslint/pull/13074))
+- **eslint-plugin:** [adjacent-overload-signatures] add `ignoreAccessors` option ([#13011](https://github.com/typescript-eslint/typescript-eslint/pull/13011))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [array-type] invalid autofix in readonly arrays ([#13105](https://github.com/typescript-eslint/typescript-eslint/pull/13105))
+- **eslint-plugin:** [no-deprecated] report deprecated properties in union types ([#13069](https://github.com/typescript-eslint/typescript-eslint/pull/13069))
+- **parser:** detect jsxPragma as null for the automatic JSX runtime ([#13129](https://github.com/typescript-eslint/typescript-eslint/pull/13129))
+- **eslint-plugin:** [consistent-generic-constructors] place annotation after ? and keep line comments out of type arguments ([#13160](https://github.com/typescript-eslint/typescript-eslint/pull/13160))
+- **eslint-plugin:** [no-unsafe-enum-assignment] ignore non-enum computed keys ([#12968](https://github.com/typescript-eslint/typescript-eslint/pull/12968))
+- **eslint-plugin:** [no-implied-eval] handle calls in a switch discriminant ([#13126](https://github.com/typescript-eslint/typescript-eslint/pull/13126))
+
+### ❤️ Thank You
+
+- Ankur Dubey
+- Evyatar Daud @StyleShit
+- Huangshuo Kuang @kkkhs
+- kuanghuangshuo
+- Maksim @maksimgm
+- StyleShit @StyleShit
+- Yohannes Desta @yohannesjoya
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.74.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.73.0 (2026-11-16)
 
 ### 🚀 Features
