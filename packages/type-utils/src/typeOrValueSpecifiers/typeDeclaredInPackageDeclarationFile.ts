@@ -33,6 +33,21 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+function exportedSymbolMatches(
+  exportedSymbol: ts.Symbol,
+  symbol: ts.Symbol,
+  checker: ts.TypeChecker,
+): boolean {
+  const resolvedSymbol = tsutils.isSymbolFlagSet(
+    exportedSymbol,
+    ts.SymbolFlags.Alias,
+  )
+    ? checker.getAliasedSymbol(exportedSymbol)
+    : exportedSymbol;
+
+  return resolvedSymbol === symbol;
+}
+
 function typeExportedFromDeclareModule(
   packageName: string,
   symbol: ts.Symbol | undefined,
@@ -52,16 +67,11 @@ function typeExportedFromDeclareModule(
     return false;
   }
 
-  return checker.getExportsOfModule(moduleSymbol).some(exportedSymbol => {
-    const resolvedSymbol = tsutils.isSymbolFlagSet(
-      exportedSymbol,
-      ts.SymbolFlags.Alias,
-    )
-      ? checker.getAliasedSymbol(exportedSymbol)
-      : exportedSymbol;
-
-    return resolvedSymbol === symbol;
-  });
+  return checker
+    .getExportsOfModule(moduleSymbol)
+    .some(exportedSymbol =>
+      exportedSymbolMatches(exportedSymbol, symbol, checker),
+    );
 }
 
 /**
@@ -167,6 +177,16 @@ const reExportSourceFilesCache = new WeakMap<
   Map<string, ts.SourceFile[]>
 >();
 
+const packageEntryModuleSymbolsCache = new WeakMap<
+  ts.Program,
+  Map<string, readonly ts.Symbol[]>
+>();
+
+const RESOLUTION_MODES: ts.ResolutionMode[] = [
+  ts.ModuleKind.ESNext,
+  ts.ModuleKind.CommonJS,
+];
+
 function packageIdMatchesSpecifier(
   packageIdName: string,
   packageName: string,
@@ -199,7 +219,9 @@ function getExternalSourceFilesForPackage(
       return false;
     }
 
-    const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
+    const packageIdName =
+      program.sourceFileToPackageName.get(sourceFile.path) ??
+      resolvePackageIdName(sourceFile.fileName);
     return (
       packageIdName != null &&
       packageIdMatchesSpecifier(packageIdName, packageName)
@@ -210,60 +232,111 @@ function getExternalSourceFilesForPackage(
   return sourceFiles;
 }
 
-function symbolDeclaresOneOf(
-  symbol: ts.Symbol,
-  declarations: readonly ts.Node[],
-): boolean {
-  return (
-    symbol
-      .getDeclarations()
-      ?.some(declaration => declarations.includes(declaration)) ?? false
-  );
+function getPackageEntryModuleSymbols(
+  packageName: string,
+  program: ts.Program,
+): readonly ts.Symbol[] {
+  let packageCache = packageEntryModuleSymbolsCache.get(program);
+  if (packageCache == null) {
+    packageCache = new Map();
+    packageEntryModuleSymbolsCache.set(program, packageCache);
+  }
+
+  const cached = packageCache.get(packageName);
+  if (cached != null) {
+    return cached;
+  }
+
+  // No ts.sys in browser environments (e.g. the playground).
+  if (ts.sys == null) {
+    packageCache.set(packageName, []);
+    return [];
+  }
+
+  const containingFile = program.getRootFileNames().at(0);
+  if (containingFile == null) {
+    packageCache.set(packageName, []);
+    return [];
+  }
+
+  const checker = program.getTypeChecker();
+  const compilerOptions = program.getCompilerOptions();
+  const moduleSymbols: ts.Symbol[] = [];
+  const seen = new Set<ts.Symbol>();
+
+  for (const mode of RESOLUTION_MODES) {
+    const { resolvedModule } = ts.resolveModuleName(
+      packageName,
+      containingFile,
+      compilerOptions,
+      ts.sys,
+      undefined,
+      undefined,
+      mode,
+    );
+
+    if (resolvedModule == null || !resolvedModule.isExternalLibraryImport) {
+      continue;
+    }
+
+    const entryFile = program.getSourceFile(resolvedModule.resolvedFileName);
+    const moduleSymbol =
+      entryFile != null ? checker.getSymbolAtLocation(entryFile) : undefined;
+
+    if (moduleSymbol != null && !seen.has(moduleSymbol)) {
+      seen.add(moduleSymbol);
+      moduleSymbols.push(moduleSymbol);
+    }
+  }
+
+  packageCache.set(packageName, moduleSymbols);
+  return moduleSymbols;
 }
 
-function namedExportMatchesDeclarations(
-  exportSpecifier: ts.ExportSpecifier,
-  declarations: readonly ts.Node[],
-  checker: ts.TypeChecker,
+function typeExportedFromPackageEntry(
+  packageName: string,
+  symbol: ts.Symbol | undefined,
+  program: ts.Program,
 ): boolean {
-  const localSymbol = checker.getSymbolAtLocation(exportSpecifier.name);
-  if (localSymbol == null) {
+  if (!symbol) {
     return false;
   }
 
-  return symbolDeclaresOneOf(
-    checker.getAliasedSymbol(localSymbol),
-    declarations,
+  const checker = program.getTypeChecker();
+
+  return getPackageEntryModuleSymbols(packageName, program).some(moduleSymbol =>
+    checker
+      .getExportsOfModule(moduleSymbol)
+      .some(exportedSymbol =>
+        exportedSymbolMatches(exportedSymbol, symbol, checker),
+      ),
   );
 }
 
 function typeReExportedFromPackage(
   packageName: string,
-  declarations: readonly ts.Node[],
+  symbol: ts.Symbol | undefined,
   program: ts.Program,
 ): boolean {
+  if (!symbol) {
+    return false;
+  }
+
   const checker = program.getTypeChecker();
 
   return getExternalSourceFilesForPackage(packageName, program).some(
-    sourceFile =>
-      sourceFile.statements.some(statement => {
-        if (!ts.isExportDeclaration(statement)) {
-          return false;
-        }
+    sourceFile => {
+      const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
+      if (moduleSymbol == null) {
+        return false;
+      }
 
-        const { exportClause } = statement;
-        if (exportClause == null || !ts.isNamedExports(exportClause)) {
-          return false;
-        }
-
-        return exportClause.elements.some(exportSpecifier =>
-          namedExportMatchesDeclarations(
-            exportSpecifier,
-            declarations,
-            checker,
-          ),
+      return checker
+        .getExportsOfModule(moduleSymbol)
+        .some(exportedSymbol =>
+          exportedSymbolMatches(exportedSymbol, symbol, checker),
         );
-      }),
+    },
   );
 }
 
@@ -278,6 +351,7 @@ export function typeDeclaredInPackageDeclarationFile(
     typeDeclaredInDeclareModule(packageName, declarations) ||
     typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
     typeExportedFromDeclareModule(packageName, symbol, program) ||
-    typeReExportedFromPackage(packageName, declarations, program)
+    typeExportedFromPackageEntry(packageName, symbol, program) ||
+    typeReExportedFromPackage(packageName, symbol, program)
   );
 }

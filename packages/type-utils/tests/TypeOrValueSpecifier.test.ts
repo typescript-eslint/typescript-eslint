@@ -530,6 +530,22 @@ describe('TypeOrValueSpecifier', () => {
           package: 'reexported-error/typed',
         },
       ],
+      [
+        'import type { ReexportedError } from "reexported-error/star"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/star',
+        },
+      ],
+      [
+        'import type { ExportsMappedError } from "exports-mapped-error/http"; type Test = ExportsMappedError;',
+        {
+          from: 'package',
+          name: 'ExportsMappedError',
+          package: 'exports-mapped-error/http',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -745,19 +761,11 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: 'GlobalType', package: 'other-module' },
       ],
       [
-        'import type { ReexportedError } from "other-error"; type Test = ReexportedError;',
+        'import type {} from "reexported-error/public"; import type { ReexportedError } from "other-error"; type Test = ReexportedError;',
         {
           from: 'package',
           name: 'ReexportedError',
           package: 'reexported-error/public',
-        },
-      ],
-      [
-        'import type { ReexportedError } from "reexported-error/star"; type Test = ReexportedError;',
-        {
-          from: 'package',
-          name: 'ReexportedError',
-          package: 'reexported-error/star',
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
