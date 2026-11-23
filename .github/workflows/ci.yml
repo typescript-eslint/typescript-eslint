@@ -566,7 +566,6 @@ jobs:
         run: pnpm exec nx test eslint-plugin -- --shard=${{ matrix.shard }} --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
-          NX_SKIP_NX_CACHE: true # TEMP: measure real test time
           TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
