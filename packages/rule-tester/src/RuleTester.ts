@@ -415,7 +415,9 @@ export class RuleTester extends TestFramework {
     ): T => {
       return {
         ...test,
-        skip: !satisfiesAllDependencyConstraints(test.dependencyConstraints),
+        skip:
+          test.skip ||
+          !satisfiesAllDependencyConstraints(test.dependencyConstraints),
       };
     };
     normalizedTests.valid = normalizedTests.valid.map(maybeMarkAsOnly);

@@ -959,6 +959,64 @@ describe(RuleTester, () => {
       `);
     });
 
+    it('preserves an explicit skip when another case has dependency constraints', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      const ruleTester = new RuleTester({
+        languageOptions: { parser },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'const x = 1;',
+            dependencyConstraints: {
+              'totally-real-dependency': '10',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [
+          {
+            code: 'const skipped = 1;',
+            skip: true,
+          },
+        ],
+      });
+
+      expect(getTestConfigFromCall()).toMatchInlineSnapshot(`
+        [
+          {
+            "code": "const skipped = 1;",
+            "filename": "file.ts",
+            "languageOptions": {
+              "parserOptions": {
+                "disallowAutomaticSingleRunInference": true,
+              },
+            },
+            "skip": true,
+          },
+          {
+            "code": "const x = 1;",
+            "dependencyConstraints": {
+              "totally-real-dependency": "10",
+            },
+            "errors": [
+              {
+                "messageId": "error",
+              },
+            ],
+            "filename": "file.ts",
+            "languageOptions": {
+              "parserOptions": {
+                "disallowAutomaticSingleRunInference": true,
+              },
+            },
+            "skip": false,
+          },
+        ]
+      `);
+    });
+
     describe('constructor constraints', () => {
       it('skips all tests if a constructor constraint is not satisfied', () => {
         satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
