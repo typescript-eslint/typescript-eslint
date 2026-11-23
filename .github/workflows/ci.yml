@@ -492,6 +492,19 @@ jobs:
         env:
           CI: true
           PROJECTS: ${{ join(matrix.projects, ',') }}
+      - name: TEMP paired A/B (typescript-estree isolation)
+        if: matrix.os == 'ubuntu-latest' && contains(join(matrix.projects, ','), 'typescript-estree')
+        working-directory: packages/typescript-estree
+        run: |
+          for i in 1 2; do
+            for c in old new; do
+              cfg=vitest.config.mts; [ "$c" = old ] && cfg=vitest.old.mts
+              s=$(date +%s)
+              pnpm exec vitest run -c "$cfg" --coverage --reporter=dot > "/tmp/$c-$i.log" 2>&1 || { tail -80 "/tmp/$c-$i.log"; exit 1; }
+              e=$(date +%s)
+              echo "AB $c round $i: $((e-s))s $(grep -E '^ +Tests ' /tmp/$c-$i.log)"
+            done
+          done
       - name: Run unit tests
         if: matrix.os != 'ubuntu-latest'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS"
