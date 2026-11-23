@@ -247,7 +247,8 @@ function getPackageEntryModuleSymbols(
     return cached;
   }
 
-  // No ts.sys in browser environments (e.g. the playground).
+  // typescript doesn't provide a ts.sys implementation for browser environments
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (ts.sys == null) {
     packageCache.set(packageName, []);
     return [];
@@ -275,7 +276,7 @@ function getPackageEntryModuleSymbols(
       mode,
     );
 
-    if (resolvedModule == null || !resolvedModule.isExternalLibraryImport) {
+    if (!resolvedModule?.isExternalLibraryImport) {
       continue;
     }
 
