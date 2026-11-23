@@ -648,6 +648,65 @@ describe(RuleTester, () => {
       `);
     });
 
+    it('keeps an explicit skip when another case has dependencyConstraints', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
+      const ruleTester = new RuleTester({
+        languageOptions: { parser },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'failing - major',
+            dependencyConstraints: {
+              'totally-real-dependency': '999',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [
+          {
+            code: 'passing - explicitly skipped',
+            skip: true,
+          },
+        ],
+      });
+
+      expect(getTestConfigFromCall()).toMatchInlineSnapshot(`
+        [
+          {
+            "code": "passing - explicitly skipped",
+            "filename": "file.ts",
+            "languageOptions": {
+              "parserOptions": {
+                "disallowAutomaticSingleRunInference": true,
+              },
+            },
+            "skip": true,
+          },
+          {
+            "code": "failing - major",
+            "dependencyConstraints": {
+              "totally-real-dependency": "999",
+            },
+            "errors": [
+              {
+                "messageId": "error",
+              },
+            ],
+            "filename": "file.ts",
+            "languageOptions": {
+              "parserOptions": {
+                "disallowAutomaticSingleRunInference": true,
+              },
+            },
+            "skip": true,
+          },
+        ]
+      `);
+    });
+
     it('correctly handles object-based semver', () => {
       satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
       satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
