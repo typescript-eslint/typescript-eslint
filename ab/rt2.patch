@@ -1,0 +1,401 @@
+diff --git a/packages/rule-tester/src/RuleTester.ts b/packages/rule-tester/src/RuleTester.ts
+index 2e391055af..7fb42bf8d9 100644
+--- a/packages/rule-tester/src/RuleTester.ts
++++ b/packages/rule-tester/src/RuleTester.ts
+@@ -37,7 +37,10 @@ import type { AssertionOptions } from './types/AssertionOptions';
+ 
+ import { TestFramework } from './TestFramework';
+ import { ajvBuilder } from './utils/ajv';
+-import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
++import {
++  cloneDeeplyExcludesParent,
++  isEqualToCloneExcludingParent,
++} from './utils/cloneDeeplyExcludesParent';
+ import { validate } from './utils/config-validator';
+ import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
+ import { freezeDeeply } from './utils/freezeDeeply';
+@@ -104,7 +107,15 @@ const forbiddenMethodCalls = new Map(
+ );
+ 
+ /**
+- * Function to replace forbidden `SourceCode` methods. Allows just one call per method.
++ * Whether the forbidden `SourceCode` methods are currently restricted.
++ * The methods are replaced once rather than for every verified test case, as
++ * changing `SourceCode.prototype` invalidates the engine's caches for every method lookup on it.
++ */
++let forbiddenMethodsAreRestricted = false;
++let forbiddenMethodsAreReplaced = false;
++
++/**
++ * Function to replace forbidden `SourceCode` methods. Allows just one call per method while restricted.
+  * @param methodName The name of the method to forbid.
+  * @param prototype The prototype with the original method to call.
+  * @returns The function that throws the error.
+@@ -116,6 +127,10 @@ function throwForbiddenMethodError<
+   const original = prototype[methodName];
+ 
+   return function (this: WeakKey, ...args: Parameters<Prototype[MethodName]>) {
++    if (!forbiddenMethodsAreRestricted) {
++      return original.apply(this, args);
++    }
++
+     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     const called = forbiddenMethodCalls.get(methodName)!;
+ 
+@@ -806,21 +821,22 @@ export class RuleTester extends TestFramework {
+     do {
+       passNumber++;
+ 
+-      const SourceCodePrototype = SourceCode.prototype as Record<
+-        ForbiddenMethodName,
+-        ForbiddenFunction
+-      >;
+-
+-      const { applyInlineConfig, applyLanguageOptions, finalize } =
+-        SourceCodePrototype;
+-
+-      try {
++      if (!forbiddenMethodsAreReplaced) {
++        const SourceCodePrototype = SourceCode.prototype as Record<
++          ForbiddenMethodName,
++          ForbiddenFunction
++        >;
+         forbiddenMethods.forEach(methodName => {
+           SourceCodePrototype[methodName] = throwForbiddenMethodError(
+             methodName,
+             SourceCodePrototype,
+           );
+         });
++        forbiddenMethodsAreReplaced = true;
++      }
++
++      try {
++        forbiddenMethodsAreRestricted = true;
+ 
+         const actualConfig = merge(configWithoutCustomKeys, {
+           languageOptions: {
+@@ -838,9 +854,7 @@ export class RuleTester extends TestFramework {
+         });
+         messages = linter.verify(code, actualConfig, filename);
+       } finally {
+-        SourceCodePrototype.applyInlineConfig = applyInlineConfig;
+-        SourceCodePrototype.applyLanguageOptions = applyLanguageOptions;
+-        SourceCodePrototype.finalize = finalize;
++        forbiddenMethodsAreRestricted = false;
+       }
+ 
+       initialMessages ??= messages;
+@@ -887,8 +901,12 @@ export class RuleTester extends TestFramework {
+       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+       beforeAST: beforeAST!,
+       // is definitely assigned within the `@rule-tester/validate-ast` rule
+-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+-      afterAST: cloneDeeplyExcludesParent(afterAST!),
++      // Only clone the AST (for the assertion diff) when it actually changed.
++      /* eslint-disable @typescript-eslint/no-non-null-assertion */
++      afterAST: isEqualToCloneExcludingParent(beforeAST!, afterAST!)
++        ? beforeAST!
++        : cloneDeeplyExcludesParent(afterAST!),
++      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+     };
+   }
+ 
+@@ -1012,29 +1030,35 @@ export class RuleTester extends TestFramework {
+         assert.fail("Invalid cases must have 'error' value greater than 0");
+       }
+ 
+-      assert.strictEqual(
+-        messages.length,
+-        item.errors,
+-        util.format(
+-          'Should have %d error%s but had %d: %s',
+-          item.errors,
+-          item.errors === 1 ? '' : 's',
++      // Only format the messages when the assertion fails.
++      if (messages.length !== item.errors) {
++        assert.strictEqual(
+           messages.length,
+-          util.inspect(messages),
+-        ),
+-      );
++          item.errors,
++          util.format(
++            'Should have %d error%s but had %d: %s',
++            item.errors,
++            item.errors === 1 ? '' : 's',
++            messages.length,
++            util.inspect(messages),
++          ),
++        );
++      }
+     } else {
+-      assert.strictEqual(
+-        messages.length,
+-        item.errors.length,
+-        util.format(
+-          'Should have %d error%s but had %d: %s',
+-          item.errors.length,
+-          item.errors.length === 1 ? '' : 's',
++      // Only format the messages when the assertion fails.
++      if (messages.length !== item.errors.length) {
++        assert.strictEqual(
+           messages.length,
+-          util.inspect(messages),
+-        ),
+-      );
++          item.errors.length,
++          util.format(
++            'Should have %d error%s but had %d: %s',
++            item.errors.length,
++            item.errors.length === 1 ? '' : 's',
++            messages.length,
++            util.inspect(messages),
++          ),
++        );
++      }
+ 
+       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
+ 
+diff --git a/packages/rule-tester/src/utils/cloneDeeplyExcludesParent.ts b/packages/rule-tester/src/utils/cloneDeeplyExcludesParent.ts
+index ea6f9e2724..2df373d68e 100644
+--- a/packages/rule-tester/src/utils/cloneDeeplyExcludesParent.ts
++++ b/packages/rule-tester/src/utils/cloneDeeplyExcludesParent.ts
+@@ -21,3 +21,58 @@ export function cloneDeeplyExcludesParent<T>(x: T): T {
+ 
+   return x;
+ }
++
++/**
++ * Checks, without allocating, that `assert.deepStrictEqual(clone, cloneDeeplyExcludesParent(x))` would pass,
++ * where `clone` is itself a result of `cloneDeeplyExcludesParent`.
++ * It may return `false` for some equal inputs (e.g. sparse arrays), so callers should fall back to the full comparison.
++ */
++export function isEqualToCloneExcludingParent(
++  clone: unknown,
++  x: unknown,
++): boolean {
++  if (typeof x !== 'object' || x == null) {
++    return Object.is(clone, x);
++  }
++  if (typeof clone !== 'object' || clone == null) {
++    return false;
++  }
++
++  if (Array.isArray(x)) {
++    if (!Array.isArray(clone) || clone.length !== x.length) {
++      return false;
++    }
++    for (let i = 0; i < x.length; i++) {
++      if (
++        !(i in x) ||
++        !(i in clone) ||
++        !isEqualToCloneExcludingParent(clone[i], x[i])
++      ) {
++        return false;
++      }
++    }
++    return true;
++  }
++
++  if (Array.isArray(clone)) {
++    return false;
++  }
++
++  const cloneRecord = clone as Record<string, unknown>;
++  const record = x as Record<string, unknown>;
++  let keyCount = 0;
++
++  for (const key in record) {
++    if (key !== 'parent' && Object.hasOwn(record, key)) {
++      if (
++        !Object.hasOwn(cloneRecord, key) ||
++        !isEqualToCloneExcludingParent(cloneRecord[key], record[key])
++      ) {
++        return false;
++      }
++      keyCount++;
++    }
++  }
++
++  return keyCount === Object.keys(cloneRecord).length;
++}
+diff --git a/packages/rule-tester/src/utils/validationHelpers.ts b/packages/rule-tester/src/utils/validationHelpers.ts
+index 0f3e0f777c..17bf747dea 100644
+--- a/packages/rule-tester/src/utils/validationHelpers.ts
++++ b/packages/rule-tester/src/utils/validationHelpers.ts
+@@ -72,6 +72,31 @@ export function sanitize(text: string): string {
+   );
+ }
+ 
++/**
++ * Descriptors defining `start`/`end` properties as throwing error.
++ * Created once so that all nodes share the same getters (and hidden classes).
++ */
++function startEndAsErrorDescriptors(objName: string): PropertyDescriptorMap {
++  return {
++    end: {
++      configurable: true,
++      enumerable: false,
++      get() {
++        throw new Error(`Use ${objName}.range[1] instead of ${objName}.end`);
++      },
++    },
++    start: {
++      configurable: true,
++      enumerable: false,
++      get() {
++        throw new Error(`Use ${objName}.range[0] instead of ${objName}.start`);
++      },
++    },
++  };
++}
++const NODE_START_END_AS_ERROR = startEndAsErrorDescriptors('node');
++const TOKEN_START_END_AS_ERROR = startEndAsErrorDescriptors('token');
++
+ // this symbol is used internally by ESLint to unwrap the wrapped parser
+ // https://github.com/eslint/eslint/blob/129e252132c7c476d7de17f40b54a333ddb2e6bb/lib/linter/linter.js#L139-L146
+ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
+@@ -89,38 +114,16 @@ export function wrapParser(
+     ast: TSESTree.Program,
+     visitorKeys?: Readonly<SourceCode.VisitorKeys>,
+   ): void {
+-    /**
+-     * Define `start`/`end` properties as throwing error.
+-     */
+-    function defineStartEndAsError(objName: string, node: unknown): void {
+-      Object.defineProperties(node, {
+-        end: {
+-          configurable: true,
+-          enumerable: false,
+-          get() {
+-            throw new Error(
+-              `Use ${objName}.range[1] instead of ${objName}.end`,
+-            );
+-          },
+-        },
+-        start: {
+-          configurable: true,
+-          enumerable: false,
+-          get() {
+-            throw new Error(
+-              `Use ${objName}.range[0] instead of ${objName}.start`,
+-            );
+-          },
+-        },
+-      });
+-    }
+-
+     simpleTraverse(ast, {
+-      enter: node => defineStartEndAsError('node', node),
++      enter: node => Object.defineProperties(node, NODE_START_END_AS_ERROR),
+       visitorKeys,
+     });
+-    ast.tokens?.forEach(token => defineStartEndAsError('token', token));
+-    ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
++    ast.tokens?.forEach(token =>
++      Object.defineProperties(token, TOKEN_START_END_AS_ERROR),
++    );
++    ast.comments?.forEach(comment =>
++      Object.defineProperties(comment, TOKEN_START_END_AS_ERROR),
++    );
+   }
+ 
+   if ('parseForESLint' in parser) {
+diff --git a/packages/rule-tester/tests/cloneDeeplyExcludesParent.test.ts b/packages/rule-tester/tests/cloneDeeplyExcludesParent.test.ts
+new file mode 100644
+index 0000000000..e5c75429e2
+--- /dev/null
++++ b/packages/rule-tester/tests/cloneDeeplyExcludesParent.test.ts
+@@ -0,0 +1,52 @@
++import {
++  cloneDeeplyExcludesParent,
++  isEqualToCloneExcludingParent,
++} from '../src/utils/cloneDeeplyExcludesParent';
++
++describe(isEqualToCloneExcludingParent, () => {
++  const create = (): Record<string, unknown> => {
++    const child: Record<string, unknown> = {
++      kind: 'child',
++      range: [1, 2],
++      value: /a/g,
++    };
++    const root = { body: [child, null], kind: 'root', n: -0 };
++    child.parent = root;
++    return root;
++  };
++
++  it('returns true for an unchanged value, ignoring parent', () => {
++    const value = create();
++    const clone = cloneDeeplyExcludesParent(value);
++
++    expect(isEqualToCloneExcludingParent(clone, value)).toBe(true);
++    (value.body as Record<string, unknown>[])[0].parent = {};
++    expect(isEqualToCloneExcludingParent(clone, value)).toBe(true);
++  });
++
++  it.for([
++    ['changed value', (v: Record<string, unknown>): unknown => (v.kind = 'X')],
++    ['added key', (v: Record<string, unknown>): unknown => (v.extra = 1)],
++    ['removed key', (v: Record<string, unknown>): unknown => delete v.kind],
++    ['-0 to 0', (v: Record<string, unknown>): unknown => (v.n = 0)],
++    [
++      'array length',
++      (v: Record<string, unknown>): unknown => (v.body as unknown[]).pop(),
++    ],
++    [
++      'object to array',
++      (v: Record<string, unknown>): unknown => (v.body = { length: 2 }),
++    ],
++    [
++      'sparse array',
++      (v: Record<string, unknown>): unknown =>
++        Reflect.deleteProperty(v.body as unknown[], 1),
++    ],
++  ] as const)('returns false for %s', ([, mutate]) => {
++    const value = create();
++    const clone = cloneDeeplyExcludesParent(value);
++    mutate(value);
++
++    expect(isEqualToCloneExcludingParent(clone, value)).toBe(false);
++  });
++});
+diff --git a/packages/rule-tester/tests/forbidden-methods.test.ts b/packages/rule-tester/tests/forbidden-methods.test.ts
+new file mode 100644
+index 0000000000..b90c11a32c
+--- /dev/null
++++ b/packages/rule-tester/tests/forbidden-methods.test.ts
+@@ -0,0 +1,34 @@
++import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
++
++import { RuleTester } from '../src/RuleTester';
++
++const createRule = (
++  method: 'applyInlineConfig' | 'applyLanguageOptions' | 'finalize',
++): RuleModule<never> => ({
++  create: context => ({
++    Program(): void {
++      // eslint-disable-next-line @typescript-eslint/no-explicit-any
++      (context.sourceCode as any)[method]({});
++    },
++  }),
++  meta: { messages: {}, schema: [], type: 'problem' },
++});
++
++describe('forbidden SourceCode methods', () => {
++  it.for(['applyInlineConfig', 'applyLanguageOptions', 'finalize'] as const)(
++    'throws when a rule calls %s, every time',
++    method => {
++      const ruleTester = new RuleTester();
++      const run = (): unknown =>
++        // @ts-expect-error -- private
++        ruleTester.runRuleForItem('rule', createRule(method), { code: 'a' });
++
++      expect(run).toThrow(
++        `\`SourceCode#${method}()\` cannot be called inside a rule.`,
++      );
++      expect(run).toThrow(
++        `\`SourceCode#${method}()\` cannot be called inside a rule.`,
++      );
++    },
++  );
++});

@@ -1,0 +1,414 @@
+diff --git a/packages/rule-tester/src/RuleTester.ts b/packages/rule-tester/src/RuleTester.ts
+index 7fb42bf8d..f6a97a10f 100644
+--- a/packages/rule-tester/src/RuleTester.ts
++++ b/packages/rule-tester/src/RuleTester.ts
+@@ -6,6 +6,7 @@ import type { TSESTree, TSUtils } from '@typescript-eslint/utils';
+ import type {
+   AnyRuleCreateFunction,
+   AnyRuleModule,
++  FlatConfig,
+   ParserOptions,
+   RuleListener,
+   RuleModule,
+@@ -75,6 +76,49 @@ const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level
+ // eslint-disable-next-line @typescript-eslint/no-require-imports
+ const defaultParser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
+ 
++interface ConfigArray {
++  normalizeSync(): void;
++}
++
++interface LinterForBasePath {
++  /** Normalized config arrays, keyed by a serialization of their config (which may be lossy) */
++  configArrays: Map<string, { config: unknown; configArray: ConfigArray }[]>;
++  cwd: string;
++  linter: Linter;
++}
++
++/**
++ * `Linter#verify` builds and normalizes a new `FlatConfigArray` on every call unless it's given one,
++ * which it then reuses like ESLint does across files. It's not part of ESLint's public API,
++ * so only use it when it comes from the same ESLint installation as `Linter`.
++ */
++const FlatConfigArray = (():
++  | (new (
++      config: unknown,
++      options: { basePath: string | undefined },
++    ) => ConfigArray)
++  | undefined => {
++  try {
++    const eslintPath = path.dirname(require.resolve('eslint/package.json'));
++    // eslint-disable-next-line @typescript-eslint/no-require-imports
++    const eslint = require(eslintPath) as { Linter: unknown };
++    if (!(Linter.prototype instanceof (eslint.Linter as typeof Linter))) {
++      return undefined;
++    }
++    const flatConfigArrayPath = path.join(
++      eslintPath,
++      'lib/config/flat-config-array.js',
++    );
++    // eslint-disable-next-line @typescript-eslint/no-require-imports
++    const { FlatConfigArray } = require(flatConfigArrayPath) as {
++      FlatConfigArray: never;
++    };
++    return FlatConfigArray;
++  } catch {
++    return undefined;
++  }
++})();
++
+ /*
+  * testerDefaultConfig must not be modified as it allows to reset the tester to
+  * the initial default configuration
+@@ -186,7 +230,10 @@ function getUnsubstitutedMessagePlaceholders(
+ }
+ 
+ export class RuleTester extends TestFramework {
+-  readonly #lintersByBasePath: Map<string | undefined, Linter>;
++  #afterAST: TSESTree.Program | undefined;
++  #beforeAST: TSESTree.Program | undefined;
++  readonly #lintersByBasePath: Map<string | undefined, LinterForBasePath>;
++  #plugin: FlatConfig.Plugin | undefined;
+   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
+   readonly #ruleSources = new Map<string, AnyRuleModule>();
+   readonly #testerConfig: TesterConfigWithDefaults;
+@@ -219,7 +266,7 @@ export class RuleTester extends TestFramework {
+     });
+   }
+ 
+-  #getLinterForFilename(filename: string | undefined): Linter {
++  #getLinterForFilename(filename: string | undefined): LinterForBasePath {
+     let basePath: string | undefined =
+       this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
+     // For an absolute path (`/foo.ts`), or a path that steps
+@@ -240,16 +287,63 @@ export class RuleTester extends TestFramework {
+ 
+     let linterForBasePath = this.#lintersByBasePath.get(basePath);
+     if (!linterForBasePath) {
+-      linterForBasePath = new Linter({
+-        configType: 'flat',
+-        cwd: basePath,
+-      });
++      linterForBasePath = {
++        configArrays: new Map(),
++        // Same as the `cwd` that `Linter` resolves for itself
++        cwd: basePath || process.cwd(),
++        linter: new Linter({
++          configType: 'flat',
++          cwd: basePath,
++        }),
++      };
+ 
+       this.#lintersByBasePath.set(basePath, linterForBasePath);
+     }
+     return linterForBasePath;
+   }
+ 
++  /**
++   * Verifies the code, reusing the normalized config array of a previous deeply equal config.
++   */
++  #verify(
++    code: string,
++    config: Omit<RuleTesterConfig, 'defaultFilenames'>,
++    filename: string | undefined,
++  ): Linter.LintMessage[] {
++    const { configArrays, cwd, linter } = this.#getLinterForFilename(filename);
++    if (!FlatConfigArray) {
++      return linter.verify(code, config, filename);
++    }
++
++    let key: string;
++    try {
++      key = JSON.stringify(config, (k, value: unknown) =>
++        k === 'plugins' || k === 'parser' ? undefined : value,
++      );
++    } catch {
++      return linter.verify(code, config, filename);
++    }
++
++    let entries = configArrays.get(key);
++    let entry = entries?.find(entry =>
++      util.isDeepStrictEqual(entry.config, config),
++    );
++    if (!entry) {
++      const configArray = new FlatConfigArray(config, { basePath: cwd });
++      configArray.normalizeSync();
++      entry = { config, configArray };
++      entries ??= [];
++      entries.push(entry);
++      configArrays.set(key, entries);
++    }
++
++    return linter.verify(
++      code,
++      entry.configArray as unknown as FlatConfig.ConfigArray,
++      filename,
++    );
++  }
++
+   /**
+    * Set the configuration to use for all future tests
+    */
+@@ -449,6 +543,7 @@ export class RuleTester extends TestFramework {
+       return;
+     }
+     this.#ruleSources.set(name, rule);
++    this.#plugin = undefined;
+     this.#rules[name] = {
+       ...rule,
+       name,
+@@ -677,31 +772,31 @@ export class RuleTester extends TestFramework {
+     });
+ 
+     // Assigned rather than merged: `merge` would deep-clone every rule (including its schema) on every test case.
+-    config.plugins = {
+-      ...config.plugins,
+-      [RULE_TESTER_PLUGIN]: {
+-        rules: {
+-          /**
+-           * Setup AST getters.
+-           * The goal is to check whether or not AST was modified when
+-           * running the rule under test.
+-           */
+-          'validate-ast': {
+-            create(): RuleListener {
+-              return {
+-                Program(node: TSESTree.Program): void {
+-                  beforeAST = cloneDeeplyExcludesParent(node);
+-                },
+-                'Program:exit'(node: TSESTree.Program): void {
+-                  afterAST = node;
+-                },
+-              };
++    // The plugin is kept stable across test cases so that their configs can be compared and reused.
++    this.#plugin ??= {
++      rules: {
++        /**
++         * Setup AST getters.
++         * The goal is to check whether or not AST was modified when
++         * running the rule under test.
++         */
++        'validate-ast': {
++          create: (): RuleListener => ({
++            Program: (node: TSESTree.Program): void => {
++              this.#beforeAST = cloneDeeplyExcludesParent(node);
+             },
+-          },
+-          ...this.#rules,
++            'Program:exit': (node: TSESTree.Program): void => {
++              this.#afterAST = node;
++            },
++          }),
+         },
++        ...this.#rules,
+       },
+     };
++    config.plugins = {
++      ...config.plugins,
++      [RULE_TESTER_PLUGIN]: this.#plugin,
++    };
+ 
+     // Unlike other properties, we don't want to spread props between different parsers.
+     config.languageOptions.parser =
+@@ -709,8 +804,6 @@ export class RuleTester extends TestFramework {
+ 
+     let code;
+     let filename;
+-    let beforeAST: TSESTree.Program;
+-    let afterAST: TSESTree.Program;
+ 
+     if (typeof item === 'string') {
+       code = item;
+@@ -816,7 +909,6 @@ export class RuleTester extends TestFramework {
+     let passNumber = 0;
+     const outputs: string[] = [];
+     const configWithoutCustomKeys = omitCustomConfigProperties(config);
+-    const linter = this.#getLinterForFilename(filename);
+ 
+     do {
+       passNumber++;
+@@ -852,7 +944,7 @@ export class RuleTester extends TestFramework {
+             ...configWithoutCustomKeys.linterOptions,
+           },
+         });
+-        messages = linter.verify(code, actualConfig, filename);
++        messages = this.#verify(code, actualConfig, filename);
+       } finally {
+         forbiddenMethodsAreRestricted = false;
+       }
+@@ -877,9 +969,11 @@ export class RuleTester extends TestFramework {
+       outputs.push(code);
+ 
+       // Verify if autofix makes a syntax error or not.
+-      const errorMessageInFix = linter
+-        .verify(fixedResult.output, configWithoutCustomKeys, filename)
+-        .find(m => m.fatal);
++      const errorMessageInFix = this.#verify(
++        fixedResult.output,
++        configWithoutCustomKeys,
++        filename,
++      ).find(m => m.fatal);
+ 
+       assert(
+         !errorMessageInFix,
+@@ -892,21 +986,22 @@ export class RuleTester extends TestFramework {
+       );
+     } while (fixedResult.fixed && passNumber < 10);
+ 
++    // are definitely assigned within the `@rule-tester/validate-ast` rule
++    /* eslint-disable @typescript-eslint/no-non-null-assertion */
++    const beforeAST = this.#beforeAST!;
++    const afterAST = this.#afterAST!;
++    /* eslint-enable @typescript-eslint/no-non-null-assertion */
++
+     return {
+       config,
+       filename,
+       messages: initialMessages,
+       outputs,
+-      // is definitely assigned within the `@rule-tester/validate-ast` rule
+-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+-      beforeAST: beforeAST!,
+-      // is definitely assigned within the `@rule-tester/validate-ast` rule
+       // Only clone the AST (for the assertion diff) when it actually changed.
+-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+-      afterAST: isEqualToCloneExcludingParent(beforeAST!, afterAST!)
+-        ? beforeAST!
+-        : cloneDeeplyExcludesParent(afterAST!),
+-      /* eslint-enable @typescript-eslint/no-non-null-assertion */
++      afterAST: isEqualToCloneExcludingParent(beforeAST, afterAST)
++        ? beforeAST
++        : cloneDeeplyExcludesParent(afterAST),
++      beforeAST,
+     };
+   }
+ 
+@@ -1374,15 +1469,11 @@ export class RuleTester extends TestFramework {
+                       ]).output;
+ 
+                     // Verify if suggestion fix makes a syntax error or not.
+-                    const errorMessageInSuggestion = this.#getLinterForFilename(
+-                      item.filename,
+-                    )
+-                      .verify(
+-                        codeWithAppliedSuggestion,
+-                        omitCustomConfigProperties(result.config),
+-                        result.filename,
+-                      )
+-                      .find(m => m.fatal);
++                    const errorMessageInSuggestion = this.#verify(
++                      codeWithAppliedSuggestion,
++                      omitCustomConfigProperties(result.config),
++                      result.filename,
++                    ).find(m => m.fatal);
+ 
+                     assert(
+                       !errorMessageInSuggestion,
+diff --git a/packages/rule-tester/src/utils/validationHelpers.ts b/packages/rule-tester/src/utils/validationHelpers.ts
+index 17bf747de..75f45d323 100644
+--- a/packages/rule-tester/src/utils/validationHelpers.ts
++++ b/packages/rule-tester/src/utils/validationHelpers.ts
+@@ -100,12 +100,29 @@ const TOKEN_START_END_AS_ERROR = startEndAsErrorDescriptors('token');
+ // this symbol is used internally by ESLint to unwrap the wrapped parser
+ // https://github.com/eslint/eslint/blob/129e252132c7c476d7de17f40b54a333ddb2e6bb/lib/linter/linter.js#L139-L146
+ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
++const wrappedParsers = new WeakMap<
++  Parser.LooseParserModule,
++  Parser.LooseParserModule
++>();
++
+ /**
+  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
+  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
+  */
+ export function wrapParser(
+   parser: Parser.LooseParserModule,
++): Parser.LooseParserModule {
++  // Reuse the wrapper so configs using the same parser stay deeply equal across test cases.
++  let wrapped = wrappedParsers.get(parser);
++  if (!wrapped) {
++    wrapped = createWrappedParser(parser);
++    wrappedParsers.set(parser, wrapped);
++  }
++  return wrapped;
++}
++
++function createWrappedParser(
++  parser: Parser.LooseParserModule,
+ ): Parser.LooseParserModule {
+   /**
+    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
+diff --git a/packages/rule-tester/tests/config-reuse.test.ts b/packages/rule-tester/tests/config-reuse.test.ts
+new file mode 100644
+index 000000000..630c074d4
+--- /dev/null
++++ b/packages/rule-tester/tests/config-reuse.test.ts
+@@ -0,0 +1,68 @@
++import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
++
++import type { InvalidTestCase } from '../src';
++
++import { RuleTester } from '../src/RuleTester';
++
++// Test cases with deeply equal configs share a normalized config array, so make sure that
++// configs that only differ slightly (options, settings, language options) are never mixed up.
++const rule: RuleModule<'options', [number?]> = {
++  create: context => ({
++    Program(node): void {
++      context.report({
++        data: {
++          globalReturn: String(
++            context.languageOptions.parserOptions.ecmaFeatures?.globalReturn,
++          ),
++          options: JSON.stringify(context.options),
++          settings: JSON.stringify(context.settings),
++        },
++        messageId: 'options',
++        node,
++      });
++    },
++  }),
++  meta: {
++    messages: { options: '{{options}} {{settings}} {{globalReturn}}' },
++    schema: [{ type: 'number' }],
++    type: 'problem',
++  },
++};
++
++const cases: (Omit<InvalidTestCase<'options', [number?]>, 'code' | 'errors'> & {
++  data: Record<string, string>;
++})[] = [
++  { data: { options: '[1]' }, options: [1] },
++  { data: { options: '[2]' }, options: [2] },
++  {
++    data: { options: '[1]', settings: '{"a":1}' },
++    options: [1],
++    settings: { a: 1 },
++  },
++  {
++    data: { globalReturn: 'true', options: '[1]' },
++    languageOptions: {
++      parserOptions: { ecmaFeatures: { globalReturn: true } },
++    },
++    options: [1],
++  },
++  { data: { options: '[]' } },
++  { data: { options: '[1]' }, options: [1] },
++];
++
++new RuleTester().run('config-reuse', rule, {
++  invalid: cases.flatMap(({ data, ...config }, i) =>
++    // Twice each, so that every config is also reused
++    [`a${i}`, `b${i}`].map(code => ({
++      ...config,
++      code,
++      errors: [
++        {
++          data: { globalReturn: 'undefined', settings: '{}', ...data },
++          messageId: 'options',
++        },
++      ],
++    })),
++  ),
++  valid: [],
++});

@@ -1,0 +1,110 @@
+diff --git a/packages/rule-tester/src/RuleTester.ts b/packages/rule-tester/src/RuleTester.ts
+index 4d3340cb6..2e391055a 100644
+--- a/packages/rule-tester/src/RuleTester.ts
++++ b/packages/rule-tester/src/RuleTester.ts
+@@ -59,6 +59,9 @@ import {
+ } from './utils/validationHelpers';
+ 
+ const ajv = ajvBuilder({ strictDefaults: true });
++
++// Rules whose options schema already passed validation, so it isn't re-validated and re-compiled for every test case.
++const rulesWithValidatedSchema = new WeakSet();
+ const RULE_TESTER_PLUGIN = '@rule-tester';
+ const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
+ const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
+@@ -170,6 +173,7 @@ function getUnsubstitutedMessagePlaceholders(
+ export class RuleTester extends TestFramework {
+   readonly #lintersByBasePath: Map<string | undefined, Linter>;
+   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
++  readonly #ruleSources = new Map<string, AnyRuleModule>();
+   readonly #testerConfig: TesterConfigWithDefaults;
+ 
+   /**
+@@ -425,6 +429,11 @@ export class RuleTester extends TestFramework {
+   }
+ 
+   defineRule(name: string, rule: AnyRuleModule): void {
++    // Reuse the existing wrapper so ESLint's per-rule-object caches (e.g. the options validator) keep hitting.
++    if (this.#ruleSources.get(name) === rule) {
++      return;
++    }
++    this.#ruleSources.set(name, rule);
+     this.#rules[name] = {
+       ...rule,
+       name,
+@@ -650,31 +659,34 @@ export class RuleTester extends TestFramework {
+ 
+     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
+       files: ['**'],
+-      plugins: {
+-        [RULE_TESTER_PLUGIN]: {
+-          rules: {
+-            /**
+-             * Setup AST getters.
+-             * The goal is to check whether or not AST was modified when
+-             * running the rule under test.
+-             */
+-            'validate-ast': {
+-              create(): RuleListener {
+-                return {
+-                  Program(node: TSESTree.Program): void {
+-                    beforeAST = cloneDeeplyExcludesParent(node);
+-                  },
+-                  'Program:exit'(node: TSESTree.Program): void {
+-                    afterAST = node;
+-                  },
+-                };
+-              },
++    });
++
++    // Assigned rather than merged: `merge` would deep-clone every rule (including its schema) on every test case.
++    config.plugins = {
++      ...config.plugins,
++      [RULE_TESTER_PLUGIN]: {
++        rules: {
++          /**
++           * Setup AST getters.
++           * The goal is to check whether or not AST was modified when
++           * running the rule under test.
++           */
++          'validate-ast': {
++            create(): RuleListener {
++              return {
++                Program(node: TSESTree.Program): void {
++                  beforeAST = cloneDeeplyExcludesParent(node);
++                },
++                'Program:exit'(node: TSESTree.Program): void {
++                  afterAST = node;
++                },
++              };
+             },
+-            ...this.#rules,
+           },
++          ...this.#rules,
+         },
+       },
+-    });
++    };
+ 
+     // Unlike other properties, we don't want to spread props between different parsers.
+     config.languageOptions.parser =
+@@ -735,7 +747,9 @@ export class RuleTester extends TestFramework {
+     config.languageOptions.parser ??= defaultParser;
+     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
+ 
+-    const schema = getRuleOptionsSchema(rule);
++    const schema = rulesWithValidatedSchema.has(rule)
++      ? null
++      : getRuleOptionsSchema(rule);
+ 
+     if (schema) {
+       ajv.validateSchema(schema);
+@@ -774,6 +788,8 @@ export class RuleTester extends TestFramework {
+           { cause: err },
+         );
+       }
++
++      rulesWithValidatedSchema.add(rule);
+     }
+ 
+     validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));

@@ -1,0 +1,179 @@
+diff --git a/packages/project-service/src/createProjectService.ts b/packages/project-service/src/createProjectService.ts
+index 8f2e7892d..860389d7d 100644
+--- a/packages/project-service/src/createProjectService.ts
++++ b/packages/project-service/src/createProjectService.ts
+@@ -4,6 +4,7 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
+ import debug from 'debug';
+ 
+ import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
++import { reuseDeclarationFiles } from './reuseDeclarationFiles.js';
+ import { throttleOpenedFileCleanup } from './throttleOpenedFileCleanup.js';
+ 
+ const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
+@@ -194,6 +195,7 @@ export function createProjectService({
+   });
+ 
+   throttleOpenedFileCleanup(service);
++  reuseDeclarationFiles(service, jsDocParsingMode);
+ 
+   service.setHostConfiguration({
+     preferences: {
+diff --git a/packages/project-service/src/reuseDeclarationFiles.ts b/packages/project-service/src/reuseDeclarationFiles.ts
+new file mode 100644
+index 000000000..49e1f2f80
+--- /dev/null
++++ b/packages/project-service/src/reuseDeclarationFiles.ts
+@@ -0,0 +1,70 @@
++import type * as ts from 'typescript/lib/tsserverlibrary';
++
++/**
++ * Undocumented TypeScript methods a project service's document registry uses
++ * as an external cache of parsed source files.
++ * @see https://github.com/microsoft/TypeScript/blob/v6.0.3/src/server/editorServices.ts#L1544-L1555
++ */
++interface DocumentCache {
++  getDocument?: (key: string, path: string) => ts.SourceFile | undefined;
++  setDocument?: (key: string, path: string, sourceFile: ts.SourceFile) => void;
++}
++
++let previousDeclarationFiles = new Map<string, ts.SourceFile>();
++
++/**
++ * Lets a new project service reuse the declaration files (such as lib and
++ * `@types` files) parsed by the previously created one, instead of parsing
++ * and binding them all again, e.g. after `clearCaches()`.
++ *
++ * TypeScript only uses a cached source file when its text and script kind
++ * match the file's, and the key covers the compiler options that affect
++ * parsing and binding.
++ *
++ * Only the latest service's declaration files are retained.
++ */
++export function reuseDeclarationFiles(
++  service: ts.server.ProjectService,
++  jsDocParsingMode: ts.JSDocParsingMode | undefined,
++): void {
++  const cache = service as unknown as DocumentCache;
++  const { getDocument, setDocument } = cache;
++  if (!getDocument || !setDocument) {
++    return;
++  }
++
++  const reusable = previousDeclarationFiles;
++  const declarationFiles = new Map<string, ts.SourceFile>();
++  previousDeclarationFiles = declarationFiles;
++
++  const toCacheKey = (key: string, path: string): string =>
++    `${jsDocParsingMode}|${key}|${path}`;
++
++  cache.getDocument = (key, path) => {
++    const own = getDocument.call(service, key, path);
++    if (own) {
++      return own;
++    }
++
++    const cacheKey = toCacheKey(key, path);
++    const sourceFile = reusable.get(cacheKey);
++    if (
++      !sourceFile ||
++      sourceFile.fileName !==
++        service.getScriptInfoForPath(path as ts.Path)?.fileName
++    ) {
++      return undefined;
++    }
++
++    // TypeScript checks the text matches, then uses it without setDocument.
++    declarationFiles.set(cacheKey, sourceFile);
++    return sourceFile;
++  };
++
++  cache.setDocument = (key, path, sourceFile) => {
++    setDocument.call(service, key, path, sourceFile);
++    if (sourceFile.isDeclarationFile) {
++      declarationFiles.set(toCacheKey(key, path), sourceFile);
++    }
++  };
++}
+diff --git a/packages/project-service/tests/reuseDeclarationFiles.test.ts b/packages/project-service/tests/reuseDeclarationFiles.test.ts
+new file mode 100644
+index 000000000..a2af68703
+--- /dev/null
++++ b/packages/project-service/tests/reuseDeclarationFiles.test.ts
+@@ -0,0 +1,77 @@
++import type * as ts from 'typescript/lib/tsserverlibrary';
++
++import { reuseDeclarationFiles } from '../src/reuseDeclarationFiles.js';
++
++interface FakeService {
++  getDocument: (key: string, path: string) => ts.SourceFile | undefined;
++  setDocument: (key: string, path: string, sourceFile: ts.SourceFile) => void;
++}
++
++function createFakeService(): FakeService {
++  const documents = new Map<string, ts.SourceFile>();
++  const service = {
++    getDocument: (key: string, path: string) => documents.get(key + path),
++    getScriptInfoForPath: (path: string) => ({ fileName: `/${path}` }),
++    setDocument: (key: string, path: string, sourceFile: ts.SourceFile) => {
++      documents.set(key + path, sourceFile);
++    },
++  };
++
++  reuseDeclarationFiles(
++    service as unknown as ts.server.ProjectService,
++    undefined,
++  );
++
++  return service;
++}
++
++function createSourceFile(path: string): ts.SourceFile {
++  return {
++    fileName: `/${path}`,
++    isDeclarationFile: path.endsWith('.d.ts'),
++  } as ts.SourceFile;
++}
++
++describe(reuseDeclarationFiles, () => {
++  it('reuses only declaration files from the previous service', () => {
++    const first = createFakeService();
++    const declaration = createSourceFile('a.d.ts');
++    const source = createSourceFile('a.ts');
++    first.setDocument('key', 'a.d.ts', declaration);
++    first.setDocument('key', 'a.ts', source);
++
++    const second = createFakeService();
++
++    expect(second.getDocument('key', 'a.d.ts')).toBe(declaration);
++    expect(second.getDocument('other-key', 'a.d.ts')).toBeUndefined();
++    expect(second.getDocument('key', 'a.ts')).toBeUndefined();
++  });
++
++  it('retains declaration files of only the latest service', () => {
++    const first = createFakeService();
++    const reused = createSourceFile('reused.d.ts');
++    const unused = createSourceFile('unused.d.ts');
++    first.setDocument('key', 'reused.d.ts', reused);
++    first.setDocument('key', 'unused.d.ts', unused);
++
++    const second = createFakeService();
++    second.getDocument('key', 'reused.d.ts');
++
++    const third = createFakeService();
++
++    expect(third.getDocument('key', 'reused.d.ts')).toBe(reused);
++    expect(third.getDocument('key', 'unused.d.ts')).toBeUndefined();
++  });
++
++  it('does not reuse a file the service knows by another name', () => {
++    const first = createFakeService();
++    first.setDocument('key', 'a.d.ts', {
++      ...createSourceFile('a.d.ts'),
++      fileName: '/A.d.ts',
++    });
++
++    const second = createFakeService();
++
++    expect(second.getDocument('key', 'a.d.ts')).toBeUndefined();
++  });
++});

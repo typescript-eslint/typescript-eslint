@@ -1,0 +1,48 @@
+diff --git a/tsconfig.spec.json b/tsconfig.spec.json
+index 481bacee2..69729bd64 100644
+--- a/tsconfig.spec.json
++++ b/tsconfig.spec.json
+@@ -3,5 +3,10 @@
+   "compilerOptions": {
+     "outDir": "./dist"
+   },
+-  "include": ["package.json", "vitest.config.base.mts", "vitest.config.mts"]
++  "include": [
++    "package.json",
++    "vitest.config.base.mts",
++    "vitest.config.mts",
++    "vitest.setup.base.mts"
++  ]
+ }
+diff --git a/vitest.config.base.mts b/vitest.config.base.mts
+index 6046ef006..7c954f99b 100644
+--- a/vitest.config.base.mts
++++ b/vitest.config.base.mts
+@@ -1,5 +1,6 @@
+ import type { ViteUserConfig } from 'vitest/config';
+ 
++import * as path from 'node:path';
+ import { coverageConfigDefaults } from 'vitest/config';
+ 
+ export const vitestBaseConfig = {
+@@ -21,7 +22,7 @@ export const vitestBaseConfig = {
+       ? [['default', { summary: false }], ['github-actions']]
+       : [['default']],
+ 
+-    setupFiles: ['console-fail-test/setup'],
++    setupFiles: [path.join(import.meta.dirname, 'vitest.setup.base.mts')],
+ 
+     testTimeout: 10_000,
+ 
+diff --git a/vitest.setup.base.mts b/vitest.setup.base.mts
+new file mode 100644
+index 000000000..4d589af56
+--- /dev/null
++++ b/vitest.setup.base.mts
+@@ -0,0 +1,6 @@
++import { cft } from 'console-fail-test';
++
++// The default Vitest spy factory creates a `vi.fn()` for every console method
++// before every test, which costs ~90µs per test (~5% of the eslint-plugin run).
++// The fallback spy is a plain wrapper that records calls just the same.
++cft({ spyLibrary: 'fallback' });
