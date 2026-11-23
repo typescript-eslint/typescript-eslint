@@ -99,7 +99,6 @@ function toProjectServiceMatrix(affected: string[]): ProjectServiceGroup[] {
       os: 'ubuntu-latest',
       projects: PROJECT_SERVICE_PACKAGES.filter(pkg => affected.includes(pkg)),
     },
-    // The tsgo `eslint-plugin` tests aren't part of this group; they run in the sharded `plugin_unit_tests_tsgo` job.
     {
       backend: 'tsgo',
       os: 'ubuntu-latest',
