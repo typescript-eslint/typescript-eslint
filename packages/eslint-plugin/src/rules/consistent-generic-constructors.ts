@@ -59,14 +59,16 @@ export default createRule<Options, MessageIds>({
           | TSESTree.PropertyDefinition
           | TSESTree.VariableDeclarator,
       ): void {
-        function getLHSRHS(): [
-          (
-            | TSESTree.AccessorProperty
-            | TSESTree.BindingName
-            | TSESTree.PropertyDefinition
-          ),
-          TSESTree.Expression | null,
-        ] {
+        function getLHSRHS():
+          | [
+              (
+                | TSESTree.AccessorProperty
+                | TSESTree.BindingName
+                | TSESTree.PropertyDefinition
+              ),
+              TSESTree.Expression | null,
+            ]
+          | undefined {
           switch (node.type) {
             case AST_NODE_TYPES.VariableDeclarator:
               return [node.id, node.init];
@@ -74,7 +76,14 @@ export default createRule<Options, MessageIds>({
             case AST_NODE_TYPES.AccessorProperty:
               return [node, node.value];
             case AST_NODE_TYPES.AssignmentPattern:
-              return [node.left, node.right];
+              if (
+                node.left.type === AST_NODE_TYPES.Identifier ||
+                node.left.type === AST_NODE_TYPES.ArrayPattern ||
+                node.left.type === AST_NODE_TYPES.ObjectPattern
+              ) {
+                return [node.left, node.right];
+              }
+              return undefined;
             default:
               throw new Error(
                 `Unhandled node type: ${(node as { type: string }).type}`,
@@ -93,7 +102,11 @@ export default createRule<Options, MessageIds>({
           );
         }
 
-        const [lhsName, rhs] = getLHSRHS();
+        const lhsAndRhs = getLHSRHS();
+        if (!lhsAndRhs) {
+          return;
+        }
+        const [lhsName, rhs] = lhsAndRhs;
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
 
         if (

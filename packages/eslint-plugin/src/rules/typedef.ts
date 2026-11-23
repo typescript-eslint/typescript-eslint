@@ -172,7 +172,13 @@ export default createRule<Options, MessageIds>({
             break;
         }
 
-        if (!annotationNode.typeAnnotation) {
+        if (
+          (annotationNode.type !== AST_NODE_TYPES.Identifier &&
+            annotationNode.type !== AST_NODE_TYPES.ArrayPattern &&
+            annotationNode.type !== AST_NODE_TYPES.ObjectPattern &&
+            annotationNode.type !== AST_NODE_TYPES.RestElement) ||
+          !annotationNode.typeAnnotation
+        ) {
           report(param, getNodeName(param));
         }
       }

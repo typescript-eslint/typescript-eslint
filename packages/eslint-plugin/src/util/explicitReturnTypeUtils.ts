@@ -95,6 +95,9 @@ function isDefaultFunctionParameterWithTypeAnnotation(
 ): boolean {
   return (
     node.type === AST_NODE_TYPES.AssignmentPattern &&
+    (node.left.type === AST_NODE_TYPES.Identifier ||
+      node.left.type === AST_NODE_TYPES.ArrayPattern ||
+      node.left.type === AST_NODE_TYPES.ObjectPattern) &&
     node.left.typeAnnotation != null
   );
 }

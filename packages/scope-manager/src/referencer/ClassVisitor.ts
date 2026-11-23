@@ -76,7 +76,13 @@ export class ClassVisitor extends Visitor {
   ): void {
     switch (node.type) {
       case AST_NODE_TYPES.AssignmentPattern:
-        this.visitType(node.left.typeAnnotation);
+        if (
+          node.left.type === AST_NODE_TYPES.Identifier ||
+          node.left.type === AST_NODE_TYPES.ArrayPattern ||
+          node.left.type === AST_NODE_TYPES.ObjectPattern
+        ) {
+          this.visitType(node.left.typeAnnotation);
+        }
         break;
       case AST_NODE_TYPES.TSParameterProperty:
         this.visitFunctionParameterTypeAnnotation(node.parameter);

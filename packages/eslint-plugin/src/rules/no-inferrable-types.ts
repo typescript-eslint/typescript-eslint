@@ -227,6 +227,9 @@ export default createRule<Options, MessageIds>({
         *fix(fixer) {
           if (
             (node.type === AST_NODE_TYPES.AssignmentPattern &&
+              (node.left.type === AST_NODE_TYPES.Identifier ||
+                node.left.type === AST_NODE_TYPES.ArrayPattern ||
+                node.left.type === AST_NODE_TYPES.ObjectPattern) &&
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
@@ -263,7 +266,12 @@ export default createRule<Options, MessageIds>({
           param = param.parameter;
         }
 
-        if (param.type === AST_NODE_TYPES.AssignmentPattern) {
+        if (
+          param.type === AST_NODE_TYPES.AssignmentPattern &&
+          (param.left.type === AST_NODE_TYPES.Identifier ||
+            param.left.type === AST_NODE_TYPES.ArrayPattern ||
+            param.left.type === AST_NODE_TYPES.ObjectPattern)
+        ) {
           reportInferrableType(param, param.left.typeAnnotation, param.right);
         }
       });

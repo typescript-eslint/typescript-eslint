@@ -1,0 +1,478 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "value",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeLiteral {
+                type: "TSTypeLiteral",
+                members: [
+                  TSPropertySignature {
+                    type: "TSPropertySignature",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "count",
+                      optional: false,
+
+                      range: [21, 26],
+                      loc: {
+                        start: { column: 21, line: 1 },
+                        end: { column: 26, line: 1 },
+                      },
+                    },
+                    optional: false,
+                    readonly: false,
+                    static: false,
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSNumberKeyword {
+                        type: "TSNumberKeyword",
+
+                        range: [28, 34],
+                        loc: {
+                          start: { column: 28, line: 1 },
+                          end: { column: 34, line: 1 },
+                        },
+                      },
+
+                      range: [26, 34],
+                      loc: {
+                        start: { column: 26, line: 1 },
+                        end: { column: 34, line: 1 },
+                      },
+                    },
+
+                    range: [21, 34],
+                    loc: {
+                      start: { column: 21, line: 1 },
+                      end: { column: 34, line: 1 },
+                    },
+                  },
+                ],
+
+                range: [19, 36],
+                loc: {
+                  start: { column: 19, line: 1 },
+                  end: { column: 36, line: 1 },
+                },
+              },
+
+              range: [17, 36],
+              loc: {
+                start: { column: 17, line: 1 },
+                end: { column: 36, line: 1 },
+              },
+            },
+
+            range: [12, 36],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 36, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [12, 36],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 36, line: 1 },
+          },
+        },
+      ],
+      declare: true,
+      kind: "let",
+
+      range: [0, 37],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 37, line: 1 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "values",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSArrayType {
+                type: "TSArrayType",
+                elementType: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [58, 64],
+                  loc: {
+                    start: { column: 20, line: 2 },
+                    end: { column: 26, line: 2 },
+                  },
+                },
+
+                range: [58, 66],
+                loc: {
+                  start: { column: 20, line: 2 },
+                  end: { column: 28, line: 2 },
+                },
+              },
+
+              range: [56, 66],
+              loc: {
+                start: { column: 18, line: 2 },
+                end: { column: 28, line: 2 },
+              },
+            },
+
+            range: [50, 66],
+            loc: {
+              start: { column: 12, line: 2 },
+              end: { column: 28, line: 2 },
+            },
+          },
+          init: null,
+
+          range: [50, 66],
+          loc: {
+            start: { column: 12, line: 2 },
+            end: { column: 28, line: 2 },
+          },
+        },
+      ],
+      declare: true,
+      kind: "let",
+
+      range: [38, 67],
+      loc: {
+        start: { column: 0, line: 2 },
+        end: { column: 29, line: 2 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "count",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [87, 93],
+                loc: {
+                  start: { column: 19, line: 3 },
+                  end: { column: 25, line: 3 },
+                },
+              },
+
+              range: [85, 93],
+              loc: {
+                start: { column: 17, line: 3 },
+                end: { column: 25, line: 3 },
+              },
+            },
+
+            range: [80, 93],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 25, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [80, 93],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 25, line: 3 },
+          },
+        },
+      ],
+      declare: true,
+      kind: "let",
+
+      range: [68, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 26, line: 3 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ArrayPattern {
+          type: "ArrayPattern",
+          decorators: [],
+          elements: [
+            AssignmentPattern {
+              type: "AssignmentPattern",
+              decorators: [],
+              left: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "value",
+                  optional: false,
+
+                  range: [97, 102],
+                  loc: {
+                    start: { column: 1, line: 5 },
+                    end: { column: 6, line: 5 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "count",
+                  optional: false,
+
+                  range: [103, 108],
+                  loc: {
+                    start: { column: 7, line: 5 },
+                    end: { column: 12, line: 5 },
+                  },
+                },
+
+                range: [97, 108],
+                loc: {
+                  start: { column: 1, line: 5 },
+                  end: { column: 12, line: 5 },
+                },
+              },
+              optional: false,
+              right: Literal {
+                type: "Literal",
+                raw: "1",
+                value: 1,
+
+                range: [111, 112],
+                loc: {
+                  start: { column: 15, line: 5 },
+                  end: { column: 16, line: 5 },
+                },
+              },
+
+              range: [97, 112],
+              loc: {
+                start: { column: 1, line: 5 },
+                end: { column: 16, line: 5 },
+              },
+            },
+          ],
+          optional: false,
+
+          range: [96, 113],
+          loc: {
+            start: { column: 0, line: 5 },
+            end: { column: 17, line: 5 },
+          },
+        },
+        operator: "=",
+        right: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "values",
+          optional: false,
+
+          range: [116, 122],
+          loc: {
+            start: { column: 20, line: 5 },
+            end: { column: 26, line: 5 },
+          },
+        },
+
+        range: [96, 122],
+        loc: {
+          start: { column: 0, line: 5 },
+          end: { column: 26, line: 5 },
+        },
+      },
+
+      range: [96, 123],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 27, line: 5 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ObjectPattern {
+          type: "ObjectPattern",
+          decorators: [],
+          optional: false,
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "count",
+                optional: false,
+
+                range: [127, 132],
+                loc: {
+                  start: { column: 3, line: 6 },
+                  end: { column: 8, line: 6 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: false,
+              value: AssignmentPattern {
+                type: "AssignmentPattern",
+                decorators: [],
+                left: TSNonNullExpression {
+                  type: "TSNonNullExpression",
+                  expression: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "count",
+                    optional: false,
+
+                    range: [134, 139],
+                    loc: {
+                      start: { column: 10, line: 6 },
+                      end: { column: 15, line: 6 },
+                    },
+                  },
+
+                  range: [134, 140],
+                  loc: {
+                    start: { column: 10, line: 6 },
+                    end: { column: 16, line: 6 },
+                  },
+                },
+                optional: false,
+                right: Literal {
+                  type: "Literal",
+                  raw: "2",
+                  value: 2,
+
+                  range: [143, 144],
+                  loc: {
+                    start: { column: 19, line: 6 },
+                    end: { column: 20, line: 6 },
+                  },
+                },
+
+                range: [134, 144],
+                loc: {
+                  start: { column: 10, line: 6 },
+                  end: { column: 20, line: 6 },
+                },
+              },
+
+              range: [127, 144],
+              loc: {
+                start: { column: 3, line: 6 },
+                end: { column: 20, line: 6 },
+              },
+            },
+          ],
+
+          range: [125, 146],
+          loc: {
+            start: { column: 1, line: 6 },
+            end: { column: 22, line: 6 },
+          },
+        },
+        operator: "=",
+        right: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "count",
+                optional: false,
+
+                range: [151, 156],
+                loc: {
+                  start: { column: 27, line: 6 },
+                  end: { column: 32, line: 6 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: false,
+              value: Literal {
+                type: "Literal",
+                raw: "3",
+                value: 3,
+
+                range: [158, 159],
+                loc: {
+                  start: { column: 34, line: 6 },
+                  end: { column: 35, line: 6 },
+                },
+              },
+
+              range: [151, 159],
+              loc: {
+                start: { column: 27, line: 6 },
+                end: { column: 35, line: 6 },
+              },
+            },
+          ],
+
+          range: [149, 161],
+          loc: {
+            start: { column: 25, line: 6 },
+            end: { column: 37, line: 6 },
+          },
+        },
+
+        range: [125, 161],
+        loc: {
+          start: { column: 1, line: 6 },
+          end: { column: 37, line: 6 },
+        },
+      },
+
+      range: [124, 163],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 39, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 164],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 7 },
+  },
+}
