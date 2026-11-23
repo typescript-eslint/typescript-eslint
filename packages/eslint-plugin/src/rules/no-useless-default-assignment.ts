@@ -151,7 +151,7 @@ export default createRule<Options, MessageId>({
         parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         parent.type === AST_NODE_TYPES.FunctionExpression
       ) {
-        const paramIndex = parent.params.indexOf(node);
+        const paramIndex = parent.params.findIndex(param => param === node);
         if (paramIndex !== -1) {
           const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
           // tsFunc is already a FunctionLike subtype; defensive runtime check

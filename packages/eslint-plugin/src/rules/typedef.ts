@@ -152,19 +152,18 @@ export default createRule<Options, MessageIds>({
 
     function checkParameters(params: TSESTree.Parameter[]): void {
       for (const param of params) {
-        let annotationNode: TSESTree.Node | undefined;
+        let annotationNode: TSESTree.BindingName | TSESTree.RestElement;
 
         switch (param.type) {
           case AST_NODE_TYPES.AssignmentPattern:
             annotationNode = param.left;
             break;
           case AST_NODE_TYPES.TSParameterProperty:
-            annotationNode = param.parameter;
-
             // Check TS parameter property with default value like `constructor(private param: string = 'something') {}`
-            if (annotationNode.type === AST_NODE_TYPES.AssignmentPattern) {
-              annotationNode = annotationNode.left;
-            }
+            annotationNode =
+              param.parameter.type === AST_NODE_TYPES.AssignmentPattern
+                ? param.parameter.left
+                : param.parameter;
 
             break;
           default:
@@ -172,13 +171,7 @@ export default createRule<Options, MessageIds>({
             break;
         }
 
-        if (
-          (annotationNode.type !== AST_NODE_TYPES.Identifier &&
-            annotationNode.type !== AST_NODE_TYPES.ArrayPattern &&
-            annotationNode.type !== AST_NODE_TYPES.ObjectPattern &&
-            annotationNode.type !== AST_NODE_TYPES.RestElement) ||
-          !annotationNode.typeAnnotation
-        ) {
+        if (!annotationNode.typeAnnotation) {
           report(param, getNodeName(param));
         }
       }

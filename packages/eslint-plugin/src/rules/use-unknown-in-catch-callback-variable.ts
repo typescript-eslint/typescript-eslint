@@ -242,7 +242,6 @@ export default createRule<[], MessageIds>({
           };
         }
       }
-      return undefined;
     }
 
     return {
