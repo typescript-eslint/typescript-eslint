@@ -194,7 +194,11 @@ describe('parser', () => {
         typescriptESTree,
         'parseAndGenerateServices',
       ).mockReturnValueOnce({
-        ast: {},
+        ast: typescriptESTree.parse(code, {
+          comment: true,
+          range: true,
+          tokens: true,
+        }),
         services: {
           program: {
             getCompilerOptions: () => ({ target }),
@@ -231,7 +235,11 @@ describe('parser', () => {
         typescriptESTree,
         'parseAndGenerateServices',
       ).mockReturnValueOnce({
-        ast: {},
+        ast: typescriptESTree.parse(code, {
+          comment: true,
+          range: true,
+          tokens: true,
+        }),
         services: {
           program: {
             // Explicitly not setting a target so that the default is used
@@ -294,7 +302,11 @@ describe('parser', () => {
         typescriptESTree,
         'parseAndGenerateServices',
       ).mockReturnValueOnce({
-        ast: {},
+        ast: typescriptESTree.parse(code, {
+          comment: true,
+          range: true,
+          tokens: true,
+        }),
         services: {
           program: {
             getCompilerOptions: () => compilerOptions,
@@ -307,6 +319,111 @@ describe('parser', () => {
       expect(spy).toHaveBeenCalledExactlyOnceWith(
         expect.anything(),
         expect.objectContaining({ jsxPragma }),
+      );
+    },
+  );
+
+  it.for([
+    ['@jsx', '/* @jsx h */', {}, { jsxPragma: 'h' }],
+    ['@jsx with a member', '/** @jsx preact.h */', {}, { jsxPragma: 'preact' }],
+    [
+      '@jsx and @jsxFrag in one JSDoc comment',
+      '/**\r\n * @jsx h\r\n * @jsxFrag Fragment\r\n */',
+      {},
+      { jsxFragmentName: 'Fragment', jsxPragma: 'h' },
+    ],
+    [
+      'a pragma after a line comment',
+      '#!/usr/bin/env node\n// eslint-disable\n/* @jsx h */',
+      {},
+      { jsxPragma: 'h' },
+    ],
+    ['the first @jsx', '/* @jsx h */\n/* @jsx j */', {}, { jsxPragma: 'h' }],
+    [
+      '@jsx over jsxPragma',
+      '/* @jsx h */',
+      { jsxPragma: 'Foo' },
+      { jsxPragma: 'h' },
+    ],
+    [
+      '@jsxFrag over jsxFragmentName',
+      '/* @jsxFrag Fragment */',
+      { jsxFragmentName: 'Foo' },
+      { jsxFragmentName: 'Fragment' },
+    ],
+    ['@jsx without a value', '/* @jsx */', {}, { jsxPragma: undefined }],
+    ['@jsx in a line comment', '// @jsx h', {}, { jsxPragma: undefined }],
+    [
+      '@jsx after the first token',
+      'const before = true;\n/* @jsx h */',
+      {},
+      { jsxPragma: undefined },
+    ],
+    [
+      '@jsx and @jsxFrag with `jsxPragma: null`',
+      '/* @jsx h */\n/* @jsxFrag Fragment */',
+      { jsxPragma: null },
+      { jsxFragmentName: undefined, jsxPragma: null },
+    ],
+  ] as const)(
+    'calls analyze() with the JSX options from %s',
+    ([, comments, parserOptions, expected], { expect }) => {
+      const code = `${comments}\nconst valid = true;`;
+      const spy = vi.spyOn(scopeManager, 'analyze');
+
+      parseForESLint(code, parserOptions);
+
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        expect.objectContaining(expected),
+      );
+    },
+  );
+
+  it.for([
+    [
+      'ignores @jsx and @jsxFrag with `jsx: react-jsx`',
+      { jsx: JsxEmit.ReactJSX },
+      { jsxFragmentName: undefined, jsxPragma: null },
+    ],
+    [
+      'prefers @jsx and @jsxFrag over `jsxFactory` and `jsxFragmentFactory`',
+      { jsxFactory: 'h.createElement', jsxFragmentFactory: 'h.Fragment' },
+      { jsxFragmentName: 'Fragment', jsxPragma: 'preact' },
+    ],
+  ] as const)(
+    'calls analyze() with the JSX pragmas: %s',
+    ([, compilerOptions, expected], { expect }) => {
+      const code =
+        '/* @jsx preact.h */\n/* @jsxFrag Fragment */\nconst valid = true;';
+      const spy = vi.spyOn(scopeManager, 'analyze');
+      const config: ParserOptions = {
+        filePath: 'isolated-file.src.ts',
+        project: 'tsconfig.json',
+        tsconfigRootDir: FIXTURES_DIR,
+      };
+
+      vi.spyOn(
+        typescriptESTree,
+        'parseAndGenerateServices',
+      ).mockReturnValueOnce({
+        ast: typescriptESTree.parse(code, {
+          comment: true,
+          range: true,
+          tokens: true,
+        }),
+        services: {
+          program: {
+            getCompilerOptions: () => compilerOptions,
+          },
+        },
+      } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      parseForESLint(code, config);
+
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        expect.objectContaining(expected),
       );
     },
   );

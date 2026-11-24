@@ -12,6 +12,7 @@ import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import type * as ts from 'typescript';
 
 import { analyze } from '@typescript-eslint/scope-manager';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import {
   parseAndGenerateServices,
   typescriptVersionIsAtLeast,
@@ -43,6 +44,43 @@ function validateBoolean(
     return fallback;
   }
   return value;
+}
+
+interface JsxPragmas {
+  factory?: string;
+  fragmentFactory?: string;
+}
+
+// Like TypeScript, only read block comments before the first token, and let
+// the first occurrence of each pragma win.
+function getJsxPragmas(ast: ESLintProgram): JsxPragmas {
+  const pragmas: JsxPragmas = {};
+  const firstTokenStart = ast.tokens.at(0)?.range[0] ?? Infinity;
+
+  for (const comment of ast.comments) {
+    if (comment.range[0] > firstTokenStart) {
+      break;
+    }
+    if (comment.type !== AST_TOKEN_TYPES.Block) {
+      continue;
+    }
+    for (const [, name, args] of comment.value.matchAll(/@(\S+)(.*)/g)) {
+      const value = args.trim().split(/\s+/)[0];
+      if (!value) {
+        continue;
+      }
+      switch (name.toLowerCase()) {
+        case 'jsx':
+          pragmas.factory ??= value;
+          break;
+        case 'jsxfrag':
+          pragmas.fragmentFactory ??= value;
+          break;
+      }
+    }
+  }
+
+  return pragmas;
 }
 
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
@@ -198,6 +236,25 @@ export function parseForESLint(
       analyzeOptions.jsxFragmentName = fragFactory;
       log(
         'Resolved jsxFragmentName from program: %s',
+        analyzeOptions.jsxFragmentName,
+      );
+    }
+  }
+
+  // TypeScript ignores these pragmas with the automatic runtime (null jsxPragma)
+  // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish -- undefined still allows them
+  if (analyzeOptions.jsxPragma !== null) {
+    const jsxPragmas = getJsxPragmas(ast);
+    if (jsxPragmas.factory != null) {
+      analyzeOptions.jsxPragma = jsxPragmas.factory.split('.')[0].trim();
+      log('Resolved jsxPragma from @jsx pragma: %s', analyzeOptions.jsxPragma);
+    }
+    if (jsxPragmas.fragmentFactory != null) {
+      analyzeOptions.jsxFragmentName = jsxPragmas.fragmentFactory
+        .split('.')[0]
+        .trim();
+      log(
+        'Resolved jsxFragmentName from @jsxFrag pragma: %s',
         analyzeOptions.jsxFragmentName,
       );
     }

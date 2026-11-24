@@ -190,6 +190,8 @@ This should not be a member expression - just the root identifier (i.e. use `"h"
 
 If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
 
+A `/* @jsxFrag Fragment */` comment at the top of a file overrides this option for that file, unless `jsxPragma` is `null`.
+
 ### `jsxPragma`
 
 > Default: `'React'`
@@ -201,6 +203,9 @@ This should not be a member expression - just the root identifier (i.e. use `"Re
 
 If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
 When the compiler's `jsx` option is `react-jsx` or `react-jsxdev`, it is detected as `null`.
+
+A `/* @jsx h */` comment at the top of a file overrides this option for that file, unless it is `null`.
+Like TypeScript, only block comments before the first token are read.
 
 ### `lib`
 

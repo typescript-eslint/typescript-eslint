@@ -905,6 +905,19 @@ export const ComponentFoo: Fragment = () => {
         },
       },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2514
+    {
+      code: `
+/* @jsx h */
+/* @jsxFrag Fragment */
+import { Fragment, h } from 'preact';
+
+export const ComponentFoo = () => {
+  return <>Foo Foo</>;
+};
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
     `
 declare module 'foo' {
   type Test = 1;
