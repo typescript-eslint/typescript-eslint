@@ -675,9 +675,7 @@ describe(RuleTester, () => {
         ],
       });
 
-      expect(
-        getTestConfigFromCall().map(({ code, skip }) => ({ code, skip })),
-      ).toEqual([
+      expect(getTestConfigFromCall()).toMatchObject([
         { code: 'explicitly skipped', skip: true },
         { code: 'explicitly skipped and constrained', skip: true },
         { code: 'constrained', skip: false },
