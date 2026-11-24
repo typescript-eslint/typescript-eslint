@@ -648,6 +648,42 @@ describe(RuleTester, () => {
       `);
     });
 
+    it('keeps an explicit skip when another test case has dependency constraints', () => {
+      const ruleTester = new RuleTester({
+        languageOptions: { parser },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'constrained',
+            dependencyConstraints: {
+              typescript: '1',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [
+          { code: 'explicitly skipped', skip: true },
+          {
+            code: 'explicitly skipped and constrained',
+            dependencyConstraints: {
+              typescript: '1',
+            },
+            skip: true,
+          },
+        ],
+      });
+
+      expect(
+        getTestConfigFromCall().map(({ code, skip }) => ({ code, skip })),
+      ).toEqual([
+        { code: 'explicitly skipped', skip: true },
+        { code: 'explicitly skipped and constrained', skip: true },
+        { code: 'constrained', skip: false },
+      ]);
+    });
+
     it('correctly handles object-based semver', () => {
       satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
       satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
