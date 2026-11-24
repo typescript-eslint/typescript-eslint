@@ -2196,6 +2196,29 @@ export class Converter {
         });
 
       case SyntaxKind.QualifiedName: {
+        if (node.right.text === '') {
+          const hashPos = this.ast.text.indexOf('#', node.left.end);
+          if (hashPos !== -1 && hashPos < node.end) {
+            let nameEnd = hashPos + 1;
+            while (
+              nameEnd < this.ast.text.length &&
+              /\w/.test(this.ast.text[nameEnd])
+            ) {
+              nameEnd++;
+            }
+            const range: TSESTree.Range = [hashPos, nameEnd];
+            return this.createNode<TSESTree.TSQualifiedName>(node, {
+              type: AST_NODE_TYPES.TSQualifiedName,
+              left: this.convertChild(node.left),
+              right: this.createNode<TSESTree.PrivateIdentifier>(node.right, {
+                type: AST_NODE_TYPES.PrivateIdentifier,
+                name: this.ast.text.slice(hashPos + 1, nameEnd),
+                range,
+                loc: getLocFor(range, this.ast),
+              }),
+            });
+          }
+        }
         return this.createNode<TSESTree.TSQualifiedName>(node, {
           type: AST_NODE_TYPES.TSQualifiedName,
           left: this.convertChild(node.left),

@@ -85,5 +85,9 @@ exports[`AST Fixtures > List fixtures we expect babel to not support`]
   [
     "legacy-fixtures/namespaces-and-modules/fixtures/nested-internal-module/fixture.ts",
     true
+  ],
+  [
+    "type/TSQualifiedName/fixtures/typeof-private-identifier/fixture.ts",
+    true
   ]
 ]
