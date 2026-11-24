@@ -3,6 +3,7 @@
 import * as ts from 'typescript';
 
 import type { TSError } from './node-utils';
+import type { PrivateTypeQueryDiagnostic } from './parseDiagnostics';
 import type {
   ParserWeakMap,
   ParserWeakMapESTreeToTSNode,
@@ -43,6 +44,7 @@ const SyntaxKind = ts.SyntaxKind;
 export interface ConverterOptions {
   allowInvalidAST?: boolean;
   errorOnUnknownASTType?: boolean;
+  privateTypeQueryNodes?: ReadonlyMap<ts.Node, PrivateTypeQueryDiagnostic>;
   shouldPreserveNodeMaps?: boolean;
   suppressDeprecatedPropertyWarnings?: boolean;
 }
@@ -222,6 +224,26 @@ export class Converter {
    * @param parent parentNode
    * @returns Array of body statements
    */
+  #convertPrivateTypeQuery({
+    privateIdentifier,
+    qualifiedName,
+  }: PrivateTypeQueryDiagnostic): TSESTree.TSQualifiedName {
+    const range = getRange(privateIdentifier, this.ast);
+    const right = this.createNode<TSESTree.PrivateIdentifier>(
+      privateIdentifier,
+      {
+        type: AST_NODE_TYPES.PrivateIdentifier,
+        name: this.ast.text.slice(range[0], range[1]).slice(1),
+      },
+    );
+
+    return this.createNode<TSESTree.TSQualifiedName>(qualifiedName, {
+      type: AST_NODE_TYPES.TSQualifiedName,
+      left: this.convertChild((qualifiedName as ts.QualifiedName).left),
+      right,
+    });
+  }
+
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent:
@@ -488,7 +510,11 @@ export class Converter {
     const parentNode = (parent ?? node.parent) as TSNode;
     this.#checkSyntaxError(node, parentNode);
 
-    const result = this.convertNode(node as TSNode, parentNode);
+    const recoveredPrivateTypeQuery =
+      this.options.privateTypeQueryNodes?.get(node);
+    const result = recoveredPrivateTypeQuery
+      ? this.#convertPrivateTypeQuery(recoveredPrivateTypeQuery)
+      : this.convertNode(node as TSNode, parentNode);
 
     this.registerTSNodeInNodeMap(node, result);
 

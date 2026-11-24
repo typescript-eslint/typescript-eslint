@@ -763,6 +763,20 @@ export function checkSyntaxError(
       break;
     }
 
+    case SyntaxKind.TypeQuery: {
+      const exprName = node.exprName;
+      if (
+        exprName.kind === SyntaxKind.Identifier &&
+        exprName.text.startsWith('#')
+      ) {
+        throw createError(
+          exprName,
+          'A private identifier is only valid as the right side of a qualified name in a type query.',
+        );
+      }
+      break;
+    }
+
     // No default
   }
 }

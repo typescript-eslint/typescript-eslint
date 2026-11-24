@@ -185,6 +185,9 @@ export default createRule({
         enterDeclaration(node.parent);
       },
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
+        if (node.right.type === AST_NODE_TYPES.PrivateIdentifier) {
+          return;
+        }
         visitNamespaceAccess(node, node.left, node.right);
       },
       'TSQualifiedName:exit': resetCurrentNamespaceExpression,

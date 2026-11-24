@@ -100,6 +100,84 @@ x
     });
   });
 
+  describe('typeof private field in type query', () => {
+    function parseTypeQuery(code: string): parser.TSESTree.TSTypeQuery {
+      const ast = parser.parse(code, {
+        filePath: 'file.ts',
+        loc: true,
+        range: true,
+      });
+      const declaration = ast.body[0] as parser.TSESTree.VariableDeclaration;
+      const declarator = declaration.declarations[0];
+      if (declarator.id.type !== parser.AST_NODE_TYPES.Identifier) {
+        throw new Error('Expected identifier declarator');
+      }
+      const annotation = declarator.id.typeAnnotation;
+      if (
+        annotation?.typeAnnotation.type !== parser.AST_NODE_TYPES.TSTypeQuery
+      ) {
+        throw new Error('Expected type query annotation');
+      }
+      return annotation.typeAnnotation;
+    }
+
+    it('converts a private identifier after a dot', () => {
+      const typeQuery = parseTypeQuery('let x: typeof a.#a;');
+
+      expect(typeQuery.exprName).toStrictEqual({
+        left: expect.objectContaining({
+          name: 'a',
+          range: [14, 15],
+          type: parser.AST_NODE_TYPES.Identifier,
+        }),
+        loc: {
+          end: { column: 18, line: 1 },
+          start: { column: 14, line: 1 },
+        },
+        range: [14, 18],
+        right: {
+          loc: {
+            end: { column: 18, line: 1 },
+            start: { column: 16, line: 1 },
+          },
+          name: 'a',
+          range: [16, 18],
+          type: parser.AST_NODE_TYPES.PrivateIdentifier,
+        },
+        type: parser.AST_NODE_TYPES.TSQualifiedName,
+      });
+    });
+
+    it('converts a private identifier in a nested qualified name', () => {
+      const typeQuery = parseTypeQuery('let x: typeof a.#a.b;');
+      const exprName = typeQuery.exprName;
+      if (exprName.type !== parser.AST_NODE_TYPES.TSQualifiedName) {
+        throw new Error('Expected qualified name');
+      }
+
+      expect(exprName.right).toMatchObject({
+        name: 'b',
+        type: parser.AST_NODE_TYPES.Identifier,
+      });
+      expect(exprName.left).toMatchObject({
+        right: {
+          name: 'a',
+          type: parser.AST_NODE_TYPES.PrivateIdentifier,
+        },
+        type: parser.AST_NODE_TYPES.TSQualifiedName,
+      });
+    });
+
+    it.each([
+      'let x: C.#a;',
+      'let x: typeof import("m").C.#d;',
+      'let x: typeof a.#;',
+      'let x: typeof #a;',
+    ])('still rejects invalid syntax: %s', code => {
+      expect(() => parser.parse(code)).toThrow();
+    });
+  });
+
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {

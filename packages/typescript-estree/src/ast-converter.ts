@@ -7,6 +7,7 @@ import type { TSESTree } from './ts-estree';
 import { Converter, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
+import { getPrivateTypeQueryDiagnostics } from './parseDiagnostics';
 import { simpleTraverse } from './simple-traverse';
 
 export function astConverter(
@@ -16,11 +17,22 @@ export function astConverter(
 ): { astMaps: ASTMaps; estree: TSESTree.Program } {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
-   * source.
+   * source. A narrow set of those errors is recoverable: TypeScript parses
+   * `typeof a.#field` as a malformed qualified name whose right node is empty,
+   * while leaving the private identifier in the token stream.
    */
   const { parseDiagnostics } = ast;
-  if (parseDiagnostics.length) {
-    throw convertError(parseDiagnostics[0]);
+  const privateTypeQueryDiagnostics = getPrivateTypeQueryDiagnostics(ast);
+  const remainingDiagnostics = privateTypeQueryDiagnostics.length
+    ? parseDiagnostics.filter(
+        diagnostic =>
+          !privateTypeQueryDiagnostics.some(
+            recovered => recovered.diagnostic === diagnostic,
+          ),
+      )
+    : parseDiagnostics;
+  if (remainingDiagnostics.length) {
+    throw convertError(remainingDiagnostics[0]);
   }
 
   /**
@@ -29,6 +41,12 @@ export function astConverter(
   const instance = new Converter(ast, {
     allowInvalidAST: parseSettings.allowInvalidAST,
     errorOnUnknownASTType: parseSettings.errorOnUnknownASTType,
+    privateTypeQueryNodes: new Map(
+      privateTypeQueryDiagnostics.map(recovered => [
+        recovered.qualifiedName,
+        recovered,
+      ]),
+    ),
     shouldPreserveNodeMaps,
     suppressDeprecatedPropertyWarnings:
       parseSettings.suppressDeprecatedPropertyWarnings,

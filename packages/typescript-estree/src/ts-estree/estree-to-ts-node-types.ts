@@ -198,7 +198,8 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
   [AST_NODE_TYPES.TSParameterProperty]: ts.ParameterDeclaration;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
-  [AST_NODE_TYPES.TSQualifiedName]: ts.Identifier | ts.QualifiedName;
+  [AST_NODE_TYPES.TSQualifiedName]:
+    ts.Identifier | ts.PrivateIdentifier | ts.QualifiedName;
   [AST_NODE_TYPES.TSRestType]:
     | ts.NamedTupleMember // for consistency and following babel's choices, a named tuple member with a rest gets converted to a TSRestType
     | ts.RestTypeNode;
