@@ -60,8 +60,7 @@ import {
 
 const ajv = ajvBuilder({ strictDefaults: true });
 
-// Rules whose options schema already passed validation, so it isn't re-validated and re-compiled for every test case.
-const rulesWithValidatedSchema = new WeakSet();
+const validRuleSchemaCache = new WeakSet();
 
 const RULE_TESTER_PLUGIN = '@rule-tester';
 const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
@@ -749,7 +748,7 @@ export class RuleTester extends TestFramework {
     config.languageOptions.parser ??= defaultParser;
     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
 
-    const schema = rulesWithValidatedSchema.has(rule)
+    const schema = validRuleSchemaCache.has(rule)
       ? null
       : getRuleOptionsSchema(rule);
 
@@ -791,7 +790,7 @@ export class RuleTester extends TestFramework {
         );
       }
 
-      rulesWithValidatedSchema.add(rule);
+      validRuleSchemaCache.add(rule);
     }
 
     validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));
