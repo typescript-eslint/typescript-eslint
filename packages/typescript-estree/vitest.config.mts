@@ -8,18 +8,19 @@ import packageJson from './package.json' with { type: 'json' };
 const name = packageJson.name.replace('@typescript-eslint/', '');
 const testsDir = path.join(import.meta.dirname, 'tests', 'lib');
 
-// Files that mock modules need a fresh module graph. Everything else shares
-// one, so that each file doesn't re-import TypeScript and the parser.
 const testFiles = fs
   .readdirSync(testsDir, { encoding: 'utf8', recursive: true })
   .filter(file => file.endsWith('.test.ts'))
   .map(file => file.replaceAll(path.sep, '/'));
-const mocksModules = (file: string): boolean =>
-  /\bvi\.(?:doMock|mock|resetModules)\(/.test(
-    fs.readFileSync(path.join(testsDir, file), 'utf8'),
-  );
-const isolatedTests = testFiles.filter(mocksModules);
-const sharedTests = testFiles.filter(file => !mocksModules(file));
+
+const isMockingModules = (file: string): boolean => {
+  const content = fs.readFileSync(path.join(testsDir, file), 'utf8');
+
+  return /\bvi\.(?:doMock|mock|resetModules)\(/.test(content);
+};
+
+const isolatedTests = testFiles.filter(isMockingModules);
+const sharedTests = testFiles.filter(file => !isolatedTests.includes(file));
 
 const vitestConfig = mergeConfig(
   vitestBaseConfig,
@@ -58,7 +59,7 @@ export default mergeConfig(vitestConfig, {
       {
         extends: true,
         test: {
-          exclude: isolatedTests.map(file => `**/${file}`),
+          exclude: isolatedTests,
           isolate: false,
           name,
         },
@@ -66,7 +67,7 @@ export default mergeConfig(vitestConfig, {
       {
         extends: true,
         test: {
-          exclude: sharedTests.map(file => `**/${file}`),
+          exclude: sharedTests,
           isolate: true,
           name: `${name} (isolated)`,
         },
