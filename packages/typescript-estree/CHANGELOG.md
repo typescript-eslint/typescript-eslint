@@ -1,3 +1,17 @@
+## 8.74.0 (2026-11-23)
+
+### 🚀 Features
+
+- **ast-spec:** tighten types of `Property` ([#13074](https://github.com/typescript-eslint/typescript-eslint/pull/13074))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.74.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.73.0 (2026-11-16)
 
 ### 🚀 Features

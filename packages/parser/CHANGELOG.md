@@ -1,3 +1,19 @@
+## 8.74.0 (2026-11-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report deprecated properties in union types ([#13069](https://github.com/typescript-eslint/typescript-eslint/pull/13069))
+- **parser:** detect jsxPragma as null for the automatic JSX runtime ([#13129](https://github.com/typescript-eslint/typescript-eslint/pull/13129))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Maksim @maksimgm
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.74.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.73.0 (2026-11-16)
 
 This was a version bump only for parser to align it with other projects, there were no code changes.
