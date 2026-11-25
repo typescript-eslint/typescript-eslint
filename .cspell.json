@@ -178,6 +178,7 @@
     "tsconfigrootdir",
     "tsconfigs",
     "tsestree",
+    "tsrs",
     "tsserverlibrary",
     "tsvfs",
     "tuplize",
