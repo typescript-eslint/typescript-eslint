@@ -46,6 +46,7 @@ Snapshot Diff:
               end: { column: 39, line: 3 },
             },
           },
++         phase: null,
 
           range: [80, 113],
           loc: {
@@ -66,11 +67,9 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
--   range: [73, 114],
-+   range: [0, 114],
+    range: [0, 114],
     loc: {
--     start: { column: 0, line: 3 },
-+     start: { column: 0, line: 1 },
+      start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

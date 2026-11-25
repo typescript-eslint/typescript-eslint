@@ -230,6 +230,8 @@ await using foo = d;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -239,6 +241,8 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -246,6 +250,8 @@ await using foo = 3 as any;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       // bad bad code but not this rule's problem
@@ -256,6 +262,8 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -264,6 +272,8 @@ async function foo() {
   await using _ = maybeAsyncDisposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -272,6 +282,8 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -692,6 +704,60 @@ Promise.all([
   Promise.resolve(3),
 ]);
       `,
+    },
+    {
+      code: `
+declare const maybePromises: (number | Promise<number>)[];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromises: [number, Promise<number>];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromises: number[] | Promise<number>[];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2, Promise.resolve(3)]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromise: number | Promise<number>;
+Promise.all([1, maybePromise]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
+  Promise.all(maybePromises);
+}
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
     },
   ],
 
@@ -1189,6 +1255,8 @@ async function foo() {
   await using d = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1218,6 +1286,8 @@ async function foo() {
   };
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1240,6 +1310,7 @@ async function foo() {
         },
       ],
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const disposable: Disposable;
@@ -1252,6 +1323,8 @@ async function foo() {
     e = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1276,6 +1349,7 @@ async function foo() {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const anee: any;
@@ -1285,6 +1359,8 @@ async function foo() {
     b = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 9,
@@ -1776,6 +1852,60 @@ Promise.all([...[1, 2, 3]]);
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
+    },
+    {
+      code: `
+declare const numbers: number[];
+Promise.all(numbers);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const numbers: [number, string];
+Promise.all(numbers);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
     },
   ],
 });

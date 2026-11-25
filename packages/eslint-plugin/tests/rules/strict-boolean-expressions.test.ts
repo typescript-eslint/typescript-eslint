@@ -3218,6 +3218,7 @@ if (Boolean(x)) {
     },
 
     // noStrictNullCheck
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const x: string[] | null;
@@ -3242,27 +3243,27 @@ if (x) {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     // automatic semicolon insertion test
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+obj || 0
+obj && 1 || 0
       `,
       errors: [
         {
-          column: 10,
+          column: 2,
           data: { context: 'conditional' },
-          endColumn: 13,
+          endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
@@ -3270,19 +3271,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        (obj == null) ? 1 : 0
-        !obj
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+(obj == null) ? 1 : 0
+!obj
+obj || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 10,
+          column: 2,
           data: { context: 'conditional' },
-          endColumn: 13,
+          endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableObject',
@@ -3290,19 +3291,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        obj == null
-        obj || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+obj == null
+obj || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 9,
+          column: 1,
           data: { context: 'conditional' },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableObject',
@@ -3310,19 +3311,19 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        ;(obj != null) || 0
-        obj && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+;(obj != null) || 0
+obj && 1 || 0
       `,
             },
           ],
         },
         {
-          column: 9,
+          column: 1,
           data: { context: 'conditional' },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableObject',
@@ -3330,11 +3331,11 @@ if (x) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        obj || 0
-        ;(obj != null) && 1 || 0
+declare const obj: { x: number } | null;
+!obj ? 1 : 0
+!obj
+obj || 0
+;(obj != null) && 1 || 0
       `,
             },
           ],
@@ -3343,6 +3344,7 @@ if (x) {
       options: [{ allowNullableObject: false }],
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare function assert(x: unknown): asserts x;

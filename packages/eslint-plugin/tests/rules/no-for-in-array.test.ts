@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-for-in-array';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -335,9 +336,7 @@ for (const x in arrayLike) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.lib-dom.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'lib-dom'),
         },
       },
     },
@@ -360,9 +359,7 @@ for (const x in arrayLike) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.lib-dom.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'lib-dom'),
         },
       },
     },

@@ -1,6 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-imports';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
 const PARSER_OPTION_COMBOS = [
   {
@@ -622,9 +623,9 @@ const foo: A = B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -714,9 +715,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 9,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -734,25 +735,15 @@ type T = A;
 import type Already1Def from 'foo';
 import type { Already1 } from 'foo';
 import A, { B } from 'foo';
-import { C, D, E } from 'bar';
-import type { Already2 } from 'bar';
-type T = { b: B; c: C; d: D };
+type T = { b: B };
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B"' },
-              endColumn: 28,
+              endColumn: 14,
               endLine: 4,
               line: 4,
-              messageId: 'someImportsAreOnlyTypes',
-            },
-            {
-              column: 1,
-              data: { typeImports: '"C" and "D"' },
-              endColumn: 31,
-              endLine: 5,
-              line: 5,
               messageId: 'someImportsAreOnlyTypes',
             },
           ],
@@ -760,9 +751,29 @@ type T = { b: B; c: C; d: D };
 import type Already1Def from 'foo';
 import type { Already1 , B } from 'foo';
 import A from 'foo';
+type T = { b: B };
+          `,
+        },
+        {
+          code: `
+import { C, D, E } from 'bar';
+import type { Already2 } from 'bar';
+type T = { c: C; d: D };
+          `,
+          errors: [
+            {
+              column: 10,
+              data: { typeImports: '"C" and "D"' },
+              endColumn: 14,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
 import { E } from 'bar';
 import type { Already2 , C, D} from 'bar';
-type T = { b: B; c: C; d: D };
+type T = { c: C; d: D };
           `,
         },
         {
@@ -772,9 +783,9 @@ type T = B;
           `,
           errors: [
             {
-              column: 1,
+              column: 27,
               data: { typeImports: '"B"' },
-              endColumn: 42,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -786,6 +797,8 @@ import A from 'foo';
 type T = B;
           `,
         },
+        // Verifying multiple wrong imports
+        /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
         {
           code: noFormat`
 import { A, B, C } from 'foo';
@@ -794,17 +807,17 @@ type T = A | D;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 31,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"D"' },
-              endColumn: 32,
+              endColumn: 11,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -826,17 +839,17 @@ type T = B | E;
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B"' },
-              endColumn: 31,
+              endColumn: 14,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"E"' },
-              endColumn: 32,
+              endColumn: 14,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -858,17 +871,17 @@ type T = C | F;
           `,
           errors: [
             {
-              column: 1,
+              column: 16,
               data: { typeImports: '"C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 16,
               data: { typeImports: '"F"' },
-              endColumn: 32,
+              endColumn: 17,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -941,33 +954,33 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
           errors: [
             {
-              column: 1,
+              column: 18,
               data: { typeImports: '"Type1"' },
-              endColumn: 46,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type2"' },
-              endColumn: 48,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 18,
               data: { typeImports: '"Type3"' },
-              endColumn: 49,
+              endColumn: 23,
               endLine: 4,
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 65,
+              endColumn: 22,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -986,25 +999,18 @@ import { Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
         },
+        /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
         // type annotations
         {
           code: `
-let foo: import('foo');
 let bar: import('foo').Bar;
           `,
           errors: [
             {
               column: 10,
-              endColumn: 23,
+              endColumn: 27,
               endLine: 2,
               line: 2,
-              messageId: 'noImportTypeAnnotations',
-            },
-            {
-              column: 10,
-              endColumn: 27,
-              endLine: 3,
-              line: 3,
               messageId: 'noImportTypeAnnotations',
             },
           ],
@@ -1352,13 +1358,10 @@ export type { Type }; // is a type-only export
         },
         {
           // type with comments
-          code: noFormat`
+          code: `
 import type /*comment*/ * as AllType from 'foo';
-import type // comment
-DefType from 'foo';
-import type /*comment*/ { Type } from 'foo';
 
-type T = { a: AllType; b: DefType; c: Type };
+type T = { a: AllType };
           `,
           errors: [
             {
@@ -1368,29 +1371,60 @@ type T = { a: AllType; b: DefType; c: Type };
               line: 2,
               messageId: 'avoidImportType',
             },
+          ],
+          options: [{ prefer: 'no-type-imports' }],
+          output: `
+import /*comment*/ * as AllType from 'foo';
+
+type T = { a: AllType };
+          `,
+        },
+        {
+          // type with comments
+          code: `
+import type // comment
+DefType from 'foo';
+
+type T = { b: DefType };
+          `,
+          errors: [
             {
               column: 1,
               endColumn: 20,
-              endLine: 4,
-              line: 3,
-              messageId: 'avoidImportType',
-            },
-            {
-              column: 1,
-              endColumn: 45,
-              endLine: 5,
-              line: 5,
+              endLine: 3,
+              line: 2,
               messageId: 'avoidImportType',
             },
           ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
-import /*comment*/ * as AllType from 'foo';
 import // comment
 DefType from 'foo';
+
+type T = { b: DefType };
+          `,
+        },
+        {
+          // type with comments
+          code: noFormat`
+import type /*comment*/ { Type } from 'foo';
+
+type T = { c: Type };
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 45,
+              endLine: 2,
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
+          options: [{ prefer: 'no-type-imports' }],
+          output: `
 import /*comment*/ { Type } from 'foo';
 
-type T = { a: AllType; b: DefType; c: Type };
+type T = { c: Type };
           `,
         },
         {
@@ -1401,9 +1435,9 @@ const a: Rest.A = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 17,
               data: { typeImports: '"Rest"' },
-              endColumn: 41,
+              endColumn: 26,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1423,9 +1457,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 41,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1469,9 +1503,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 53,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1492,9 +1526,9 @@ const a: Default = '';
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Default"' },
-              endColumn: 66,
+              endColumn: 15,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1529,6 +1563,39 @@ type T = A;
 const b = B;
           `,
         },
+        // Splitting multiple type-only imports reports the entire declaration.
+        {
+          code: noFormat`
+import {
+  A,
+  B,
+  C,
+} from 'foo';
+type T = A | C;
+B();
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"A" and "C"' },
+              endColumn: 14,
+              endLine: 6,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ prefer: 'type-imports' }],
+          output: `
+import type {
+  A,
+  C} from 'foo';
+import {
+  B
+} from 'foo';
+type T = A | C;
+B();
+          `,
+        },
         {
           code: `
 import { A, B, type C } from 'foo';
@@ -1537,9 +1604,9 @@ const b = B;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 36,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1588,9 +1655,9 @@ B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1614,9 +1681,9 @@ B();
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 28,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1631,6 +1698,8 @@ type T = A;
 B();
           `,
         },
+        // Verify multiple instances of error
+        /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
         {
           code: `
 import { A } from 'foo';
@@ -1697,6 +1766,7 @@ type T = A;
 type U = B;
           `,
         },
+        /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
         {
           code: `
 import A, { B, C } from 'foo';
@@ -1706,9 +1776,9 @@ A();
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B" and "C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1785,9 +1855,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 24,
               data: { typeImports: '"A"' },
-              endColumn: 42,
+              endColumn: 25,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1808,9 +1878,9 @@ type T = A;
           `,
           errors: [
             {
-              column: 1,
+              column: 27,
               data: { typeImports: '"A"' },
-              endColumn: 42,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1865,9 +1935,9 @@ let baz: D;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A"' },
-              endColumn: 36,
+              endColumn: 11,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -2168,9 +2238,9 @@ function test(foo: Foo) {}
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"Foo"' },
-              endColumn: 32,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -2191,9 +2261,9 @@ function test(foo: Foo) {}
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"Foo"' },
-              endColumn: 32,
+              endColumn: 13,
               endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
@@ -2391,5 +2461,92 @@ export type T = Foo;
         `,
       },
     ],
+  });
+});
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/8324
+describe('jsxPragma detected from the program', () => {
+  describe('jsx: react-jsx', () => {
+    const ruleTester = createRuleTesterWithTypes({
+      project: './tsconfig.jsx-react-jsx.json',
+    });
+
+    ruleTester.run('consistent-type-imports', rule, {
+      assertionOptions: {
+        requireData: true,
+      },
+      valid: [],
+      invalid: [
+        {
+          code: `
+import React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 27,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          filename: 'react.tsx',
+          output: `
+import type React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+        },
+        {
+          code: `
+import React, { useCallback, useEffect } from 'react';
+
+useCallback(() => {}, []);
+declare const useEffectTwo: typeof useEffect;
+          `,
+          errors: [
+            {
+              column: 30,
+              data: { typeImports: '"useEffect"' },
+              endColumn: 39,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          filename: 'react.tsx',
+          output: `
+import type { useEffect } from 'react';
+import React, { useCallback } from 'react';
+
+useCallback(() => {}, []);
+declare const useEffectTwo: typeof useEffect;
+          `,
+        },
+      ],
+    });
+  });
+
+  describe('jsx: preserve', () => {
+    const ruleTester = createRuleTesterWithTypes();
+
+    ruleTester.run('consistent-type-imports', rule, {
+      valid: [
+        {
+          code: `
+import React from 'react';
+
+export type T = React.Component;
+export const el = <div />;
+          `,
+          filename: 'react.tsx',
+        },
+      ],
+      invalid: [],
+    });
   });
 });

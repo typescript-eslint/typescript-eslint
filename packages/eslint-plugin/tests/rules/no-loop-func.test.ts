@@ -55,14 +55,19 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
     `,
-    `
+    {
+      code: `
 declare function getResource(): Disposable;
 for (let i = 0; i < 3; i++) {
   using resource = getResource();
   const fn = () => resource;
 }
-    `,
-    `
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    {
+      code: `
 declare function getResource(): AsyncDisposable;
 async function f() {
   for (let i = 0; i < 3; i++) {
@@ -70,7 +75,10 @@ async function f() {
     const fn = () => resource;
   }
 }
-    `,
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
   ],
   invalid: [],
 });

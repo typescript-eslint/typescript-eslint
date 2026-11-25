@@ -1,4 +1,5 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unsafe-member-access';
 import { getFixturesRootDir } from '../RuleTester';
@@ -6,9 +7,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.noImplicitThis.json',
-      projectService: false,
-      tsconfigRootDir: getFixturesRootDir(),
+      projectService: true,
+      tsconfigRootDir: path.join(getFixturesRootDir(), 'noImplicitThis'),
     },
   },
 });
@@ -332,16 +332,7 @@ const methods = {
   methodA() {
     return this.methodB()
   },
-  methodB() {
-    const getProperty = () => Math.random() > 0.5 ? 'methodB' : 'methodC'
-    return this[getProperty()]()
-  },
-  methodC() {
-    return true
-  },
-  methodD() {
-    return (this?.methodA)?.()
-  }
+  methodB() {}
 };
       `,
       errors: [
@@ -353,20 +344,47 @@ const methods = {
           line: 4,
           messageId: 'unsafeThisMemberExpression',
         },
+      ],
+    },
+    {
+      code: noFormat`
+const methods = {
+  methodB() {
+    const getProperty = () => Math.random() > 0.5 ? 'methodB' : 'methodC'
+    return this[getProperty()]()
+  },
+  methodC() {
+    return true
+  },
+};
+      `,
+      errors: [
         {
           column: 17,
           data: { property: '[getProperty()]' },
           endColumn: 30,
-          endLine: 8,
-          line: 8,
+          endLine: 5,
+          line: 5,
           messageId: 'unsafeThisMemberExpression',
         },
+      ],
+    },
+    {
+      code: noFormat`
+const methods = {
+  methodA() {},
+  methodD() {
+    return (this?.methodA)?.()
+  }
+};
+      `,
+      errors: [
         {
           column: 19,
           data: { property: '.methodA' },
           endColumn: 26,
-          endLine: 14,
-          line: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'unsafeThisMemberExpression',
         },
       ],

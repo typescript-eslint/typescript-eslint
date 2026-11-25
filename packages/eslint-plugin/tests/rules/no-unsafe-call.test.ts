@@ -1,10 +1,11 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unsafe-call';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.noImplicitThis.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'noImplicitThis'),
 });
 
 ruleTester.run('no-unsafe-call', rule, {
@@ -286,9 +287,6 @@ const methods = {
   methodB() {
     return true
   },
-  methodC() {
-    return this()
-  }
 };
       `,
       errors: [
@@ -300,12 +298,26 @@ const methods = {
           line: 4,
           messageId: 'unsafeCallThis',
         },
+      ],
+    },
+    {
+      code: noFormat`
+const methods = {
+  methodB() {
+    return true
+  },
+  methodC() {
+    return this()
+  }
+};
+      `,
+      errors: [
         {
           column: 12,
           data: { type: 'an `any`' },
           endColumn: 16,
-          endLine: 10,
-          line: 10,
+          endLine: 7,
+          line: 7,
           messageId: 'unsafeCallThis',
         },
       ],
@@ -499,7 +511,6 @@ new value();
       code: `
 function callThis(this: NotKnown) {
   this();
-  this.method();
 }
       `,
       errors: [
@@ -510,11 +521,20 @@ function callThis(this: NotKnown) {
           line: 3,
           messageId: 'errorCallThis',
         },
+      ],
+    },
+    {
+      code: `
+function callThis(this: NotKnown) {
+  this.method();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'errorCallThis',
         },
       ],

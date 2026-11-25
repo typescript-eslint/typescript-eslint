@@ -223,6 +223,25 @@ enum Fruit {
   Apple,
 }
 
+declare const foo: { [Fruit.Apple]: string; ['a']: string };
+
+foo['a'];
+    `,
+    `
+function get(foo: { ['a']: string; ['b']: string }, key: 'a' | 'b') {
+  return foo[key];
+}
+    `,
+    `
+declare const foo: { [key in 'a' | 'b']: string };
+
+foo[0];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
 declare const something: any;
 
 const fruit: Fruit = something;
@@ -2284,6 +2303,8 @@ class Basket {
   accessor fruit: Fruit = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -2433,6 +2454,8 @@ class TestBasket implements Basket {
   accessor fruit = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3736,6 +3759,8 @@ enum Fruit {
 
 const box = { fruit: 1 } satisfies { fruit: Fruit };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 15,

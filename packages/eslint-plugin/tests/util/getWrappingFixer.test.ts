@@ -3,9 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, getWrappingFixer } from '../../src/util';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const voidEverythingRule = createRule({
   create(context) {
@@ -30,7 +28,6 @@ const voidEverythingRule = createRule({
       'ObjectExpression[properties.0.value.value="wrapObject"]': report,
     };
   },
-  defaultOptions: [],
   meta: {
     docs: {
       description: 'Add void operator in random places for test purposes.',
@@ -300,7 +297,6 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
-  defaultOptions: [],
   meta: {
     docs: {
       description:

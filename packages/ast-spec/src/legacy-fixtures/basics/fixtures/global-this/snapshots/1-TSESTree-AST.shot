@@ -226,9 +226,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [95, 278],
+  range: [0, 278],
   loc: {
-    start: { column: 0, line: 5 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 14 },
   },
 }

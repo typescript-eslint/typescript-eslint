@@ -1,4 +1,5 @@
 import type {
+  DependencyConstraint,
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
@@ -86,7 +87,10 @@ const IGNORED_FILTER = {
 
 type Cases = { code: string[]; options: Omit<Options[0], 'format'> }[];
 
-export function createTestCases(cases: Cases): void {
+export function createTestCases(
+  cases: Cases,
+  dependencyConstraints?: DependencyConstraint,
+): void {
   const createValidTestCases = (): ValidTestCase<Options>[] =>
     cases.flatMap(test =>
       Object.entries(formatTestNames).flatMap(([formatLoose, names]) =>
@@ -450,7 +454,7 @@ export function createTestCases(cases: Cases): void {
     return newCases;
   }
 
-  const ruleTester = new RuleTester();
+  const ruleTester = new RuleTester({ dependencyConstraints });
 
   ruleTester.run('naming-convention', rule, {
     invalid: createInvalidTestCases(),

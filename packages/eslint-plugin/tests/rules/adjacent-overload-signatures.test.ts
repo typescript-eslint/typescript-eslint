@@ -269,6 +269,40 @@ if (true) {
   function foo(sn: string | number) {}
 }
     `,
+    {
+      code: `
+class Test {
+  get a(): number {
+    return 1;
+  }
+  get b(): number {
+    return 2;
+  }
+  set a(val: number) {}
+}
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
+    {
+      code: `
+interface Test {
+  get a(): number;
+  get b(): number;
+  set a(val: number);
+}
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
+    {
+      code: `
+type Test = {
+  get a(): number;
+  get b(): number;
+  set a(val: number);
+};
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
   ],
   invalid: [
     {
@@ -790,6 +824,7 @@ interface Foo {
         },
       ],
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Foo {
@@ -819,6 +854,7 @@ interface Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -971,6 +1007,7 @@ class Foo {
       ],
     },
     // private members
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Test {
@@ -999,5 +1036,52 @@ class Test {
         },
       ],
     },
+    {
+      code: `
+class Test {
+  get a(): number {
+    return 1;
+  }
+  get b(): number {
+    return 2;
+  }
+  set a(val: number) {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a' },
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
+          messageId: 'adjacentSignature',
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  foo(s: string): void;
+  get bar(): number {
+    return 1;
+  }
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'adjacentSignature',
+        },
+      ],
+      options: [{ ignoreAccessors: true }],
+    },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

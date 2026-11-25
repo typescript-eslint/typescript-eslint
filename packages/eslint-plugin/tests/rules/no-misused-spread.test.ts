@@ -1,10 +1,11 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-misused-spread';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig-with-dom.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'with-dom'),
 });
 
 ruleTester.run('no-misused-spread', rule, {

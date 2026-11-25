@@ -17,13 +17,7 @@ interface Example {
   10: number;
 }
       `,
-      options: [
-        {
-          default: {
-            order: 'natural',
-          },
-        },
-      ],
+      options: [{ default: { order: 'natural' } }],
     },
     {
       code: `
@@ -67,23 +61,14 @@ interface Example {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 10,
-            member: 5,
-          },
+          data: { beforeMember: 10, member: 5 },
           endColumn: 13,
           endLine: 5,
           line: 5,
           messageId: 'incorrectOrder',
         },
       ],
-      options: [
-        {
-          default: {
-            order: 'natural',
-          },
-        },
-      ],
+      options: [{ default: { order: 'natural' } }],
     },
 
     {
@@ -94,12 +79,168 @@ interface Example {
   a1(): void;
   a10(): void;
   a5(): void;
+  b1(): void;
+  b5(): void;
+  b10(): void;
+
+  a1: number;
+  a5: number;
+  a10: number;
+  b1: number;
+  b5: number;
+  b10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a10', member: 'a5' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  a1(): void;
+  a5(): void;
+  a10(): void;
+  B5(): void;
+  B10(): void;
+  B100(): void;
+
+  a1: number;
+  a5: number;
+  a10: number;
+  b1: number;
+  b5: number;
+  b10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a10', member: 'B5' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  A1(): void;
+  A5(): void;
+  A10(): void;
   B5(): void;
   B10(): void;
   B1(): void;
 
+  a1: number;
   a5: number;
   a10: number;
+  b1: number;
+  b5: number;
+  b10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B10', member: 'B1' },
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  A1(): void;
+  A5(): void;
+  A10(): void;
+  B1(): void;
+  B5(): void;
+  B10(): void;
+
+  a1: number;
+  a5: number;
+  a10: number;
+  B1: number;
+  B5: number;
+  B10: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'a10', member: 'B1' },
+          endColumn: 14,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Example {
+  new (): unknown;
+
+  A1(): void;
+  A5(): void;
+  A10(): void;
+  B1(): void;
+  B5(): void;
+  B10(): void;
+
+  A5: number;
+  A10: number;
   B1: number;
   a1: number;
   B5: number;
@@ -109,54 +250,7 @@ interface Example {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'a10',
-            member: 'a5',
-          },
-          endColumn: 14,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a5',
-            member: 'B5',
-          },
-          endColumn: 14,
-          endLine: 8,
-          line: 8,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B10',
-            member: 'B1',
-          },
-          endColumn: 14,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a10',
-            member: 'B1',
-          },
-          endColumn: 14,
-          endLine: 14,
-          line: 14,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a1',
-            member: 'B5',
-          },
+          data: { beforeMember: 'a1', member: 'B5' },
           endColumn: 14,
           endLine: 16,
           line: 16,

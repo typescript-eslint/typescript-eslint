@@ -1,9 +1,11 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import { isTypeLiteralType } from './predicates';
+
 function isLiteralOrTaggablePrimitiveLike(type: ts.Type): boolean {
   return (
-    type.isLiteral() ||
+    isTypeLiteralType(type) ||
     tsutils.isTypeFlagSet(
       type,
       ts.TypeFlags.BigInt |

@@ -171,16 +171,24 @@ for (let i = 0; i < arr.length; i++) {
   (arr[i] as unknown as number)++;
 }
     `,
-    `
+    {
+      code: `
 for (let i = 0; i < arr.length; i++) {
   (arr[i] satisfies number)++;
 }
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 for (let i = 0; i < arr.length; i++) {
   (arr[i]! satisfies number)++;
 }
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 for (let i = 0; i < arr.length; i++) {
   [arr[i]] = [1];
@@ -387,6 +395,8 @@ for (let x = 0; x < arr.length; x = 1 + x) {}
         },
       ],
     },
+    // Nested loops
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 for (let shadow = 0; shadow < arr.length; shadow++) {
@@ -410,6 +420,7 @@ for (let shadow = 0; shadow < arr.length; shadow++) {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 for (let i = 0; i < arr.length; i++) {

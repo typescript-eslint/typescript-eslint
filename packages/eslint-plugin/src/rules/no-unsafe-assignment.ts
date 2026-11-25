@@ -55,6 +55,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
@@ -353,6 +354,16 @@ export default createRule({
           getComparisonType(node.typeAnnotation),
         );
       },
+      'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
+        const restType = services.getTypeAtLocation(node.argument);
+        if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
+          context.report({
+            node,
+            messageId: 'unsafeArraySpread',
+            data: createData(restType),
+          });
+        }
+      },
       'AssignmentExpression[operator = "="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {
@@ -370,6 +381,30 @@ export default createRule({
         if (!didReport) {
           checkObjectDestructureHelper(node.left, node.right);
         }
+      },
+      'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
+        const value = nullThrows(
+          node.value,
+          NullThrowsReasons.MissingToken(node.type, 'value'),
+        );
+        if (
+          value.type !== AST_NODE_TYPES.JSXExpressionContainer ||
+          value.expression.type === AST_NODE_TYPES.JSXEmptyExpression
+        ) {
+          return;
+        }
+
+        checkAssignment(
+          node.name,
+          value.expression,
+          value.expression,
+          ComparisonType.Contextual,
+        );
+      },
+      'ObjectExpression > Property'(
+        node: TSESTree.ObjectExpressionProperty,
+      ): void {
+        checkAssignment(node.key, node.value, node, ComparisonType.Contextual);
       },
       'PropertyDefinition[value != null]'(
         node: { value: object } & TSESTree.PropertyDefinition,
@@ -401,47 +436,6 @@ export default createRule({
         if (!didReport) {
           checkObjectDestructureHelper(node.id, init);
         }
-      },
-      // object pattern props are checked via assignments
-      ':not(ObjectPattern) > Property'(node: TSESTree.Property): void {
-        if (
-          node.value.type === AST_NODE_TYPES.AssignmentPattern ||
-          node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
-          // handled by other selector
-          return;
-        }
-
-        checkAssignment(node.key, node.value, node, ComparisonType.Contextual);
-      },
-      'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
-        const restType = services.getTypeAtLocation(node.argument);
-        if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
-          context.report({
-            node,
-            messageId: 'unsafeArraySpread',
-            data: createData(restType),
-          });
-        }
-      },
-      'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
-        const value = nullThrows(
-          node.value,
-          NullThrowsReasons.MissingToken(node.type, 'value'),
-        );
-        if (
-          value.type !== AST_NODE_TYPES.JSXExpressionContainer ||
-          value.expression.type === AST_NODE_TYPES.JSXEmptyExpression
-        ) {
-          return;
-        }
-
-        checkAssignment(
-          node.name,
-          value.expression,
-          value.expression,
-          ComparisonType.Contextual,
-        );
       },
     };
   },

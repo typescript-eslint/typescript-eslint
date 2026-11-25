@@ -417,13 +417,17 @@ class A {
   }
 }
     `,
-    `
+    {
+      code: `
 class A {
   a = 5;
   b = this.a;
   accessor c = this.a;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [
@@ -450,7 +454,6 @@ function foo() {
     {
       code: `
 console.log(this);
-z(x => console.log(x, this));
       `,
       errors: [
         {
@@ -460,11 +463,18 @@ z(x => console.log(x, this));
           line: 2,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+z(x => console.log(x, this));
+      `,
+      errors: [
         {
           column: 23,
           endColumn: 27,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedThis',
         },
       ],
@@ -472,7 +482,6 @@ z(x => console.log(x, this));
     {
       code: `
 console.log(this);
-z(x => console.log(x, this));
       `,
       errors: [
         {
@@ -482,18 +491,26 @@ z(x => console.log(x, this));
           line: 2,
           messageId: 'unexpectedThis',
         },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+    },
+    {
+      code: `
+z(x => console.log(x, this));
+      `,
+      errors: [
         {
           column: 23,
           endColumn: 27,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedThis',
         },
       ],
       languageOptions: {
-        parserOptions: {
-          ecmaFeatures: { globalReturn: true },
-        },
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
       },
     },
 
@@ -502,7 +519,6 @@ z(x => console.log(x, this));
       code: `
 (function () {
   console.log(this);
-  z(x => console.log(x, this));
 })();
       `,
       errors: [
@@ -513,11 +529,20 @@ z(x => console.log(x, this));
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+(function () {
+  z(x => console.log(x, this));
+})();
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -528,7 +553,6 @@ z(x => console.log(x, this));
       code: `
 function foo() {
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -539,11 +563,20 @@ function foo() {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -552,7 +585,6 @@ function foo() {
       code: `
 function foo() {
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -563,11 +595,21 @@ function foo() {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
+    },
+    {
+      code: `
+function foo() {
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -577,7 +619,6 @@ function foo() {
       code: `
 function Foo() {
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -588,11 +629,21 @@ function Foo() {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
+    {
+      code: `
+function Foo() {
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -603,7 +654,6 @@ function Foo() {
 function foo() {
   'use strict';
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -614,11 +664,21 @@ function foo() {
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  'use strict';
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -628,7 +688,6 @@ function foo() {
 function Foo() {
   'use strict';
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -639,11 +698,22 @@ function Foo() {
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
+    {
+      code: `
+function Foo() {
+  'use strict';
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -653,7 +723,6 @@ function Foo() {
       code: `
 return function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -664,25 +733,34 @@ return function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+    },
+    {
+      code: `
+return function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
       languageOptions: {
-        parserOptions: {
-          ecmaFeatures: { globalReturn: true },
-        },
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
       },
     },
     {
       code: `
 var foo = function () {
   console.log(this);
-  z(x => console.log(x, this));
 }.bar(obj);
       `,
       errors: [
@@ -693,11 +771,20 @@ var foo = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var foo = function () {
+  z(x => console.log(x, this));
+}.bar(obj);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -710,7 +797,6 @@ var obj = {
   foo: function () {
     function foo() {
       console.log(this);
-      z(x => console.log(x, this));
     }
     foo();
   },
@@ -724,11 +810,25 @@ var obj = {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var obj = {
+  foo: function () {
+    function foo() {
+      z(x => console.log(x, this));
+    }
+    foo();
+  },
+};
+      `,
+      errors: [
         {
           column: 29,
           endColumn: 33,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -739,7 +839,6 @@ var obj = {
   foo() {
     function foo() {
       console.log(this);
-      z(x => console.log(x, this));
     }
     foo();
   },
@@ -753,11 +852,25 @@ var obj = {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var obj = {
+  foo() {
+    function foo() {
+      z(x => console.log(x, this));
+    }
+    foo();
+  },
+};
+      `,
+      errors: [
         {
           column: 29,
           endColumn: 33,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -768,7 +881,6 @@ var obj = {
   foo: function () {
     return function () {
       console.log(this);
-      z(x => console.log(x, this));
     };
   },
 };
@@ -781,9 +893,43 @@ var obj = {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var obj = {
+  foo: function () {
+    return function () {
+      z(x => console.log(x, this));
+    };
+  },
+};
+      `,
+      errors: [
         {
           column: 29,
           endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'unexpectedThis',
+        },
+      ],
+    },
+    {
+      code: `
+var obj = {
+  foo: function () {
+    'use strict';
+    return function () {
+      console.log(this);
+    };
+  },
+};
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 23,
           endLine: 6,
           line: 6,
           messageId: 'unexpectedThis',
@@ -796,7 +942,6 @@ var obj = {
   foo: function () {
     'use strict';
     return function () {
-      console.log(this);
       z(x => console.log(x, this));
     };
   },
@@ -804,17 +949,10 @@ var obj = {
       `,
       errors: [
         {
-          column: 19,
-          endColumn: 23,
-          endLine: 6,
-          line: 6,
-          messageId: 'unexpectedThis',
-        },
-        {
           column: 29,
           endColumn: 33,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -824,7 +962,6 @@ var obj = {
 obj.foo = function () {
   return function () {
     console.log(this);
-    z(x => console.log(x, this));
   };
 };
       `,
@@ -836,11 +973,22 @@ obj.foo = function () {
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+obj.foo = function () {
+  return function () {
+    z(x => console.log(x, this));
+  };
+};
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -851,7 +999,6 @@ obj.foo = function () {
   'use strict';
   return function () {
     console.log(this);
-    z(x => console.log(x, this));
   };
 };
       `,
@@ -863,11 +1010,23 @@ obj.foo = function () {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+obj.foo = function () {
+  'use strict';
+  return function () {
+    z(x => console.log(x, this));
+  };
+};
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -881,7 +1040,6 @@ class A {
   foo() {
     return function () {
       console.log(this);
-      z(x => console.log(x, this));
     };
   }
 }
@@ -894,11 +1052,24 @@ class A {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo() {
+    return function () {
+      z(x => console.log(x, this));
+    };
+  }
+}
+      `,
+      errors: [
         {
           column: 29,
           endColumn: 33,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -911,7 +1082,6 @@ class A {
 class A {
   b = new Array(1, 2, function () {
     console.log(this);
-    z(x => console.log(x, this));
   });
 }
       `,
@@ -923,23 +1093,32 @@ class A {
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+class A {
+  b = new Array(1, 2, function () {
+    z(x => console.log(x, this));
+  });
+}
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
     {
       code: `
 class A {
   b = () => {
     function c() {
       console.log(this);
-      z(x => console.log(x, this));
     }
   };
 }
@@ -952,11 +1131,24 @@ class A {
           line: 5,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+class A {
+  b = () => {
+    function c() {
+      z(x => console.log(x, this));
+    }
+  };
+}
+      `,
+      errors: [
         {
           column: 29,
           endColumn: 33,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -969,7 +1161,6 @@ class A {
 obj.foo = (function () {
   return () => {
     console.log(this);
-    z(x => console.log(x, this));
   };
 })();
       `,
@@ -981,11 +1172,22 @@ obj.foo = (function () {
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+obj.foo = (function () {
+  return () => {
+    z(x => console.log(x, this));
+  };
+})();
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -994,7 +1196,6 @@ obj.foo = (function () {
       code: `
 obj.foo = (() => () => {
   console.log(this);
-  z(x => console.log(x, this));
 })();
       `,
       errors: [
@@ -1005,11 +1206,20 @@ obj.foo = (() => () => {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+obj.foo = (() => () => {
+  z(x => console.log(x, this));
+})();
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1020,7 +1230,6 @@ obj.foo = (() => () => {
       code: `
 var foo = function () {
   console.log(this);
-  z(x => console.log(x, this));
 }.bind(null);
       `,
       errors: [
@@ -1031,21 +1240,28 @@ var foo = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var foo = function () {
+  z(x => console.log(x, this));
+}.bind(null);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
     {
       code: `
 (function () {
   console.log(this);
-  z(x => console.log(x, this));
 }).call(undefined);
       `,
       errors: [
@@ -1056,21 +1272,28 @@ var foo = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+(function () {
+  z(x => console.log(x, this));
+}).call(undefined);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
     {
       code: `
 (function () {
   console.log(this);
-  z(x => console.log(x, this));
 }).apply(void 0);
       `,
       errors: [
@@ -1081,11 +1304,20 @@ var foo = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+(function () {
+  z(x => console.log(x, this));
+}).apply(void 0);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1096,7 +1328,6 @@ var foo = function () {
       code: `
 Array.from([], function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1107,11 +1338,20 @@ Array.from([], function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+Array.from([], function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1120,7 +1360,6 @@ Array.from([], function () {
       code: `
 foo.every(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1131,11 +1370,20 @@ foo.every(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.every(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1144,7 +1392,6 @@ foo.every(function () {
       code: `
 foo.filter(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1155,11 +1402,20 @@ foo.filter(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.filter(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1168,7 +1424,6 @@ foo.filter(function () {
       code: `
 foo.find(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1179,11 +1434,20 @@ foo.find(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.find(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1192,7 +1456,6 @@ foo.find(function () {
       code: `
 foo.findIndex(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1203,11 +1466,20 @@ foo.findIndex(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.findIndex(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1216,7 +1488,6 @@ foo.findIndex(function () {
       code: `
 foo.forEach(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1227,11 +1498,20 @@ foo.forEach(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.forEach(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1240,7 +1520,6 @@ foo.forEach(function () {
       code: `
 foo.map(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1251,11 +1530,20 @@ foo.map(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.map(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1264,7 +1552,6 @@ foo.map(function () {
       code: `
 foo.some(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1275,21 +1562,28 @@ foo.some(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.some(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
     {
       code: `
 foo.forEach(function () {
   console.log(this);
-  z(x => console.log(x, this));
 }, null);
       `,
       errors: [
@@ -1300,11 +1594,20 @@ foo.forEach(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+foo.forEach(function () {
+  z(x => console.log(x, this));
+}, null);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1316,7 +1619,6 @@ foo.forEach(function () {
       code: `
 /** @returns {void} */ function foo() {
   console.log(this);
-  z(x => console.log(x, this));
 }
       `,
       errors: [
@@ -1327,11 +1629,20 @@ foo.forEach(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+/** @returns {void} */ function foo() {
+  z(x => console.log(x, this));
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1340,7 +1651,6 @@ foo.forEach(function () {
       code: `
 /** @this Obj */ foo(function () {
   console.log(this);
-  z(x => console.log(x, this));
 });
       `,
       errors: [
@@ -1351,36 +1661,53 @@ foo.forEach(function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+/** @this Obj */ foo(function () {
+  z(x => console.log(x, this));
+});
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
+    {
+      code: `
+var Ctor = function () {
+  console.log(this);
+};
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unexpectedThis',
+        },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
     {
       code: `
 var Ctor = function () {
-  console.log(this);
   z(x => console.log(x, this));
 };
       `,
       errors: [
         {
-          column: 15,
-          endColumn: 19,
-          endLine: 3,
-          line: 3,
-          messageId: 'unexpectedThis',
-        },
-        {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1390,7 +1717,6 @@ var Ctor = function () {
       code: `
 var func = function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -1401,11 +1727,20 @@ var func = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+var func = function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1414,7 +1749,6 @@ var func = function () {
       code: `
 var func = function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -1425,22 +1759,30 @@ var func = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
+    {
+      code: `
+var func = function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
       options: [{ capIsConstructor: false }],
     },
-
     {
       code: `
 Ctor = function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -1451,11 +1793,21 @@ Ctor = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
+    {
+      code: `
+Ctor = function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1465,7 +1817,6 @@ Ctor = function () {
       code: `
 func = function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -1476,11 +1827,20 @@ func = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+func = function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1489,7 +1849,6 @@ func = function () {
       code: `
 func = function () {
   console.log(this);
-  z(x => console.log(x, this));
 };
       `,
       errors: [
@@ -1500,23 +1859,31 @@ func = function () {
           line: 3,
           messageId: 'unexpectedThis',
         },
+      ],
+      options: [{ capIsConstructor: false }],
+    },
+    {
+      code: `
+func = function () {
+  z(x => console.log(x, this));
+};
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
       options: [{ capIsConstructor: false }],
     },
-
     {
       code: `
 function foo(
   func = function () {
     console.log(this);
-    z(x => console.log(x, this));
   },
 ) {}
       `,
@@ -1528,22 +1895,31 @@ function foo(
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+function foo(
+  func = function () {
+    z(x => console.log(x, this));
+  },
+) {}
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
     },
-
     {
       code: `
 [
   func = function () {
     console.log(this);
-    z(x => console.log(x, this));
   },
 ] = a;
       `,
@@ -1555,11 +1931,22 @@ function foo(
           line: 4,
           messageId: 'unexpectedThis',
         },
+      ],
+    },
+    {
+      code: `
+[
+  func = function () {
+    z(x => console.log(x, this));
+  },
+] = a;
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],

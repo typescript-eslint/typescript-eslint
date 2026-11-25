@@ -9,6 +9,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  isTypeLiteralType,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -55,6 +56,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allow: [],
@@ -90,7 +92,14 @@ export default createRule<Options, MessageIds>({
           : undefined;
       }
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+      // A circular alias (e.g. `export { x } from './self'`) never reaches a
+      // non-alias symbol, so stop once the chain comes back to a seen symbol.
+      const visitedSymbols = new Set<ts.Symbol>();
+      while (
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias) &&
+        !visitedSymbols.has(symbol)
+      ) {
+        visitedSymbols.add(symbol);
         const reason = getJsDocDeprecation(symbol);
         if (reason != null) {
           return reason;
@@ -216,6 +225,23 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
+    function getPropertyDeprecation(
+      type: ts.Type,
+      propertyName: string,
+    ): { reason: string; type: ts.Type } | undefined {
+      for (const constituent of tsutils.unionConstituents(type)) {
+        const reason = getJsDocDeprecation(
+          constituent.getProperty(propertyName),
+        );
+
+        if (reason != null) {
+          return { type: constituent, reason };
+        }
+      }
+
+      return undefined;
+    }
+
     type CallLikeNode =
       | TSESTree.CallExpression
       | TSESTree.JSXOpeningElement
@@ -328,9 +354,7 @@ export default createRule<Options, MessageIds>({
         'Expected JSX opening element name to have contextualType',
       );
 
-      const symbol = contextualType.getProperty(propertyName);
-
-      return getJsDocDeprecation(symbol);
+      return getPropertyDeprecation(contextualType, propertyName)?.reason;
     }
 
     function getDeprecationReason(node: IdentifierLike): string | undefined {
@@ -406,6 +430,70 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    /**
+     * The name a key refers to, or `null` when it cannot be determined
+     * statically, as in `const x: Foo = { [someString]: 1 }`.
+     */
+    function getObjectLiteralPropertyName(
+      node: TSESTree.Property,
+    ): string | null {
+      if (!node.computed) {
+        return node.key.type === AST_NODE_TYPES.Identifier
+          ? node.key.name
+          : String(node.key.value);
+      }
+
+      const keyType = services.getTypeAtLocation(node.key);
+
+      return keyType.isStringLiteral() || keyType.isNumberLiteral()
+        ? String(keyType.value)
+        : null;
+    }
+
+    /**
+     * A key of an object literal refers to a property of the literal's
+     * contextual type, rather than declaring a property of its own, so it is
+     * checked against that type instead of the key's own symbol.
+     */
+    function checkObjectLiteralProperty(node: TSESTree.Property): void {
+      if (node.parent.type !== AST_NODE_TYPES.ObjectExpression) {
+        return;
+      }
+
+      const propertyName = getObjectLiteralPropertyName(node);
+      if (propertyName == null) {
+        return;
+      }
+
+      const contextualType = services.getContextualType(node.parent);
+      if (!contextualType) {
+        return;
+      }
+
+      const deprecation = getPropertyDeprecation(contextualType, propertyName);
+      if (!deprecation) {
+        return;
+      }
+
+      const { type, reason } = deprecation;
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+        return;
+      }
+
+      context.report({
+        ...(reason
+          ? {
+              messageId: 'deprecatedWithReason',
+              data: { name: propertyName, reason },
+            }
+          : {
+              messageId: 'deprecated',
+              data: { name: propertyName },
+            }),
+        node: node.key,
+      });
+    }
+
     function checkMemberExpression(node: TSESTree.MemberExpression): void {
       if (!node.computed) {
         return;
@@ -413,7 +501,7 @@ export default createRule<Options, MessageIds>({
 
       const propertyType = services.getTypeAtLocation(node.property);
 
-      if (propertyType.isLiteral()) {
+      if (isTypeLiteralType(propertyType)) {
         const objectType = services.getTypeAtLocation(node.object);
 
         const propertyName = propertyType.isStringLiteral()
@@ -421,14 +509,13 @@ export default createRule<Options, MessageIds>({
           : // eslint-disable-next-line @typescript-eslint/no-base-to-string
             String(propertyType.value);
 
-        const property = objectType.getProperty(propertyName);
-
-        const reason = getJsDocDeprecation(property);
-        if (reason == null) {
+        const deprecation = getPropertyDeprecation(objectType, propertyName);
+        if (!deprecation) {
           return;
         }
 
-        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+        const { type, reason } = deprecation;
+        if (typeMatchesSomeSpecifier(type, allow, services.program)) {
           return;
         }
 
@@ -491,6 +578,7 @@ export default createRule<Options, MessageIds>({
       },
       MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
+      Property: checkObjectLiteralProperty,
       Super: checkIdentifier,
     };
   },
