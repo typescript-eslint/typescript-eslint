@@ -4,8 +4,9 @@ import * as path from 'node:path';
 import * as ts from 'typescript/lib/tsserverlibrary';
 
 import { createProjectService } from '../src/createProjectService.js';
+import { reuseDeclarationFiles } from '../src/reuseDeclarationFiles.js';
 
-describe('reuseDeclarationFiles', () => {
+describe(reuseDeclarationFiles, () => {
   let directory: string;
 
   beforeAll(() => {
@@ -45,6 +46,17 @@ describe('reuseDeclarationFiles', () => {
     const second = getSourceFiles(directory);
 
     expect(second.lib).not.toBe(first.lib);
+  });
+
+  it('does nothing when TypeScript does not have the document cache methods', () => {
+    const serviceWithoutCache = {};
+
+    reuseDeclarationFiles(
+      serviceWithoutCache as unknown as ts.server.ProjectService,
+      ts.JSDocParsingMode.ParseAll,
+    );
+
+    expect(serviceWithoutCache).toStrictEqual({});
   });
 });
 
