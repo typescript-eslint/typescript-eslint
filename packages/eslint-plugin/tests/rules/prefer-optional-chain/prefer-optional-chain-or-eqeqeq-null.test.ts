@@ -300,9 +300,7 @@ declare const foo: { bar: () => { baz: number } | null | undefined };
 foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
       `,
     },
-    // with the `| null` type, `=== null` covers the nullish case - but an
-    // optional chain ending in `=== null` is not a valid conversion, since
-    // `undefined === null` is false
+    // `undefined === null` is false, so these can't end in `=== null`
     {
       code: `
 declare const foo: { bar: number } | null;
@@ -536,9 +534,7 @@ foo.bar === null || foo.bar?.() === null || foo.bar?.().baz === null;
       `,
     },
   ],
-  // but if the type is just `| null` - then it covers the cases and is
-  // a valid conversion when the chain ends with a check that is true
-  // for `undefined`
+  // but if the type is just `| null`, chains ending in `=== undefined` are valid
   invalid: [
     {
       code: `

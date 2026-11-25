@@ -264,9 +264,6 @@ declare const x: 0n | { a: string };
 declare const x: void | (() => void);
 x && x();
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11840
-    // the optional chain evaluates the last operand as `undefined` when the
-    // chain short-circuits, which must give the same result as the original
     `
 declare const foo: { bar: number | null } | undefined;
 !foo || foo.bar === null;
@@ -300,6 +297,14 @@ foo && foo.bar !== null && foo.bar !== undefined;
     `
 declare const foo: { bar: number | null | undefined } | undefined;
 foo === undefined || foo.bar === null || foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number | undefined } | null;
+foo && typeof foo.bar === 'undefined';
+    `,
+    `
+declare const foo: { bar: number | undefined } | null;
+!foo || typeof foo.bar !== 'undefined';
     `,
   ],
   invalid: [
@@ -1215,9 +1220,7 @@ null != foo &&
 null != foo?.bar?.baz;
       `,
     },
-    // A split strict equals check starting with `null !==` can't end the
-    // chain, since `null !== undefined` is true; the chain can only extend
-    // through the first half of the previous check
+    // `null !== undefined` is true, so a trailing split `null !==` check can't end the chain
     {
       code: `
 null != foo &&
@@ -2130,7 +2133,6 @@ if (foo?.outermostFoo() !== foo) {
         },
       ],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11840
     {
       code: `
 declare const foo: { bar: { baz: number | null } | null } | undefined;
@@ -2168,6 +2170,49 @@ foo && foo.bar && foo.bar.baz !== null;
 declare const foo: { bar: { baz: number | null } | null } | undefined;
 foo?.bar && foo.bar.baz !== null;
       `,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: number } | null } | undefined;
+foo === undefined || foo.bar === null || !foo.bar.baz;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+        },
+      ],
+      output: `
+declare const foo: { bar: { baz: number } | null } | undefined;
+!foo?.bar?.baz;
+      `,
+    },
+    {
+      code: `
+declare const foo: { bar: string | null } | null;
+foo !== null && foo.bar === 'x';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+declare const foo: { bar: string | null } | null;
+foo?.bar === 'x';
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

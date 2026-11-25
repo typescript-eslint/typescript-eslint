@@ -282,13 +282,8 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 };
 
 /**
- * Whether a chain ending in the given operand can be converted.
- *
- * When the logical chain finds a nullish sub-expression and short-circuits, the
- * converted optional chain expression would instead evaluate to `undefined`
- * (not `null`). Check that the last operand on `undefined` would give the same
- * result as the original short-circuit: falsy for `&&` chains, truthy for `||`
- * chains.
+ * Short-circuited optional chains pass `undefined` to the last operand,
+ * so it must be falsy for `&&` chains and truthy for `||` chains.
  */
 function canValidOperandEndChain(
   operator: '&&' | '||',
@@ -771,15 +766,8 @@ export function analyzeChain(
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
     if (!lastChain) {
-      // If the last operand can't end the optional chain, the operands before
-      // it may still form a valid chain, e.g.
-      //     foo && foo.bar && foo.bar.baz !== null
-      //     ^^^^^^^^^^^^^^ becomes foo?.bar
-      // A pair like `x !== undefined && x !== null` can't end the chain as a
-      // unit, since only one comparison is kept at the end, but its first
-      // operand might:
-      //     foo && foo.bar !== undefined && foo.bar !== null
-      //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ becomes foo?.bar !== undefined
+      // Drop trailing operands that can't end the chain.
+      // A pair can't end it as a unit, but its first operand might.
       let lastGroup;
       while (
         (lastGroup = subChain.at(-1)) &&
