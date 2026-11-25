@@ -63,7 +63,6 @@ const ajv = ajvBuilder({ strictDefaults: true });
 // Rules whose options schema already passed validation, so it isn't re-validated and re-compiled for every test case.
 const rulesWithValidatedSchema = new WeakSet();
 
-
 const RULE_TESTER_PLUGIN = '@rule-tester';
 const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
@@ -86,10 +85,7 @@ const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
   rules: {},
 };
 
-let defaultConfig = deepMerge(
-  {},
-  testerDefaultConfig,
-) as TesterConfigWithDefaults;
+let defaultConfig: TesterConfigWithDefaults = safeClone(testerDefaultConfig);
 
 type ForbiddenFunction = (this: WeakKey, ...args: never[]) => unknown;
 
@@ -266,7 +262,7 @@ export class RuleTester extends TestFramework {
    * any changes made until now.
    */
   static resetDefaultConfig(): void {
-    defaultConfig = merge({}, testerDefaultConfig);
+    defaultConfig = safeClone(testerDefaultConfig);
   }
 
   /**
@@ -431,11 +427,14 @@ export class RuleTester extends TestFramework {
   }
 
   defineRule(name: string, rule: AnyRuleModule): void {
-    // Reuse the existing wrapper so ESLint's per-rule-object caches (e.g. the options validator) keep hitting.
+    // If this rule's wrapper already exists, don't redefine it, so that we keep a
+    // stable reference of the wrapper rule and don't bust ESLint's rule cache.
     if (this.#ruleSources.get(name) === rule) {
       return;
     }
+
     this.#ruleSources.set(name, rule);
+
     this.#rules[name] = {
       ...rule,
       name,
@@ -659,11 +658,12 @@ export class RuleTester extends TestFramework {
   } {
     this.defineRule(ruleName, rule);
 
-    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
-      files: ['**'],
-    });
+    let config: TesterConfigWithDefaults = safeClone(this.#testerConfig);
 
-    // Assigned rather than merged: `merge` would deep-clone every rule (including its schema) on every test case.
+    config.files = ['**'];
+
+    // Assigned rather than deep merged to keep stable references to `this.#rules`
+    // so that ESLint's rule cache doesn't get busted.
     config.plugins = {
       ...config.plugins,
       [RULE_TESTER_PLUGIN]: {
@@ -1491,4 +1491,11 @@ function assertMessageMatches(actual: string, expected: string | RegExp): void {
   } else {
     assert.strictEqual(actual, expected);
   }
+}
+
+/**
+ * Basically a `structuredClone` that supports functions.
+ */
+function safeClone<T extends object>(value: T): T {
+  return merge({}, value);
 }
