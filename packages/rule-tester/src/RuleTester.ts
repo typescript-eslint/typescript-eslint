@@ -661,7 +661,7 @@ export class RuleTester extends TestFramework {
 
     config.files = ['**'];
 
-    // Assigned rather than deep merged to keep stable references to `this.#rules`
+    // Assigned rather than deep merged to keep stable references to the rules in `this.#rules`,
     // so that ESLint's rule cache doesn't get busted.
     config.plugins = {
       ...config.plugins,
