@@ -21,7 +21,7 @@ export function astConverter(
   const { parseDiagnostics } = ast;
   if (parseDiagnostics.length) {
     const fatalDiagnostic = parseDiagnostics.find(diag => {
-      if (diag.code !== 1003 || diag.start == null) {
+      if (diag.code !== 1003) {
         return true;
       }
       const text = ast.text;

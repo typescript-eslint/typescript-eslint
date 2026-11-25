@@ -2212,9 +2212,9 @@ export class Converter {
               left: this.convertChild(node.left),
               right: this.createNode<TSESTree.PrivateIdentifier>(node.right, {
                 type: AST_NODE_TYPES.PrivateIdentifier,
-                name: this.ast.text.slice(hashPos + 1, nameEnd),
-                range,
                 loc: getLocFor(range, this.ast),
+                range,
+                name: this.ast.text.slice(hashPos + 1, nameEnd),
               }),
             });
           }
