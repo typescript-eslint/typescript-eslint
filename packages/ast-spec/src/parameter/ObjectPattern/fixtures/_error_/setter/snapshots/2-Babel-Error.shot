@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > setter > Babel - Error`]
+BabelError
+> 1 | ({ set a(v) {} } = x);
+    |        ^ Object pattern can't contain getter or setter. (1:7)
+  2 |
+  
