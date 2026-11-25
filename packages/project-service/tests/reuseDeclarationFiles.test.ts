@@ -1,8 +1,7 @@
-import type * as ts from 'typescript/lib/tsserverlibrary';
-
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
+import * as ts from 'typescript/lib/tsserverlibrary';
 
 import { createProjectService } from '../src/createProjectService.js';
 
@@ -50,14 +49,14 @@ describe('reuseDeclarationFiles', () => {
 });
 
 function getSourceFiles(directory: string) {
-  const filePath = path.join(directory, 'file.ts');
+  const filePath = ts.server.toNormalizedPath(path.join(directory, 'file.ts'));
 
   const { service } = createProjectService({ tsconfigRootDir: directory });
 
   service.openClientFile(filePath);
 
   const program = service
-    .getDefaultProjectForFile(filePath as ts.server.NormalizedPath, true)
+    .getDefaultProjectForFile(filePath, true)
     ?.getLanguageService(true)
     .getProgram();
 
