@@ -122,6 +122,12 @@ export default createRule({
       return undefined;
     }
 
+    const activeComparisons: {
+      shallow: boolean;
+      source: ts.Type;
+      target: ts.Type;
+    }[] = [];
+
     function findViolation(
       source: ts.Type,
       target: ts.Type,
@@ -143,6 +149,34 @@ export default createRule({
         return undefined;
       }
 
+      if (
+        activeComparisons.some(
+          comparison =>
+            comparison.source === resolvedSource &&
+            comparison.target === resolvedTarget &&
+            comparison.shallow === shallow,
+        )
+      ) {
+        return undefined;
+      }
+
+      activeComparisons.push({
+        shallow,
+        source: resolvedSource,
+        target: resolvedTarget,
+      });
+      try {
+        return findResolvedViolation(resolvedSource, resolvedTarget, shallow);
+      } finally {
+        activeComparisons.pop();
+      }
+    }
+
+    function findResolvedViolation(
+      resolvedSource: ts.Type,
+      resolvedTarget: ts.Type,
+      shallow: boolean,
+    ): ts.Type | undefined {
       if (resolvedSource.isUnion()) {
         return findFirstViolation(
           resolvedSource.types.filter(part =>

@@ -544,6 +544,44 @@ const marker = <Marker>{/* empty */}</Marker>;
       `,
       filename: 'react.tsx',
     },
+    `
+class Point {
+  x = 0;
+}
+type Source = { [key: string]: Source };
+type Target = { [key: string]: Target | Point };
+declare const source: Source;
+const target: Target = source;
+    `,
+    `
+class Point {
+  x = 0;
+}
+type Source = { [key: number]: Source };
+type Target = { [key: number]: Target | Point };
+declare const source: Source;
+const target: Target = source;
+    `,
+    `
+class Point {
+  x = 0;
+}
+type Source = { [key: string]: SourceChild };
+type SourceChild = { [key: number]: Source };
+type Target = { [key: string]: TargetChild | Point };
+type TargetChild = { [key: number]: Target | Point };
+declare const source: Source;
+const target: Target = source;
+    `,
+    `
+class Point {
+  x = 0;
+}
+type Source = Source[];
+type Target = (Target | Point)[];
+declare const source: Source;
+const target: Target = source;
+    `,
   ],
   invalid: [
     {
@@ -2399,6 +2437,83 @@ const beta = value as Beta;
           endColumn: 19,
           endLine: 6,
           line: 6,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  x = 0;
+}
+type Source = { [key: number]: Source; [key: string]: Source | { x: number } };
+type Target = { [key: number]: Target; [key: string]: Target | Point };
+declare const source: Source;
+const target: Target = source;
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { type: 'Point' },
+          endColumn: 30,
+          endLine: 8,
+          line: 8,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+class Point {
+  x = 0;
+}
+type Source = [Source, { x: number }];
+type Target = [Target, Point];
+declare const source: Source;
+const target: Target = source;
+const another: Target = source;
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { type: 'Point' },
+          endColumn: 30,
+          endLine: 8,
+          line: 8,
+          messageId: 'nonInstance',
+        },
+        {
+          column: 25,
+          data: { type: 'Point' },
+          endColumn: 31,
+          endLine: 9,
+          line: 9,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
+    {
+      code: `
+class Point {
+  x = 0;
+}
+class OtherPoint {
+  x = 0;
+}
+type Source = [Source, OtherPoint, OtherPoint];
+type Target = [Target, Point | OtherPoint, Point];
+declare const source: Source;
+const target: Target = source;
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { type: 'Point' },
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
           messageId: 'nonInstance',
         },
       ],
