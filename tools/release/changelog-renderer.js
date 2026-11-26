@@ -27,7 +27,7 @@ module.exports = class CustomChangelogRenderer extends (
     return (
       `${defaultChangelog}\n\n` +
       `${githubLink}\n\n` +
-      `You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.`
+      `You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning/) and [releases](https://typescript-eslint.io/users/releases/) on our website.`
     );
   }
 

@@ -17,7 +17,7 @@ export default createRule<[], MessageIds>({
         {
           rule: {
             name: '@typescript-eslint/ban-ts-comment',
-            url: 'https://typescript-eslint.io/rules/ban-ts-comment',
+            url: 'https://typescript-eslint.io/rules/ban-ts-comment/',
           },
         },
       ],

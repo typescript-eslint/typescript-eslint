@@ -63,13 +63,13 @@ jobs:
 
               if (!firstLine || !/^BREAKING CHANGE:/.test(firstLine)) {
                 throw new Error(
-                  `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+                  `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases/#2-merging-breaking-changes.`,
                 );
               }
 
               if (!secondLine) {
                 throw new Error(
-                  `The description of breaking change is missing. See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+                  `The description of breaking change is missing. See https://typescript-eslint.io/maintenance/releases/#2-merging-breaking-changes.`,
                 );
               }
             }
