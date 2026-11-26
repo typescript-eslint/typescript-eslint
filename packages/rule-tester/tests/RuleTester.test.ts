@@ -959,6 +959,49 @@ describe(RuleTester, () => {
       `);
     });
 
+    it('keeps an explicit skip when other tests have dependency constraints', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      const ruleTester = new RuleTester({
+        languageOptions: { parser },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'explicitly skipped with passing constraint',
+            dependencyConstraints: {
+              'totally-real-dependency': '10',
+            },
+            errors: [{ messageId: 'error' }],
+            skip: true,
+          },
+        ],
+        valid: [
+          {
+            code: 'explicitly skipped',
+            skip: true,
+          },
+          {
+            code: 'passing constraint',
+            dependencyConstraints: {
+              'totally-real-dependency': '10',
+            },
+          },
+        ],
+      });
+
+      expect(
+        getTestConfigFromCall().map(test => {
+          const { code, skip } = test as { code: string; skip: boolean };
+          return { code, skip };
+        }),
+      ).toStrictEqual([
+        { code: 'explicitly skipped', skip: true },
+        { code: 'passing constraint', skip: false },
+        { code: 'explicitly skipped with passing constraint', skip: true },
+      ]);
+    });
+
     describe('constructor constraints', () => {
       it('skips all tests if a constructor constraint is not satisfied', () => {
         satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
