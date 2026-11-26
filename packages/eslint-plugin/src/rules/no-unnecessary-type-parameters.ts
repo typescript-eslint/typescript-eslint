@@ -311,6 +311,8 @@ function skipConstituentsUpward(node: TSESTree.Node): TSESTree.Node {
   }
 }
 
+type Polarity = 'input' | 'output-contravariant' | 'output-covariant' | 'root';
+
 /**
  * Count uses of type parameters in inferred return types.
  * We need to resolve and analyze the inferred return type of a function
@@ -324,14 +326,9 @@ function countTypeParameterUsage(
   const counts = new Map<ts.Identifier, number>();
 
   if (ts.isClassLike(node)) {
-    for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts, true);
-    }
-    for (const member of node.members) {
-      collectTypeParameterUsageCounts(checker, member, counts, true);
-    }
+    collectClassTypeParameterUsageCounts(checker, node, counts);
   } else {
-    collectTypeParameterUsageCounts(checker, node, counts, false);
+    collectTypeParameterUsageCounts(checker, node, counts, 'root', false);
   }
 
   return counts;
@@ -346,7 +343,8 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
-  fromClass: boolean, // We are talking about the type parameters of a class or one of its methods
+  initialPolarity: Polarity,
+  initialAssumeMultipleUses: boolean,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -355,22 +353,19 @@ function collectTypeParameterUsageCounts(
   let functionLikeType = false;
   let visitedDefault = false;
 
-  if (
-    ts.isCallSignatureDeclaration(node) ||
-    ts.isConstructorDeclaration(node)
-  ) {
+  if (ts.isCallSignatureDeclaration(node) || ts.isMethodDeclaration(node)) {
     functionLikeType = true;
-    visitSignature(checker.getSignatureFromDeclaration(node));
+    visitSignature(checker.getSignatureFromDeclaration(node), initialPolarity);
   }
 
   if (!functionLikeType) {
-    visitType(type, false);
+    visitType(type, initialAssumeMultipleUses, initialPolarity);
   }
 
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
-    isReturnType = false,
+    polarity: Polarity,
   ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
@@ -385,7 +380,10 @@ function collectTypeParameterUsageCounts(
         ts.TypeParameterDeclaration | undefined;
 
       if (declaration) {
-        incrementIdentifierCount(declaration.name, assumeMultipleUses);
+        incrementIdentifierCount(
+          declaration.name,
+          assumeMultipleUses || polarity === 'output-contravariant',
+        );
 
         // Visiting the type of a constrained type parameter will recurse into
         // the constraint. We avoid infinite loops by visiting each only once.
@@ -394,12 +392,20 @@ function collectTypeParameterUsageCounts(
           !visitedConstraints.has(declaration.constraint)
         ) {
           visitedConstraints.add(declaration.constraint);
-          visitType(checker.getTypeAtLocation(declaration.constraint), false);
+          visitType(
+            checker.getTypeAtLocation(declaration.constraint),
+            false,
+            polarity,
+          );
         }
 
         if (declaration.default && !visitedDefault) {
           visitedDefault = true;
-          visitType(checker.getTypeAtLocation(declaration.default), false);
+          visitType(
+            checker.getTypeAtLocation(declaration.default),
+            false,
+            polarity,
+          );
         }
       }
     }
@@ -408,53 +414,53 @@ function collectTypeParameterUsageCounts(
     else if (type.aliasTypeArguments) {
       // We don't descend into the definition of the type alias, so we don't
       // know whether it's used multiple times. It's safest to assume it is.
-      visitTypesList(type.aliasTypeArguments, true);
+      visitTypesList(type.aliasTypeArguments, true, polarity);
     }
 
     // Intersections and unions like `0 | 1`
     else if (tsutils.isUnionOrIntersectionType(type)) {
-      visitTypesList(type.types, assumeMultipleUses);
+      visitTypesList(type.types, assumeMultipleUses, polarity);
     }
 
     // Index access types like `T[K]`
     else if (tsutils.isIndexedAccessType(type)) {
-      visitType(type.objectType, assumeMultipleUses);
-      visitType(type.indexType, assumeMultipleUses);
+      visitType(type.objectType, assumeMultipleUses, polarity);
+      visitType(type.indexType, assumeMultipleUses, polarity);
     }
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
+      const isOutput = isOutputPolarity(polarity);
       for (const typeArgument of type.typeArguments ?? []) {
-        // currently, if we are in a "class context", everything is accepted
-        let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
-
         // special cases - readonly arrays/tuples are considered only to use the
         // type parameter once. Mutable arrays/tuples are considered to use the
         // type parameter multiple times if and only if they are returned.
         // other kind of type references always count as multiple uses
-        thisAssumeMultipleUses ||= tsutils.isTupleType(type.target)
-          ? isReturnType && !type.target.readonly
-          : checker.isArrayType(type.target)
-            ? isReturnType &&
-              (type.symbol as ts.Symbol | undefined)?.getName() === 'Array'
-            : true;
+        const thisAssumeMultipleUses =
+          assumeMultipleUses ||
+          (tsutils.isTupleType(type.target)
+            ? isOutput && !type.target.readonly
+            : checker.isArrayType(type.target)
+              ? isOutput &&
+                (type.symbol as ts.Symbol | undefined)?.getName() === 'Array'
+              : true);
 
-        visitType(typeArgument, thisAssumeMultipleUses, isReturnType);
+        visitType(typeArgument, thisAssumeMultipleUses, polarity);
       }
     }
 
     // Template literals like `a${T}b`
     else if (tsutils.isTemplateLiteralType(type)) {
       for (const subType of type.types) {
-        visitType(subType, assumeMultipleUses);
+        visitType(subType, assumeMultipleUses, polarity);
       }
     }
 
     // Conditional types like `T extends string ? T : never`
     else if (tsutils.isConditionalType(type)) {
-      visitType(type.checkType, assumeMultipleUses);
-      visitType(type.extendsType, assumeMultipleUses);
+      visitType(type.checkType, assumeMultipleUses, polarity);
+      visitType(type.extendsType, assumeMultipleUses, polarity);
     }
 
     // Catch-all: inferred object types like `{ K: V }`.
@@ -463,10 +469,10 @@ function collectTypeParameterUsageCounts(
     // generic interface/class, e.g. `Map<K, V>`.
     else if (tsutils.isObjectType(type)) {
       const properties = type.getProperties();
-      visitSymbolsListOnce(properties, false);
+      visitObjectProperties(type, properties, assumeMultipleUses, polarity);
 
       if (isMappedType(type)) {
-        visitType(type.typeParameter, false);
+        visitType(type.typeParameter, false, polarity);
         if (properties.length === 0) {
           // Instantiated mapped types populate `templateType` lazily, which
           // building a type node forces.
@@ -474,9 +480,16 @@ function collectTypeParameterUsageCounts(
             checker.typeToTypeNode(type, undefined, undefined);
           }
 
+          const isMutableTemplate =
+            isOutputPolarity(polarity) && !isReadonlyMappedType(type);
+
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
-          visitType(type.templateType ?? type.constraintType, false);
+          visitType(
+            type.templateType,
+            assumeMultipleUses || isMutableTemplate,
+            polarity,
+          );
 
           // `templateType` is a lazily populated checker cache. Once it is
           // populated on an instantiated mapped type, its constraint is
@@ -488,7 +501,7 @@ function collectTypeParameterUsageCounts(
             type.constraintType !==
               getDeclaredConstraintType(type.typeParameter)
           ) {
-            visitType(type.constraintType, false);
+            visitType(type.constraintType, false, polarity);
           }
         }
 
@@ -500,27 +513,27 @@ function collectTypeParameterUsageCounts(
           checker.getAwaitedType(type);
         }
         if (type.nameType) {
-          visitType(type.nameType, false);
+          visitType(type.nameType, false, polarity);
         }
       }
 
-      visitType(type.getNumberIndexType(), true);
-      visitType(type.getStringIndexType(), true);
+      visitType(type.getNumberIndexType(), true, polarity);
+      visitType(type.getStringIndexType(), true, polarity);
 
       type.getCallSignatures().forEach(signature => {
         functionLikeType = true;
-        visitSignature(signature);
+        visitSignature(signature, polarity);
       });
 
       type.getConstructSignatures().forEach(signature => {
         functionLikeType = true;
-        visitSignature(signature);
+        visitSignature(signature, polarity);
       });
     }
 
     // Catch-all: operator types like `keyof T`
     else if (isOperatorType(type)) {
-      visitType(type.type, assumeMultipleUses);
+      visitType(type.type, assumeMultipleUses, polarity);
     }
   }
 
@@ -549,34 +562,45 @@ function collectTypeParameterUsageCounts(
     return constraint && checker.getTypeAtLocation(constraint);
   }
 
-  function visitSignature(signature: ts.Signature | undefined): void {
+  function visitSignature(
+    signature: ts.Signature | undefined,
+    polarity: Polarity,
+  ): void {
     if (!signature) {
       return;
     }
 
+    const paramPolarity = getParamPolarity(polarity);
+
     if (signature.thisParameter) {
-      visitType(checker.getTypeOfSymbol(signature.thisParameter), false);
+      visitType(
+        checker.getTypeOfSymbol(signature.thisParameter),
+        false,
+        paramPolarity,
+      );
     }
 
     for (const parameter of signature.parameters) {
-      visitType(checker.getTypeOfSymbol(parameter), false);
+      visitType(checker.getTypeOfSymbol(parameter), false, paramPolarity);
     }
 
     for (const typeParameter of signature.getTypeParameters() ?? []) {
-      visitType(typeParameter, false);
+      visitType(typeParameter, false, 'input');
     }
 
     visitType(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
       false,
-      true,
+      getReturnPolarity(polarity),
     );
   }
 
-  function visitSymbolsListOnce(
+  function visitObjectProperties(
+    objectType: ts.ObjectType,
     symbols: ts.Symbol[],
     assumeMultipleUses: boolean,
+    polarity: Polarity,
   ): void {
     if (visitedSymbolLists.has(symbols)) {
       return;
@@ -584,18 +608,76 @@ function collectTypeParameterUsageCounts(
 
     visitedSymbolLists.add(symbols);
 
+    const isOutput = isOutputPolarity(polarity);
     for (const symbol of symbols) {
-      visitType(checker.getTypeOfSymbol(symbol), assumeMultipleUses);
+      const isSetterOnly =
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.SetAccessor) &&
+        !tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.GetAccessor);
+      if (isSetterOnly) {
+        visitType(
+          checker.getTypeOfSymbol(symbol),
+          assumeMultipleUses,
+          getParamPolarity(polarity),
+        );
+        continue;
+      }
+
+      const isMutableProperty =
+        isOutput &&
+        !tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Method) &&
+        !tsutils.isPropertyReadonlyInType(
+          objectType,
+          symbol.getEscapedName(),
+          checker,
+        );
+      visitType(
+        checker.getTypeOfSymbol(symbol),
+        assumeMultipleUses || isMutableProperty,
+        polarity,
+      );
     }
   }
 
   function visitTypesList(
     types: readonly ts.Type[],
     assumeMultipleUses: boolean,
+    polarity: Polarity,
   ): void {
     for (const type of types) {
-      visitType(type, assumeMultipleUses);
+      visitType(type, assumeMultipleUses, polarity);
     }
+  }
+
+  function getParamPolarity(polarity: Polarity): Polarity {
+    switch (polarity) {
+      case 'output-covariant':
+        return 'output-contravariant';
+      case 'output-contravariant':
+        return 'output-covariant';
+      case 'input':
+      case 'root':
+        return 'input';
+    }
+  }
+
+  function getReturnPolarity(polarity: Polarity): Polarity {
+    return polarity === 'root' ? 'output-covariant' : polarity;
+  }
+
+  function isOutputPolarity(polarity: Polarity): boolean {
+    return (
+      polarity === 'output-covariant' || polarity === 'output-contravariant'
+    );
+  }
+
+  function isReadonlyMappedType(type: MappedType): boolean {
+    const readonlyToken = type
+      .getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isMappedTypeNode)?.readonlyToken;
+    return (
+      readonlyToken != null && readonlyToken.kind !== ts.SyntaxKind.MinusToken
+    );
   }
 }
 
@@ -616,4 +698,145 @@ interface OperatorType extends ts.Type {
 
 function isOperatorType(type: ts.Type): type is OperatorType {
   return 'type' in type && !!type.type;
+}
+
+function collectClassTypeParameterUsageCounts(
+  checker: ts.TypeChecker,
+  node: ts.ClassLikeDeclaration & {
+    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>;
+  },
+  counts: Map<ts.Identifier, number>,
+): void {
+  for (const typeParameter of node.typeParameters) {
+    collectTypeParameterUsageCounts(
+      checker,
+      typeParameter,
+      counts,
+      'input',
+      false,
+    );
+  }
+  const hasConstructorOverloads = node.members.some(
+    (member): member is ts.ConstructorDeclaration =>
+      ts.isConstructorDeclaration(member) && !member.body,
+  );
+  for (const member of node.members) {
+    if (ts.isConstructorDeclaration(member)) {
+      for (const parameter of member.parameters) {
+        if (!hasConstructorOverloads || !member.body) {
+          collectTypeParameterUsageCounts(
+            checker,
+            parameter,
+            counts,
+            'input',
+            false,
+          );
+        }
+        if (
+          ts.isParameterPropertyDeclaration(parameter, member) &&
+          !isPrivateMember(parameter)
+        ) {
+          const isReadonly = hasModifier(
+            parameter,
+            ts.SyntaxKind.ReadonlyKeyword,
+          );
+          collectTypeParameterUsageCounts(
+            checker,
+            parameter,
+            counts,
+            'output-covariant',
+            !isReadonly,
+          );
+        }
+      }
+    } else if (ts.isIndexSignatureDeclaration(member)) {
+      collectTypeParameterUsageCounts(
+        checker,
+        member.type,
+        counts,
+        'output-covariant',
+        true,
+      );
+    } else if (
+      ts.isPropertyDeclaration(member) ||
+      ts.isMethodDeclaration(member) ||
+      ts.isGetAccessorDeclaration(member) ||
+      ts.isSetAccessorDeclaration(member)
+    ) {
+      if (hasModifier(member, ts.SyntaxKind.StaticKeyword)) {
+        continue;
+      }
+      if (isPrivateMember(member)) {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'input',
+          false,
+        );
+      } else if (ts.isSetAccessorDeclaration(member)) {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-contravariant',
+          false,
+        );
+      } else if (ts.isPropertyDeclaration(member)) {
+        const isReadonly = hasModifier(member, ts.SyntaxKind.ReadonlyKeyword);
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-covariant',
+          !isReadonly,
+        );
+      } else if (ts.isMethodDeclaration(member)) {
+        const isOverloadImplementation =
+          member.body != null &&
+          node.members.some(
+            other =>
+              other !== member &&
+              ts.isMethodDeclaration(other) &&
+              !other.body &&
+              checker.getSymbolAtLocation(other.name) ===
+                checker.getSymbolAtLocation(member.name),
+          );
+        if (!isOverloadImplementation) {
+          collectTypeParameterUsageCounts(
+            checker,
+            member,
+            counts,
+            'output-covariant',
+            false,
+          );
+        }
+      } else {
+        collectTypeParameterUsageCounts(
+          checker,
+          member,
+          counts,
+          'output-covariant',
+          false,
+        );
+      }
+    }
+  }
+
+  function hasModifier(node: ts.HasModifiers, kind: ts.SyntaxKind): boolean {
+    return (
+      ts.getModifiers(node)?.some(modifier => modifier.kind === kind) ?? false
+    );
+  }
+
+  function isPrivateMember(
+    member: ts.HasModifiers & {
+      readonly name: ts.BindingName | ts.PropertyName;
+    },
+  ): boolean {
+    return (
+      hasModifier(member, ts.SyntaxKind.PrivateKeyword) ||
+      ts.isPrivateIdentifier(member.name)
+    );
+  }
 }

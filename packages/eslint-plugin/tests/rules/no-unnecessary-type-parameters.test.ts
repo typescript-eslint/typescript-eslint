@@ -470,6 +470,132 @@ const f = <T,>(
     `,
 
     "<T extends string>(t: T) => t as { [K in 'a' as T]: 0 };",
+    `
+class Joiner<T extends string | number> {
+  join(el: T, other: string) {
+    return [el, other].join(',');
+  }
+}
+    `,
+    `
+class ValueClass<T> {
+  public value!: T;
+}
+    `,
+    `
+class Box<T> {
+  value: T | undefined;
+}
+    `,
+    `
+class ProtectedBox<T> {
+  protected value?: T;
+}
+    `,
+    `
+class AutoAccessorBox<T> {
+  accessor value!: T;
+}
+    `,
+    `
+class SetterClass<T> {
+  public set value(v: T) {}
+}
+    `,
+    `
+class GetterSetterClass<T> {
+  public get value(): T {
+    return null!;
+  }
+  public set value(v: T) {}
+}
+    `,
+    `
+declare class Logger<T> {
+  log(level: T): void;
+}
+    `,
+    `
+declare class Logger2<T> {
+  log2(): (input: T) => void;
+}
+    `,
+    `
+declare class RealContravariant<T> {
+  run(getVal: () => T): void;
+}
+    `,
+    `
+declare class ReadonlyCallbackProp<T> {
+  readonly onEvent: (event: T) => void;
+}
+    `,
+    `
+declare class ReadonlyMutableArrayProp<T> {
+  readonly items: T[];
+}
+    `,
+    `
+declare class MutableReadonlyArrayProp<T> {
+  items: readonly T[];
+}
+    `,
+    `
+declare class IndexSigClass<T> {
+  [key: string]: T;
+}
+    `,
+    `
+class PublicParamProp<T> {
+  constructor(public value: T) {}
+}
+    `,
+    `
+class ReadonlyParamProp<T> {
+  constructor(public readonly value: T) {}
+}
+    `,
+    `
+class ClassWithStaticAndBlock<T> {
+  static count = 0;
+  static {}
+  value!: T;
+}
+    `,
+    `
+class OverloadedMethods<T> {
+  set(x: T): void;
+  set(x: T, label: string): void;
+  set(_x: T, _label?: string): void {}
+}
+    `,
+    `
+class OverloadedCtorsWithProp<T> {
+  value!: T;
+  constructor();
+  constructor(v: T);
+  constructor(v?: T) {
+    if (v !== undefined) {
+      this.value = v;
+    }
+  }
+}
+    `,
+    'declare function createLogger<T>(): { log(level: T): void };',
+    'declare function makeSetter<T>(): (value: T) => void;',
+    'declare function createSetterObj<T>(): { set value(v: T) };',
+    'declare function createBox<T>(): { value: T };',
+    'declare function createBoxFactory<T>(): () => { value: T };',
+    "type Fn = <T>() => { [K in 'a']: T };",
+    `
+declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+
+function f<P extends string, N>(p: P) {
+  return remap<P, N>(p, null!);
+}
+    `,
+    'declare function makeRec<K extends string, V>(k: K): { [P in K]: V };',
+    'declare function makeMut<K extends string, V>(k: K): { -readonly [P in K]: V };',
   ],
 
   invalid: [
@@ -605,37 +731,6 @@ interface I {
     },
     {
       code: `
-class Joiner<T extends string | number> {
-  join(el: T, other: string) {
-    return [el, other].join(',');
-  }
-}
-      `,
-      errors: [
-        {
-          column: 14,
-          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
-          endColumn: 39,
-          endLine: 2,
-          line: 2,
-          messageId: 'sole',
-          suggestions: [
-            {
-              messageId: 'replaceUsagesWithConstraint',
-              output: `
-class Joiner {
-  join(el: string | number, other: string) {
-    return [el, other].join(',');
-  }
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
 declare class C<V> {}
       `,
       errors: [
@@ -664,24 +759,6 @@ declare class C<T, U> {
 }
       `,
       errors: [
-        {
-          column: 17,
-          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'sole',
-          suggestions: [
-            {
-              messageId: 'replaceUsagesWithConstraint',
-              output: `
-declare class C<U> {
-  method(param: unknown): U;
-}
-      `,
-            },
-          ],
-        },
         {
           column: 20,
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
@@ -1815,7 +1892,7 @@ type Fn = () => Other;
       ],
     },
     {
-      code: "type Fn = <T>() => { [K in 'a']: T };",
+      code: "type Fn = <T>() => { readonly [K in 'a']: T };",
       errors: [
         {
           column: 12,
@@ -1827,7 +1904,7 @@ type Fn = () => Other;
           suggestions: [
             {
               messageId: 'replaceUsagesWithConstraint',
-              output: "type Fn = () => { [K in 'a']: unknown };",
+              output: "type Fn = () => { readonly [K in 'a']: unknown };",
             },
           ],
         },
@@ -1835,7 +1912,10 @@ type Fn = () => Other;
     },
     {
       code: `
-declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+declare function remap<T extends string, V>(
+  t: T,
+  v: V,
+): { readonly [K in 'a' as T]: V };
 
 function f<P extends string, N>(p: P) {
   return remap<P, N>(p, null!);
@@ -1846,14 +1926,17 @@ function f<P extends string, N>(p: P) {
           column: 30,
           data: { descriptor: 'function', name: 'N', uses: 'used only once' },
           endColumn: 31,
-          endLine: 4,
-          line: 4,
+          endLine: 7,
+          line: 7,
           messageId: 'sole',
           suggestions: [
             {
               messageId: 'replaceUsagesWithConstraint',
               output: `
-declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+declare function remap<T extends string, V>(
+  t: T,
+  v: V,
+): { readonly [K in 'a' as T]: V };
 
 function f<P extends string>(p: P) {
   return remap<P, unknown>(p, null!);
@@ -2530,6 +2613,529 @@ declare function foo(
             {
               messageId: 'replaceUsagesWithConstraint',
               output: 'declare function foo(x: (readonly string[])[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class ValueClassGetter<T> {
+  public get value(): T {
+    return null!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class ValueClassGetter {
+  public get value(): unknown {
+    return null!;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class ValueClassMethod<T> {
+  public getValue(): T {
+    return null!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class ValueClassMethod {
+  public getValue(): unknown {
+    return null!;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare class ReadonlyValueClass<T> {
+  public readonly value: T;
+}
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare class ReadonlyValueClass {
+  public readonly value: unknown;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare class Logger1<T extends 'debug' | 'info'> {
+  log1(): () => T;
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare class Logger1 {
+  log1(): () => 'debug' | 'info';
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare class FakeContravariant<T> {
+  on(cb: (val: T) => void): void;
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare class FakeContravariant {
+  on(cb: (val: unknown) => void): void;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class UnnecessaryCtorParam<T> {
+  constructor(arg: T) {}
+}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class UnnecessaryCtorParam {
+  constructor(arg: unknown) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class UnnecessaryCtorArray<T> {
+  constructor(args: T[]) {}
+}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class UnnecessaryCtorArray {
+  constructor(args: unknown[]) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class UnusedWithEmptyCtor<T> {
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { descriptor: 'class', name: 'T', uses: 'never used' },
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class UnusedWithEmptyCtor {
+  constructor() {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class OverloadedCtorSingleUse<T> {
+  constructor(a: T);
+  constructor(a?: T) {}
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class OverloadedCtorSingleUse {
+  constructor(a: unknown);
+  constructor(a?: unknown) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class OverloadedMethodSingleReturn<T> {
+  get(a: string): T;
+  get(a: number): number;
+  get(_a: string | number): T | number {
+    return 0;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class OverloadedMethodSingleReturn {
+  get(a: string): unknown;
+  get(a: number): number;
+  get(_a: string | number): unknown | number {
+    return 0;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class PrivatePropOnly<T> {
+  private value?: T;
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class PrivatePropOnly {
+  private value?: unknown;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class HashPrivatePropOnly<T> {
+  #value?: T;
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class HashPrivatePropOnly {
+  #value?: unknown;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class PrivateMethodOnly<T> {
+  private log(level: T): void {}
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class PrivateMethodOnly {
+  private log(level: unknown): void {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class PrivateParamPropOnly<T> {
+  constructor(private value: T) {}
+}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class PrivateParamPropOnly {
+  constructor(private value: unknown) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare class ReadonlyArrayReturnClass<T> {
+  getItems(): readonly T[];
+}
+      `,
+      errors: [
+        {
+          column: 40,
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare class ReadonlyArrayReturnClass {
+  getItems(): readonly unknown[];
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function createReadonlyBox<T>(): { readonly value: T };',
+      errors: [
+        {
+          column: 36,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function createReadonlyBox(): { readonly value: unknown };',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function createGetterBox<T>(): { get value(): T };',
+      errors: [
+        {
+          column: 34,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function createGetterBox(): { get value(): unknown };',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeMutableBox<T>(box: { value: T }): void;',
+      errors: [
+        {
+          column: 33,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeMutableBox(box: { value: unknown }): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeSetterObj<T>(box: { set value(v: T) }): void;',
+      errors: [
+        {
+          column: 32,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeSetterObj(box: { set value(v: unknown) }): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeRo<K extends string, V>(k: K): { readonly [P in K]: V };',
+      errors: [
+        {
+          column: 43,
+          data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeRo<K extends string>(k: K): { readonly [P in K]: unknown };',
             },
           ],
         },

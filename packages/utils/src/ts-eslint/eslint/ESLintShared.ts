@@ -3,6 +3,7 @@ import type { RuleMetaData } from '../Rule';
 
 export declare class ESLintBase<
   Config extends Linter.ConfigType,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   Options extends ESLintOptions<Config>,
 > {
   /**

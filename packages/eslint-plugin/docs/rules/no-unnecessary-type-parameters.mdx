@@ -107,6 +107,20 @@ declare function length(array: ReadonlyArray<unknown>): number;
 </TabItem>
 </Tabs>
 
+Similarly, a type parameter used in a contravariant position (such as a method or callback parameter) or in a non-`readonly`, non-`private` property of a class instance or function return type is allowed because it constrains how callers can pass values into the created instance or object:
+
+```ts
+declare class Logger<T> {
+  log(level: T): void;
+}
+
+declare class Box<T> {
+  value: T | undefined;
+}
+```
+
+Conversely, a type parameter used only once in a `constructor` parameter or only in a covariant output position (such as a method return type, getter without a setter, or `readonly` property) is still reported.
+
 ## FAQ
 
 ### The return type is only used as an input, so why isn't the rule reporting?
