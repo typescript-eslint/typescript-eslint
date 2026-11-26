@@ -21,7 +21,8 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6"
+    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6",
+    "typecheck:tsrs": "pnpm -w exec nx typecheck:tsrs"
   },
   "dependencies": {
     "@prettier/sync": "^0.6.1",
@@ -47,7 +48,8 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsc6": {}
+      "typecheck:tsc6": {},
+      "typecheck:tsrs": {}
     }
   }
 }

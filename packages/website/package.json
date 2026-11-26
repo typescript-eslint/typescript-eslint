@@ -25,7 +25,8 @@
     "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6"
+    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6",
+    "typecheck:tsrs": "pnpm -w exec nx typecheck:tsrs"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -162,6 +163,12 @@
         "dependsOn": [
           "generate-recent-blog-posts",
           "^typecheck:tsc6"
+        ]
+      },
+      "typecheck:tsrs": {
+        "dependsOn": [
+          "generate-recent-blog-posts",
+          "^typecheck:tsrs"
         ]
       }
     }

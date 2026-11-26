@@ -41,6 +41,7 @@
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
     "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6",
+    "typecheck:tsrs": "pnpm -w exec nx typecheck:tsrs",
     "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
@@ -79,6 +80,7 @@
         "command": "eslint"
       },
       "typecheck:tsc6": {},
+      "typecheck:tsrs": {},
       "attw-check": {}
     }
   }

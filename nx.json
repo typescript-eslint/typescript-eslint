@@ -58,6 +58,22 @@
         "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
       ]
     },
+    "typecheck:tsrs": {
+      "cache": true,
+      "executor": "nx:run-commands",
+      "dependsOn": ["^typecheck:tsrs"],
+      "options": {
+        "command": "tsrs --build --emitDeclarationOnly",
+        "cwd": "{projectRoot}"
+      },
+      "outputs": [
+        "{projectRoot}/dist/**/*.{d.ts,d.cts,d.mts}",
+        "{projectRoot}/dist/*.tsbuildinfo",
+        "{workspaceRoot}/dist/packages/{projectName}",
+        "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo",
+        "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
+      ]
+    },
     "typecheck": {
       "cache": true,
       "executor": "nx:run-commands",
