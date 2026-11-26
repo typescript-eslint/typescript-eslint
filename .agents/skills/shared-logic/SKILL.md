@@ -56,12 +56,12 @@ Two functions only ever called as a pair are one function, not two exports.
 
 ## Reach for the util that already exists
 
-| Question                                                | Use                                                                                                | Not                                                     |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Is this type from the default library?                  | `isSymbolFromDefaultLibrary`, `program.isSourceFileDefaultLibrary`                                 | a filename check, which `./src/gotcha.lib.d.ts` defeats |
-| Does this type or value match a user-configured target? | [`TypeOrValueSpecifier`](https://typescript-eslint.io/packages/type-utils/type-or-value-specifier) | comparing names, which matches coincidentally           |
-| What is this computed key's value?                      | `getStaticValue`, `getStaticMemberAccessValue`                                                     | handling only literals                                  |
-| Is this a definition file?                              | the same expression TypeScript itself uses                                                         | an approximation                                        |
+| Question                                                | Use                                                                                                 | Not                                                     |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Is this type from the default library?                  | `isSymbolFromDefaultLibrary`, `program.isSourceFileDefaultLibrary`                                  | a filename check, which `./src/gotcha.lib.d.ts` defeats |
+| Does this type or value match a user-configured target? | [`TypeOrValueSpecifier`](https://typescript-eslint.io/packages/type-utils/type-or-value-specifier/) | comparing names, which matches coincidentally           |
+| What is this computed key's value?                      | `getStaticValue`, `getStaticMemberAccessValue`                                                      | handling only literals                                  |
+| Is this a definition file?                              | the same expression TypeScript itself uses                                                          | an approximation                                        |
 
 ## A new util needs its call sites
 

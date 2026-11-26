@@ -22,7 +22,7 @@ export default createRule<Options, MessageIds>({
         {
           rule: {
             name: '@typescript-eslint/no-empty-object-type',
-            url: 'https://typescript-eslint.io/rules/no-empty-object-type',
+            url: 'https://typescript-eslint.io/rules/no-empty-object-type/',
           },
         },
       ],
