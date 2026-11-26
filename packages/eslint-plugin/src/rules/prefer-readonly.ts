@@ -68,15 +68,14 @@ export default createRule<Options, MessageIds>({
     function handlePropertyAccessExpression(
       node: ts.PropertyAccessExpression,
       parent: ts.Node,
-      classScope: ClassScope,
     ): void {
       if (ts.isBinaryExpression(parent)) {
-        handleParentBinaryExpression(node, parent, classScope);
+        handleParentBinaryExpression(node, parent);
         return;
       }
 
       if (ts.isDeleteExpression(parent) || isDestructuringAssignment(node)) {
-        classScope.addVariableModification(node);
+        addVariableModification(node.expression, node.name.text);
         return;
       }
 
@@ -84,35 +83,52 @@ export default createRule<Options, MessageIds>({
         ts.isPostfixUnaryExpression(parent) ||
         ts.isPrefixUnaryExpression(parent)
       ) {
-        handleParentPostfixOrPrefixUnaryExpression(parent, classScope);
+        handleParentPostfixOrPrefixUnaryExpression(parent);
       }
     }
 
     function handleParentBinaryExpression(
       node: ts.PropertyAccessExpression,
       parent: ts.BinaryExpression,
-      classScope: ClassScope,
     ): void {
       if (
         parent.left === node &&
         tsutils.isAssignmentKind(parent.operatorToken.kind)
       ) {
-        classScope.addVariableModification(node);
+        addVariableModification(node.expression, node.name.text);
       }
     }
 
     function handleParentPostfixOrPrefixUnaryExpression(
       node: ts.PostfixUnaryExpression | ts.PrefixUnaryExpression,
-      classScope: ClassScope,
     ): void {
       if (
         node.operator === ts.SyntaxKind.PlusPlusToken ||
         node.operator === ts.SyntaxKind.MinusMinusToken
       ) {
-        classScope.addVariableModification(
-          node.operand as ts.PropertyAccessExpression,
-        );
+        const operand = node.operand as ts.PropertyAccessExpression;
+        addVariableModification(operand.expression, operand.name.text);
       }
+    }
+
+    /**
+     * A nested class can modify the private members of any class it is
+     * declared in, so the modification is recorded in every enclosing class
+     * scope. Each scope only counts it when the expression's type is related
+     * to its own class.
+     */
+    function addVariableModification(
+      expression: ts.Expression,
+      memberName: string,
+    ): void {
+      const innermostIndex = classScopeStack.length - 1;
+      classScopeStack.forEach((classScope, index) => {
+        classScope.addVariableModificationByName(
+          expression,
+          memberName,
+          index !== innermostIndex,
+        );
+      });
     }
 
     function isDestructuringAssignment(
@@ -354,13 +370,11 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const classScope = classScopeStack[classScopeStack.length - 1];
-
         if (!node.computed) {
           const tsNode = services.esTreeNodeToTSNodeMap.get(
             node,
           ) as ts.PropertyAccessExpression;
-          handlePropertyAccessExpression(tsNode, tsNode.parent, classScope);
+          handlePropertyAccessExpression(tsNode, tsNode.parent);
         } else {
           const tsNode = services.esTreeNodeToTSNodeMap.get(node);
           if (
@@ -371,10 +385,7 @@ export default createRule<Options, MessageIds>({
           ) {
             const memberName = getStaticMemberAccessValue(node, context);
             if (typeof memberName === 'string') {
-              classScope.addVariableModificationByName(
-                tsNode.expression,
-                memberName,
-              );
+              addVariableModification(tsNode.expression, memberName);
             }
           }
         }
@@ -466,13 +477,10 @@ class ClassScope {
     ).set(memberName, node);
   }
 
-  public addVariableModification(node: ts.PropertyAccessExpression): void {
-    this.addVariableModificationByName(node.expression, node.name.text);
-  }
-
   public addVariableModificationByName(
     expression: ts.Expression,
     memberName: string,
+    fromNestedClass = false,
   ): void {
     const modifierType = this.checker.getTypeAtLocation(expression);
 
@@ -481,7 +489,8 @@ class ClassScope {
 
     if (
       relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
-      this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
+      this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR &&
+      !fromNestedClass
     ) {
       this.memberVariableWithConstructorModifications.add(memberName);
       return;
