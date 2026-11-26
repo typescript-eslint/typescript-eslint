@@ -214,6 +214,17 @@ describe('native project service lifecycle', () => {
     clearNativeProjectService();
   });
 
+  it('keeps a separate singleton service for running external code', () => {
+    const service = getNativeProjectService();
+    const external = getNativeProjectService(undefined, true);
+
+    expect(external).not.toBe(service);
+    expect(getNativeProjectService(undefined, true)).toBe(external);
+    clearNativeProjectService();
+
+    expect(() => external.openFile(filePath, '')).toThrow('closed');
+  });
+
   it('clears the singleton service with all parser caches', () => {
     const service = getNativeProjectService();
     service.openFile(filePath, readFixture());

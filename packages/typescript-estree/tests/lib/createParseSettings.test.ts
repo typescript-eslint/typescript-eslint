@@ -147,6 +147,21 @@ describe(createParseSettings, () => {
       expect(createProjectService).not.toHaveBeenCalled();
     });
 
+    it.runIf(process.features.require_module).each([
+      ['tsgo', { EXPERIMENTAL_backend: 'tsgo' as const }, true],
+      ['classic', {}, false],
+    ])(
+      'respects EXPERIMENTAL_runExternalCode on the %s backend',
+      (_name, options, expected) => {
+        const parseSettings = createParseSettings('', {
+          filePath: '/project/file.ts',
+          projectService: { ...options, EXPERIMENTAL_runExternalCode: true },
+        });
+
+        expect(parseSettings.runExternalCode).toBe(expected);
+      },
+    );
+
     describe.runIf(process.features.require_module)(
       'TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND',
       () => {
