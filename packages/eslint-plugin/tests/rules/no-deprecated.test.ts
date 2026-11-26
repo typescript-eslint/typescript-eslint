@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-deprecated';
 import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
@@ -8,7 +9,6 @@ const ruleTester = createRuleTesterWithTypes({
   ecmaFeatures: {
     jsx: true,
   },
-  project: './tsconfig.json',
 });
 
 ruleTester.run('no-deprecated', rule, {
@@ -465,15 +465,13 @@ const [{ anchor = 'bar' }] = x;
     {
       code: `
 async function fn() {
-  const d = await import('./deprecated.js');
+  const d = await import('../deprecated.js');
   d.default;
 }
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'moduleResolution-node16'),
         },
       },
     },
@@ -802,6 +800,12 @@ declare const a: { foo: Foo };
 const {
   foo: { notDeprecatedProperty: deprecatedProperty },
 } = a;
+    `,
+    `
+class Foo implements Foo {
+  value = 1;
+}
+new Foo().value;
     `,
   ],
   invalid: [
@@ -3423,7 +3427,7 @@ imported;
     {
       code: `
 async function fn() {
-  const d = await import('./deprecated.js');
+  const d = await import('../deprecated.js');
   d.default.default;
 }
       `,
@@ -3439,9 +3443,7 @@ async function fn() {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'moduleResolution-node16'),
         },
       },
     },
@@ -4282,6 +4284,201 @@ const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
     },
     {
       code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+declare function optional(options?: Options): void;
+optional({ a: 'x' });
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 13,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+const x: Options | undefined = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 35,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+const x: Options | { c: string } = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 38,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 39,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+const x: A | B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`c\` instead. */
+  a?: string;
+}
+const x: A | B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+const x: A & B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`c\` instead. */
+  a?: string;
+}
+const x: A & B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated */
+  a?: string;
+}
+declare const o: Options | undefined;
+o?.['a'];
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'a' },
+          endColumn: 8,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface AProps {
+  /** @deprecated Use \`c\` instead. */
+  b?: string;
+}
+
+function A(props: AProps | { c: string }) {
+  return <div />;
+}
+
+const a = <A b="" />;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { name: 'b', reason: 'Use `c` instead.' },
+          endColumn: 15,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
   /** @deprecated */
   1: string;
@@ -4643,6 +4840,51 @@ void { normalVariable };
           endLine: 4,
           line: 4,
           messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+class Base {
+  /** @deprecated Use other. */
+  method(): void {}
+}
+class Sub extends Base {
+  override method(): void {}
+}
+new Sub().method();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'method', reason: 'Use other.' },
+          endColumn: 17,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  /** @deprecated Use other. */
+  value: number;
+}
+interface Override extends Base {
+  value: number;
+}
+declare const override: Override;
+override.value;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'value', reason: 'Use other.' },
+          endColumn: 15,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
         },
       ],
     },

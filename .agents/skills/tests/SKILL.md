@@ -9,7 +9,7 @@ Each `packages/eslint-plugin/tests/rules/<rule-name>.test.ts` calls `ruleTester.
 
 ## Tester options
 
-- Per-case `languageOptions.parserOptions` overrides the file's tester: `{ ecmaFeatures: { jsx: true } }` parses the snippet as `react.tsx`; pinning a compiler flag needs `project: './tsconfig.<flag>.json'` plus `projectService: false` and `tsconfigRootDir: getFixturesRootDir()`.
+- Per-case `languageOptions.parserOptions` overrides the file's tester: `{ ecmaFeatures: { jsx: true } }` parses the snippet as `react.tsx`; pinning a compiler flag needs `tsconfigRootDir: path.join(getFixturesRootDir(), '<flag>')`, a fixture folder whose `tsconfig.json` extends `../tsconfig.json`.
 - For the full case and assertion option tables, see the [Rule Tester docs](../../../docs/packages/Rule_Tester.mdx).
 
 ## Do not over-test
@@ -192,7 +192,7 @@ expect(globalScope.references).toStrictEqual([
 
 Keep `ast-spec` fixtures small and single-purpose: one fixture per syntax described. To see how error fixtures are structured, search for an existing error message and read its `snapshots/` neighbours.
 
-Typed rule tests use `createRuleTesterWithTypes()` from `../RuleTester` rather than constructing a `RuleTester` by hand. A case needing DOM types needs `project: './tsconfig.lib-dom.json'` with `projectService: false` — confusing type-identity failures often turn out to be `@types/react`'s empty `Element` and `HTMLElement` stand-ins rather than a rule bug.
+Typed rule tests use `createRuleTesterWithTypes()` from `../RuleTester` rather than constructing a `RuleTester` by hand. A case needing DOM types needs `tsconfigRootDir: path.join(getFixturesRootDir(), 'lib-dom')` — confusing type-identity failures often turn out to be `@types/react`'s empty `Element` and `HTMLElement` stand-ins rather than a rule bug.
 
 ## Before finishing
 
