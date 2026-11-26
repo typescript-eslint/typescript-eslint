@@ -254,12 +254,15 @@ Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-ass
 
 ## How does typescript-eslint compare to native-speed linters?
 
-"Native-speed" linters such as [Biome linter](https://biomejs.dev/linter), [Deno linter](https://docs.deno.com/runtime/manual/tools/linter), and [oxlint](https://oxc.rs/docs/guide/usage/linter.html) run in very fast languages such as Go or Rust, and so can generally run significantly faster than ESLint in non-type-aware-linting.
+"Native-speed" linters such as [Biome linter](https://biomejs.dev/linter), [Deno linter](https://docs.deno.com/runtime/manual/tools/linter), and [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) run in very fast languages such as Go or Rust, and so can generally run significantly faster than ESLint when linting without type information.
 They can also be easier to configure because they don't need to support the full ecosystem and legacy trail of ESLint.
 
-However, until they support [typed linting](../../getting-started/Typed_Linting.mdx), they aren't a full replacement for typescript-eslint.
-If you plan on using them, we recommend "dual linting": using those linters for what they support, then adding in ESLint for typed linting in a parallel or second step.
-Our `*-type-checked-only` [Shared Configs](../../users/Shared_Configurations.mdx) will enable only type-checked rules in your ESLint config.
+Support for [typed linting](../../getting-started/Typed_Linting.mdx) varies by linter.
+Oxlint [supports most of typescript-eslint's type-aware rules](https://oxc.rs/docs/guide/usage/linter/type-aware.html).
+Biome [provides type-aware rules using its own type inference engine](https://biomejs.dev/linter/domains/#types).
+
+If your project needs additional typed rules, you can use "dual linting" by running ESLint alongside a native-speed linter.
+Our `*-type-checked-only` [Shared Configs](../../users/Shared_Configurations.mdx) are a starting point for enabling type-checked rules in ESLint.
 
 For example, the following config enables only the recommended config's type-checked rules with [`recommendedTypeCheckedOnly`](../../users/Shared_Configurations.mdx#recommended-type-checked-only):
 
@@ -303,7 +306,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-For example, [oxlint's Integration > ESLint documentation](https://oxc.rs/docs/guide/usage/linter#eslint) describes how to turn off ESLint rules that are already supported by oxlint.
+See [Oxlint's guide to disabling overlapping rules in ESLint](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint.html#disabling-overlapping-rules-in-eslint) for an example of configuring both linters.
 
 ## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
 
