@@ -9,7 +9,7 @@ const CODE = 'export const value = 1;';
 const isWindows = process.platform === 'win32';
 
 const tmpDirsParentDirectory = path.join(
-  os.tmpdir() || os.homedir(),
+  os.tmpdir(),
   'typescript-estree-case-insensitive-paths',
 );
 

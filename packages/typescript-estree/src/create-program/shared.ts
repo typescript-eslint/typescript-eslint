@@ -60,7 +60,7 @@ const useCaseSensitiveFileNames =
 // Same as TypeScript's internal `toFileNameLowerCase`, which leaves characters
 // alone whose lowercase form would point to a different file on disk, e.g.
 // "\u0130".toLowerCase() is "i" followed by a combining dot above.
-// https://github.com/microsoft/TypeScript/blob/v5.9.3/src/compiler/core.ts#L1861-L1880
+// https://github.com/microsoft/TypeScript/blob/v6.0.3/src/compiler/core.ts#L1839-L1879
 const FILE_NAME_LOWER_CASE_REGEXP = /[^\u0130\u0131\u00DFa-z0-9\\/:\-_. ]+/g;
 
 const correctPathCasing = useCaseSensitiveFileNames
