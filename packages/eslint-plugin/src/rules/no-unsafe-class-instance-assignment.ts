@@ -313,8 +313,8 @@ export default createRule({
         checkSite(node.right);
       },
       NewExpression: checkArguments,
-      'Property[parent.type="ObjectExpression"]'(node: TSESTree.Property) {
-        checkSite(node.value as TSESTree.Expression);
+      'ObjectExpression > Property'(node: TSESTree.ObjectExpressionProperty) {
+        checkSite(node.value);
       },
       'PropertyDefinition, AccessorProperty'(
         node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
