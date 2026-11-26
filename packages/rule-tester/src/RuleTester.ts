@@ -59,6 +59,9 @@ import {
 } from './utils/validationHelpers';
 
 const ajv = ajvBuilder({ strictDefaults: true });
+
+const validRuleSchemaCache = new WeakSet();
+
 const RULE_TESTER_PLUGIN = '@rule-tester';
 const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
@@ -81,10 +84,7 @@ const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
   rules: {},
 };
 
-let defaultConfig = deepMerge(
-  {},
-  testerDefaultConfig,
-) as TesterConfigWithDefaults;
+let defaultConfig: TesterConfigWithDefaults = safeClone(testerDefaultConfig);
 
 type ForbiddenFunction = (this: WeakKey, ...args: never[]) => unknown;
 
@@ -170,6 +170,7 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #lintersByBasePath: Map<string | undefined, Linter>;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
+  readonly #ruleSources = new Map<string, AnyRuleModule>();
   readonly #testerConfig: TesterConfigWithDefaults;
 
   /**
@@ -260,7 +261,7 @@ export class RuleTester extends TestFramework {
    * any changes made until now.
    */
   static resetDefaultConfig(): void {
-    defaultConfig = merge({}, testerDefaultConfig);
+    defaultConfig = safeClone(testerDefaultConfig);
   }
 
   /**
@@ -425,6 +426,14 @@ export class RuleTester extends TestFramework {
   }
 
   defineRule(name: string, rule: AnyRuleModule): void {
+    // If this rule's wrapper already exists, don't redefine it, so that we keep a
+    // stable reference of the wrapper rule and don't bust ESLint's rule cache.
+    if (this.#ruleSources.get(name) === rule) {
+      return;
+    }
+
+    this.#ruleSources.set(name, rule);
+
     this.#rules[name] = {
       ...rule,
       name,
@@ -648,33 +657,37 @@ export class RuleTester extends TestFramework {
   } {
     this.defineRule(ruleName, rule);
 
-    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
-      files: ['**'],
-      plugins: {
-        [RULE_TESTER_PLUGIN]: {
-          rules: {
-            /**
-             * Setup AST getters.
-             * The goal is to check whether or not AST was modified when
-             * running the rule under test.
-             */
-            'validate-ast': {
-              create(): RuleListener {
-                return {
-                  Program(node: TSESTree.Program): void {
-                    beforeAST = cloneDeeplyExcludesParent(node);
-                  },
-                  'Program:exit'(node: TSESTree.Program): void {
-                    afterAST = node;
-                  },
-                };
-              },
+    let config: TesterConfigWithDefaults = safeClone(this.#testerConfig);
+
+    config.files = ['**'];
+
+    // Assigned rather than deep merged to keep stable references to the rules in `this.#rules`,
+    // so that ESLint's rule cache doesn't get busted.
+    config.plugins = {
+      ...config.plugins,
+      [RULE_TESTER_PLUGIN]: {
+        rules: {
+          /**
+           * Setup AST getters.
+           * The goal is to check whether or not AST was modified when
+           * running the rule under test.
+           */
+          'validate-ast': {
+            create(): RuleListener {
+              return {
+                Program(node: TSESTree.Program): void {
+                  beforeAST = cloneDeeplyExcludesParent(node);
+                },
+                'Program:exit'(node: TSESTree.Program): void {
+                  afterAST = node;
+                },
+              };
             },
-            ...this.#rules,
           },
+          ...this.#rules,
         },
       },
-    });
+    };
 
     // Unlike other properties, we don't want to spread props between different parsers.
     config.languageOptions.parser =
@@ -735,7 +748,9 @@ export class RuleTester extends TestFramework {
     config.languageOptions.parser ??= defaultParser;
     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
 
-    const schema = getRuleOptionsSchema(rule);
+    const schema = validRuleSchemaCache.has(rule)
+      ? null
+      : getRuleOptionsSchema(rule);
 
     if (schema) {
       ajv.validateSchema(schema);
@@ -774,6 +789,8 @@ export class RuleTester extends TestFramework {
           { cause: err },
         );
       }
+
+      validRuleSchemaCache.add(rule);
     }
 
     validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));
@@ -1473,4 +1490,11 @@ function assertMessageMatches(actual: string, expected: string | RegExp): void {
   } else {
     assert.strictEqual(actual, expected);
   }
+}
+
+/**
+ * Basically a `structuredClone` that supports functions.
+ */
+function safeClone<T extends object>(value: T): T {
+  return merge({}, value);
 }
