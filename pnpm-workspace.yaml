@@ -4,6 +4,12 @@ packages:
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
 blockExoticSubdeps: true
 
+# npm serves a new version only after scanning it. pnpm publish waits (in ms)
+# until npm serves it, and Nx publishes a package only after its dependencies.
+# So no package goes out before the versions it depends on can be installed.
+# https://github.com/typescript-eslint/typescript-eslint/issues/13206
+publishWaitTimeout: 1800000 # 30 minutes
+
 allowBuilds:
   '@swc/core': false
   core-js: false
