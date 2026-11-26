@@ -990,12 +990,7 @@ describe(RuleTester, () => {
         ],
       });
 
-      expect(
-        getTestConfigFromCall().map(test => {
-          const { code, skip } = test as { code: string; skip: boolean };
-          return { code, skip };
-        }),
-      ).toStrictEqual([
+      expect(getTestConfigFromCall()).toMatchObject([
         { code: 'explicitly skipped', skip: true },
         { code: 'passing constraint', skip: false },
         { code: 'explicitly skipped with passing constraint', skip: true },
