@@ -126,7 +126,7 @@ console.log(
       const { extendsBaseRule, recommended, requiresTypeChecking } = meta.docs;
 
       return [
-        `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,
+        `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName}/)`,
         newRuleNames.has(ruleName) ? '🆕' : deprecated ? '💀' : '',
         requiresTypeChecking ? '💭' : '',
         extendsBaseRule ? '🧱' : '',

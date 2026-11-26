@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/prefer-return-this-type** for documentation.
+> See **https://typescript-eslint.io/rules/prefer-return-this-type/** for documentation.
 
 [Method chaining](https://en.wikipedia.org/wiki/Method_chaining) is a common pattern in OOP languages and TypeScript provides a special [polymorphic `this` type](https://www.typescriptlang.org/docs/handbook/2/classes.html#this-types) to facilitate it.
 Class methods that explicitly declare a return type of the class name instead of `this` make it harder for extending classes to call that method: the returned object will be typed as the base class, not the derived class.

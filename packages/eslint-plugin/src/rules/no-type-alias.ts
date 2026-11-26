@@ -42,7 +42,7 @@ export default createRule<Options, MessageIds>({
         {
           rule: {
             name: '@typescript-eslint/consistent-type-definitions',
-            url: 'https://typescript-eslint.io/rules/consistent-type-definitions',
+            url: 'https://typescript-eslint.io/rules/consistent-type-definitions/',
           },
         },
       ],
