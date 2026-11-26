@@ -1024,7 +1024,12 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tsutils.unionConstituents(type)) {
+  // Use the apparent type as the source of the unionConstituents instead of the
+  // type passed in, to prevent `getCallSignatures` from going ballistic doing a
+  // union type merge that is not needed to answer `isThenableReturningFunctionType`
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -1043,7 +1048,12 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tsutils.unionConstituents(type)) {
+  // Use the apparent type as the source of the unionConstituents instead of the
+  // type passed in, to prevent `getCallSignatures` from going ballistic doing a
+  // union type merge that is not needed to answer `isVoidReturningFunctionType`
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
