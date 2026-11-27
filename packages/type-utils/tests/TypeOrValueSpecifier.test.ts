@@ -777,6 +777,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'reexported-error/public',
         },
       ],
+      [
+        'import type {} from "internal-reexport-error/internal"; import type { ReexportedError } from "other-error"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'internal-reexport-error',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {

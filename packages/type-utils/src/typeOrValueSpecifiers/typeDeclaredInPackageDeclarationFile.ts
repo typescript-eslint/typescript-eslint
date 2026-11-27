@@ -33,19 +33,13 @@ function typeDeclaredInDeclareModule(
   );
 }
 
-function exportedSymbolMatches(
+function resolveExportedSymbol(
   exportedSymbol: ts.Symbol,
-  symbol: ts.Symbol,
   checker: ts.TypeChecker,
-): boolean {
-  const resolvedSymbol = tsutils.isSymbolFlagSet(
-    exportedSymbol,
-    ts.SymbolFlags.Alias,
-  )
+): ts.Symbol {
+  return tsutils.isSymbolFlagSet(exportedSymbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(exportedSymbol)
     : exportedSymbol;
-
-  return resolvedSymbol === symbol;
 }
 
 function typeExportedFromDeclareModule(
@@ -72,8 +66,9 @@ function typeExportedFromDeclareModule(
 
   return checker
     .getExportsOfModule(moduleSymbol)
-    .some(exportedSymbol =>
-      exportedSymbolMatches(exportedSymbol, symbol, checker),
+    .some(
+      exportedSymbol =>
+        resolveExportedSymbol(exportedSymbol, checker) === symbol,
     );
 }
 
@@ -88,14 +83,23 @@ function pathIsInPackage(packagePath: string, packageName: string): boolean {
   );
 }
 
+function packageIdMatchesSpecifier(
+  packageIdName: string,
+  packageName: string,
+): boolean {
+  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+
+  return (
+    pathIsInPackage(packageIdName, packageName) ||
+    pathIsInPackage(packageIdName.replace(/^@types\//, ''), typesPackageName)
+  );
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
   return declarationFiles.some(declaration => {
     if (!program.isSourceFileFromExternalLibrary(declaration)) {
       return false;
@@ -107,13 +111,9 @@ function typeDeclaredInDeclarationFile(
       program.sourceFileToPackageName.get(declaration.path) ??
       resolvePackageIdName(declaration.fileName);
 
-    if (packageIdName == null) {
-      return false;
-    }
-
     return (
-      pathIsInPackage(packageIdName, packageName) ||
-      pathIsInPackage(packageIdName.replace(/^@types\//, ''), typesPackageName)
+      packageIdName != null &&
+      packageIdMatchesSpecifier(packageIdName, packageName)
     );
   });
 }
@@ -175,14 +175,9 @@ function getPackageName(directory: string): string | undefined {
   return typeof config?.name === 'string' ? config.name : undefined;
 }
 
-const reExportSourceFilesCache = new WeakMap<
+const packageExportSymbolsCache = new WeakMap<
   ts.Program,
-  Map<string, ts.SourceFile[]>
->();
-
-const packageEntryModuleSymbolsCache = new WeakMap<
-  ts.Program,
-  Map<string, readonly ts.Symbol[]>
+  Map<string, ReadonlySet<ts.Symbol>>
 >();
 
 const RESOLUTION_MODES: ts.ResolutionMode[] = [
@@ -190,34 +185,28 @@ const RESOLUTION_MODES: ts.ResolutionMode[] = [
   ts.ModuleKind.CommonJS,
 ];
 
-function packageIdMatchesSpecifier(
-  packageIdName: string,
-  packageName: string,
-): boolean {
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+const EMPTY_SYMBOL_SET: ReadonlySet<ts.Symbol> = new Set();
 
-  return (
-    pathIsInPackage(packageIdName, packageName) ||
-    pathIsInPackage(packageIdName.replace(/^@types\//, ''), typesPackageName)
-  );
+function collectResolvedExports(
+  moduleSymbols: readonly ts.Symbol[],
+  checker: ts.TypeChecker,
+): Set<ts.Symbol> {
+  const exports = new Set<ts.Symbol>();
+
+  for (const moduleSymbol of moduleSymbols) {
+    for (const exportedSymbol of checker.getExportsOfModule(moduleSymbol)) {
+      exports.add(resolveExportedSymbol(exportedSymbol, checker));
+    }
+  }
+
+  return exports;
 }
 
 function getExternalSourceFilesForPackage(
   packageName: string,
   program: ts.Program,
 ): ts.SourceFile[] {
-  let packageCache = reExportSourceFilesCache.get(program);
-  if (packageCache == null) {
-    packageCache = new Map();
-    reExportSourceFilesCache.set(program, packageCache);
-  }
-
-  const cached = packageCache.get(packageName);
-  if (cached != null) {
-    return cached;
-  }
-
-  const sourceFiles = program.getSourceFiles().filter(sourceFile => {
+  return program.getSourceFiles().filter(sourceFile => {
     if (!program.isSourceFileFromExternalLibrary(sourceFile)) {
       return false;
     }
@@ -230,19 +219,83 @@ function getExternalSourceFilesForPackage(
       packageIdMatchesSpecifier(packageIdName, packageName)
     );
   });
-
-  packageCache.set(packageName, sourceFiles);
-  return sourceFiles;
 }
 
-function getPackageEntryModuleSymbols(
+interface PackageEntryResolution {
+  moduleSymbols: readonly ts.Symbol[];
+  /**
+   * True when `resolveModuleName` found an external library entry for the
+   * package, even if that file is not loaded into the program.
+   */
+  resolved: boolean;
+}
+
+function getPackageEntryResolution(
   packageName: string,
   program: ts.Program,
-): readonly ts.Symbol[] {
-  let packageCache = packageEntryModuleSymbolsCache.get(program);
+): PackageEntryResolution {
+  // typescript doesn't provide a ts.sys implementation for browser environments
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (ts.sys == null) {
+    return { moduleSymbols: [], resolved: false };
+  }
+
+  const rootFileNames = program.getRootFileNames();
+  if (rootFileNames.length === 0) {
+    return { moduleSymbols: [], resolved: false };
+  }
+
+  const checker = program.getTypeChecker();
+  const compilerOptions = program.getCompilerOptions();
+  const moduleSymbols: ts.Symbol[] = [];
+  const seen = new Set<ts.Symbol>();
+  let resolved = false;
+
+  for (const containingFile of rootFileNames) {
+    for (const mode of RESOLUTION_MODES) {
+      const { resolvedModule } = ts.resolveModuleName(
+        packageName,
+        containingFile,
+        compilerOptions,
+        ts.sys,
+        undefined,
+        undefined,
+        mode,
+      );
+
+      if (!resolvedModule?.isExternalLibraryImport) {
+        continue;
+      }
+
+      resolved = true;
+
+      const entryFile = program.getSourceFile(resolvedModule.resolvedFileName);
+      const moduleSymbol =
+        entryFile != null ? checker.getSymbolAtLocation(entryFile) : undefined;
+
+      if (moduleSymbol != null && !seen.has(moduleSymbol)) {
+        seen.add(moduleSymbol);
+        moduleSymbols.push(moduleSymbol);
+      }
+    }
+  }
+
+  return { moduleSymbols, resolved };
+}
+
+/**
+ * Public exports of `packageName`: prefer the resolved package entry
+ * (including `exports`-mapped subpaths). Only if resolution fails entirely,
+ * fall back to package files already in the program.
+ */
+function getPackageExportSymbols(
+  packageName: string,
+  program: ts.Program,
+): ReadonlySet<ts.Symbol> {
+  let packageCache = packageExportSymbolsCache.get(program);
   if (packageCache == null) {
     packageCache = new Map();
-    packageEntryModuleSymbolsCache.set(program, packageCache);
+    packageExportSymbolsCache.set(program, packageCache);
   }
 
   const cached = packageCache.get(packageName);
@@ -250,71 +303,32 @@ function getPackageEntryModuleSymbols(
     return cached;
   }
 
-  // typescript doesn't provide a ts.sys implementation for browser environments
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (ts.sys == null) {
-    packageCache.set(packageName, []);
-    return [];
-  }
-
-  const containingFile = program.getRootFileNames().at(0);
-  if (containingFile == null) {
-    packageCache.set(packageName, []);
-    return [];
-  }
-
   const checker = program.getTypeChecker();
-  const compilerOptions = program.getCompilerOptions();
-  const moduleSymbols: ts.Symbol[] = [];
-  const seen = new Set<ts.Symbol>();
-
-  for (const mode of RESOLUTION_MODES) {
-    const { resolvedModule } = ts.resolveModuleName(
-      packageName,
-      containingFile,
-      compilerOptions,
-      ts.sys,
-      undefined,
-      undefined,
-      mode,
-    );
-
-    if (!resolvedModule?.isExternalLibraryImport) {
-      continue;
-    }
-
-    const entryFile = program.getSourceFile(resolvedModule.resolvedFileName);
-    const moduleSymbol =
-      entryFile != null ? checker.getSymbolAtLocation(entryFile) : undefined;
-
-    if (moduleSymbol != null && !seen.has(moduleSymbol)) {
-      seen.add(moduleSymbol);
-      moduleSymbols.push(moduleSymbol);
-    }
-  }
-
-  packageCache.set(packageName, moduleSymbols);
-  return moduleSymbols;
-}
-
-function typeExportedFromPackageEntry(
-  packageName: string,
-  symbol: ts.Symbol | undefined,
-  program: ts.Program,
-): boolean {
-  if (!symbol) {
-    return false;
-  }
-
-  const checker = program.getTypeChecker();
-
-  return getPackageEntryModuleSymbols(packageName, program).some(moduleSymbol =>
-    checker
-      .getExportsOfModule(moduleSymbol)
-      .some(exportedSymbol =>
-        exportedSymbolMatches(exportedSymbol, symbol, checker),
-      ),
+  const { moduleSymbols, resolved } = getPackageEntryResolution(
+    packageName,
+    program,
   );
+
+  let exports: ReadonlySet<ts.Symbol>;
+  if (moduleSymbols.length > 0) {
+    exports = collectResolvedExports(moduleSymbols, checker);
+  } else if (resolved) {
+    // Entry resolved but isn't in the program — don't treat internal package
+    // files as the public API.
+    exports = EMPTY_SYMBOL_SET;
+  } else {
+    const fallbackModuleSymbols = getExternalSourceFilesForPackage(
+      packageName,
+      program,
+    )
+      .map(sourceFile => checker.getSymbolAtLocation(sourceFile))
+      .filter(symbol => symbol != null);
+
+    exports = collectResolvedExports(fallbackModuleSymbols, checker);
+  }
+
+  packageCache.set(packageName, exports);
+  return exports;
 }
 
 function typeReExportedFromPackage(
@@ -322,25 +336,8 @@ function typeReExportedFromPackage(
   symbol: ts.Symbol | undefined,
   program: ts.Program,
 ): boolean {
-  if (!symbol) {
-    return false;
-  }
-
-  const checker = program.getTypeChecker();
-
-  return getExternalSourceFilesForPackage(packageName, program).some(
-    sourceFile => {
-      const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
-      if (moduleSymbol == null) {
-        return false;
-      }
-
-      return checker
-        .getExportsOfModule(moduleSymbol)
-        .some(exportedSymbol =>
-          exportedSymbolMatches(exportedSymbol, symbol, checker),
-        );
-    },
+  return (
+    symbol != null && getPackageExportSymbols(packageName, program).has(symbol)
   );
 }
 
@@ -355,7 +352,6 @@ export function typeDeclaredInPackageDeclarationFile(
     typeDeclaredInDeclareModule(packageName, declarations) ||
     typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
     typeExportedFromDeclareModule(packageName, symbol, program) ||
-    typeExportedFromPackageEntry(packageName, symbol, program) ||
     typeReExportedFromPackage(packageName, symbol, program)
   );
 }
