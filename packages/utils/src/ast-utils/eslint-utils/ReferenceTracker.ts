@@ -4,11 +4,6 @@ import * as eslintUtils from '@eslint-community/eslint-utils';
 import type * as TSESLint from '../../ts-eslint';
 import type { TSESTree } from '../../ts-estree';
 
-const ReferenceTrackerREAD = eslintUtils.ReferenceTracker.READ;
-const ReferenceTrackerCALL = eslintUtils.ReferenceTracker.CALL;
-const ReferenceTrackerCONSTRUCT = eslintUtils.ReferenceTracker.CONSTRUCT;
-const ReferenceTrackerESM = eslintUtils.ReferenceTracker.ESM;
-
 interface ReferenceTracker {
   /**
    * Iterate the references that the given `traceMap` determined.
@@ -41,9 +36,9 @@ interface ReferenceTracker {
   ): IterableIterator<ReferenceTracker.FoundReference<T>>;
 }
 interface ReferenceTrackerStatic {
-  readonly CALL: typeof ReferenceTrackerCALL;
-  readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
-  readonly ESM: typeof ReferenceTrackerESM;
+  readonly CALL: symbol;
+  readonly CONSTRUCT: symbol;
+  readonly ESM: symbol;
 
   new (
     globalScope: TSESLint.Scope.Scope,
@@ -61,7 +56,7 @@ interface ReferenceTrackerStatic {
     },
   ): ReferenceTracker;
 
-  readonly READ: typeof ReferenceTrackerREAD;
+  readonly READ: symbol;
 }
 
 namespace ReferenceTracker {
@@ -74,10 +69,6 @@ namespace ReferenceTracker {
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
   export interface TraceMapElement<T> {
     [key: string]: TraceMapElement<T>;
-    [ReferenceTrackerCALL]?: T;
-    [ReferenceTrackerCONSTRUCT]?: T;
-    [ReferenceTrackerESM]?: true;
-    [ReferenceTrackerREAD]?: T;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface FoundReference<T = any> {

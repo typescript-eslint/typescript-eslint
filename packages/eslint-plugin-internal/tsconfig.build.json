@@ -1,6 +1,9 @@
 {
   "extends": "../../tsconfig.build.json",
-  "compilerOptions": {},
+  "compilerOptions": {
+    // our hand-written root .d.ts files are the public types, so inferred declarations are fine here
+    "isolatedDeclarations": false
+  },
   "references": [
     {
       "path": "../type-utils/tsconfig.build.json"

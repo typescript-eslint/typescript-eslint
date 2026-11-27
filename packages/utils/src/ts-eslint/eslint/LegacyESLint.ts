@@ -36,14 +36,15 @@ class MissingLegacyESLint {
   }
 }
 
+const LegacyESLintClass = (useAtYourOwnRisk.LegacyESLint ??
+  MissingLegacyESLint) as typeof LegacyESLintBase;
 /**
  * The ESLint class is the primary class to use in Node.js applications.
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class LegacyESLint extends ((useAtYourOwnRisk.LegacyESLint ??
-  MissingLegacyESLint) as typeof LegacyESLintBase) {}
+export class LegacyESLint extends LegacyESLintClass {}
 export namespace LegacyESLint {
   export interface ESLintOptions extends Shared.ESLintOptions<ClassicConfig.Config> {
     /**

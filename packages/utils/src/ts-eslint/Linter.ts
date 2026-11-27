@@ -317,6 +317,7 @@ namespace Linter {
  * simply parses and reports on the code. In particular, the Linter object does not process configuration objects
  * or files.
  */
-class Linter extends (ESLintLinter as typeof LinterBase) {}
+const LinterClass = ESLintLinter as typeof LinterBase;
+class Linter extends LinterClass {}
 
 export { Linter };

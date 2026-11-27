@@ -29,14 +29,15 @@ declare class FlatESLintBase extends Shared.ESLintBase<
   findConfigFile(): Promise<string | undefined>;
 }
 
+const FlatESLintClass = (useAtYourOwnRisk.FlatESLint ??
+  ESLint) as typeof FlatESLintBase;
 /**
  * The ESLint class is the primary class to use in Node.js applications.
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class FlatESLint extends ((useAtYourOwnRisk.FlatESLint ??
-  ESLint) as typeof FlatESLintBase) {}
+export class FlatESLint extends FlatESLintClass {}
 export namespace FlatESLint {
   export interface ESLintOptions extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
     /**

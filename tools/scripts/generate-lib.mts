@@ -139,24 +139,27 @@ try {
 const filesWritten: string[] = [SHARED_CONFIG_MODULE, TYPES_FILE, BARREL_PATH];
 
 // the shared
+// the JSON doubles as the type literal, which isolatedDeclarations requires
+const frozenConst = (name: BASE_CONFIG_EXPORT_NAMES, value: object): string =>
+  `export const ${name}: Readonly<${JSON.stringify(value)}> = Object.freeze(${JSON.stringify(value)});`;
 fs.writeFileSync(
   SHARED_CONFIG_MODULE,
   await formatCode([
-    `export const TYPE = Object.freeze(${JSON.stringify({
+    frozenConst('TYPE', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
-    })});`,
-    `export const VALUE = Object.freeze(${JSON.stringify({
+    }),
+    frozenConst('VALUE', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: false,
       isValueVariable: true,
-    })});`,
-    `export const TYPE_VALUE = Object.freeze(${JSON.stringify({
+    }),
+    frozenConst('TYPE_VALUE', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: true,
-    })});`,
+    }),
     '',
   ]),
 );

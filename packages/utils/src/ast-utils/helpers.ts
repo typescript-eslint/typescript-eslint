@@ -19,16 +19,16 @@ export const isNodeOfTypes =
   ): node is Extract<TSESTree.Node, { type: NodeTypes[number] }> =>
     !!node && nodeTypes.includes(node.type);
 
-export const isNodeOfTypeWithConditions = <
+export function isNodeOfTypeWithConditions<
   NodeType extends AST_NODE_TYPES,
   ExtractedNode extends Extract<TSESTree.Node, { type: NodeType }>,
   Conditions extends Partial<ExtractedNode>,
 >(
   nodeType: NodeType,
   conditions: Conditions,
-): ((
+): (
   node: TSESTree.Node | null | undefined,
-) => node is Conditions & ExtractedNode) => {
+) => node is Conditions & ExtractedNode {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
@@ -36,9 +36,9 @@ export const isNodeOfTypeWithConditions = <
   ): node is Conditions & ExtractedNode =>
     node?.type === nodeType &&
     entries.every(([key, value]) => node[key as keyof TSESTree.Node] === value);
-};
+}
 
-export const isTokenOfTypeWithConditions = <
+export function isTokenOfTypeWithConditions<
   TokenType extends AST_TOKEN_TYPES,
   // This is technically unsafe, but we find it useful to extract out the type
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
@@ -47,9 +47,9 @@ export const isTokenOfTypeWithConditions = <
 >(
   tokenType: TokenType,
   conditions: Conditions,
-): ((
+): (
   token: TSESTree.Token | null | undefined,
-) => token is Conditions & ExtractedToken) => {
+) => token is Conditions & ExtractedToken {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
@@ -59,7 +59,7 @@ export const isTokenOfTypeWithConditions = <
     entries.every(
       ([key, value]) => token[key as keyof TSESTree.Token] === value,
     );
-};
+}
 
 export const isNotTokenOfTypeWithConditions =
   <

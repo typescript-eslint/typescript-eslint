@@ -82,7 +82,7 @@ export class Reference {
     writeExpr?: TSESTree.Node | null,
     maybeImplicitGlobal?: ReferenceImplicitGlobal | null,
     init?: boolean,
-    referenceType = ReferenceTypeFlag.Value,
+    referenceType: ReferenceTypeFlag = ReferenceTypeFlag.Value,
   ) {
     this.identifier = identifier;
     this.from = scope;

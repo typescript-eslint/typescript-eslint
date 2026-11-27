@@ -129,19 +129,22 @@ function createRule<
   };
 }
 
-/**
- * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
- *
- * @returns Well-typed TSESLint custom ESLint rule.
- * @remarks It is generally better to provide a docs URL function to RuleCreator.
- */
-RuleCreator.withoutDocs = function withoutDocs<
-  Options extends readonly unknown[],
-  MessageIds extends string,
->(
-  args: Readonly<RuleWithMeta<Options, MessageIds>>,
-): RuleModule<MessageIds, Options> {
-  return createRule(args);
-};
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace RuleCreator {
+  /**
+   * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
+   *
+   * @returns Well-typed TSESLint custom ESLint rule.
+   * @remarks It is generally better to provide a docs URL function to RuleCreator.
+   */
+  export function withoutDocs<
+    Options extends readonly unknown[],
+    MessageIds extends string,
+  >(
+    args: Readonly<RuleWithMeta<Options, MessageIds>>,
+  ): RuleModule<MessageIds, Options> {
+    return createRule(args);
+  }
+}
 
 export { type RuleListener, type RuleModule } from '../ts-eslint/Rule';

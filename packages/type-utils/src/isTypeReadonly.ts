@@ -27,7 +27,14 @@ export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
 }
 
-export const readonlynessOptionsSchema = {
+export const readonlynessOptionsSchema: {
+  additionalProperties: false;
+  properties: {
+    allow: typeof typeOrValueSpecifiersSchema;
+    treatMethodsAsReadonly: { type: 'boolean' };
+  };
+  type: 'object';
+} = {
   additionalProperties: false,
   properties: {
     allow: typeOrValueSpecifiersSchema,

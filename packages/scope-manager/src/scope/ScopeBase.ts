@@ -184,7 +184,7 @@ export abstract class ScopeBase<
    * The map from variable names to variable objects.
    * @public
    */
-  public readonly set = new Map<string, Variable>();
+  public readonly set: Map<string, Variable> = new Map<string, Variable>();
   /**
    * The {@link Reference}s that are not resolved with this scope.
    * @public
