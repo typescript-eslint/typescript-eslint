@@ -228,8 +228,30 @@ export default createRule<Options, MessageIds>({
     function getPropertyDeprecation(
       type: ts.Type,
       propertyName: string,
+      ignorePrimitives = false,
     ): { reason: string; type: ts.Type } | undefined {
       for (const constituent of tsutils.unionConstituents(type)) {
+        // Object literal keys are not properties of a primitive in the same
+        // union. String.prototype.anchor is deprecated, but `{ anchor: 1 }`
+        // passed to `{ anchor: number } | string` is the object member.
+        if (
+          ignorePrimitives &&
+          tsutils.isTypeFlagSet(
+            constituent,
+            ts.TypeFlags.StringLike |
+              ts.TypeFlags.NumberLike |
+              ts.TypeFlags.BooleanLike |
+              ts.TypeFlags.BigIntLike |
+              ts.TypeFlags.ESSymbolLike |
+              ts.TypeFlags.VoidLike |
+              ts.TypeFlags.Null |
+              ts.TypeFlags.Undefined |
+              ts.TypeFlags.Never,
+          )
+        ) {
+          continue;
+        }
+
         const reason = getJsDocDeprecation(
           constituent.getProperty(propertyName),
         );
@@ -470,7 +492,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const deprecation = getPropertyDeprecation(contextualType, propertyName);
+      const deprecation = getPropertyDeprecation(
+        contextualType,
+        propertyName,
+        true,
+      );
       if (!deprecation) {
         return;
       }

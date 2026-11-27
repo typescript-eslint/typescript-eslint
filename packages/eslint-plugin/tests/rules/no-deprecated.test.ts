@@ -768,6 +768,10 @@ interface A {
 const x: A = { notDeprecatedField: 'string' };
     `,
     `
+declare function f(sel: { anchor: number } | string): void;
+f({ anchor: 1 });
+    `,
+    `
 interface A {
   /** @deprecated */
   deprecatedField: string;
@@ -3894,6 +3898,26 @@ const x: A = { deprecatedField: 'string' };
           endColumn: 31,
           endLine: 6,
           line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  anchor: number;
+}
+declare function f(sel: A | string): void;
+f({ anchor: 1 });
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'anchor' },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
