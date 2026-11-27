@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > AssignmentExpression > _error_ > instantiation-expression-object-target > TSESTree - Error`]
+TSError
+> 1 | ({ value: fn<T> } = source);
+    |           ^^^^^ The left-hand side of an assignment expression must be a variable or a property access.
+  2 |

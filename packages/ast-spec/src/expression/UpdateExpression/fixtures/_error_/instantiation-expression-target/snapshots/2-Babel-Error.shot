@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > UpdateExpression > _error_ > instantiation-expression-target > Babel - Error`]
+BabelError
+> 1 | (fn<T>)++;
+    |  ^ Invalid left-hand side in postfix operation. (1:1)
+  2 |
+  

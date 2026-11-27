@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForOfStatement > _error_ > instantiation-expression-target > Babel - Error`]
+BabelError
+> 1 | for ((fn<T>) of source);
+    |       ^ Invalid parenthesized assignment pattern. (1:6)
+  2 |
+  

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForInStatement > _error_ > instantiation-expression-target > TSESTree - Error`]
+TSError
+> 1 | for (fn<T> in source);
+    |      ^^^^^ The left-hand side of a 'for...in' statement must be a variable or a property access.
+  2 |
