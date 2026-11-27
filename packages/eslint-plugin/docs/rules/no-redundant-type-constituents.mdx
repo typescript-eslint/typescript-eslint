@@ -17,6 +17,7 @@ Within `|` unions:
 - `any` and `unknown` "override" all other union members
 - `never` is dropped from unions in any position except when in a return type position
 - primitive types such as `string` "override" any of their literal types such as `""`
+- array types such as `string[]` "override" any tuple types assignable to them such as `[]`
 
 Within `&` intersections:
 
@@ -24,6 +25,7 @@ Within `&` intersections:
 - `unknown` is dropped from intersections
 - literal types "override" any primitive types in an intersection
 - literal types such as `""` "override" any of their primitive types such as `string`
+- tuple types such as `[]` "override" any array types they're assignable to such as `string[]`
 
 ## Examples
 
@@ -38,6 +40,7 @@ type UnionNever = never | 'foo';
 type UnionBooleanLiteral = boolean | false;
 type UnionNumberLiteral = number | 1;
 type UnionStringLiteral = string | 'foo';
+type UnionArrayTuple = string[] | [];
 
 type IntersectionAny = any & 'foo';
 type IntersectionUnknown = string & unknown;
@@ -46,6 +49,7 @@ type IntersectionNever = string | never;
 type IntersectionBooleanLiteral = boolean & false;
 type IntersectionNumberLiteral = number & 1;
 type IntersectionStringLiteral = string & 'foo';
+type IntersectionArrayTuple = string[] & [];
 ```
 
 </TabItem>
@@ -59,6 +63,7 @@ type UnionNever = never;
 type UnionBooleanLiteral = boolean;
 type UnionNumberLiteral = number;
 type UnionStringLiteral = string;
+type UnionArrayTuple = string[];
 
 type IntersectionAny = any;
 type IntersectionUnknown = string;
@@ -67,6 +72,7 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
+type IntersectionArrayTuple = [];
 ```
 
 </TabItem>
@@ -74,7 +80,7 @@ type IntersectionStringLiteral = 'foo';
 
 ## Limitations
 
-This rule plays it safe and only works with bottom types, top types, and comparing literal types to primitive types.
+This rule plays it safe and only works with bottom types, top types, comparing literal types to primitive types, and comparing tuple types to array types.
 
 ## When Not To Use It
 

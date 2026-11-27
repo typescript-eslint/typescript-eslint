@@ -74,6 +74,11 @@ interface TypeNodeWithValue {
   typeNode: TSESTree.TypeNode;
 }
 
+interface TypeNodeWithType {
+  type: ts.Type;
+  typeNode: TSESTree.TypeNode;
+}
+
 function addToMapGroup<Key, Value>(
   map: Map<Key, Value[]>,
   key: Key,
@@ -214,6 +219,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -271,8 +277,52 @@ export default createRule({
       return created;
     }
 
+    /**
+     * A tuple assignable to an array type is overridden by it in a union (`string[] | []`),
+     * and overrides it in an intersection (`string[] & []`).
+     */
+    function checkArrayAndTupleTypes(
+      node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+    ): void {
+      const arrays: TypeNodeWithType[] = [];
+      const tuples: TypeNodeWithType[] = [];
+
+      for (const typeNode of node.types) {
+        const type = services.getTypeAtLocation(typeNode);
+        if (checker.isArrayType(type)) {
+          arrays.push({ type, typeNode });
+        } else if (checker.isTupleType(type)) {
+          tuples.push({ type, typeNode });
+        }
+      }
+
+      const isUnion = node.type === AST_NODE_TYPES.TSUnionType;
+      const overriddenTypeNodes = new Set<TSESTree.TypeNode>();
+
+      for (const tuple of tuples) {
+        for (const array of arrays) {
+          if (checker.isTypeAssignableTo(tuple.type, array.type)) {
+            overriddenTypeNodes.add(isUnion ? tuple.typeNode : array.typeNode);
+          }
+        }
+      }
+
+      for (const typeNode of overriddenTypeNodes) {
+        context.report({
+          node: typeNode,
+          messageId: 'overridden',
+          data: {
+            container: isUnion ? 'union' : 'intersection',
+            typeName: context.sourceCode.getText(typeNode),
+          },
+        });
+      }
+    }
+
     return {
       'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
+        checkArrayAndTupleTypes(node);
+
         const seenLiteralTypes = new Map<PrimitiveTypeFlag, string[]>();
         const seenPrimitiveTypes = new Map<
           PrimitiveTypeFlag,
@@ -409,6 +459,8 @@ export default createRule({
         }
       },
       'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
+        checkArrayAndTupleTypes(node);
+
         const seenLiteralTypes = new Map<
           PrimitiveTypeFlag,
           TypeNodeWithValue[]

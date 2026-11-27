@@ -159,9 +159,122 @@ type T = 'a' | 1 | 'b';
 type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    'type T = string[] | number[];',
+    'type T = [string] | [number];',
+    'type T = number[] | [string];',
+    'type T = string[] | readonly [];',
+    'type T = string[] & [number];',
+    'type T = string[] & readonly [];',
   ],
 
   invalid: [
+    {
+      code: 'type T = string[] | [];',
+      errors: [
+        {
+          column: 21,
+          data: { container: 'union', typeName: '[]' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [] | string[];',
+      errors: [
+        {
+          column: 10,
+          data: { container: 'union', typeName: '[]' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = string[] | [string];',
+      errors: [
+        {
+          column: 21,
+          data: { container: 'union', typeName: '[string]' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = readonly string[] | readonly [string];',
+      errors: [
+        {
+          column: 30,
+          data: { container: 'union', typeName: 'readonly [string]' },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T<U> = U[] | [U, U];',
+      errors: [
+        {
+          column: 19,
+          data: { container: 'union', typeName: '[U, U]' },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+type Empty = [];
+type T = string[] | Empty;
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { container: 'union', typeName: 'Empty' },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = string[] & [];',
+      errors: [
+        {
+          column: 10,
+          data: { container: 'intersection', typeName: 'string[]' },
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = string[] & [string] & [];',
+      errors: [
+        {
+          column: 10,
+          data: { container: 'intersection', typeName: 'string[]' },
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'overridden',
+        },
+      ],
+    },
     {
       code: 'type T = number | any;',
       errors: [
