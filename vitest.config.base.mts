@@ -8,6 +8,8 @@ export const vitestBaseConfig = {
       exclude: [...coverageConfigDefaults.exclude, '**/fixtures/'],
       include: ['src/**/*.{ts,tsx,js,jsx}'],
 
+      provider: 'istanbul',
+
       reporter: process.env.GITHUB_ACTIONS
         ? [['lcov'], ['text'], ['text-summary']]
         : [['lcov']],

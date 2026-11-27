@@ -14,6 +14,8 @@ const vitestConfig = mergeConfig(
         include: [
           path.join(import.meta.dirname, '../typescript-estree/dist/**/*.js'),
         ],
+        // Istanbul can't instrument external (non-transformed) files.
+        provider: 'v8',
       },
     },
   }),

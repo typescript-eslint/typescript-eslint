@@ -50,7 +50,6 @@
     "@microsoft/api-extractor": "^7.60.1",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript/native": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "@vitest/utils": "catalog:",
     "eslint": "catalog:",

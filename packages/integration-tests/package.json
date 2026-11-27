@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@typescript/native": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "vitest": "catalog:",
     "yaml": "catalog:"
