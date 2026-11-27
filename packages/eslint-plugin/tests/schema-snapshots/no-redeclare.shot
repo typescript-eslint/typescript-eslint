@@ -12,6 +12,10 @@
       "ignoreDeclarationMerge": {
         "description": "Whether to ignore declaration merges between certain TypeScript declaration types.",
         "type": "boolean"
+      },
+      "ignoreVariableMerge": {
+        "description": "Whether to ignore a variable and a type alias or interface sharing the same name.",
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -27,5 +31,7 @@ type Options = [
     builtinGlobals?: boolean;
     /** Whether to ignore declaration merges between certain TypeScript declaration types. */
     ignoreDeclarationMerge?: boolean;
+    /** Whether to ignore a variable and a type alias or interface sharing the same name. */
+    ignoreVariableMerge?: boolean;
   },
 ];

@@ -11,6 +11,7 @@ export type Options = [
   {
     builtinGlobals?: boolean;
     ignoreDeclarationMerge?: boolean;
+    ignoreVariableMerge?: boolean;
   },
 ];
 
@@ -44,6 +45,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to ignore declaration merges between certain TypeScript declaration types.',
           },
+          ignoreVariableMerge: {
+            type: 'boolean',
+            description:
+              'Whether to ignore a variable and a type alias or interface sharing the same name.',
+          },
         },
       },
     ],
@@ -53,6 +59,7 @@ export default createRule<Options, MessageIds>({
     {
       builtinGlobals: true,
       ignoreDeclarationMerge: true,
+      ignoreVariableMerge: false,
     },
   ],
   create(context, [options]) {
@@ -68,6 +75,10 @@ export default createRule<Options, MessageIds>({
     const ENUM_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSEnumDeclaration,
       AST_NODE_TYPES.TSModuleDeclaration,
+    ]);
+    const TYPE_DECLARATION_NODES = new Set<AST_NODE_TYPES>([
+      AST_NODE_TYPES.TSInterfaceDeclaration,
+      AST_NODE_TYPES.TSTypeAliasDeclaration,
     ]);
 
     function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
@@ -113,6 +124,27 @@ export default createRule<Options, MessageIds>({
         .filter(
           ({ parent }) => parent.type !== AST_NODE_TYPES.TSDeclareFunction,
         );
+
+      if (options.ignoreVariableMerge && identifiers.length === 2) {
+        const variableDecl = identifiers.find(
+          ({ parent }) => parent.type === AST_NODE_TYPES.VariableDeclarator,
+        );
+        if (
+          // variable + type alias/interface merging
+          variableDecl &&
+          identifiers.some(({ parent }) =>
+            TYPE_DECLARATION_NODES.has(parent.type),
+          )
+        ) {
+          // the variable can still redeclare a builtin or a global comment
+          yield {
+            loc: variableDecl.identifier.loc,
+            node: variableDecl.identifier,
+            type: 'syntax',
+          };
+          return;
+        }
+      }
 
       if (options.ignoreDeclarationMerge && identifiers.length > 1) {
         if (
