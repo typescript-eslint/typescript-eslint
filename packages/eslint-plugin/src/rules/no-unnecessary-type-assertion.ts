@@ -11,6 +11,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  FunctionSignature,
   getConstrainedTypeAtLocation,
   getContextualType,
   getDeclaration,
@@ -211,6 +212,10 @@ export default createRule<Options, MessageIds>({
       uncast: ts.Type,
       cast: ts.Type,
     ): boolean {
+      if (isContextuallyTypedGenericCall(expression)) {
+        return false;
+      }
+
       if (uncast === cast) {
         return true;
       }
@@ -347,14 +352,27 @@ export default createRule<Options, MessageIds>({
           typeContains(t, predicate, seen, depth + 1),
         );
       }
+      const isAnonymousOrMappedObject =
+        tsutils.isObjectType(type) &&
+        tsutils.isObjectFlagSet(
+          type,
+          ts.ObjectFlags.Anonymous | ts.ObjectFlags.Mapped,
+        );
       const nestedTypes = [
         ...getTypeArguments(type),
-        ...type
-          .getCallSignatures()
-          .flatMap(sig => [
-            sig.getReturnType(),
-            ...sig.getParameters().map(p => checker.getTypeOfSymbol(p)),
-          ]),
+        ...[
+          ...type.getCallSignatures(),
+          ...type.getConstructSignatures(),
+        ].flatMap(sig => [
+          sig.getReturnType(),
+          ...sig.getParameters().map(p => checker.getTypeOfSymbol(p)),
+        ]),
+        ...(isAnonymousOrMappedObject
+          ? [
+              ...type.getProperties().map(p => checker.getTypeOfSymbol(p)),
+              ...checker.getIndexInfosOfType(type).map(info => info.type),
+            ]
+          : []),
       ];
       return nestedTypes.some(t => typeContains(t, predicate, seen, depth + 1));
     }
@@ -543,19 +561,20 @@ export default createRule<Options, MessageIds>({
       return type.getCallSignatures().some(hasTypeParams);
     }
 
-    function getInnermostCall(
+    function getInnermostCallOrNew(
       expression: TSESTree.Expression,
-    ): TSESTree.CallExpression | undefined {
+    ): TSESTree.CallExpression | TSESTree.NewExpression | undefined {
       switch (expression.type) {
         case AST_NODE_TYPES.AwaitExpression:
-          return getInnermostCall(expression.argument);
+          return getInnermostCallOrNew(expression.argument);
         case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.NewExpression:
           return expression;
         case AST_NODE_TYPES.ChainExpression:
         case AST_NODE_TYPES.TSNonNullExpression:
-          return getInnermostCall(expression.expression);
+          return getInnermostCallOrNew(expression.expression);
         case AST_NODE_TYPES.SequenceExpression:
-          return getInnermostCall(
+          return getInnermostCallOrNew(
             nullThrows(
               expression.expressions.at(-1),
               'Expected SequenceExpression to have at least one expression',
@@ -569,11 +588,142 @@ export default createRule<Options, MessageIds>({
     function isGenericCallWithInferredTypeArguments(
       expression: TSESTree.Expression,
     ): boolean {
-      const call = getInnermostCall(expression);
+      const call = getInnermostCallOrNew(expression);
       return (
-        call != null &&
+        call?.type === AST_NODE_TYPES.CallExpression &&
         call.typeArguments == null &&
         hasGenericCallSignature(services.getTypeAtLocation(call.callee))
+      );
+    }
+
+    function isNakedTypeParameter(
+      parameterType: ts.Type,
+      typeParameter: ts.Type,
+    ): boolean {
+      return tsutils
+        .unionConstituents(parameterType)
+        .some(part => part === typeParameter);
+    }
+
+    function isWeakBoxedInferenceType(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .every(
+          part =>
+            isTypeFlagSet(part, ts.TypeFlags.Any | ts.TypeFlags.Never) ||
+            isEmptyObjectType(part),
+        );
+    }
+
+    function doesArgumentInferTypeParameter(
+      argumentType: ts.Type,
+      parameterType: ts.Type,
+      typeParameter: ts.Type,
+    ): boolean {
+      if (!typeContains(parameterType, type => type === typeParameter)) {
+        return false;
+      }
+      if (isNakedTypeParameter(parameterType, typeParameter)) {
+        return true;
+      }
+      return !isWeakBoxedInferenceType(argumentType);
+    }
+
+    function getArgumentTypes(
+      argument: TSESTree.CallExpressionArgument,
+    ): readonly (ts.Type | undefined)[] {
+      if (argument.type !== AST_NODE_TYPES.SpreadElement) {
+        return [services.getTypeAtLocation(argument)];
+      }
+      const spreadType = services.getTypeAtLocation(argument.argument);
+      if (checker.isTupleType(spreadType)) {
+        return checker.getTypeArguments(spreadType);
+      }
+      return [
+        checker.getIndexTypeOfType(spreadType, ts.IndexKind.Number) ??
+          getTypeArguments(spreadType)[0],
+      ];
+    }
+
+    function doesCallInferTypeParameter(
+      call: TSESTree.CallExpression | TSESTree.NewExpression,
+      tsNode: ts.CallLikeExpression,
+      signature: ts.Signature,
+      typeParameter: ts.Type,
+    ): boolean {
+      const functionSignature = FunctionSignature.createFromSignature(
+        checker,
+        signature,
+        tsNode,
+      );
+
+      for (const argument of call.arguments) {
+        for (const argumentType of getArgumentTypes(argument)) {
+          const parameterType = functionSignature.getNextParameterType();
+          if (
+            parameterType != null &&
+            argumentType != null &&
+            doesArgumentInferTypeParameter(
+              argumentType,
+              parameterType,
+              typeParameter,
+            )
+          ) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    function signatureNeedsContextualReturnType(
+      call: TSESTree.CallExpression | TSESTree.NewExpression,
+      tsNode: ts.CallLikeExpression,
+      signature: ts.Signature,
+    ): boolean {
+      const typeParameters = signature.getTypeParameters();
+      if (typeParameters == null) {
+        return false;
+      }
+
+      const returnType = signature.getReturnType();
+      return typeParameters.some(
+        typeParameter =>
+          typeContains(returnType, type => type === typeParameter) &&
+          !doesCallInferTypeParameter(call, tsNode, signature, typeParameter),
+      );
+    }
+
+    function isContextuallyTypedGenericCall(
+      expression: TSESTree.Expression,
+    ): boolean {
+      const call = getInnermostCallOrNew(expression);
+      if (call == null || call.typeArguments != null) {
+        return false;
+      }
+
+      const calleeType = services
+        .getTypeAtLocation(call.callee)
+        .getNonNullableType();
+      const signatures =
+        call.type === AST_NODE_TYPES.CallExpression
+          ? calleeType.getCallSignatures()
+          : calleeType.getConstructSignatures();
+      if (signatures.length <= 1) {
+        return false;
+      }
+
+      const tsNode = services.esTreeNodeToTSNodeMap.get(call);
+      const resolvedSignature = nullThrows(
+        checker.getResolvedSignature(tsNode),
+        'Expected the call-like node to resolve to a signature.',
+      );
+
+      return signatures.some(
+        signature =>
+          signature.declaration === resolvedSignature.declaration &&
+          signatureNeedsContextualReturnType(call, tsNode, signature),
       );
     }
 
@@ -807,7 +957,8 @@ export default createRule<Options, MessageIds>({
         isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
         isRightHandSideOfLogicalAssignment(node) ||
-        isArgumentToOverloadedFunction(node)
+        isArgumentToOverloadedFunction(node) ||
+        isContextuallyTypedGenericCall(node.expression)
       ) {
         return true;
       }

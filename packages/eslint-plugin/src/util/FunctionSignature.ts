@@ -53,6 +53,14 @@ export class FunctionSignature {
       'Expected the call-like node to resolve to a signature.',
     );
 
+    return FunctionSignature.createFromSignature(checker, signature, tsNode);
+  }
+
+  public static createFromSignature(
+    checker: ts.TypeChecker,
+    signature: ts.Signature,
+    tsNode: ts.CallLikeExpression,
+  ): FunctionSignature {
     const paramTypes = [];
     let restType: RestType | null = null;
 
