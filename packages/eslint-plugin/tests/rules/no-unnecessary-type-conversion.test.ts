@@ -133,6 +133,16 @@ enum CustomIds {
 const customId = 'id1';
 const compareWithToString = customId === CustomIds.Id1.toString();
     `,
+    `
+function f<T extends string>(x: T) {
+  return !!x;
+}
+    `,
+    `
+function f<T extends number>(x: T) {
+  return ~~x;
+}
+    `,
   ],
 
   invalid: [
@@ -625,6 +635,164 @@ function f<T extends bigint>(x: T) {
               output: `
 function f<T extends bigint>(x: T) {
   return x satisfies bigint;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends boolean>(x: T) {
+  return !!x;
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 10,
+          data: { type: 'boolean', violation: 'Using !! on a boolean' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f<T extends boolean>(x: T) {
+  return x;
+}
+      `,
+            },
+            {
+              data: { type: 'boolean' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f<T extends boolean>(x: T) {
+  return x satisfies boolean;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends string>(x: T) {
+  return '' + x;
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 10,
+          data: {
+            type: 'string',
+            violation: "Concatenating '' with a string",
+          },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f<T extends string>(x: T) {
+  return x;
+}
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f<T extends string>(x: T) {
+  return x satisfies string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends string>(x: T) {
+  return x + '';
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 11,
+          data: {
+            type: 'string',
+            violation: "Concatenating a string with ''",
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f<T extends string>(x: T) {
+  return x;
+}
+      `,
+            },
+            {
+              data: { type: 'string' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f<T extends string>(x: T) {
+  return x satisfies string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends 1>(x: T) {
+  return ~~x;
+}
+      `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 10,
+          data: { type: 'number', violation: 'Using ~~ on an integer' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+function f<T extends 1>(x: T) {
+  return x;
+}
+      `,
+            },
+            {
+              data: { type: 'number' },
+              messageId: 'suggestSatisfies',
+              output: `
+function f<T extends 1>(x: T) {
+  return x satisfies number;
 }
       `,
             },
