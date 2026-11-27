@@ -116,8 +116,110 @@ foo\`\${1 as any}\`;
 declare function foo(...args: any): void;
 foo(1 as any);
     `,
+    `
+declare function test<T extends number>(value: T): void;
+test(1);
+    `,
+    `
+declare function test<T>(value: T): void;
+test(1 as any);
+    `,
+    `
+declare function test<T extends unknown>(value: T): void;
+test(1 as any);
+    `,
+    `
+declare function test<T extends number>(value: T): void;
+test<any>(1 as any);
+    `,
+    `
+declare function test<T extends number>(value: T): void;
+const acceptsAny = test<any>;
+acceptsAny(1 as any);
+    `,
+    `
+declare function test<T extends number>(value: T): void;
+const acceptsAny = test<any>;
+declare const overloaded: typeof acceptsAny & typeof test;
+overloaded(1 as any);
+    `,
+    `
+declare function test(kind: 'any', value: any): void;
+declare function test<T extends number>(kind: 'number', value: T): void;
+test('any', 1 as any);
+    `,
   ],
   invalid: [
+    {
+      code: `
+declare function test<T extends number>(value: T): void;
+test(1 as any);
+      `,
+      errors: [
+        {
+          column: 6,
+          data: { receiver: '`number`', sender: '`any`' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function test(kind: 'any', value: any): void;
+declare function test<T extends number>(kind: 'number', value: T): void;
+test('number', 1 as any);
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { receiver: '`number`', sender: '`any`' },
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Box<T extends number> {
+  constructor(value: T);
+}
+new Box(1 as any);
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { receiver: '`number`', sender: '`any`' },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function tag<T extends number>(
+  template: TemplateStringsArray,
+  value: T,
+): void;
+tag\`\${1 as any}\`;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { receiver: '`number`', sender: '`any`' },
+          endColumn: 15,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
     {
       code: `
 declare function foo(...args: [string, string]): void;
