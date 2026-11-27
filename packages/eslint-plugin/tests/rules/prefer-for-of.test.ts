@@ -1102,6 +1102,49 @@ for (let i = 0; i < this.items.length; i++) {
     {
       code: `
 for (let i = 0; i < this.items.length; i++) {
+  function read() {
+    return this.items[i];
+  }
+  fns.push(read);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 7,
+          line: 2,
+          messageId: 'preferForOf',
+          suggestions: null,
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.items.length; i++) {
+  classes.push(
+    class {
+      accessor item = this.items[i];
+    },
+  );
+}
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 8,
+          line: 2,
+          messageId: 'preferForOf',
+          suggestions: null,
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.items.length; i++) {
   fns.push(() => this.items[i]);
 }
       `,
