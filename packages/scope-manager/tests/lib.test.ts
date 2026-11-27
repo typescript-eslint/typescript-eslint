@@ -118,6 +118,13 @@ describe('implicit lib definitions', () => {
     expect(symbolVariables[0]).toBeInstanceOf(ImplicitLibVariable);
   });
 
+  it('should accept lib names that only older supported TypeScript versions declare', () => {
+    // TypeScript <5.7 still accepts `es2022.sharedmemory` in tsconfig `lib`
+    expect(() => {
+      parseAndAnalyze('', { lib: ['es2022.sharedmemory'] });
+    }).not.toThrow();
+  });
+
   it('should throw if passed an unrecognized lib name', () => {
     expect(() => {
       parseAndAnalyze('var f = (a: Symbol) => a;', {
