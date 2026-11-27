@@ -456,6 +456,7 @@ const value = identity({ kind: 'a' as const });
 declare function identity<const T>(value: T): T;
 const value = identity({ kind: 'a' as const });
       `,
+      dependencyConstraints: { typescript: '5.0' },
       options: [{ checkLiteralConstAssertions: true }],
     },
     {
@@ -483,6 +484,32 @@ const value = { kind: 'a' as const };
     {
       code: `
 let values = ['a' as const];
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+function getValue() {
+  return { kind: 'a' as const };
+}
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+class Box {
+  set(value: this) {}
+  reset() {
+    this.set('a' as const);
+  }
+}
       `,
       options: [{ checkLiteralConstAssertions: true }],
     },
@@ -2671,6 +2698,7 @@ let value = identity('a');
 declare function identity<const T>(value: T): T;
 let value = identity('a' as const);
       `,
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 22,
