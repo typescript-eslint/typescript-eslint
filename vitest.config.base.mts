@@ -1,5 +1,6 @@
 import type { ViteUserConfig } from 'vitest/config';
 
+import * as path from 'node:path';
 import { coverageConfigDefaults } from 'vitest/config';
 
 export const vitestBaseConfig = {
@@ -21,7 +22,7 @@ export const vitestBaseConfig = {
       ? [['default', { summary: false }], ['github-actions']]
       : [['default']],
 
-    setupFiles: ['console-fail-test/setup'],
+    setupFiles: [path.join(import.meta.dirname, 'vitest.setup.base.mts')],
 
     testTimeout: 10_000,
 
