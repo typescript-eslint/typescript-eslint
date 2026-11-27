@@ -2119,6 +2119,8 @@ class Foo {
   baz() {}
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [
         {
           default: ['accessor', 'method'],
@@ -5260,6 +5262,8 @@ class Foo {
   baz() {}
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

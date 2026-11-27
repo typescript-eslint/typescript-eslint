@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/users/configs
+// SEE https://typescript-eslint.io/users/configs/
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `pnpm run generate-configs`
@@ -12,7 +12,7 @@ import eslintRecommendedConfig from './eslint-recommended';
 
 /**
  * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
- * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked-only}
+ * @see {@link https://typescript-eslint.io/users/configs/#strict-type-checked-only}
  */
 export default (
   plugin: FlatConfig.Plugin,
@@ -49,6 +49,7 @@ export default (
       '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
       '@typescript-eslint/no-unsafe-call': 'error',
+      '@typescript-eslint/no-unsafe-class-instance-assignment': 'error',
       '@typescript-eslint/no-unsafe-enum-assignment': 'error',
       '@typescript-eslint/no-unsafe-enum-comparison': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',

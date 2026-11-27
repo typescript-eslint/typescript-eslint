@@ -1658,6 +1658,8 @@ class Foo {
   accessor a: number = this.b;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
@@ -3049,6 +3051,8 @@ class Foo {
   @Dec() accessor a;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3070,6 +3074,8 @@ class Foo {
   accessor c;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3091,6 +3097,8 @@ class Foo {
   abstract accessor e;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3114,6 +3122,8 @@ class Foo {
   accessor c;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3145,6 +3155,8 @@ class Foo {
   @Dec() accessor d;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

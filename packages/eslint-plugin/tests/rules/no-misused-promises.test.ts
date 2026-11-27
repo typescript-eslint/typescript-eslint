@@ -458,7 +458,8 @@ class Bar extends Foo {
   public static doThing = async (): Promise<void> => {};
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   public doThing = (): void => {};
 }
@@ -466,8 +467,12 @@ class Foo {
 class Bar extends Foo {
   public static accessor doThing = async (): Promise<void> => {};
 }
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 class Foo {
   public accessor doThing = (): void => {};
 }
@@ -475,7 +480,10 @@ class Foo {
 class Bar extends Foo {
   public static accessor doThing = (): void => {};
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     {
       code: `
 class Foo {
@@ -1095,23 +1103,35 @@ Promise.reject(3).finally(async () => {});
 const f = 'finally';
 Promise.reject(3)[f](async () => {});
     `,
-    `
+    {
+      code: `
 using a = {
   [Symbol.dispose]() {},
 };
-    `,
-    `
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    {
+      code: `
 async function test() {
   await using b = {
     async [Symbol.asyncDispose]() {},
   };
 }
-    `,
-    `
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
+    {
+      code: `
 using c = {
   async [Symbol.asyncDispose]() {},
 };
-    `,
+      `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
+    },
     `
 declare const f: () => number | Promise<void>;
 if (f()) {
@@ -2668,6 +2688,8 @@ class MySubclassExtendsMyClass extends MyClass {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -2689,6 +2711,8 @@ abstract class MySubclassExtendsMyClass extends MyClass {
   abstract accessor setThing: () => Promise<void>;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3414,6 +3438,8 @@ const a = {
 };
 const b: Disposable = a;
       `,
+      // `Symbol.dispose` requires TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 23,
@@ -3430,6 +3456,8 @@ using c = {
   async [Symbol.dispose]() {},
 };
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 11,
@@ -3447,6 +3475,8 @@ const d = {
 };
 using e = d;
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 11,

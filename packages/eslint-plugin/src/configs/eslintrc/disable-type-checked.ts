@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/users/configs
+// SEE https://typescript-eslint.io/users/configs/
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `pnpm run generate-configs`
@@ -40,6 +40,7 @@ export = {
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-class-instance-assignment': 'off',
     '@typescript-eslint/no-unsafe-enum-assignment': 'off',
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',

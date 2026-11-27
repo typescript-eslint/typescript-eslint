@@ -9,6 +9,7 @@ import {
   isFunctionOrFunctionType,
   isTypeAnyType,
   isTypeBigIntLiteralType,
+  isTypeLiteralType,
   isTypeNeverType,
   isTypeTemplateLiteralType,
   isTypeUnknownType,
@@ -96,7 +97,7 @@ function describeLiteralType(type: ts.Type): string {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
-  if (type.isLiteral()) {
+  if (isTypeLiteralType(type)) {
     // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return type.value.toString();
   }
@@ -209,6 +210,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);

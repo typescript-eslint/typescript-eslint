@@ -86,7 +86,6 @@ const NOOP_RULE: RuleModule<'error'> = {
   create() {
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {
       error: 'error',
@@ -123,11 +122,7 @@ describe(RuleTester, () => {
       messages: Linter.LintMessage[];
       outputs: string[];
     }
-  > = vi.spyOn(
-    RuleTester.prototype,
-    // @ts-expect-error -- method is private
-    'runRuleForItem',
-  );
+  > = vi.spyOn(RuleTester.prototype, 'runRuleForItem');
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -2180,7 +2175,6 @@ describe('RuleTester - hooks', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         error: 'error',
@@ -2403,7 +2397,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         messages: {
           error: 'error',
@@ -2487,7 +2480,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2609,7 +2601,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2722,7 +2713,6 @@ describe('RuleTester - run types', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         customErrorBar: 'Error custom Bar',

@@ -87,6 +87,7 @@ export default createRule({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: ['in-try-catch'],
 
   create(context, [option]) {

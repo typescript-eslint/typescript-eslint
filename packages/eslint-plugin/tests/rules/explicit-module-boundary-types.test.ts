@@ -362,6 +362,8 @@ interface R {
 export const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -374,6 +376,8 @@ interface R {
 export const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -386,6 +390,8 @@ interface R {
 export const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -562,6 +568,8 @@ export class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
     },
     {
       code: `
@@ -1360,6 +1368,8 @@ interface R {
 export const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 37,
@@ -1857,6 +1867,8 @@ class Foo {
 }
 export default Foo;
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 19,
@@ -1884,6 +1896,8 @@ class Foo {
 }
 export default Foo;
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 19,

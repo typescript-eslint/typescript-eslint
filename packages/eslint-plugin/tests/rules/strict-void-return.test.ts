@@ -584,15 +584,6 @@ foo = {
     },
     {
       code: `
-declare let foo: { cb: () => void };
-foo = {
-  // don't check this thing
-  cb = () => 1,
-};
-      `,
-    },
-    {
-      code: `
 declare let foo: { cb: (n: number) => void };
 let method = 'cb';
 foo = {
@@ -4007,6 +3998,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,
@@ -4037,6 +4030,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,
@@ -4067,6 +4062,8 @@ foo(() => () => {
   return void <i>{Math.random()}</i>
 });
       `,
+      // TS < 5.0 can't parse JSX after `void`
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 5,

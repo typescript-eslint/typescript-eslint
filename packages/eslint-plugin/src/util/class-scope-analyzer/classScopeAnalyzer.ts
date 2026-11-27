@@ -698,7 +698,7 @@ class ClassScope extends ThisScope implements ClassScopeResult {
 
   public constructor(
     theClass: ClassNode,
-    upper: ClassScope | IntermediateScope | null,
+    upper: ThisScope | null,
     scopeManager: ScopeManager,
   ) {
     super(scopeManager, upper, 'self', false);

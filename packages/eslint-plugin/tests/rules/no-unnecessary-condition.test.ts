@@ -8,15 +8,11 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithExactOptionalPropertyTypes = {
-  project: './tsconfig.exactOptionalPropertyTypes.json',
-  projectService: false,
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'exactOptionalPropertyTypes'),
 };
 
 const optionsWithNoUncheckedIndexedAccess = {
-  project: './tsconfig.noUncheckedIndexedAccess.json',
-  projectService: false,
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
 };
 
 ruleTester.run('no-unnecessary-condition', rule, {
@@ -226,6 +222,45 @@ function test<T>(t: T) {
 // Naked type param in union
 function test<T>(t: T | []) {
   return t ? 'yes' : 'no';
+}
+    `,
+    `
+const truthy = <T,>(value: Awaited<T>) => (value ? 1 : 2);
+    `,
+    `
+const nullish = <T,>(value: Awaited<T>) => value ?? 1;
+    `,
+    `
+const fromPromise = async <T,>(promise: Promise<T>) => {
+  const value = await promise;
+  return value ? 1 : 2;
+};
+    `,
+    `
+type Id<T> = T extends unknown ? T : never;
+function test<T>(t: Id<T>) {
+  return t ? 'yes' : 'no';
+}
+    `,
+    `
+const truthyUnion = <T,>(value: Awaited<T> | string) => (value ? 1 : 2);
+    `,
+    `
+const truthy = <T extends string>(value: Awaited<T>) => (value ? 1 : 2);
+    `,
+    `
+const nullish = <T extends Promise<string | null>>(value: Awaited<T>) =>
+  value ?? 1;
+    `,
+    `
+const isUndefined = <T,>(value: Awaited<T>) => value === undefined;
+    `,
+    `
+const isNull = <T,>(value: Awaited<T>) => value === null;
+    `,
+    `
+function test<T, K extends keyof T>(value: Awaited<T[K]>) {
+  return value ?? 1;
 }
     `,
     `
@@ -493,9 +528,7 @@ arr[41]?.();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -528,9 +561,7 @@ foo[index]?.toString();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -842,9 +873,7 @@ foo?.[key].trim();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -862,9 +891,7 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -938,6 +965,8 @@ declare const a: A;
 
 a.a?.a?.a;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
@@ -1166,9 +1195,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -1351,12 +1378,17 @@ if (isNarrower(w)) {
       `,
       options: [{ checkTypePredicates: true }],
     },
-    `
+    {
+      code: `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
 a.a?.a?.a;
-    `,
-    `
+      `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface T {
   [name: Lowercase<string>]: {
     [name: Lowercase<string>]: {
@@ -1378,7 +1410,10 @@ declare const t: T;
 
 t.a.a.a.value;
 t.A?.A?.A?.VALUE;
-    `,
+      `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [
@@ -2972,6 +3007,70 @@ function test(a: string | false) {
     {
       code: `
 function test<T extends string>(a: T) {
+  return a ?? 'default';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends string>(a: Awaited<T>) {
+  return a ?? 'default';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends Promise<object>>(a: Awaited<T>) {
+  return a ? 'yes' : 'no';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T>(a: T extends string ? 'a' : 'b') {
+  return a ? 'yes' : 'no';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T>(a: T extends string ? 'a' : 'b') {
   return a ?? 'default';
 }
       `,
@@ -5328,6 +5427,8 @@ declare const a: A;
 
 a.a?.a?.a;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -5379,6 +5480,8 @@ declare const t: T;
 
 t.a?.a?.a?.value;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 4,
@@ -5515,9 +5618,7 @@ if (test[0]?.a) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5562,9 +5663,7 @@ arr2[42]?.x?.y.z;
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5587,9 +5686,7 @@ if (arr[0]) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5611,9 +5708,7 @@ if (arr[42] && arr[42]) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },

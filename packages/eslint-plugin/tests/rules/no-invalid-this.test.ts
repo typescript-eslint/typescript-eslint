@@ -417,13 +417,17 @@ class A {
   }
 }
     `,
-    `
+    {
+      code: `
 class A {
   a = 5;
   b = this.a;
   accessor c = this.a;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [

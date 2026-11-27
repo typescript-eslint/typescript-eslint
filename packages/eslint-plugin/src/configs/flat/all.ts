@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/users/configs
+// SEE https://typescript-eslint.io/users/configs/
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `pnpm run generate-configs`
@@ -12,7 +12,7 @@ import eslintRecommendedConfig from './eslint-recommended';
 
 /**
  * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
- * @see {@link https://typescript-eslint.io/users/configs#all}
+ * @see {@link https://typescript-eslint.io/users/configs/#all}
  */
 export default (
   plugin: FlatConfig.Plugin,
@@ -114,6 +114,7 @@ export default (
       '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
       '@typescript-eslint/no-unsafe-call': 'error',
+      '@typescript-eslint/no-unsafe-class-instance-assignment': 'error',
       '@typescript-eslint/no-unsafe-declaration-merging': 'error',
       '@typescript-eslint/no-unsafe-enum-assignment': 'error',
       '@typescript-eslint/no-unsafe-enum-comparison': 'error',

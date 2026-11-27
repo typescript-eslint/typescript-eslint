@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/dot-notation';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -156,9 +157,10 @@ foo['key_baz'];
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },
@@ -172,11 +174,14 @@ type Foo = {
 declare const foo: Foo;
 foo['bar'];
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },
@@ -195,9 +200,10 @@ function f<T extends Foo>(x: T) {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(
+            rootDir,
+            'noPropertyAccessFromIndexSignature',
+          ),
         },
       },
     },

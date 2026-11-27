@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/RULE_NAME_REPLACEME** for documentation.
+> See **https://typescript-eslint.io/rules/RULE_NAME_REPLACEME/** for documentation.
 
 ## Examples
 

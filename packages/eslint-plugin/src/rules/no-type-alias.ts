@@ -42,7 +42,7 @@ export default createRule<Options, MessageIds>({
         {
           rule: {
             name: '@typescript-eslint/consistent-type-definitions',
-            url: 'https://typescript-eslint.io/rules/consistent-type-definitions',
+            url: 'https://typescript-eslint.io/rules/consistent-type-definitions/',
           },
         },
       ],
@@ -115,6 +115,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowAliases: 'never',

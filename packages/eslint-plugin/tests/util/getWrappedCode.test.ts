@@ -10,9 +10,7 @@ import {
 import { getWrappedCode } from '../../src/util/getWrappedCode';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
-});
+const ruleTester = createRuleTesterWithTypes();
 
 const removeFunctionRule = createRule({
   create(context) {
@@ -52,7 +50,6 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
-  defaultOptions: [],
   meta: {
     docs: {
       description:

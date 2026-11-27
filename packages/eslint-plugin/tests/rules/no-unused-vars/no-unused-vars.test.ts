@@ -1,4 +1,5 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../../src/rules/no-unused-vars';
 import { collectVariables } from '../../../src/util';
@@ -15,9 +16,8 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  project: './tsconfig-withmeta.json',
-  projectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
+  projectService: true,
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'withmeta'),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
@@ -26,7 +26,6 @@ ruleTester.defineRule('collect-unused-vars', {
     collectVariables(context);
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],
@@ -1335,6 +1334,8 @@ declare class Bar {}
 using resource = getResource();
 resource;
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1345,6 +1346,8 @@ resource;
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1356,6 +1359,8 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -3282,6 +3287,8 @@ export {};
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 7,
@@ -3306,6 +3313,8 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 13,

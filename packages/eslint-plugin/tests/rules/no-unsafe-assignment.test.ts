@@ -1,10 +1,11 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unsafe-assignment';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.noImplicitThis.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'noImplicitThis'),
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {
@@ -34,11 +35,15 @@ class Foo {
   private a = 1;
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = 1;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
@@ -53,7 +58,6 @@ class Foo {
     // this is not checked, because there's no annotation to compare it with
     'const x = new Set<any>();',
     'const x = { y: 1 };',
-    'const x = { y = 1 };',
     noFormat`const x = { y(){} };`,
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
@@ -179,6 +183,8 @@ class Foo {
   accessor a = 1 as any;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
