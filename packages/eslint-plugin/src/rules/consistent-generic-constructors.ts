@@ -54,8 +54,11 @@ export default createRule<Options, MessageIds>({
     return {
       'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
+          | Extract<
+              TSESTree.Parameter,
+              { type: AST_NODE_TYPES.AssignmentPattern }
+            >
           | TSESTree.AccessorProperty
-          | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
           | TSESTree.VariableDeclarator,
       ): void {
