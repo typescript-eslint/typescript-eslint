@@ -51,6 +51,13 @@ Options: { "checkLiteralConstAssertions": true }
 const foo = 'foo' as const;
             ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 
+declare function setValue(value: 'foo' | 'baz'): void;
+setValue('foo' as const);
+         ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
+
+const qux: { value: 'foo' | 'baz' } = { value: 'foo' as const };
+                                               ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
+
 Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;

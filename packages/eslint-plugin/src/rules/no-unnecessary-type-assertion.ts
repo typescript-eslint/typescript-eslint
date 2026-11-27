@@ -205,6 +205,125 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    /**
+     * Whether a literal only meets a declared type, so removing its const
+     * assertion can't change any type. Arguments are checked against the
+     * callee's declared signature, since their contextual type reflects the
+     * assertion itself once type arguments are inferred.
+     */
+    function isLiteralUnaffectedByConstAssertion(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      let literal: TSESTree.Node = node;
+      while (
+        literal.parent.type === AST_NODE_TYPES.ArrayExpression ||
+        (literal.parent.type === AST_NODE_TYPES.Property &&
+          literal.parent.value === literal &&
+          !literal.parent.computed &&
+          literal.parent.parent.type === AST_NODE_TYPES.ObjectExpression)
+      ) {
+        literal =
+          literal.parent.type === AST_NODE_TYPES.Property
+            ? literal.parent.parent
+            : literal.parent;
+      }
+      const { parent } = literal;
+
+      if (parent.type === AST_NODE_TYPES.VariableDeclarator) {
+        return parent.init === literal && parent.id.typeAnnotation != null;
+      }
+
+      if (
+        parent.type !== AST_NODE_TYPES.CallExpression &&
+        parent.type !== AST_NODE_TYPES.NewExpression
+      ) {
+        return false;
+      }
+
+      const argumentIndex = parent.arguments.findIndex(
+        argument => argument === literal,
+      );
+      if (
+        argumentIndex === -1 ||
+        parent.arguments
+          .slice(0, argumentIndex)
+          .some(argument => argument.type === AST_NODE_TYPES.SpreadElement)
+      ) {
+        return false;
+      }
+
+      if (parent.typeArguments) {
+        return true;
+      }
+
+      const calleeType = services.getTypeAtLocation(parent.callee);
+      const signatures =
+        parent.type === AST_NODE_TYPES.CallExpression
+          ? calleeType.getCallSignatures()
+          : calleeType.getConstructSignatures();
+      if (signatures.length !== 1) {
+        return false;
+      }
+
+      // A rest parameter takes every remaining argument
+      const parameters = signatures[0].getParameters();
+      const parameter = parameters.at(
+        Math.min(argumentIndex, parameters.length - 1),
+      );
+      if (!parameter) {
+        return false;
+      }
+
+      const parameterType = checker.getTypeOfSymbol(parameter);
+      return (
+        !containsTypeVariable(parameterType) ||
+        (literal === node &&
+          tsutils.isTypeParameter(parameterType) &&
+          isLiteralPreservingTypeParameter(parameterType))
+      );
+    }
+
+    /** Mirrors when TypeScript keeps a type parameter's inferred literals */
+    function isLiteralPreservingTypeParameter(type: ts.Type): boolean {
+      const declaration = type
+        .getSymbol()
+        ?.declarations?.find(ts.isTypeParameterDeclaration);
+      if (!declaration) {
+        return false;
+      }
+
+      if (
+        tsutils.includesModifier(
+          declaration.modifiers,
+          ts.SyntaxKind.ConstKeyword,
+        )
+      ) {
+        return true;
+      }
+
+      return (
+        declaration.constraint != null &&
+        tsutils
+          .intersectionConstituents(
+            checker.getTypeFromTypeNode(declaration.constraint),
+          )
+          .some(part =>
+            isTypeFlagSet(
+              part,
+              ts.TypeFlags.StringLike |
+                ts.TypeFlags.NumberLike |
+                ts.TypeFlags.BigIntLike |
+                ts.TypeFlags.BooleanLike |
+                ts.TypeFlags.EnumLike |
+                ts.TypeFlags.ESSymbolLike |
+                ts.TypeFlags.VoidLike |
+                ts.TypeFlags.Null |
+                ts.TypeFlags.Index,
+            ),
+          )
+      );
+    }
+
     function isTypeUnchanged(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       expression: TSESTree.Expression,
@@ -991,7 +1110,9 @@ export default createRule<Options, MessageIds>({
           castType,
         );
         const wouldSameTypeBeInferred = castTypeIsLiteral
-          ? isImplicitlyNarrowedLiteralDeclaration(node)
+          ? isImplicitlyNarrowedLiteralDeclaration(node) ||
+            (typeAnnotationIsConstAssertion &&
+              isLiteralUnaffectedByConstAssertion(node))
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
