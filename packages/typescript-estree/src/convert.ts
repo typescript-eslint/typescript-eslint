@@ -496,6 +496,57 @@ export class Converter {
     return result;
   }
 
+  /**
+   * Chains like `a + b + c + ...` are nested on the left, so converting them
+   * recursively uses a few stack frames per operator and overflows the stack
+   * on long generated expressions (#9773). Instead, walk down the left side
+   * in a loop, then build the ESTree nodes back up from the innermost one.
+   */
+  private convertBinaryOrLogicalExpression(node: ts.BinaryExpression) {
+    const createBinaryNode = (
+      current: ts.BinaryExpression,
+      left: TSESTree.Expression,
+    ) =>
+      this.createNode<
+        | TSESTree.AssignmentExpression
+        | TSESTree.BinaryExpression
+        | TSESTree.LogicalExpression
+      >(current, {
+        ...getBinaryExpressionType(current.operatorToken),
+        left,
+        right: this.convertChild(current.right),
+      });
+
+    // left operands that are themselves binary expressions, outermost first
+    const nested: ts.BinaryExpression[] = [];
+    let innermost = node.left;
+
+    const pattern = this.allowPattern;
+    this.allowPattern = false;
+    while (
+      ts.isBinaryExpression(innermost) &&
+      !isComma(innermost.operatorToken) &&
+      getBinaryExpressionType(innermost.operatorToken).type !==
+        AST_NODE_TYPES.AssignmentExpression
+    ) {
+      this.#checkSyntaxError(innermost, nested.at(-1) ?? node);
+      nested.push(innermost);
+      innermost = innermost.left;
+    }
+    this.allowPattern = pattern;
+
+    let left: TSESTree.Expression = this.convertChild(
+      innermost,
+      nested.at(-1) ?? node,
+    );
+    for (let i = nested.length - 1; i >= 0; i--) {
+      left = createBinaryNode(nested[i], left);
+      this.registerTSNodeInNodeMap(nested[i], left);
+    }
+    // `node` itself is registered by `converter`, like every other node
+    return createBinaryNode(node, left);
+  }
+
   private convertImportAttributes(
     node: ts.ExportDeclaration | ts.ImportDeclaration,
   ): TSESTree.ImportAttribute[] {
@@ -1836,19 +1887,14 @@ export class Converter {
             typeAnnotation: undefined,
           });
         }
-        return this.createNode<
-          | TSESTree.AssignmentExpression
-          | TSESTree.BinaryExpression
-          | TSESTree.LogicalExpression
-        >(node, {
-          ...expressionType,
-          left: this.converter(
-            node.left,
-            node,
-            expressionType.type === AST_NODE_TYPES.AssignmentExpression,
-          ),
-          right: this.convertChild(node.right),
-        });
+        if (expressionType.type === AST_NODE_TYPES.AssignmentExpression) {
+          return this.createNode<TSESTree.AssignmentExpression>(node, {
+            ...expressionType,
+            left: this.converter(node.left, node, true),
+            right: this.convertChild(node.right),
+          });
+        }
+        return this.convertBinaryOrLogicalExpression(node);
       }
 
       case SyntaxKind.PropertyAccessExpression: {
