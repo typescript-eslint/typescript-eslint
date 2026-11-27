@@ -43,6 +43,32 @@ export function isAssignee(node: TSESTree.Node): boolean {
     return true;
   }
 
+  // [a[i] = 1] = [], ({ foo: a[i] = 1 } = {})
+  if (
+    parent.type === AST_NODE_TYPES.AssignmentPattern &&
+    parent.left === node
+  ) {
+    return true;
+  }
+
+  // for (a[i] of b), for (a[i] in b)
+  if (
+    (parent.type === AST_NODE_TYPES.ForOfStatement ||
+      parent.type === AST_NODE_TYPES.ForInStatement) &&
+    parent.left === node
+  ) {
+    return true;
+  }
+
+  // ({ foo: a[i] } = { foo: 0 })
+  if (
+    parent.type === AST_NODE_TYPES.Property &&
+    parent.value === node &&
+    parent.parent.type === AST_NODE_TYPES.ObjectPattern
+  ) {
+    return true;
+  }
+
   // ({ foo: a[i] }) = { foo: 0 }
   if (
     parent.type === AST_NODE_TYPES.Property &&

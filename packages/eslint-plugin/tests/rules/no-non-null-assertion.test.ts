@@ -467,5 +467,47 @@ hoge.files = document.querySelector('input')?.files;
         },
       ],
     },
+    {
+      code: `
+for (x!.y of xs);
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: `
+({ a: x!.y } = o);
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
+    {
+      code: `
+[x!.y = 1] = xs;
+      `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 2,
+          line: 2,
+          messageId: 'noNonNull',
+        },
+      ],
+    },
   ],
 });
