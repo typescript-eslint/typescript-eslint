@@ -147,6 +147,13 @@ Set this to `true` if you don't mind implicitly treating zero or NaN the same as
 This is unsafe because nullable enums can be either a falsy number or nullish.
 Set this to `true` if you don't mind implicitly treating an enum whose value is zero the same as a nullish value.
 
+### `allowEnum`
+
+{/* insert option description */}
+
+This is unsafe because enums can have falsy members, such as `0` or `''`.
+Set this to `true` if you don't mind implicitly treating an enum member with a falsy value as `false`.
+
 ### `allowAny`
 
 {/* insert option description */}

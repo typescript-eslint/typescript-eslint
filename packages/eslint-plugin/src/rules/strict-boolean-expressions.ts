@@ -23,6 +23,7 @@ import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 export type Options = [
   {
     allowAny?: boolean;
+    allowEnum?: boolean;
     allowNullableBoolean?: boolean;
     allowNullableEnum?: boolean;
     allowNullableNumber?: boolean;
@@ -152,6 +153,10 @@ export default createRule<Options, MessageId>({
             type: 'boolean',
             description: 'Whether to allow `any`s in a boolean context.',
           },
+          allowEnum: {
+            type: 'boolean',
+            description: 'Whether to allow `enum`s in a boolean context.',
+          },
           allowNullableBoolean: {
             type: 'boolean',
             description:
@@ -198,6 +203,7 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowAny: false,
+      allowEnum: false,
       allowNullableBoolean: false,
       allowNullableEnum: false,
       allowNullableNumber: false,
@@ -534,6 +540,22 @@ export default createRule<Options, MessageId>({
         return !options.allowNullableEnum
           ? 'conditionErrorNullableEnum'
           : undefined;
+      }
+
+      // enum
+      if (
+        options.allowEnum &&
+        (is('number', 'enum') ||
+          is('string', 'enum') ||
+          is('truthy number', 'enum') ||
+          is('truthy string', 'enum') ||
+          // mixed enums
+          is('truthy number', 'truthy string', 'enum') ||
+          is('truthy number', 'string', 'enum') ||
+          is('truthy string', 'number', 'enum') ||
+          is('number', 'string', 'enum'))
+      ) {
+        return undefined;
       }
 
       // any
