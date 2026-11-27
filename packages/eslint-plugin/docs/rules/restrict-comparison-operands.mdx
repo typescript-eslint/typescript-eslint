@@ -1,0 +1,109 @@
+---
+description: 'Disallow comparing object types that lack a primitive coercion method.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-comparison-operands** for documentation.
+
+TypeScript permits relational comparison operators (`<`, `<=`, `>`, `>=`) between two values of the same object type, even when that object type defines no meaningful ordering.
+At runtime, JavaScript coerces plain objects, arrays, functions, maps, and sets through `Object.prototype.valueOf()` and `toString()`, turning `{ a: 1 } < { a: 2 }` into `"[object Object]" < "[object Object]"` (always `false`) or comparing array comma-joined strings lexicographically.
+
+This rule reports any operand of `<`, `<=`, `>`, or `>=` whose type includes an object type that does not coerce to a comparable primitive (`number`, `bigint`, `string`, or `boolean`) via a custom `[Symbol.toPrimitive]()` or `valueOf()` method.
+Built-in types with valid primitive coercion such as `Date` and wrapper objects (`Number`, `BigInt`, `String`, `Boolean`), as well as custom classes and interfaces that implement `[Symbol.toPrimitive]()` or `valueOf()` returning a comparable primitive, are allowed.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+interface Box {
+  value: number;
+}
+
+declare const first: Box;
+declare const second: Box;
+
+if (first < second) {
+}
+
+if ({ a: 1 } >= { a: 2 }) {
+}
+
+const left = [1, 2];
+const right = [3, 4];
+if (left <= right) {
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+interface Box {
+  value: number;
+}
+
+declare const first: Box;
+declare const second: Box;
+
+if (first.value < second.value) {
+}
+
+declare const start: Date;
+declare const end: Date;
+if (start < end) {
+}
+
+class Score {
+  constructor(private readonly points: number) {}
+
+  valueOf(): number {
+    return this.points;
+  }
+}
+
+if (new Score(10) > new Score(5)) {
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Limitations
+
+In TypeScript's structural type system, the empty object type `{}` and `Object` (as well as interfaces such as `{ toString(): string }` that `number` satisfies) can hold primitive values like `number` and `string`.
+Because a parameter typed as `{}` or `Object` may legitimately receive numbers at runtime, this rule does not report non-literal values whose types are supertypes of `number`:
+
+```ts
+function isLessThan(a: {}, b: {}) {
+  return a < b;
+}
+
+const emptyFirst = {};
+const emptySecond = {};
+// TypeScript widens both variables to `{}`
+if (emptyFirst < emptySecond) {
+}
+```
+
+To catch accidental `{}` types in annotations, enable [`@typescript-eslint/no-empty-object-type`](./no-empty-object-type.mdx).
+
+## When Not To Use It
+
+If your project intentionally relies on `toString()` fallback coercion when ordering objects with `<`, `<=`, `>`, or `>=` without defining `valueOf()` or `[Symbol.toPrimitive]()`, this rule may not be a good fit.
+
+## Related To
+
+- [`no-base-to-string`](./no-base-to-string.mdx)
+- [`no-empty-object-type`](./no-empty-object-type.mdx)
+- [`restrict-plus-operands`](./restrict-plus-operands.mdx)
+
+## Further Reading
+
+- [MDN: Less than (`<`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Less_than)
+- [MDN: `Symbol.toPrimitive`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive)

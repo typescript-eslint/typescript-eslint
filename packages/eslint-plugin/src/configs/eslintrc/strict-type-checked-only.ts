@@ -52,6 +52,7 @@ export = {
     '@typescript-eslint/related-getter-setter-pairs': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
+    '@typescript-eslint/restrict-comparison-operands': 'error',
     '@typescript-eslint/restrict-plus-operands': [
       'error',
       {
