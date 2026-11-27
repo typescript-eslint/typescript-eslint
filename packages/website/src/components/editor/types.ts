@@ -9,5 +9,5 @@ export interface CommonEditorProps extends ConfigModel {
     React.SetStateAction<Record<TabType, ErrorGroup[]>>
   >;
   readonly onSelect: (position?: number) => void;
-  readonly selectedRange?: SelectedRange;
+  readonly selectedRange?: SelectedRange | undefined;
 }

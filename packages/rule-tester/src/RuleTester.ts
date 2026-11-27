@@ -642,7 +642,7 @@ export class RuleTester extends TestFramework {
     afterAST: TSESTree.Program;
     beforeAST: TSESTree.Program;
     config: RuleTesterConfig;
-    filename?: string;
+    filename?: string | undefined;
     messages: Linter.LintMessage[];
     outputs: string[];
   } {

@@ -123,7 +123,7 @@ namespace Linter {
     /**
      * path to a directory that should be considered as the current working directory.
      */
-    cwd?: string;
+    cwd?: string | undefined;
   }
 
   export type ConfigTypeSpecifier = 'eslintrc' | 'flat';

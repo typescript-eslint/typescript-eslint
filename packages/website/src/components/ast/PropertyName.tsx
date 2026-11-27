@@ -7,7 +7,7 @@ export interface PropertyNameProps {
   readonly className?: string;
   readonly onClick?: () => void;
   readonly onHover?: (e: boolean) => void;
-  readonly value?: string;
+  readonly value?: string | undefined;
 }
 
 export default function PropertyName({
@@ -44,7 +44,7 @@ export default function PropertyName({
 
   return (
     <Link
-      className={className}
+      {...(className != null ? { className } : {})}
       href={`#${value}`}
       onClick={onClick}
       onKeyDown={onKeyDown}

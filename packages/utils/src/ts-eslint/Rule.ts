@@ -115,11 +115,11 @@ export interface RuleMetaData<
   /**
    * The fixer category. Omit if there is no fixer
    */
-  fixable?: 'code' | 'whitespace';
+  fixable?: 'code' | 'whitespace' | undefined;
   /**
    * Specifies whether rules can return suggestions. Omit if there is no suggestions
    */
-  hasSuggestions?: boolean;
+  hasSuggestions?: boolean | undefined;
   /**
    * Languages supported by this rule in the format `"plugin/language"`.
    * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
@@ -225,11 +225,11 @@ interface ReportDescriptorBase<MessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  readonly data?: ReportDescriptorMessageData;
+  readonly data?: ReportDescriptorMessageData | undefined;
   /**
    * The fixer function.
    */
-  readonly fix?: ReportFixFunction | null;
+  readonly fix?: ReportFixFunction | null | undefined;
   /**
    * The messageId which is being reported.
    */
@@ -244,7 +244,8 @@ interface ReportDescriptorWithSuggestion<
   /**
    * 6.7's Suggestions API
    */
-  readonly suggest?: Readonly<ReportSuggestionArray<MessageIds>> | null;
+  readonly suggest?:
+    Readonly<ReportSuggestionArray<MessageIds>> | null | undefined;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
@@ -252,7 +253,7 @@ interface ReportDescriptorNodeOptionalLoc {
    * An override of the location of the report
    */
   readonly loc?:
-    Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
+    Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation> | undefined;
   /**
    * The Node or AST Token which the report is being attached to
    */
@@ -754,7 +755,7 @@ export interface RuleModule<
    * @deprecated Use meta.defaultOptions instead
    * Default options the rule will be run with
    */
-  defaultOptions?: Options;
+  defaultOptions?: Options | undefined;
 
   /**
    * Metadata about the rule
@@ -764,7 +765,7 @@ export interface RuleModule<
   /**
    * Rule name
    */
-  name?: string;
+  name?: string | undefined;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;

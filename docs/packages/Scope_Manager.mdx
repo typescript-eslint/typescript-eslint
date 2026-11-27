@@ -30,7 +30,7 @@ interface AnalyzeOptions {
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
    */
-  globalReturn?: boolean;
+  globalReturn?: boolean | undefined;
 
   /**
    * Implied strict mode.
@@ -43,7 +43,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string;
+  jsxPragma?: string | null | undefined;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -51,7 +51,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
    * Defaults to `null`.
    */
-  jsxFragmentName?: string | null;
+  jsxFragmentName?: string | null | undefined;
 
   /**
    * The lib used by the project.
@@ -60,7 +60,7 @@ interface AnalyzeOptions {
    *
    * Defaults to ['esnext'].
    */
-  lib?: Lib[];
+  lib?: Lib[] | undefined;
 
   /**
    * The source type of the script.

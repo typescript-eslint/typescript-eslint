@@ -18,18 +18,18 @@ interface ParseOptions {
    * Specify the `sourceType`.
    * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
    */
-  sourceType?: SourceType;
+  sourceType?: SourceType | undefined;
 
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
    */
-  allowInvalidAST?: boolean;
+  allowInvalidAST?: boolean | undefined;
 
   /**
    * create a top-level comments array containing all comments
    */
-  comment?: boolean;
+  comment?: boolean | undefined;
 
   /**
    * An array of modules to turn explicit debugging on for.
@@ -41,18 +41,18 @@ interface ParseOptions {
    * - true === ['typescript-eslint']
    * - false === []
    */
-  debugLevel?: DebugLevel;
+  debugLevel?: DebugLevel | undefined;
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).
    * This case only usually occurs when TypeScript releases new features.
    */
-  errorOnUnknownASTType?: boolean;
+  errorOnUnknownASTType?: boolean | undefined;
 
   /**
    * Absolute (or relative to `cwd`) path to the file being parsed.
    */
-  filePath?: string;
+  filePath?: string | undefined;
 
   /**
    * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
@@ -64,7 +64,7 @@ interface ParseOptions {
    *
    * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
    */
-  jsDocParsingMode?: JSDocParsingMode;
+  jsDocParsingMode?: JSDocParsingMode | undefined;
 
   /**
    * Enable parsing of JSX.
@@ -75,21 +75,21 @@ interface ParseOptions {
    *
    * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx
    */
-  jsx?: boolean;
+  jsx?: boolean | undefined;
 
   /**
    * Controls whether the `loc` information to each node.
    * The `loc` property is an object which contains the exact line/column the node starts/ends on.
    * This is similar to the `range` property, except it is line/column relative.
    */
-  loc?: boolean;
+  loc?: boolean | undefined;
 
   /*
    * Allows overriding of function used for logging.
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: ((message: string) => void) | false;
+  loggerFn?: ((message: string) => void) | false | undefined;
 
   /**
    * Controls how the parser reacts when run with a TypeScript version that is
@@ -98,24 +98,24 @@ interface ParseOptions {
    * - `'error'`: throw, regardless of {@link loggerFn}.
    * - `'ignore'`: do nothing.
    */
-  onUnsupportedTypeScriptVersion?: 'error' | 'ignore' | 'warn';
+  onUnsupportedTypeScriptVersion?: 'error' | 'ignore' | 'warn' | undefined;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
    * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
    * This is similar to the `loc` property, except this is the absolute index.
    */
-  range?: boolean;
+  range?: boolean | undefined;
 
   /**
    * Set to true to create a top-level array containing all tokens from the file.
    */
-  tokens?: boolean;
+  tokens?: boolean | undefined;
 
   /**
    * Whether deprecated AST properties should skip calling console.warn on accesses.
    */
-  suppressDeprecatedPropertyWarnings?: boolean;
+  suppressDeprecatedPropertyWarnings?: boolean | undefined;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -128,12 +128,14 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * indefinitely if `disallowAutomaticSingleRunInference = false` AND the parser
    * infers that it is a single run.
    */
-  cacheLifetime?: {
-    /**
-     * Glob resolution for `parserOptions.project` values.
-     */
-    glob?: CacheDurationSeconds;
-  };
+  cacheLifetime?:
+    | {
+        /**
+         * Glob resolution for `parserOptions.project` values.
+         */
+        glob?: CacheDurationSeconds | undefined;
+      }
+    | undefined;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
@@ -155,12 +157,12 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * environment variable to `"false"` or `"true"`.
    * Otherwise, the default value is `false`.
    */
-  disallowAutomaticSingleRunInference?: boolean;
+  disallowAutomaticSingleRunInference?: boolean | undefined;
 
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
    */
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean | undefined;
 
   /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
@@ -168,13 +170,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * NOTE: When used with {@link projectService}, full project reloads may occur.
    */
-  extraFileExtensions?: string[];
+  extraFileExtensions?: string[] | undefined;
 
   /**
    * Absolute (or relative to `tsconfigRootDir`) path to the file being parsed.
    * When `project` is provided, this is required, as it is used to fetch the file from the TypeScript compiler's cache.
    */
-  filePath?: string;
+  filePath?: string | undefined;
 
   /**
    * Allows the user to control whether or not two-way AST node maps are preserved
@@ -186,7 +188,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * NOTE: If `preserveNodeMaps` is explicitly set by the user, it will be respected,
    * regardless of whether or not `project` is in use.
    */
-  preserveNodeMaps?: boolean;
+  preserveNodeMaps?: boolean | undefined;
 
   /**
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
@@ -197,7 +199,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: boolean | string | string[] | null;
+  project?: boolean | string | string[] | null | undefined;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -206,24 +208,24 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * By default, this is set to ["**\/node_modules/**"]
    */
-  projectFolderIgnoreList?: string[];
+  projectFolderIgnoreList?: string[] | undefined;
 
   /**
    * Whether to create a shared TypeScript project service to power program creation.
    */
-  projectService?: boolean | ProjectServiceOptions;
+  projectService?: boolean | ProjectServiceOptions | undefined;
 
   /**
    * The absolute path to the root directory for all provided `project`s.
    */
-  tsconfigRootDir?: string;
+  tsconfigRootDir?: string | undefined;
 
   /**
    * An array of one or more instances of TypeScript Program objects to be used for type information.
    * This overrides any program or programs that would have been computed from the `project` option.
    * All linted files must be part of the provided program(s).
    */
-  programs?: ts.Program[] | null;
+  programs?: ts.Program[] | null | undefined;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;

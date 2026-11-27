@@ -83,7 +83,7 @@ export const setup = async (project: TestProject): Promise<void> => {
             })
           ).default;
 
-          if ('private' in packageJson && packageJson.private === true) {
+          if (packageJson.private === true) {
             return;
           }
 

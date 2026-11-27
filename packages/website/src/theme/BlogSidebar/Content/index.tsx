@@ -16,7 +16,7 @@ function BlogSidebarYearGroup({
 }: {
   children: ReactNode;
   year: string;
-  yearGroupHeadingClassName?: string;
+  yearGroupHeadingClassName?: string | undefined;
 }): React.JSX.Element {
   return (
     <div className={styles.blogSidebarContent} role="group">

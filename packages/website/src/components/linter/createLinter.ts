@@ -32,10 +32,10 @@ export interface CreateLinter {
   rules: Map<
     string,
     {
-      description?: string;
+      description?: string | undefined;
       name: string;
       schema: JSONSchema.JSONSchema4 | readonly JSONSchema.JSONSchema4[];
-      url?: string;
+      url?: string | undefined;
     }
   >;
   triggerFix(filename: string): Linter.FixReport | undefined;

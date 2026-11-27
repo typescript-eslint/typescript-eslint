@@ -83,7 +83,7 @@ export interface MutableParseSettings {
    *
    * needed to always parsing `mjs`/`mts` files as ESM
    */
-  setExternalModuleIndicator?: (file: ts.SourceFile) => void;
+  setExternalModuleIndicator?: ((file: ts.SourceFile) => void) | undefined;
 
   /**
    * JSDoc parsing style to pass through to TypeScript

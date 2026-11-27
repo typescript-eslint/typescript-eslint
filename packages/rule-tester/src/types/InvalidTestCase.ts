@@ -51,7 +51,8 @@ export interface TestCaseError<MessageIds extends string> {
   /**
    * Reported suggestions.
    */
-  readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
+  readonly suggestions?:
+    readonly SuggestionOutput<MessageIds>[] | null | undefined;
   /**
    * @deprecated `type` is deprecated and will be removed in the next major version.
    */
