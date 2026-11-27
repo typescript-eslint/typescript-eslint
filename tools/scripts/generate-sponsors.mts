@@ -89,8 +89,8 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
   const groupBy = <T,>(
     arr: T[],
     fn: (item: T) => string,
-  ): Record<string, T[]> => {
-    const grouped: Record<string, T[]> = {};
+  ): Record<string, T[] | undefined> => {
+    const grouped: Record<string, T[] | undefined> = {};
     for (const item of arr) {
       (grouped[fn(item)] ??= []).push(item);
     }
@@ -102,6 +102,9 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
       ({ account }) => account?.name || account?.id || '',
     ),
   ).flatMap(([id, members]) => {
+    if (!members) {
+      return [];
+    }
     const [{ account }] = members;
     return account?.website
       ? {

@@ -33,7 +33,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
 
   const options = useMemo((): ConfigOptionsType[] => {
     return Object.values(
-      getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
+      getTypescriptOptions().reduce<Partial<Record<string, ConfigOptionsType>>>(
         (group, item) => {
           const category = item.category.message;
           group[category] ??= {
@@ -58,7 +58,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
         },
         {},
       ),
-    );
+    ).filter(group => group != null);
   }, []);
 
   const onChange = useCallback(
