@@ -25,7 +25,7 @@ export function checkNullishAndReport(
   { requireNullish }: PreferOptionalChainOptions,
   maybeNullishNodes: TSESTree.Expression[],
   descriptor: ReportDescriptor<PreferOptionalChainMessageIds>,
-): void {
+): boolean {
   if (
     !requireNullish ||
     maybeNullishNodes.some(node =>
@@ -35,5 +35,7 @@ export function checkNullishAndReport(
     )
   ) {
     context.report(descriptor);
+    return true;
   }
+  return false;
 }
