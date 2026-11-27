@@ -175,6 +175,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const currentSourceFile = services.program.getSourceFile(context.filename);
 
     function checkIfMethodAndReport(
@@ -186,6 +187,7 @@ export default createRule<Options, MessageIds>({
       }
 
       const { dangerous, firstParamIsThis } = checkIfMethod(
+        checker,
         symbol,
         ignoreStatic,
       );
@@ -386,6 +388,7 @@ interface CheckMethodResult {
 }
 
 function checkIfMethod(
+  checker: ts.TypeChecker,
   symbol: ts.Symbol,
   ignoreStatic: boolean,
 ): CheckMethodResult {
@@ -403,11 +406,12 @@ function checkIfMethod(
       if (!initializer || !ts.isFunctionExpression(initializer)) {
         return { dangerous: false };
       }
-      return checkMethod(initializer, ignoreStatic);
+      return checkMethod(checker, initializer, ignoreStatic);
     }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
       return checkMethod(
+        checker,
         valueDeclaration as ts.MethodDeclaration | ts.MethodSignature,
         ignoreStatic,
       );
@@ -418,6 +422,7 @@ function checkIfMethod(
 }
 
 function checkMethod(
+  checker: ts.TypeChecker,
   valueDeclaration:
     ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
   ignoreStatic: boolean,
@@ -433,15 +438,68 @@ function checkMethod(
   return {
     dangerous:
       !thisArgIsVoid &&
-      !(
-        ignoreStatic &&
-        tsutils.includesModifier(
-          getModifiers(valueDeclaration),
-          ts.SyntaxKind.StaticKeyword,
-        )
-      ),
+      !(ignoreStatic && isStaticMethod(checker, valueDeclaration)),
     firstParamIsThis,
   };
+}
+
+/**
+ * Whether the method is a `static` class member, or an object type member of a
+ * constructible type (i.e. one with a construct signature), which is how static
+ * members of a class are typically declared on a `var`, such as `Buffer`
+ * in `@types/node`:
+ *
+ * ```ts
+ * interface BufferConstructor {
+ *   new (str: string): Buffer;
+ *   compare(buf1: Uint8Array, buf2: Uint8Array): number;
+ * }
+ * declare var Buffer: BufferConstructor;
+ * ```
+ *
+ * A construct signature that returns the type itself doesn't count, because
+ * the instances it creates have the same members, so they aren't static:
+ *
+ * ```ts
+ * interface Foo {
+ *   new (): Foo;
+ *   method(): void;
+ * }
+ * ```
+ */
+function isStaticMethod(
+  checker: ts.TypeChecker,
+  valueDeclaration:
+    ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
+): boolean {
+  if (
+    tsutils.includesModifier(
+      getModifiers(valueDeclaration),
+      ts.SyntaxKind.StaticKeyword,
+    )
+  ) {
+    return true;
+  }
+
+  const { parent } = valueDeclaration;
+  if (
+    !ts.isMethodSignature(valueDeclaration) ||
+    !(ts.isInterfaceDeclaration(parent) || ts.isTypeLiteralNode(parent))
+  ) {
+    return false;
+  }
+
+  // the declared type includes construct signatures from merged declarations
+  const type = checker.getTypeAtLocation(parent);
+  const constructSignatures = type.getConstructSignatures();
+  return (
+    constructSignatures.length > 0 &&
+    constructSignatures.every(signature =>
+      tsutils
+        .unionConstituents(signature.getReturnType())
+        .every(instanceType => instanceType !== type),
+    )
+  );
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
