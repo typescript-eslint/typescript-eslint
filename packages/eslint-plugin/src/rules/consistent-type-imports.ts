@@ -739,7 +739,7 @@ export default createRule<Options, MessageIds>({
           if (fixStyle === 'inline-type-imports') {
             yield fixer.insertTextBefore(
               node,
-              `import {${typeNamedSpecifiers
+              `import { ${typeNamedSpecifiers
                 .map(spec => {
                   const insertText = context.sourceCode.text.slice(
                     ...spec.range,
@@ -748,14 +748,14 @@ export default createRule<Options, MessageIds>({
                 })
                 .join(
                   ', ',
-                )}} from ${context.sourceCode.getText(node.source)};\n`,
+                )} } from ${context.sourceCode.getText(node.source)};\n`,
             );
           } else {
             yield fixer.insertTextBefore(
               node,
-              `import type {${
-                fixesNamedSpecifiers.typeNamedSpecifiersText
-              }} from ${context.sourceCode.getText(node.source)};\n`,
+              `import type { ${
+                fixesNamedSpecifiers.typeNamedSpecifiersText.trim()
+              } } from ${context.sourceCode.getText(node.source)};\n`,
             );
           }
         }
