@@ -8,7 +8,6 @@ interface UnitTestsGroup {
 interface ProjectServiceGroup {
   backend: 'classic' | 'tsgo';
   os: 'ubuntu-latest' | 'windows-latest';
-  plugin: boolean;
   projects: string[];
 }
 
@@ -98,26 +97,22 @@ function toProjectServiceMatrix(affected: string[]): ProjectServiceGroup[] {
     {
       backend: 'classic',
       os: 'ubuntu-latest',
-      plugin: false,
       projects: PROJECT_SERVICE_PACKAGES.filter(pkg => affected.includes(pkg)),
     },
-    // `eslint-plugin` is slow, so its tsgo coverage only runs on Linux.
     {
       backend: 'tsgo',
       os: 'ubuntu-latest',
-      plugin: affected.includes('eslint-plugin'),
       projects: tsgoPackages,
     },
     {
       backend: 'tsgo',
       os: 'windows-latest',
-      plugin: false,
       projects: tsgoPackages.filter(
         pkg => !WINDOWS_EXCLUDED_PACKAGES.includes(pkg),
       ),
     },
   ];
-  return groups.filter(group => group.plugin || group.projects.length > 0);
+  return groups.filter(group => group.projects.length > 0);
 }
 
 export function getTestMatrices(affected: string[]): TestMatrices {
