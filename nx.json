@@ -90,6 +90,7 @@
       },
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/vitest.config.base.mts",
         { "env": "TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND" },
         { "env": "TYPESCRIPT_ESLINT_PROJECT_SERVICE" }
