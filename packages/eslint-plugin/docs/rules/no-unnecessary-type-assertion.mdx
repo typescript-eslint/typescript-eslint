@@ -77,6 +77,11 @@ With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { checkLiteral
 
 ```ts option='{ "checkLiteralConstAssertions": true }' showPlaygroundButton
 const foo = 'foo' as const;
+
+declare function setValue(value: 'foo' | 'baz'): void;
+setValue('foo' as const);
+
+const qux: { value: 'foo' | 'baz' } = { value: 'foo' as const };
 ```
 
 See [#8721 False positives for "as const" assertions (issue comment)](https://github.com/typescript-eslint/typescript-eslint/issues/8721#issuecomment-2145291966) for more information on this option.

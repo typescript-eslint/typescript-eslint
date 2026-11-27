@@ -407,6 +407,85 @@ const templateLiteral = \`\${myString}-somethingElse\` as const;
       `,
       options: [{ checkLiteralConstAssertions: true }],
     },
+    {
+      code: `
+declare function identity<T>(value: T): T;
+let value = identity('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function identity<T extends {}>(value: T): T;
+let value = identity('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function pick<U extends string, T extends U>(value: T): T[];
+let values = pick('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare class Box<T> {
+  constructor(value: T);
+}
+const box = new Box('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function of<T>(...items: T[]): T[];
+let items = of('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function identity<T extends { kind: string }>(value: T): T;
+const value = identity({ kind: 'a' as const });
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function identity<const T>(value: T): T;
+const value = identity({ kind: 'a' as const });
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(value: 'a'): 1;
+declare function f(value: string): 2;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f<T>(value: T, label: string): T;
+declare const none: [];
+let value = f(...none, 'a' as const, 'label');
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+const value = { kind: 'a' as const };
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+let values = ['a' as const];
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
 declare const myString: 'foo';
@@ -2427,6 +2506,366 @@ class T {
 class T {
   readonly a = 'a';
 }
+      `,
+    },
+    {
+      code: `
+declare function f(value: 'a' | 'b'): void;
+f('a' as const);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(value: 'a' | 'b'): void;
+f('a');
+      `,
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const recipient: Recipient = { kind: 'a' as const };
+      `,
+      errors: [
+        {
+          column: 38,
+          endColumn: 50,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const recipient: Recipient = { kind: 'a' };
+      `,
+    },
+    {
+      code: `
+declare function f(value: string): void;
+f(<const>'a');
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(value: string): void;
+f('a');
+      `,
+    },
+    {
+      code: `
+declare function f(...values: unknown[]): void;
+f(1 as const, true as const, \`a\` as const);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+        {
+          column: 30,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(...values: unknown[]): void;
+f(1, true, \`a\`);
+      `,
+    },
+    {
+      code: `
+declare class Box {
+  constructor(value: string);
+}
+new Box('a' as const);
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare class Box {
+  constructor(value: string);
+}
+new Box('a');
+      `,
+    },
+    {
+      code: `
+declare const values: string[];
+values.push('a' as const);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare const values: string[];
+values.push('a');
+      `,
+    },
+    {
+      code: `
+declare function identity<T extends string>(value: T): T;
+let value = identity('a' as const);
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function identity<T extends string>(value: T): T;
+let value = identity('a');
+      `,
+    },
+    {
+      code: `
+declare function identity<const T>(value: T): T;
+let value = identity('a' as const);
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function identity<const T>(value: T): T;
+let value = identity('a');
+      `,
+    },
+    {
+      code: `
+declare function get<K extends keyof { a: 1; b: 2 }>(key: K): K;
+let key = get('a' as const);
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function get<K extends keyof { a: 1; b: 2 }>(key: K): K;
+let key = get('a');
+      `,
+    },
+    {
+      code: `
+declare class Box<T extends string> {
+  constructor(value: T);
+}
+const box = new Box('a' as const);
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare class Box<T extends string> {
+  constructor(value: T);
+}
+const box = new Box('a');
+      `,
+    },
+    {
+      code: `
+declare function identity<T>(value: T): T;
+let value = identity<string>('a' as const);
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function identity<T>(value: T): T;
+let value = identity<string>('a');
+      `,
+    },
+    {
+      code: `
+declare function identity<T>(value: T): T;
+const value = identity<{ kind: string }>({ kind: 'a' as const });
+      `,
+      errors: [
+        {
+          column: 50,
+          endColumn: 62,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function identity<T>(value: T): T;
+const value = identity<{ kind: string }>({ kind: 'a' });
+      `,
+    },
+    {
+      code: `
+declare function set<T>(key: string, value: T): T;
+set('a' as const, 1);
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function set<T>(key: string, value: T): T;
+set('a', 1);
+      `,
+    },
+    {
+      code: `
+declare function f(values: readonly string[]): void;
+f(['a' as const]);
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(values: readonly string[]): void;
+f(['a']);
+      `,
+    },
+    {
+      code: `
+let value: string = 'a' as const;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+let value: string = 'a';
+      `,
+    },
+    {
+      code: `
+declare const name: 'foo';
+declare function f(value: string): void;
+f(\`\${name}-a\` as const);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare const name: 'foo';
+declare function f(value: string): void;
+f(\`\${name}-a\`);
+      `,
+    },
+    {
+      code: `
+const values: string[] = ['a' as const];
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const values: string[] = ['a'];
       `,
     },
     {
