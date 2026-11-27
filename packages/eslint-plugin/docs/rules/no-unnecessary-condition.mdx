@@ -188,6 +188,9 @@ function assertIsString(value: unknown): asserts value is string {
 }
 
 assertIsString(s); // Unnecessary; s is always a string.
+
+declare const strings: string[];
+strings.filter(isString); // Unnecessary; each element is already a string.
 ```
 
 Whether this option makes sense for your project may vary.
