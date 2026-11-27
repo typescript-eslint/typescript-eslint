@@ -4,6 +4,7 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 import debug from 'debug';
 
 import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
+import { reuseDeclarationFiles } from './reuseDeclarationFiles.js';
 import { throttleOpenedFileCleanup } from './throttleOpenedFileCleanup.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
@@ -194,6 +195,13 @@ export function createProjectService({
   });
 
   throttleOpenedFileCleanup(service);
+
+  // Internal. Used for testing.
+  if (
+    process.env.TYPESCRIPT_ESLINT_INTERNAL_REUSE_DECLARATION_FILES === 'true'
+  ) {
+    reuseDeclarationFiles(service, jsDocParsingMode);
+  }
 
   service.setHostConfiguration({
     preferences: {

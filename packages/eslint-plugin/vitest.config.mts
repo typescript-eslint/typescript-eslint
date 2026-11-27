@@ -25,6 +25,10 @@ const vitestConfig: ViteUserConfig = mergeConfig(
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
 
+      env: {
+        TYPESCRIPT_ESLINT_INTERNAL_REUSE_DECLARATION_FILES: 'true',
+      },
+
       exclude: [
         ...configDefaults.exclude,
 
