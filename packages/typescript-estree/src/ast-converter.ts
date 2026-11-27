@@ -20,7 +20,26 @@ export function astConverter(
    */
   const { parseDiagnostics } = ast;
   if (parseDiagnostics.length) {
-    throw convertError(parseDiagnostics[0]);
+    const fatalDiagnostic = parseDiagnostics.find(diag => {
+      if (diag.code !== 1003) {
+        return true;
+      }
+      const text = ast.text;
+      let pos = diag.start;
+      while (pos > 0 && /\w/.test(text[pos - 1])) {
+        pos--;
+      }
+      if (pos >= 2 && text[pos - 1] === '#' && text[pos - 2] === '.') {
+        return false;
+      }
+      if (pos >= 1 && text[pos] === '#' && text[pos - 1] === '.') {
+        return false;
+      }
+      return true;
+    });
+    if (fatalDiagnostic) {
+      throw convertError(fatalDiagnostic);
+    }
   }
 
   /**

@@ -21,6 +21,9 @@ packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-trailing-
 packages/ast-spec/src/statement/ForStatement/fixtures/await-using/fixture.ts
 packages/ast-spec/src/statement/ForStatement/fixtures/using/fixture.ts
 
+# TODO - remove this once prettier supports `typeof obj.#field`
+packages/ast-spec/src/type/TSQualifiedName/fixtures/typeof-private-identifier/fixture.ts
+
 # TODO - remove this once prettier supports `import defer`
 # https://github.com/prettier/prettier/issues/18180
 packages/scope-manager/tests/fixtures/import/defer.ts

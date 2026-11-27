@@ -1,0 +1,274 @@
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: PrivateIdentifier {
+              type: "PrivateIdentifier",
+              name: "bar",
+
+              range: [14, 18],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 6, line: 2 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [21, 22],
+              loc: {
+                start: { column: 9, line: 2 },
+                end: { column: 10, line: 2 },
+              },
+            },
+
+            range: [14, 23],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 11, line: 2 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "method",
+              optional: false,
+
+              range: [26, 32],
+              loc: {
+                start: { column: 2, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "other",
+                        optional: false,
+
+                        range: [77, 82],
+                        loc: {
+                          start: { column: 11, line: 4 },
+                          end: { column: 16, line: 4 },
+                        },
+                      },
+                      optional: false,
+                      property: PrivateIdentifier {
+                        type: "PrivateIdentifier",
+                        name: "bar",
+
+                        range: [83, 87],
+                        loc: {
+                          start: { column: 17, line: 4 },
+                          end: { column: 21, line: 4 },
+                        },
+                      },
+
+                      range: [77, 87],
+                      loc: {
+                        start: { column: 11, line: 4 },
+                        end: { column: 21, line: 4 },
+                      },
+                    },
+
+                    range: [70, 88],
+                    loc: {
+                      start: { column: 4, line: 4 },
+                      end: { column: 22, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [64, 92],
+                loc: {
+                  start: { column: 40, line: 3 },
+                  end: { column: 3, line: 5 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "other",
+                  optional: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "Foo",
+                        optional: false,
+
+                        range: [40, 43],
+                        loc: {
+                          start: { column: 16, line: 3 },
+                          end: { column: 19, line: 3 },
+                        },
+                      },
+
+                      range: [40, 43],
+                      loc: {
+                        start: { column: 16, line: 3 },
+                        end: { column: 19, line: 3 },
+                      },
+                    },
+
+                    range: [38, 43],
+                    loc: {
+                      start: { column: 14, line: 3 },
+                      end: { column: 19, line: 3 },
+                    },
+                  },
+
+                  range: [33, 43],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 19, line: 3 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSTypeQuery {
+                  type: "TSTypeQuery",
+                  exprName: TSQualifiedName {
+                    type: "TSQualifiedName",
+                    left: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "other",
+                      optional: false,
+
+                      range: [53, 58],
+                      loc: {
+                        start: { column: 29, line: 3 },
+                        end: { column: 34, line: 3 },
+                      },
+                    },
+                    right: PrivateIdentifier {
+                      type: "PrivateIdentifier",
+                      name: "bar",
+
+                      range: [59, 63],
+                      loc: {
+                        start: { column: 35, line: 3 },
+                        end: { column: 39, line: 3 },
+                      },
+                    },
+
+                    range: [53, 63],
+                    loc: {
+                      start: { column: 29, line: 3 },
+                      end: { column: 39, line: 3 },
+                    },
+                  },
+
+                  range: [46, 63],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 39, line: 3 },
+                  },
+                },
+
+                range: [44, 63],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 39, line: 3 },
+                },
+              },
+
+              range: [32, 92],
+              loc: {
+                start: { column: 8, line: 3 },
+                end: { column: 3, line: 5 },
+              },
+            },
+
+            range: [26, 92],
+            loc: {
+              start: { column: 2, line: 3 },
+              end: { column: 3, line: 5 },
+            },
+          },
+        ],
+
+        range: [10, 94],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [0, 94],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 95],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 7 },
+  },
+}
