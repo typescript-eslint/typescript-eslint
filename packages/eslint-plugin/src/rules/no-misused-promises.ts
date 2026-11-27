@@ -685,12 +685,14 @@ export default createRule<Options, MessageId>({
       }
 
       for (const nodeMember of tsNode.members) {
+        if (ts.isIndexSignatureDeclaration(nodeMember)) {
+          checkIndexSignatureAgainstHeritageTypes(nodeMember, heritageTypes);
+          continue;
+        }
         const memberName = nodeMember.name?.getText();
         if (memberName == null) {
-          // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
+          // Call/construct signatures don't have names. TS allows call signatures to mismatch,
           // and construct signatures can't be async.
-          // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
-          // signature here against its compatible index signatures in `heritageTypes`
           continue;
         }
         if (!returnsThenable(checker, nodeMember)) {
@@ -708,6 +710,45 @@ export default createRule<Options, MessageId>({
             heritageType,
             memberName,
           );
+        }
+      }
+    }
+
+    /**
+     * Reports an index signature whose value returns a thenable when an index signature
+     * with a compatible key type in `heritageTypes` expects a void return.
+     */
+    function checkIndexSignatureAgainstHeritageTypes(
+      nodeMember: ts.IndexSignatureDeclaration,
+      heritageTypes: ts.Type[],
+    ): void {
+      if (
+        nodeMember.modifiers?.some(
+          modifier => modifier.kind === ts.SyntaxKind.StaticKeyword,
+        )
+      ) {
+        return;
+      }
+      const valueType = checker.getTypeAtLocation(nodeMember.type);
+      if (!typeReturnsThenable(checker, nodeMember, valueType)) {
+        return;
+      }
+      const keyType = checker.getTypeAtLocation(nodeMember.parameters[0]);
+
+      for (const heritageType of heritageTypes) {
+        const hasVoidReturningIndexSignature = checker
+          .getIndexInfosOfType(heritageType)
+          .some(
+            indexInfo =>
+              isApplicableIndexKey(checker, keyType, indexInfo.keyType) &&
+              isVoidReturningFunctionType(checker, nodeMember, indexInfo.type),
+          );
+        if (hasVoidReturningIndexSignature) {
+          context.report({
+            node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+            messageId: 'voidReturnInheritedMethod',
+            data: { heritageTypeName: checker.typeToString(heritageType) },
+          });
         }
       }
     }
@@ -1064,10 +1105,33 @@ function isVoidReturningFunctionType(
  * @returns Whether expression is a function that returns a thenable.
  */
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
-  const type = checker.getApparentType(checker.getTypeAtLocation(node));
+  return typeReturnsThenable(checker, node, checker.getTypeAtLocation(node));
+}
+
+function typeReturnsThenable(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
   return tsutils
-    .unionConstituents(type)
+    .unionConstituents(checker.getApparentType(type))
     .some(t => anySignatureIsThenableType(checker, node, t));
+}
+
+/**
+ * @returns Whether keys of `keyType` are also covered by an index signature keyed by
+ * `indexKeyType`. Like in TS, numeric keys are covered by string index signatures.
+ */
+function isApplicableIndexKey(
+  checker: ts.TypeChecker,
+  keyType: ts.Type,
+  indexKeyType: ts.Type,
+): boolean {
+  return (
+    checker.isTypeAssignableTo(keyType, indexKeyType) ||
+    (tsutils.isTypeFlagSet(indexKeyType, ts.TypeFlags.String) &&
+      checker.isTypeAssignableTo(keyType, checker.getNumberType()))
+  );
 }
 
 function getHeritageTypes(

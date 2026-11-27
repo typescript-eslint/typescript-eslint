@@ -182,7 +182,7 @@ Disables checking an asynchronous function passed as a JSX attribute expected to
 Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.
 
 :::note
-For now, `no-misused-promises` only checks _named_ methods against extended/implemented types: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
+For now, `no-misused-promises` only checks named methods against named members of extended/implemented types, and index signatures against index signatures with compatible keys. Call and construct signatures are ignored: call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place.
 :::
 
 #### `properties`
