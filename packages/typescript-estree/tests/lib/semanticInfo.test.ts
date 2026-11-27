@@ -358,6 +358,52 @@ describe('semanticInfo', async () => {
     ).toBe(arrayBoundName);
   });
 
+  async function parseImportUntyped(project: string): Promise<{
+    resolvedJs: boolean;
+    type: string;
+  }> {
+    const fileName = path.resolve(FIXTURES_DIR, 'import-untyped.ts');
+    const parseResult = parseCodeAndGenerateServices(
+      await fs.readFile(fileName, { encoding: 'utf-8' }),
+      { ...createOptions(fileName), project },
+    );
+
+    assert.isParserServices(parseResult.services);
+
+    const checker = parseResult.services.program.getTypeChecker();
+    const memberExpression = (
+      parseResult.ast.body[1] as TSESTree.ExpressionStatement
+    ).expression;
+    const type = checker.getTypeAtLocation(
+      parseResult.services.esTreeNodeToTSNodeMap.get(memberExpression),
+    );
+
+    return {
+      resolvedJs:
+        parseResult.services.program.getSourceFile(
+          path.resolve(FIXTURES_DIR, 'untyped.js'),
+        ) != null,
+      type: checker.typeToString(type),
+    };
+  }
+
+  it('does not resolve JS files when allowJs is not enabled in tsconfig', async () => {
+    expect(await parseImportUntyped('./tsconfig.json')).toStrictEqual({
+      resolvedJs: false,
+      type: 'any',
+    });
+  });
+
+  // The project service ignores `project` and uses the nearest tsconfig.json
+  it.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
+    'resolves JS files when allowJs is enabled in tsconfig',
+    async () => {
+      expect(await parseImportUntyped('./tsconfig.allowJs.json')).toStrictEqual(
+        { resolvedJs: true, type: '"hello"' },
+      );
+    },
+  );
+
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
