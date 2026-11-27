@@ -4126,5 +4126,539 @@ async function* cb() {
         },
       ],
     },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function save(): Promise<void>;
+
+onClick(async () => await save());
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function save(): Promise<void>;
+
+onClick( () => void (async () => await save())());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick(async (): Promise<void> => console.log(await loadCount()));
+      `,
+      errors: [
+        {
+          column: 33,
+          endColumn: 35,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick( (): void => void (async () => console.log(await loadCount()))());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick(async () => ({ count: await loadCount() }));
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function loadCount(): Promise<number>;
+
+onClick( () => void (async () => ({ count: await loadCount() }))());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function run(fn: unknown): void;
+declare function save(): Promise<void>;
+
+onClick(async () => run(async () => await save()));
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function run(fn: unknown): void;
+declare function save(): Promise<void>;
+
+onClick( () => void run(async () => await save()));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function run(fn: unknown): void;
+
+onClick(async () => run({ m() {} }));
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function run(fn: unknown): void;
+
+onClick( () => void run({ m() {} }));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function run(...args: unknown[]): void;
+declare function save(): Promise<void>;
+
+onClick(async () =>
+  run(
+    async function () {
+      await save();
+    },
+    class {
+      static {}
+      constructor() {}
+      get x() {
+        return 1;
+      }
+    },
+  ),
+);
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function run(...args: unknown[]): void;
+declare function save(): Promise<void>;
+
+onClick( () =>
+  void run(
+    async function () {
+      await save();
+    },
+    class {
+      static {}
+      constructor() {}
+      get x() {
+        return 1;
+      }
+    },
+  ),
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function getKey(): Promise<string>;
+
+onClick(async () => ({ [await getKey()]() {} }));
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function getKey(): Promise<string>;
+
+onClick( () => void (async () => ({ [await getKey()]() {} }))());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function onClick(cb: () => void): void;
+declare function getDec(): Promise<
+  (target: () => void, context: ClassMethodDecoratorContext) => void
+>;
+
+onClick(
+  async () =>
+    class {
+      @(await getDec()) m() {}
+    },
+);
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function onClick(cb: () => void): void;
+declare function getDec(): Promise<
+  (target: () => void, context: ClassMethodDecoratorContext) => void
+>;
+
+onClick(
+   () => void (async () =>
+    class {
+      @(await getDec()) m() {}
+    })(),
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function trace(
+  fn: () => Promise<void>,
+): (target: () => void, context: ClassMethodDecoratorContext) => void;
+declare function save(): Promise<void>;
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @trace(async () => {
+    await save();
+  })
+  async handle() {
+    await save();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function trace(
+  fn: () => Promise<void>,
+): (target: () => void, context: ClassMethodDecoratorContext) => void;
+declare function save(): Promise<void>;
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @trace(async () => {
+    await save();
+  })
+   handle() { (async () => {
+    await save();
+  })(); }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function dec(x: unknown): any;
+
+class Base {
+  async(): void {}
+}
+
+class Sub extends Base {
+  @dec(async () => {})
+  public override async async() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 10,
+          line: 10,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function dec(x: unknown): any;
+
+class Base {
+  async(): void {}
+}
+
+class Sub extends Base {
+  @dec(async () => {})
+  public override  async() { (async () => {})(); }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function dec(x: unknown): any;
+declare function save(): Promise<void>;
+
+interface Handler {
+  handle: () => void;
+}
+
+class Controller implements Handler {
+  @dec(async () => {})
+  handle = async () => {
+    await save();
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 11,
+          line: 11,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function dec(x: unknown): any;
+declare function save(): Promise<void>;
+
+interface Handler {
+  handle: () => void;
+}
+
+class Controller implements Handler {
+  @dec(async () => {})
+  handle =  () => void (async () => {
+    await save();
+  })();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function save(): Promise<void>;
+
+const obj: { async: () => void } = {
+  async: async () => {
+    await save();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function save(): Promise<void>;
+
+const obj: { async: () => void } = {
+  async:  () => void (async () => {
+    await save();
+  })(),
+};
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function dec(x: unknown): any;
+declare function getKey(fn: () => Promise<void>): 'handle';
+declare function save(): Promise<void>;
+const key = getKey(async () => {});
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @dec(async () => {})
+  async [key]() {
+    await save();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 13,
+          line: 13,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function dec(x: unknown): any;
+declare function getKey(fn: () => Promise<void>): 'handle';
+declare function save(): Promise<void>;
+const key = getKey(async () => {});
+
+interface Handler {
+  handle(): void;
+}
+
+class Controller implements Handler {
+  @dec(async () => {})
+   [key]() { (async () => {
+    await save();
+  })(); }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function getKey(fn: () => Promise<void>): 'run';
+declare function save(): Promise<void>;
+
+const obj: { async(): void; run: () => void } = {
+  async async() {
+    await save();
+  },
+  async [getKey(async () => {})]() {
+    await save();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function getKey(fn: () => Promise<void>): 'run';
+declare function save(): Promise<void>;
+
+const obj: { async(): void; run: () => void } = {
+   async() { (async () => {
+    await save();
+  })(); },
+  async [getKey(async () => {})]() {
+    await save();
+  },
+};
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
