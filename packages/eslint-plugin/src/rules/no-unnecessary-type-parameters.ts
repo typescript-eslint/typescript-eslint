@@ -566,9 +566,12 @@ function collectTypeParameterUsageCounts(
       visitType(typeParameter, false);
     }
 
+    // The return type has to be resolved before the type predicate: for a
+    // function whose return type depends on calling itself, asking for the
+    // predicate first hits the cycle and the return type comes back as `any`.
+    const returnType = signature.getReturnType();
     visitType(
-      checker.getTypePredicateOfSignature(signature)?.type ??
-        signature.getReturnType(),
+      checker.getTypePredicateOfSignature(signature)?.type ?? returnType,
       false,
       true,
     );
