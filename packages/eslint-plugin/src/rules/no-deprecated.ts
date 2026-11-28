@@ -16,6 +16,16 @@ import {
   valueMatchesSomeSpecifier,
 } from '../util';
 
+const PRIMITIVE_TYPE_FLAGS =
+  ts.TypeFlags.StringLike |
+  ts.TypeFlags.NumberLike |
+  ts.TypeFlags.BigIntLike |
+  ts.TypeFlags.BooleanLike |
+  ts.TypeFlags.EnumLike |
+  ts.TypeFlags.ESSymbolLike |
+  ts.TypeFlags.VoidLike |
+  ts.TypeFlags.Null;
+
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
@@ -228,8 +238,18 @@ export default createRule<Options, MessageIds>({
     function getPropertyDeprecation(
       type: ts.Type,
       propertyName: string,
+      skipPrimitives = false,
     ): { reason: string; type: ts.Type } | undefined {
       for (const constituent of tsutils.unionConstituents(type)) {
+        if (
+          skipPrimitives &&
+          tsutils
+            .intersectionConstituents(constituent)
+            .some(part => tsutils.isTypeFlagSet(part, PRIMITIVE_TYPE_FLAGS))
+        ) {
+          continue;
+        }
+
         const reason = getJsDocDeprecation(
           constituent.getProperty(propertyName),
         );
@@ -470,7 +490,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const deprecation = getPropertyDeprecation(contextualType, propertyName);
+      const deprecation = getPropertyDeprecation(
+        contextualType,
+        propertyName,
+        true,
+      );
       if (!deprecation) {
         return;
       }

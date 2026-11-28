@@ -807,6 +807,19 @@ class Foo implements Foo {
 }
 new Foo().value;
     `,
+    `
+declare function f(sel: { anchor: number } | string): void;
+f({ anchor: 1 });
+    `,
+    `
+declare function f(sel: { anchor: number } | 'a' | 'b'): void;
+f({ anchor: 1 });
+    `,
+    `
+type BrandedString = string & { __brand: true };
+declare function f(sel: { anchor: number } | BrandedString): void;
+f({ anchor: 1 });
+    `,
   ],
   invalid: [
     {
@@ -4882,6 +4895,29 @@ override.value;
           column: 10,
           data: { name: 'value', reason: 'Use other.' },
           endColumn: 15,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(
+  sel:
+    | {
+        /** @deprecated Use head. */
+        anchor: number;
+      }
+    | string,
+): void;
+f({ anchor: 1 });
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'anchor', reason: 'Use head.' },
+          endColumn: 11,
           endLine: 10,
           line: 10,
           messageId: 'deprecatedWithReason',
