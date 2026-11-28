@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/users/configs
+// SEE https://typescript-eslint.io/users/configs/
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `pnpm run generate-configs`
@@ -12,7 +12,7 @@ import eslintRecommendedConfig from './eslint-recommended';
 
 /**
  * Contains all of `recommended`, as well as additional strict rules that can also catch bugs.
- * @see {@link https://typescript-eslint.io/users/configs#strict}
+ * @see {@link https://typescript-eslint.io/users/configs/#strict}
  */
 export default (
   plugin: FlatConfig.Plugin,
